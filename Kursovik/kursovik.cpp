@@ -76,6 +76,10 @@ int main(int argc, char *argv[])
         cout << setw(10) << dots[i].x << "  " << setw(10) << dots[i].y << endl;
     }
 
+    float dist3_4 = dots[2].distance_from(dots[3]);
+    cout << endl
+         << dist3_4 << endl;
+
     // нужен лог файл
     // нужен файл с результатом
 
