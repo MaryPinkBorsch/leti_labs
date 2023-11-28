@@ -48,6 +48,7 @@ int main(int argc, char *argv[])
     // отсортировать и выбрать те куда попадает максимальное количество точек
 
     // загрузить координаты точек из файла
+
     string filename = "input.txt";
     ifstream input;
     input.open(filename, std::ios_base::in);
@@ -59,13 +60,38 @@ int main(int argc, char *argv[])
     }
 
     std::vector<dot> dots; // создаю вектор-массив для хранения точек (и их координат)
+    
     while (!input.eof())
     {
         dot tmp;
-        input >> skipws >> tmp.x; // считаем коор-ту х точки тмп
-        input >> skipws >> tmp.y; // считаем коор-ту у точки тмп
-        dots.push_back(tmp);      // запишем эту точку в конец массива
+        bool dot_x_empty = true;
+        bool dot_y_empty = true;
+        char next_char;
+        next_char = input.peek();
+        if (next_char != ' ' && next_char != '\r' && next_char != '\n')
+        {
+            input >> skipws >> tmp.x;
+            dot_x_empty = false;
+            while(input.peek() == ' ')
+                input >> noskipws >> next_char;
+            next_char = input.peek();
+
+            if (next_char != ' ' && next_char != '\r' && next_char != '\n' && dot_x_empty == false)
+            {
+                input >> skipws >> tmp.y;
+                dot_y_empty = false;
+                if (dot_x_empty == false && dot_y_empty == false)
+                {
+                    dots.push_back(tmp);
+                }
+            }
+        }
+        while(input.peek() == ' ' || input.peek() == '\r' || input.peek() == '\n')
+            input >> noskipws >> next_char;
+        
     }
+
+    
 
     // проверка вывод в экран
     cout << setw(10) << "Координата X"
