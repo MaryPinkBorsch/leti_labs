@@ -97,6 +97,31 @@ void calculate_pair_distance(std::vector<dot> & dots, std::vector<std::vector<fl
     }
 }
 
+struct distance_index 
+{
+    int idx; // индекс др точки
+    float distance; // расстояние до этой другой точки
+};
+
+void sort_pair_distances(std::vector<dot> & dots, std::vector<std::vector<float>> & distances, std::vector<std::vector<distance_index>> & distance_indexes) 
+{
+    // мы получили пустой массив его надо заполнить и отсортировать
+    //заполнение массивов расстояния до всех точек для каждой точки
+    for(int i = 0; i< dots.size(); i++) 
+    {   
+        for(int j = i+1; j< dots.size(); j++)
+        {   
+            distance_index tmp;
+            tmp.idx = j;
+            tmp.distance = distances[i][j];
+            distance_indexes[i].push_back(tmp);
+        }
+    }
+    // sorting
+    
+    
+}
+
 int main(int argc, char *argv[])
 {
     std::cout << "Добро пожаловать в курсовик Калюжной Марии 3352 26.11.23 !" << endl
@@ -106,11 +131,14 @@ int main(int argc, char *argv[])
     std::vector<dot> dots; // создаю вектор-массив для хранения точек (и их координат)
     std::vector<std::vector<float>> distances;
 
+
+    std::vector<distance_index> sorted_distance_indexes;
+
     // загрузить координаты точек из файла
     if (read_dots(filename, dots)) 
     {
         // 1. посчитать все парные расстояния между точками (построить матрицу расстояний между двумя любыми точками)
-
+        calculate_pair_distance(dots, distances);
         // проверка вывод в экран
         cout << setw(10) << "Координата X"
             << "  " << setw(10) << "Координата Y" << endl;
