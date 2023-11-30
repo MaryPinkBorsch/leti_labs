@@ -113,21 +113,58 @@ struct distance_index
     float distance; // расстояние до этой другой точки
 };
 
-void sort_pair_distances(dot * & dots, int & num_dots, float ** & distances, int & num_distances, distance_index * & distance_indexes, int & num_indicies)
+void sort_pair_distances(dot * & dots, int & num_dots, float ** & distances, int & num_distances, distance_index ** & distance_indexes, int & num_indicies)
 {
     // мы получили пустой массив его надо заполнить и отсортировать
-    // заполнение массивов расстояния до всех точек для каждой точки
-    for (int i = 0; i < sizeof(dots); i++)
+
+    distance_indexes = new distance_index * [num_indicies]; // память для внешнего измерения указателей
+
+    for (int i = 0; i < num_indicies; i++)
     {
-        for (int j = i + 1; j < sizeof(dots); j++)
+        distance_indexes[i] = new distance_index [num_indicies];           
+    }
+
+    // заполнение массивов расстояния до всех точек для каждой точки
+    for (int i = 0; i < num_distances; i++)
+    {        
+        for (int j = i; j < num_distances; j++)
         {
             distance_index tmp;
             tmp.idx = j;
             tmp.distance = distances[i][j]; // ТУТ НУЖНА * или всетаки нет???? 
-            distance_indexes[i]= tmp;
+            distance_indexes[i][j]= tmp;
+            if (i != j) 
+            {
+                tmp.idx = i;
+                distance_indexes[j][i]= tmp;
+            }
         }
     }
+
     // sorting
+
+    // проход по всем точкам
+    for(int i = 0; i < num_distances; i++)
+    {
+        // для каждой точки надо отсортировать расстояния до других точек
+        bool sorted = false;
+        while (!sorted) 
+        {
+            sorted = true; // надеемся на то что оно уже отсортированно
+            for (int j = 0; j < num_distances-1; j++) 
+            {
+                if (distance_indexes[i][j].distance > distance_indexes[i][j+1].distance) 
+                {
+                    distance_index tmp = distance_indexes[i][j];
+                    distance_indexes[i][j] = distance_indexes[i][j+1];
+                    distance_indexes[i][j+1] = tmp;
+                    sorted = false;
+                }
+            }
+        }
+    }
+
+
 }
 
 int main(int argc, char *argv[])
@@ -159,22 +196,29 @@ int main(int argc, char *argv[])
 
         // 1. посчитать все парные расстояния между точками (построить матрицу расстояний между двумя любыми точками)
         calculate_pair_distance(dots, num_dots, distances, num_dots );
-        // проверка вывод в экран
-        /*
-         cout << setw(10) << "Координата X"
-             << "  " << setw(10) << "Координата Y" << endl;
-        int len = dots.size();
-        for (int i = 0; i < len; i++)
-        {
-            cout << setw(10) << dots[i].x << "  " << setw(10) << dots[i].y << endl;
+
+        int num_distances = num_dots;
+        for (int i = 0; i < num_distances; i++)
+        {            
+            for (int j = i + 1; j < num_distances; j++)
+            {
+                cout << "Расстояние между точкой номер "<< i << " и "<< j << " равно: " << setw(10) << distances[i][j] << endl;
+            }
         }
 
-        */
+        cout << endl << endl;
+        // 2.  для каждой точки отсортировать все остальные точки по расстояниям
 
-       // float dist3_4 = dots[2].distance_from(dots[3]);
-      //  cout << endl
-       //      << dist3_4 << endl;
-
+        sort_pair_distances(dots, num_dots, distances, num_dots, sorted_distance_indexes, num_dots);
+        cout <<"       Результаты сортировки: " << endl;
+        for (int i = 0; i < num_dots; i++)
+        {            
+            for (int j = 0; j < num_dots; j++)
+            {
+                cout << "Расстояние между точкой номер "<< i << " и "<< sorted_distance_indexes[i][j].idx << " равно: " << setw(10) << sorted_distance_indexes[i][j].distance << endl;
+            }
+        }
+        cout << endl << endl;
         // нужен лог файл
         // нужен файл с результатом
     }
