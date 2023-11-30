@@ -87,15 +87,22 @@ bool read_dots(std::string filename, dot * & p_dots, int & num_dots)
 
 void calculate_pair_distance(dot * & dots, int & num_dots, float ** & distances, int & num_distances)
 {
-   // distances.resize(dots.size());
-    for (int i = 0; i < sizeof(dots); i++)
+    
+    distances = new float*[num_distances];
+
+    for (int i = 0; i < num_distances; i++)
     {
-       // distances[i].resize(dots.size());
-        distances[i][i] = 0; //!!!!!!!!!!
-        for (int j = i + 1; j < sizeof(dots); j++)
+        distances[i] = new float [num_distances];           
+    }
+
+    for (int i = 0; i < num_distances; i++)
+    {
+        distances[i] = new float [num_distances]; 
+        distances[i][i] = 0; 
+        for (int j = i + 1; j < num_distances; j++)
         {
             distances[i][j] = dots[i].distance_from(dots[j]); //!!!!!!!!!!!!!!!!!!
-           // distances[j][i] = distances[i][j];                //////
+            distances[j][i] = distances[i][j];                //////
         }
     }
 }
@@ -134,6 +141,8 @@ int main(int argc, char *argv[])
     int num_dots = 0;
 
     float ** distances = nullptr; // указатель на указатель - для динамического двумерного массива попарных расстояний
+
+
 
     distance_index ** sorted_distance_indexes;
 
