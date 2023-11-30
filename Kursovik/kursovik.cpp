@@ -4,6 +4,8 @@
 #include <iomanip>
 #include <math.h>
 
+static const int MAX_DOTS_NUM = 1000;
+
 // разобьем задачу на более простые
 // сначала найдем все наборы точек которые составляют квадраты
 // чтобы найти квадрат надо
@@ -50,7 +52,7 @@ bool read_dots(std::string filename, dot * & p_dots, int & num_dots)
         std::cout << " Файл input пуст, упс" << endl;
         return false;
     }
-
+    num_dots = 0;
     while (!input.eof())
     {
         dot tmp;
@@ -72,8 +74,8 @@ bool read_dots(std::string filename, dot * & p_dots, int & num_dots)
                 dot_y_empty = false;
                 if (dot_x_empty == false && dot_y_empty == false)
                 {
-                    *p_dots = tmp;
-                    p_dots++;
+                    p_dots[num_dots] = tmp;
+                    num_dots++;
                 }
             }
         }
@@ -104,7 +106,7 @@ struct distance_index
     float distance; // расстояние до этой другой точки
 };
 
-void sort_pair_distances(dot * & dots, float ** & distances, distance_index * & distance_indexes)
+void sort_pair_distances(dot * & dots, int & num_dots, float ** & distances, int & num_distances, distance_index * & distance_indexes, int & num_indicies)
 {
     // мы получили пустой массив его надо заполнить и отсортировать
     // заполнение массивов расстояния до всех точек для каждой точки
@@ -114,8 +116,8 @@ void sort_pair_distances(dot * & dots, float ** & distances, distance_index * & 
         {
             distance_index tmp;
             tmp.idx = j;
-            tmp.distance = *distances[i][j];
-            distance_indexes[i].push_back(tmp);
+            tmp.distance = distances[i][j]; // ТУТ НУЖНА * или всетаки нет???? 
+            distance_indexes[i]= tmp;
         }
     }
     // sorting
@@ -127,24 +129,27 @@ int main(int argc, char *argv[])
               << endl;
   
     string filename = "input.txt";
-    dot *dots = nullptr; // создаю вектор-массив для хранения точек (и их координат)
-    float distances [1024][2];
+    dot * dots = nullptr; // указатель под динамический массив для хранения точек (и их координат)
+    dots = new dot [MAX_DOTS_NUM];
+    int num_dots = 0;
 
-    distance_index sorted_distance_indexes[1024][2];
+    float ** distances = nullptr; // указатель на указатель - для динамического двумерного массива попарных расстояний
+
+    distance_index ** sorted_distance_indexes;
 
     // загрузить координаты точек из файла
-    if (read_dots(filename, dots))
+    if (read_dots(filename, dots, num_dots))
     {
         cout << setw(10) << "Координата X"
              << "  " << setw(10) << "Координата Y" << endl;
-        int len = sizeof(dots);
+        int len = num_dots;
         for (int i = 0; i < len; i++)
         {
             cout << setw(10) << dots[i].x << "  " << setw(10) << dots[i].y << endl;
         }
 
         // 1. посчитать все парные расстояния между точками (построить матрицу расстояний между двумя любыми точками)
-        calculate_pair_distance(dots, distances);
+        calculate_pair_distance(dots, num_dots, distances, num_dots );
         // проверка вывод в экран
         /*
          cout << setw(10) << "Координата X"
@@ -164,6 +169,6 @@ int main(int argc, char *argv[])
         // нужен лог файл
         // нужен файл с результатом
     }
-
+    delete [] dots;
     return 0;
 }
