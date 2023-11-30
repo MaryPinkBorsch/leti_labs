@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include <vector>
+
 #include <iomanip>
 #include <math.h>
 
@@ -40,7 +40,7 @@ struct dot
     float y;
 };
 
-bool read_dots(std::string filename, std::vector<dot> &dots)
+bool read_dots(std::string filename, dot * & p_dots, int & num_dots)
 {
     ifstream input;
     input.open(filename, std::ios_base::in);
@@ -72,7 +72,8 @@ bool read_dots(std::string filename, std::vector<dot> &dots)
                 dot_y_empty = false;
                 if (dot_x_empty == false && dot_y_empty == false)
                 {
-                    dots.push_back(tmp);
+                    *p_dots = tmp;
+                    p_dots++;
                 }
             }
         }
@@ -82,14 +83,14 @@ bool read_dots(std::string filename, std::vector<dot> &dots)
     return true;
 }
 
-void calculate_pair_distance(std::vector<dot> &dots, std::vector<std::vector<float>> &distances)
+void calculate_pair_distance(dot * & dots, int & num_dots, float ** & distances, int & num_distances)
 {
-    distances.resize(dots.size());
-    for (int i = 0; i < dots.size(); i++)
+   // distances.resize(dots.size());
+    for (int i = 0; i < sizeof(dots); i++)
     {
-        distances[i].resize(dots.size());
+       // distances[i].resize(dots.size());
         distances[i][i] = 0; //!!!!!!!!!!
-        for (int j = i + 1; j < dots.size(); j++)
+        for (int j = i + 1; j < sizeof(dots); j++)
         {
             distances[i][j] = dots[i].distance_from(dots[j]); //!!!!!!!!!!!!!!!!!!
            // distances[j][i] = distances[i][j];                //////
@@ -103,17 +104,17 @@ struct distance_index
     float distance; // расстояние до этой другой точки
 };
 
-void sort_pair_distances(std::vector<dot> &dots, std::vector<std::vector<float>> &distances, std::vector<std::vector<distance_index>> &distance_indexes)
+void sort_pair_distances(dot * & dots, float ** & distances, distance_index * & distance_indexes)
 {
     // мы получили пустой массив его надо заполнить и отсортировать
     // заполнение массивов расстояния до всех точек для каждой точки
-    for (int i = 0; i < dots.size(); i++)
+    for (int i = 0; i < sizeof(dots); i++)
     {
-        for (int j = i + 1; j < dots.size(); j++)
+        for (int j = i + 1; j < sizeof(dots); j++)
         {
             distance_index tmp;
             tmp.idx = j;
-            tmp.distance = distances[i][j];
+            tmp.distance = *distances[i][j];
             distance_indexes[i].push_back(tmp);
         }
     }
@@ -124,19 +125,19 @@ int main(int argc, char *argv[])
 {
     std::cout << "Добро пожаловать в курсовик Калюжной Марии 3352 26.11.23 !" << endl
               << endl;
-
+  
     string filename = "input.txt";
-    std::vector<dot> dots; // создаю вектор-массив для хранения точек (и их координат)
-    std::vector<std::vector<float>> distances;
+    dot *dots = nullptr; // создаю вектор-массив для хранения точек (и их координат)
+    float distances [1024][2];
 
-    std::vector<distance_index> sorted_distance_indexes;
+    distance_index sorted_distance_indexes[1024][2];
 
     // загрузить координаты точек из файла
     if (read_dots(filename, dots))
     {
         cout << setw(10) << "Координата X"
              << "  " << setw(10) << "Координата Y" << endl;
-        int len = dots.size();
+        int len = sizeof(dots);
         for (int i = 0; i < len; i++)
         {
             cout << setw(10) << dots[i].x << "  " << setw(10) << dots[i].y << endl;
