@@ -40,7 +40,7 @@ struct dot
     float y;
 };
 
-bool read_dots(std::string filename, std::vector<dot> & dots)
+bool read_dots(std::string filename, std::vector<dot> &dots)
 {
     ifstream input;
     input.open(filename, std::ios_base::in);
@@ -50,7 +50,7 @@ bool read_dots(std::string filename, std::vector<dot> & dots)
         std::cout << " Файл input пуст, упс" << endl;
         return false;
     }
-   
+
     while (!input.eof())
     {
         dot tmp;
@@ -62,7 +62,7 @@ bool read_dots(std::string filename, std::vector<dot> & dots)
         {
             input >> skipws >> tmp.x;
             dot_x_empty = false;
-            while(input.peek() == ' ')
+            while (input.peek() == ' ')
                 input >> noskipws >> next_char;
             next_char = input.peek();
 
@@ -76,41 +76,41 @@ bool read_dots(std::string filename, std::vector<dot> & dots)
                 }
             }
         }
-        while(input.peek() == ' ' || input.peek() == '\r' || input.peek() == '\n')
+        while (input.peek() == ' ' || input.peek() == '\r' || input.peek() == '\n')
             input >> noskipws >> next_char;
-        
     }
     return true;
-
 }
 
-void calculate_pair_distance(std::vector<dot> & dots, std::vector<std::vector<float>> & distances) 
+void calculate_pair_distance(std::vector<dot> &dots, std::vector<std::vector<float>> &distances)
 {
-    for(int i = 0; i< dots.size(); i++)
-    {   
-        distances[i][i] = 0;    
-        for(int j = i+1; j< dots.size(); j++)
+    distances.resize(dots.size());
+    for (int i = 0; i < dots.size(); i++)
+    {
+        distances[i].resize(dots.size());
+        distances[i][i] = 0; //!!!!!!!!!!
+        for (int j = i + 1; j < dots.size(); j++)
         {
-            distances[i][j] = dots[i].distance_from(dots[j]);
-            distances[j][i] = distances[i][j];
+            distances[i][j] = dots[i].distance_from(dots[j]); //!!!!!!!!!!!!!!!!!!
+           // distances[j][i] = distances[i][j];                //////
         }
     }
 }
 
-struct distance_index 
+struct distance_index
 {
-    int idx; // индекс др точки
+    int idx;        // индекс др точки
     float distance; // расстояние до этой другой точки
 };
 
-void sort_pair_distances(std::vector<dot> & dots, std::vector<std::vector<float>> & distances, std::vector<std::vector<distance_index>> & distance_indexes) 
+void sort_pair_distances(std::vector<dot> &dots, std::vector<std::vector<float>> &distances, std::vector<std::vector<distance_index>> &distance_indexes)
 {
     // мы получили пустой массив его надо заполнить и отсортировать
-    //заполнение массивов расстояния до всех точек для каждой точки
-    for(int i = 0; i< dots.size(); i++) 
-    {   
-        for(int j = i+1; j< dots.size(); j++)
-        {   
+    // заполнение массивов расстояния до всех точек для каждой точки
+    for (int i = 0; i < dots.size(); i++)
+    {
+        for (int j = i + 1; j < dots.size(); j++)
+        {
             distance_index tmp;
             tmp.idx = j;
             tmp.distance = distances[i][j];
@@ -118,8 +118,6 @@ void sort_pair_distances(std::vector<dot> & dots, std::vector<std::vector<float>
         }
     }
     // sorting
-    
-    
 }
 
 int main(int argc, char *argv[])
@@ -131,26 +129,36 @@ int main(int argc, char *argv[])
     std::vector<dot> dots; // создаю вектор-массив для хранения точек (и их координат)
     std::vector<std::vector<float>> distances;
 
-
     std::vector<distance_index> sorted_distance_indexes;
 
     // загрузить координаты точек из файла
-    if (read_dots(filename, dots)) 
+    if (read_dots(filename, dots))
     {
-        // 1. посчитать все парные расстояния между точками (построить матрицу расстояний между двумя любыми точками)
-        calculate_pair_distance(dots, distances);
-        // проверка вывод в экран
         cout << setw(10) << "Координата X"
-            << "  " << setw(10) << "Координата Y" << endl;
+             << "  " << setw(10) << "Координата Y" << endl;
         int len = dots.size();
         for (int i = 0; i < len; i++)
         {
             cout << setw(10) << dots[i].x << "  " << setw(10) << dots[i].y << endl;
         }
 
-        float dist3_4 = dots[2].distance_from(dots[3]);
-        cout << endl
-            << dist3_4 << endl;
+        // 1. посчитать все парные расстояния между точками (построить матрицу расстояний между двумя любыми точками)
+        calculate_pair_distance(dots, distances);
+        // проверка вывод в экран
+        /*
+         cout << setw(10) << "Координата X"
+             << "  " << setw(10) << "Координата Y" << endl;
+        int len = dots.size();
+        for (int i = 0; i < len; i++)
+        {
+            cout << setw(10) << dots[i].x << "  " << setw(10) << dots[i].y << endl;
+        }
+
+        */
+
+       // float dist3_4 = dots[2].distance_from(dots[3]);
+      //  cout << endl
+       //      << dist3_4 << endl;
 
         // нужен лог файл
         // нужен файл с результатом
