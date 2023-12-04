@@ -5,6 +5,7 @@
 #include <math.h>
 
 static const int MAX_DOTS_NUM = 1000;
+static const int MAX_KAVADRATS_NUM = 1000;
 
 // разобьем задачу на более простые
 // сначала найдем все наборы точек которые составляют квадраты
@@ -42,7 +43,7 @@ struct dot
     float y;
 };
 
-bool read_dots(std::string filename, dot * & p_dots, int & num_dots)
+bool read_dots(std::string filename, dot *&p_dots, int &num_dots)
 {
     ifstream input;
     input.open(filename, std::ios_base::in);
@@ -85,23 +86,23 @@ bool read_dots(std::string filename, dot * & p_dots, int & num_dots)
     return true;
 }
 
-void calculate_pair_distance(dot * & dots, int & num_dots, float ** & distances, int & num_distances)
+void calculate_pair_distance(dot *&dots, int &num_dots, float **&distances, int &num_distances)
 {
-    
-    distances = new float*[num_distances];
+
+    distances = new float *[num_distances];
 
     for (int i = 0; i < num_distances; i++)
     {
-        distances[i] = new float [num_distances];           
+        distances[i] = new float[num_distances];
     }
 
     for (int i = 0; i < num_distances; i++)
-    {        
-        distances[i][i] = 0; 
+    {
+        distances[i][i] = 0;
         for (int j = i + 1; j < num_distances; j++)
         {
-            distances[i][j] = dots[i].distance_from(dots[j]); 
-            distances[j][i] = distances[i][j];                
+            distances[i][j] = dots[i].distance_from(dots[j]);
+            distances[j][i] = distances[i][j];
         }
     }
 }
@@ -112,30 +113,30 @@ struct distance_index
     float distance; // расстояние до этой другой точки
 };
 
-void sort_pair_distances(dot * & dots, int & num_dots, float ** & distances, int & num_distances, distance_index ** & distance_indexes, int & num_indicies)
+void sort_pair_distances(dot *&dots, int &num_dots, float **&distances, int &num_distances, distance_index **&distance_indexes, int &num_indicies)
 {
     // мы получили пустой массив его надо заполнить и отсортировать
 
-    distance_indexes = new distance_index * [num_indicies]; // память для внешнего измерения указателей
+    distance_indexes = new distance_index *[num_indicies]; // память для внешнего измерения указателей
 
     for (int i = 0; i < num_indicies; i++)
     {
-        distance_indexes[i] = new distance_index [num_indicies];           
+        distance_indexes[i] = new distance_index[num_indicies];
     }
 
     // заполнение массивов расстояния до всех точек для каждой точки
     for (int i = 0; i < num_distances; i++)
-    {        
+    {
         for (int j = i; j < num_distances; j++)
         {
             distance_index tmp;
             tmp.idx = j;
-            tmp.distance = distances[i][j]; 
-            distance_indexes[i][j]= tmp;
-            if (i != j) 
+            tmp.distance = distances[i][j];
+            distance_indexes[i][j] = tmp;
+            if (i != j)
             {
                 tmp.idx = i;
-                distance_indexes[j][i]= tmp;
+                distance_indexes[j][i] = tmp;
             }
         }
     }
@@ -143,36 +144,32 @@ void sort_pair_distances(dot * & dots, int & num_dots, float ** & distances, int
     // sorting
 
     // проход по всем точкам
-    for(int i = 0; i < num_distances; i++)
+    for (int i = 0; i < num_distances; i++)
     {
         // для каждой точки надо отсортировать расстояния до других точек
         bool sorted = false;
-        while (sorted == false) //!sorted
+        while (sorted == false) //! sorted
         {
             sorted = true; // надеемся на то что оно уже отсортированно
-            for (int j = 0; j < num_distances-1; j++) 
+            for (int j = 0; j < num_distances - 1; j++)
             {
-                if (distance_indexes[i][j].distance > distance_indexes[i][j+1].distance) 
+                if (distance_indexes[i][j].distance > distance_indexes[i][j + 1].distance)
                 {
                     distance_index tmp = distance_indexes[i][j];
-                    distance_indexes[i][j] = distance_indexes[i][j+1];
-                    distance_indexes[i][j+1] = tmp;
+                    distance_indexes[i][j] = distance_indexes[i][j + 1];
+                    distance_indexes[i][j + 1] = tmp;
                     sorted = false;
                 }
             }
         }
     }
-
-
 }
 
-
-
-bool binary_search(distance_index * & distance_indexes, int L, int R, float value, int & result_index)
+bool binary_search(distance_index *&distance_indexes, int L, int R, float value, int &result_index)
 {
-    while( L <= R )
+    while (L <= R)
     {
-        int mid = (L+R)/2;
+        int mid = (L + R) / 2;
         if (distance_indexes[mid].distance == value) // что то там условие с эпсилон
         {
             result_index = mid;
@@ -180,32 +177,81 @@ bool binary_search(distance_index * & distance_indexes, int L, int R, float valu
         }
         else if (distance_indexes[mid].distance < value)
         {
-            L = mid +1;
+            L = mid + 1;
         }
-        else if(distance_indexes[mid].distance > value)
+        else if (distance_indexes[mid].distance > value)
         {
-            R = mid -1;
+            R = mid - 1;
         }
     }
     return false;
 }
 
-void search_one_kvadrat(dot * & dots, int & num_dots, distance_index ** & distance_indexes, int & num_indicies)
+void search_one_kvadrat(dot *&dots, int &num_dots, distance_index **&distance_indexes, int &num_indicies, int **&kvadrati, int &num_kvadrats)
 {
     for (int i = 0; i < num_dots; i++)
     {
-        for (int j = 0; j < num_dots; j++) 
+        for (int j = 0; j < num_dots; j++)
         {
-            if (distance_indexes[i][j].distance == distance_indexes[i][j+1].distance) // ПРОВЕРКА НА КАКОЕ-ТО МАЛОЕ ЧИСЛО ЭПСИЛОН ЧТО ЭТИ 2 ЧИСЛА РАВНЫ С ТОЧНОСТЬЮ ДО ЭПСИЛОН
+            if (distance_indexes[i][j].distance == distance_indexes[i][j + 1].distance) // ПРОВЕРКА НА КАКОЕ-ТО МАЛОЕ ЧИСЛО ЭПСИЛОН ЧТО ЭТИ 2 ЧИСЛА РАВНЫ С ТОЧНОСТЬЮ ДО ЭПСИЛОН
             {
                 int result_index = -1;
-                if (binary_search(distance_indexes[i], j+2, num_dots - 1, distance_indexes[i][j].distance*sqrt(2.0), result_index))
+                if (binary_search(distance_indexes[i], j + 2, num_dots - 1, distance_indexes[i][j].distance * sqrt(2.0), result_index))
                 {
-                    if(dots[distance_indexes[i][result_index].idx].distance_from(dots[distance_indexes[i][j].idx]) == distance_indexes[i][j].distance && dots[distance_indexes[i][result_index].idx].distance_from(dots[distance_indexes[i][j+1].idx]) == distance_indexes[i][j+1].distance ) // жуткая функция для определения квадрата
+                    if (dots[distance_indexes[i][result_index].idx].distance_from(dots[distance_indexes[i][j].idx]) == distance_indexes[i][j].distance && dots[distance_indexes[i][result_index].idx].distance_from(dots[distance_indexes[i][j + 1].idx]) == distance_indexes[i][j + 1].distance) // жуткая функция для определения квадрата
                     {
-                        cout << setw(10)<< " ОДИН Квадрат составляют точки с индексами: " << i << " " << distance_indexes[i][j+1].idx << " " << distance_indexes[i][result_index].idx << " " << distance_indexes[i][j].idx << endl;
-                        // см картинку 4:  мы сравниваем расстояние от точки 3 до т 1 с расстоянием от точки 1 то точки 0 и одновременнно с этим сравниваем расстояния 3-2 и 2-0, если они все равны, то это квадрат
-                        // см рис 4: если 3-1 = 1-0 и 3-2 = 2-0, то это квадрат (все расстояния равны, 3-1 это расстояние от 3 до 1)
+                        int new_kvadrat[4];
+                        new_kvadrat[0] = i;
+                        new_kvadrat[1] = distance_indexes[i][j + 1].idx;
+                        new_kvadrat[2] = distance_indexes[i][result_index].idx;
+                        new_kvadrat[3] = distance_indexes[i][j].idx;
+
+                        bool sorted = false;
+                        while (sorted == false) //! sorted
+                        {
+                            sorted = true; // надеемся на то что оно уже отсортированно
+                            for (int j = 0; j < 3; j++)
+                            {
+                                if (new_kvadrat[j] > new_kvadrat[j + 1])
+                                {
+                                    int tmp = new_kvadrat[j];
+                                    new_kvadrat[j] = new_kvadrat[j + 1];
+                                    new_kvadrat[j + 1] = tmp;
+                                    sorted = false;
+                                }
+                            }
+                        }
+                        // мы отсортировали индексы точек 1го квадрата и щас запихнем их в массив со всеми квадратами
+                        // и щас запихнем их в массив со всеми квадратами онли если там такого уже нет
+                        bool found = false;
+
+                        for (int i = 0; i < num_kvadrats; i++)
+                        {
+                            if (kvadrati[i][0] == new_kvadrat[0] &&
+                                kvadrati[i][1] == new_kvadrat[1] &&
+                                kvadrati[i][2] == new_kvadrat[2] &&
+                                kvadrati[i][3] == new_kvadrat[3])
+                            {
+                                found = true;
+                                break;
+                            }
+                        }
+
+                        if (found == false)
+                        {
+                            kvadrati[num_kvadrats] = new int[4];
+
+                            kvadrati[num_kvadrats][0] = new_kvadrat[0];
+                            kvadrati[num_kvadrats][1] = new_kvadrat[1];
+                            kvadrati[num_kvadrats][2] = new_kvadrat[2];
+                            kvadrati[num_kvadrats][3] = new_kvadrat[3];
+
+                            num_kvadrats++;
+
+                            cout << setw(10) << " ОДИН Квадрат составляют точки с индексами: " << new_kvadrat[0] << " " << new_kvadrat[1] << " " << new_kvadrat[2] << " " << new_kvadrat[3] << endl;
+                            // см картинку 4:  мы сравниваем расстояние от точки 3 до т 1 с расстоянием от точки 1 то точки 0 и одновременнно с этим сравниваем расстояния 3-2 и 2-0, если они все равны, то это квадрат
+                            // см рис 4: если 3-1 = 1-0 и 3-2 = 2-0, то это квадрат (все расстояния равны, 3-1 это расстояние от 3 до 1)
+                        }
                     }
                 }
             }
@@ -213,19 +259,23 @@ void search_one_kvadrat(dot * & dots, int & num_dots, distance_index ** & distan
     }
 }
 
-
 int main(int argc, char *argv[])
 {
-    std::cout << "Добро пожаловать в курсовик Калюжной Марии 3352 26.11.23 !" << endl<< endl;
-  
+    std::cout << "Добро пожаловать в курсовик Калюжной Марии 3352 26.11.23 !" << endl
+              << endl;
+
     string filename = "input.txt";
-    dot * dots = nullptr; // указатель под динамический массив для хранения точек (и их координат)
-    dots = new dot [MAX_DOTS_NUM];
+    dot *dots = nullptr; // указатель под динамический массив для хранения точек (и их координат)
+    dots = new dot[MAX_DOTS_NUM];
     int num_dots = 0;
 
-    float ** distances = nullptr; // указатель на указатель - для динамического двумерного массива попарных расстояний
+    float **distances = nullptr; // указатель на указатель - для динамического двумерного массива попарных расстояний
 
-    distance_index ** sorted_distance_indexes;
+    distance_index **sorted_distance_indexes;
+
+    int **kvadrati = nullptr;
+    kvadrati = new int *[MAX_KAVADRATS_NUM];
+    int num_kvadrats = 0;
 
     // загрузить координаты точек из файла
     if (read_dots(filename, dots, num_dots))
@@ -239,57 +289,63 @@ int main(int argc, char *argv[])
         }
 
         // 1. посчитать все парные расстояния между точками (построить матрицу расстояний между двумя любыми точками)
-        calculate_pair_distance(dots, num_dots, distances, num_dots );
+        calculate_pair_distance(dots, num_dots, distances, num_dots);
 
         int num_distances = num_dots;
         for (int i = 0; i < num_distances; i++)
-        {            
+        {
             for (int j = i + 1; j < num_distances; j++)
             {
-                cout << "Расстояние между точкой номер "<< i << " и "<< j << " равно: " << setw(10) << distances[i][j] << endl;
+                cout << "Расстояние между точкой номер " << i << " и " << j << " равно: " << setw(10) << distances[i][j] << endl;
             }
         }
 
-        cout << endl << endl;
+        cout << endl
+             << endl;
         // 2.  для каждой точки отсортировать все остальные точки по расстояниям
 
         sort_pair_distances(dots, num_dots, distances, num_dots, sorted_distance_indexes, num_dots);
-        cout <<"       Результаты сортировки: " << endl;
+        cout << "       Результаты сортировки: " << endl;
         for (int i = 0; i < num_dots; i++)
-        {            
+        {
             for (int j = 0; j < num_dots; j++)
             {
-                cout << "Расстояние между точкой номер "<< i << " и "<< sorted_distance_indexes[i][j].idx << " равно: " << setw(10) << sorted_distance_indexes[i][j].distance << endl;
+                cout << "Расстояние между точкой номер " << i << " и " << sorted_distance_indexes[i][j].idx << " равно: " << setw(10) << sorted_distance_indexes[i][j].distance << endl;
             }
         }
-        cout << endl << endl;
+        cout << endl
+             << endl;
 
         // 3. обработать отсортированную последовательность - найти все пары точек для конкретной точки отстоящие от нее (этой точки) на одинаковое расстояние A
-       search_one_kvadrat(dots, num_dots, sorted_distance_indexes, num_dots);
+        int **kvadrati = nullptr;
+        kvadrati = new int *[MAX_KAVADRATS_NUM];
+        int num_kvadrats = 0;
 
-
-
-
-
-
+        search_one_kvadrat(dots, num_dots, sorted_distance_indexes, num_dots, kvadrati, num_kvadrats);
 
         // нужен лог файл
         // нужен файл с результатом
     }
-    
+
     //////////////////////////////////////////////////DELeTING
     for (int i = 0; i < num_dots; i++)
     {
-        delete [] distances[i];           
+        delete[] distances[i];
     }
-    delete [] distances;
+    delete[] distances;
 
     for (int i = 0; i < num_dots; i++)
     {
-        delete [] sorted_distance_indexes [i];           
+        delete[] sorted_distance_indexes[i];
     }
-    delete [] sorted_distance_indexes;
+    delete[] sorted_distance_indexes;
 
-    delete [] dots;
+    for (int i = 0; i < num_kvadrats; i++)
+    {
+        delete[] kvadrati[i];
+    }
+    delete[] kvadrati;
+
+    delete[] dots;
     return 0;
 }
