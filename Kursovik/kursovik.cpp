@@ -14,10 +14,14 @@ static const int MAX_KAVADRATS_NUM = 1000;
 // 2. для каждой точки отсортировать все остальные точки по расстояниям
 // 3. обработать отсортированную последовательность - найти все пары точек для конкретной точки отстоящие от нее (этой точки) на одинаковое расстояние A
 // 4. для каждой из таких пар попытаться найти еще одну на расстоянии A*Sqrt(2)
-// 5. для всех наборов из 4 точек подходящих под правила выше - проверить что углы между соседними точками 90гр.
+// 5. сравнить расстояния от диагональной точки до двух остальных точек  и от этих двух остальных до главной точки, они должны быть равны
 
-// потом перебором найдем все квадраты которые имеют одинаковый центр и повернуты на 45 градусов
-// из них выберем те у которых соотношение сторон подходящее, это даст нам список всех подходящих фигур
+//  см картинку 4:  мы сравниваем расстояние от точки 3 до т 1 с расстоянием от точки 1 то точки 0 и одновременнно с этим сравниваем расстояния 3-2 и 2-0, если они все равны, то это квадрат
+// см рис 4: если 3-1 = 1-0 и 3-2 = 2-0, то это квадрат (все расстояния равны, 3-1 это расстояние от 3 до 1)
+                        
+
+//6. потом перебором найдем все квадраты которые имеют одинаковый центр и повернуты на 45 градусов
+// из них выберем те у которых соотношение сторон подходящее ( КВАДРАТЫ ПЕРЕСЕКАЮТСЯ), это даст нам список всех подходящих фигур
 // потом для каждой из фигур посчитать количество точек которые входят в нее (см рисунок, квадрат + 4 треугольничка)
 // отсортировать и выбрать те куда попадает максимальное количество точек
 
@@ -41,6 +45,12 @@ struct dot
 
     float x;
     float y;
+};
+
+struct kvadrat_index
+{
+    int idx; // индекс данного квадрата в массиве квадратов
+    dot zentr; // точка - центр квадрата
 };
 
 bool read_dots(std::string filename, dot *&p_dots, int &num_dots)
@@ -198,9 +208,10 @@ void search_one_kvadrat(dot *&dots, int &num_dots, distance_index **&distance_in
                 int result_index = -1;
                 if (binary_search(distance_indexes[i], j + 2, num_dots - 1, distance_indexes[i][j].distance * sqrt(2.0), result_index))
                 {
-                    if (dots[distance_indexes[i][result_index].idx].distance_from(dots[distance_indexes[i][j].idx]) == distance_indexes[i][j].distance && dots[distance_indexes[i][result_index].idx].distance_from(dots[distance_indexes[i][j + 1].idx]) == distance_indexes[i][j + 1].distance) // жуткая функция для определения квадрата
+                    if (dots[distance_indexes[i][result_index].idx].distance_from(dots[distance_indexes[i][j].idx]) == distance_indexes[i][j].distance &&
+                     dots[distance_indexes[i][result_index].idx].distance_from(dots[distance_indexes[i][j + 1].idx]) == distance_indexes[i][j + 1].distance) // жуткая функция для определения квадрата
                     {
-                        int new_kvadrat[4];
+                        int new_kvadrat[4]; // тут хранятся индексы точек составляющие один квадрат
                         new_kvadrat[0] = i;
                         new_kvadrat[1] = distance_indexes[i][j + 1].idx;
                         new_kvadrat[2] = distance_indexes[i][result_index].idx;
@@ -227,6 +238,7 @@ void search_one_kvadrat(dot *&dots, int &num_dots, distance_index **&distance_in
 
                         for (int i = 0; i < num_kvadrats; i++)
                         {
+                            // тут хранятся индексы точек составляющие один квадрат
                             if (kvadrati[i][0] == new_kvadrat[0] &&
                                 kvadrati[i][1] == new_kvadrat[1] &&
                                 kvadrati[i][2] == new_kvadrat[2] &&
@@ -259,6 +271,13 @@ void search_one_kvadrat(dot *&dots, int &num_dots, distance_index **&distance_in
     }
 }
 
+void figura_check()
+{
+    // см. картинку 6, там нам надо найти все углы ... 
+    // нужно найти коор-ты недостающих 8 точек (точек пересечений квадратов) и проверить их наличие в массиве dots
+    //
+}
+
 int main(int argc, char *argv[])
 {
     std::cout << "Добро пожаловать в курсовик Калюжной Марии 3352 26.11.23 !" << endl
@@ -266,18 +285,23 @@ int main(int argc, char *argv[])
 
     string filename = "input.txt";
     dot *dots = nullptr; // указатель под динамический массив для хранения точек (и их координат)
-    dots = new dot[MAX_DOTS_NUM];
+    dots = new dot[MAX_DOTS_NUM]; 
     int num_dots = 0;
 
     float **distances = nullptr; // указатель на указатель - для динамического двумерного массива попарных расстояний
 
-    distance_index **sorted_distance_indexes;
+    distance_index **sorted_distance_indexes; // массивы 2мерный из структур содерж. расстояния от данной точки до других точек и их индексы
 
+    // массив с индексами точек которые составляют квадраты
     int **kvadrati = nullptr;
     kvadrati = new int *[MAX_KAVADRATS_NUM];
     int num_kvadrats = 0;
 
+    kvadrat_index *kvadrat_indexes = nullptr;
+    kvadrat_indexes = new kvadrat_index[num_kvadrats];
+
     // загрузить координаты точек из файла
+
     if (read_dots(filename, dots, num_dots))
     {
         cout << setw(10) << "Координата X"
@@ -316,12 +340,33 @@ int main(int argc, char *argv[])
         cout << endl
              << endl;
 
-        // 3. обработать отсортированную последовательность - найти все пары точек для конкретной точки отстоящие от нее (этой точки) на одинаковое расстояние A
-        int **kvadrati = nullptr;
-        kvadrati = new int *[MAX_KAVADRATS_NUM];
-        int num_kvadrats = 0;
-
+        // 3. обработать отсортированную последовательность - найти все пары точек для конкретной точки отстоящие от нее (этой точки) на одинаковое расстояние A              
+        // 4. для каждой из таких пар попытаться найти еще одну на расстоянии A*Sqrt(2)
         search_one_kvadrat(dots, num_dots, sorted_distance_indexes, num_dots, kvadrati, num_kvadrats);
+
+        //5. заполним массив с индексами всех квадратов
+
+        for (int i = 0; i < num_kvadrats; i++)
+        {
+            kvadrat_indexes[i].idx = i; // вычисляем центры квадратов через среднее арифметическое
+            kvadrat_indexes[i].zentr.x = ( dots[kvadrati[i][0]].x + dots[kvadrati[i][1]].x + dots[kvadrati[i][2]].x + dots[kvadrati[i][3]].x)/ 4.0;
+            kvadrat_indexes[i].zentr.y = ( dots[kvadrati[i][0]].y + dots[kvadrati[i][1]].y + dots[kvadrati[i][2]].y + dots[kvadrati[i][3]].y)/ 4.0;
+        }
+
+        for( int i = 0; i < num_kvadrats; i++)
+        {
+            for (int j = i+1; j < num_kvadrats; j++)
+            {
+                if (kvadrat_indexes[i].zentr.x == kvadrat_indexes[j].zentr.x &&
+                 kvadrat_indexes[i].zentr.y == kvadrat_indexes[j].zentr.y)
+                {
+                    figura_check();
+                }
+            }
+        }
+
+
+
 
         // нужен лог файл
         // нужен файл с результатом
@@ -345,6 +390,8 @@ int main(int argc, char *argv[])
         delete[] kvadrati[i];
     }
     delete[] kvadrati;
+
+    delete[] kvadrat_indexes;
 
     delete[] dots;
     return 0;
