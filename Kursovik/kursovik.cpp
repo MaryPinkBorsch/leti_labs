@@ -271,11 +271,43 @@ void search_one_kvadrat(dot *&dots, int &num_dots, distance_index **&distance_in
     }
 }
 
-void figura_check()
+void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvadrat_idx1, int kvadrat_idx2, dot * & dots, int ** & kvadrati)
 {
     // см. картинку 6, там нам надо найти все углы ... 
     // нужно найти коор-ты недостающих 8 точек (точек пересечений квадратов) и проверить их наличие в массиве dots
     //
+
+    
+    int kvadrat_dot_idx[8]; // массив на 8 точек с 2х квадратов, тут хранятся их индексы
+    float ugli[7]; // массив углов меж точками
+    //индексы точек сост-х 1й квадрат
+    kvadrat_dot_idx[0] = kvadrati[kvadrat_idx1][0];
+    kvadrat_dot_idx[1] = kvadrati[kvadrat_idx1][1];
+    kvadrat_dot_idx[2] = kvadrati[kvadrat_idx1][2];
+    kvadrat_dot_idx[3] = kvadrati[kvadrat_idx1][3];
+    //индексы точек сост-х 2й квадрат
+    kvadrat_dot_idx[4] = kvadrati[kvadrat_idx2][0];
+    kvadrat_dot_idx[5] = kvadrati[kvadrat_idx2][1];
+    kvadrat_dot_idx[6] = kvadrati[kvadrat_idx2][2];
+    kvadrat_dot_idx[7] = kvadrati[kvadrat_idx2][3];
+
+    // посчитаем углы меж первой dot1 и остальными точками по теореме косинусов
+    dot dot1 = dots[kvadrat_dot_idx[0]];
+    dot center = kvadrate1.zentr;
+    for (int i = 1; i < 8; i++)
+    {
+        // см рис. 7
+        dot dot2 = dots[kvadrat_dot_idx[i]]; // dot2 = dot_i
+        int a = dot1.distance_from(center);
+        int b = center.distance_from(dot2);
+        int c = dot1.distance_from(dot2);
+
+        float ugol = acos((a*a + b*b - c*c)/(2*a*b));
+        ugli[i-1] = ugol;
+    }
+    // надо отсортировать углы ?
+
+
 }
 
 int main(int argc, char *argv[])
@@ -360,7 +392,7 @@ int main(int argc, char *argv[])
                 if (kvadrat_indexes[i].zentr.x == kvadrat_indexes[j].zentr.x &&
                  kvadrat_indexes[i].zentr.y == kvadrat_indexes[j].zentr.y)
                 {
-                    figura_check();
+                    figura_check(kvadrat_indexes[i], kvadrat_indexes[j], i, j, dots, kvadrati);
                 }
             }
         }
