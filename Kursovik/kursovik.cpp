@@ -328,9 +328,7 @@ int main(int argc, char *argv[])
     int **kvadrati = nullptr;
     kvadrati = new int *[MAX_KAVADRATS_NUM];
     int num_kvadrats = 0;
-
     kvadrat_index *kvadrat_indexes = nullptr;
-    kvadrat_indexes = new kvadrat_index[num_kvadrats];
 
     // загрузить координаты точек из файла
 
@@ -375,6 +373,7 @@ int main(int argc, char *argv[])
         // 3. обработать отсортированную последовательность - найти все пары точек для конкретной точки отстоящие от нее (этой точки) на одинаковое расстояние A              
         // 4. для каждой из таких пар попытаться найти еще одну на расстоянии A*Sqrt(2)
         search_one_kvadrat(dots, num_dots, sorted_distance_indexes, num_dots, kvadrati, num_kvadrats);
+        kvadrat_indexes = new kvadrat_index[num_kvadrats];
 
         //5. заполним массив с индексами всех квадратов
 
