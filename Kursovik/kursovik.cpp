@@ -6,6 +6,10 @@
 
 static const int MAX_DOTS_NUM = 1000;
 static const int MAX_KAVADRATS_NUM = 1000;
+static const float EPSILON = 1e-6;
+
+#define E_PI 3.1415926535897932384626433832795028841971693993751058209749445923078164062
+static const float PI_OVER_4 = E_PI / 4.0;
 
 // разобьем задачу на более простые
 // сначала найдем все наборы точек которые составляют квадраты
@@ -306,9 +310,82 @@ void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvad
         float ugol = acos((a*a + b*b - c*c)/(2*a*b));
         ugli[i-1] = ugol;
     }
-    // надо отсортировать углы ?
+    // надо отсортировать углы одновременно с индексами точек
+    bool sorted = false;
+    while (sorted == false) // !sorted
+    {
+        sorted = true; // надеемся на то что оно уже отсортированно
+        for (int i = 0; i < 6; i++)
+        {
+            if (ugli[i] > ugli[i + 1])
+            {
+                float tmp = ugli[i];
+                int tmp1 = kvadrat_dot_idx[i+1];
+                ugli[i] = ugli[i+1];
+                kvadrat_dot_idx[i+1] = kvadrat_dot_idx[i+2];
+                ugli[i+1] = tmp;
+                kvadrat_dot_idx[i+2] = tmp1;
+                sorted = false;
+            }
+        }
+    }
+    // на данный момент точки в kvadrat_dot_idx отсортированны по величине угла относительно первой точки и центра фигуры
+    // проверим что углы между соседними точками составляют 45 гр (Pi/4)
+    // нужно воспользоваться эпислон погрешностью из-за неточности чисеk с плавающей точкой
+    if (abs(ugli[0] - PI_OVER_4) > EPSILON)
+        return;
+    for (int i = 1; i < 6; ++i) 
+    {
+        if (abs(ugli[i] - ugli[i-1] - PI_OVER_4) > EPSILON)
+            return; 
+    }
+    // теперь надо проверить что стороны квадратов имеют приемлемое соотношение (сторона большего квадрата больше стороны меньшего не более чем в корень из двух раз)
+    float stor1 = dots[kvadrat_dot_idx[0]].distance_from(dots[kvadrat_dot_idx[2]]);
+    float stor2 = dots[kvadrat_dot_idx[1]].distance_from(dots[kvadrat_dot_idx[3]]);
+    if (stor1 < stor2)
+    {
+        float tmp = stor1;
+        stor1 = stor2;
+        stor2 = tmp;
+    }
+    if (stor1 > sqrt(2.0)*stor2)
+        return;
 
+    // расчитаем координаты оставшихся 8ми точек нашей фигуры чтобы потом попытаться найти их среди исходных
 
+}
+
+// функция расчета детерминанта матрицы [[a,b],[c,d]]
+float det_2d(float a, float b, float c, float d)
+{
+    return a*d - b*c;
+}
+// функция для нахождения координат точки пересечения двух прямых заданных двумя точками каждая
+bool line_itersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, float &ixOut, float &iyOut) 
+{
+    float detL1 = det_2d(x1, y1, x2, y2);
+    float detL2 = det_2d(x3, y3, x4, y4);
+    float x1mx2 = x1 - x2;
+    float x3mx4 = x3 - x4;
+    float y1my2 = y1 - y2;
+    float y3my4 = y3 - y4;
+
+    float xnom = det_2d(detL1, x1mx2, detL2, x3mx4);
+    float ynom = det_2d(detL1, y1my2, detL2, y3my4);
+    float denom = det_2d(x1mx2, y1my2, x3mx4, y3my4);
+    if(denom == 0.0)
+    {
+        ixOut = NAN;
+        iyOut = NAN;
+        return false;
+    }
+
+    ixOut = xnom / denom;   
+    iyOut = ynom / denom;
+    if(!isfinite(ixOut) || !isfinite(iyOut))
+        return false;
+
+    return true; 
 }
 
 int main(int argc, char *argv[])
