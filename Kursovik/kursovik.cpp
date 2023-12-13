@@ -307,13 +307,48 @@ void search_one_kvadrat(dot *&dots, int &num_dots, distance_index **&distance_in
     }
 }
 
+// эта функция поможет нам упорядочить точки по часовой стрелке относительно центра
+bool order_dots_clockwise(const dot & a,const dot & b, const dot & center)
+{
+    if (a.x - center.x >= 0 && b.x - center.x < 0)
+        return true;
+    if (a.x - center.x < 0 && b.x - center.x >= 0)
+        return false;
+    if (a.x - center.x == 0 && b.x - center.x == 0) {
+        if (a.y - center.y >= 0 || b.y - center.y >= 0)
+            return a.y > b.y;
+        return b.y > a.y;
+    }
+
+    //скалярное произведение векторов (center -> a) x (center -> b)
+    int det = (a.x - center.x) * (b.y - center.y) - (b.x - center.x) * (a.y - center.y);
+    if (det < 0)
+        return true;
+    if (det > 0)
+        return false;
+
+    // в случае если точки a и b находятся на одной линии относительно center
+    // проверим какая из них ближе к центру
+    int d1 = (a.x - center.x) * (a.x - center.x) + (a.y - center.y) * (a.y - center.y);
+    int d2 = (b.x - center.x) * (b.x - center.x) + (b.y - center.y) * (b.y - center.y);
+    return d1 > d2;
+}
+
+// вспомогательная функция нахождения угла между двумя точками и центром
+float angle_between_points_and_center(dot & a, dot & b, dot & center) 
+{
+    float x = a.distance_from(center);
+    float y = center.distance_from(b);
+    float z = a.distance_from(b);
+
+    return acos((x*x + y*y - z*z)/(2*x*y));
+}
+
 void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvadrat_idx1, int kvadrat_idx2, dot * & dots, int ** & kvadrati, int num_dots)
 {
     // см. картинку 6, там нам надо найти все углы ... 
     // нужно найти коор-ты недостающих 8 точек (точек пересечений квадратов) и проверить их наличие в массиве dots
-    //
 
-    
     int kvadrat_dot_idx[8]; // массив на 8 точек с 2х квадратов, тут хранятся их индексы
     float ugli[7]; // массив углов меж точками
     //индексы точек сост-х 1й квадрат
@@ -327,35 +362,18 @@ void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvad
     kvadrat_dot_idx[6] = kvadrati[kvadrat_idx2][2];
     kvadrat_dot_idx[7] = kvadrati[kvadrat_idx2][3];
 
-    // посчитаем углы меж первой dot1 и остальными точками по теореме косинусов
-    dot dot1 = dots[kvadrat_dot_idx[0]];
-    dot center = kvadrate1.zentr;
-    for (int i = 1; i < 8; i++)
-    {
-        // см рис. 7
-        dot dot2 = dots[kvadrat_dot_idx[i]]; // dot2 = dot_i
-        float a = dot1.distance_from(center);
-        float b = center.distance_from(dot2);
-        float c = dot1.distance_from(dot2);
-
-        float ugol = acos((a*a + b*b - c*c)/(2*a*b));
-        ugli[i-1] = ugol;
-    }
-    // надо отсортировать углы одновременно с индексами точек
+    // надо отсортировать точки относительно центра и самой первой точки с использованием функции упорядочивания order_dots_clockwise
     bool sorted = false;
     while (sorted == false) // !sorted
     {
         sorted = true; // надеемся на то что оно уже отсортированно
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 7; i++)
         {
-            if (ugli[i] > ugli[i + 1])
+            if (order_dots_clockwise(dots[kvadrat_dot_idx[i]], dots[kvadrat_dot_idx[i+1]], kvadrate1.zentr) == false)
             {
-                float tmp = ugli[i];
-                int tmp1 = kvadrat_dot_idx[i+1];
-                ugli[i] = ugli[i+1];
-                kvadrat_dot_idx[i+1] = kvadrat_dot_idx[i+2];
-                ugli[i+1] = tmp;
-                kvadrat_dot_idx[i+2] = tmp1;
+                int tmp = kvadrat_dot_idx[i];
+                kvadrat_dot_idx[i] = kvadrat_dot_idx[i+1];
+                kvadrat_dot_idx[i+1] = tmp;
                 sorted = false;
             }
         }
@@ -363,16 +381,13 @@ void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvad
     // на данный момент точки в kvadrat_dot_idx отсортированны по величине угла относительно первой точки и центра фигуры
     // проверим что углы между соседними точками составляют 45 гр (Pi/4)
     // нужно воспользоваться эпислон погрешностью из-за неточности чисел с плавающей точкой
-    if (abs(ugli[0] - PI_OVER_4) > EPSILON)
-        return;
-    for (int i = 1; i < 6; ++i) 
+    for (int i = 0; i < 8; ++i) 
     {
-        if (abs(ugli[i] - ugli[i-1] - PI_OVER_4) > EPSILON)
+        if (angle_between_points_and_center(dots[kvadrat_dot_idx[i]], dots[kvadrat_dot_idx[(i+1)%8]], kvadrate1.zentr) - PI_OVER_4 > EPSILON)
         {
             cout << " ОШИБКА 1" << endl;
             return;
         }
-             
     }
     // теперь надо проверить что стороны квадратов имеют приемлемое соотношение (сторона большего квадрата больше стороны меньшего не более чем в корень из двух раз)
     float stor1 = dots[kvadrat_dot_idx[0]].distance_from(dots[kvadrat_dot_idx[2]]);
@@ -433,7 +448,6 @@ void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvad
         }
     }
     cout << " НАША ФИГУРА НАШЛАСЬ УРА! " << endl;
-
 }
 
 
