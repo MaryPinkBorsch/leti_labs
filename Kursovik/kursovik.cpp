@@ -6,7 +6,7 @@
 
 static const int MAX_DOTS_NUM = 1000;
 static const int MAX_KAVADRATS_NUM = 1000;
-static const float EPSILON = 1e-6;
+static const float EPSILON = 1e-4;
 
 static const float E_PI = 3.1415926535897932384626433832795028841971693993751058209749445923078164062;
 static const float PI_OVER_4 = E_PI / 4.0;
@@ -185,7 +185,7 @@ bool binary_search(distance_index *&distance_indexes, int L, int R, float value,
     while (L <= R)
     {
         int mid = (L + R) / 2;
-        if (distance_indexes[mid].distance == value) // что то там условие с эпсилон
+        if (abs(distance_indexes[mid].distance - value) < EPSILON) // нужен эпсилон
         {
             result_index = mid;
             return true;
