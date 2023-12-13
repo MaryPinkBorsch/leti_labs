@@ -8,7 +8,7 @@ static const int MAX_DOTS_NUM = 1000;
 static const int MAX_KAVADRATS_NUM = 1000;
 static const float EPSILON = 1e-6;
 
-#define E_PI 3.1415926535897932384626433832795028841971693993751058209749445923078164062
+static const float E_PI = 3.1415926535897932384626433832795028841971693993751058209749445923078164062;
 static const float PI_OVER_4 = E_PI / 4.0;
 
 // разобьем задачу на более простые
@@ -202,6 +202,37 @@ bool binary_search(distance_index *&distance_indexes, int L, int R, float value,
     return false;
 }
 
+// вспомогательная функция расчета детерминанта матрицы [[a,b],[c,d]]
+float det_2d(float a, float b, float c, float d)
+{
+    return a*d - b*c;
+}
+// функция для нахождения координат точки пересечения двух прямых заданных двумя точками каждая, см. https://ru.wikipedia.org/wiki/%D0%9F%D0%B5%D1%80%D0%B5%D1%81%D0%B5%D1%87%D0%B5%D0%BD%D0%B8%D0%B5_%D0%BF%D1%80%D1%8F%D0%BC%D1%8B%D1%85
+bool line_itersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, float &ixOut, float &iyOut) 
+{
+    float detL1 = det_2d(x1, y1, x2, y2);
+    float detL2 = det_2d(x3, y3, x4, y4);
+    float x1mx2 = x1 - x2;
+    float x3mx4 = x3 - x4;
+    float y1my2 = y1 - y2;
+    float y3my4 = y3 - y4;
+    // реализуем длинную формулу с вики
+    float xnom = det_2d(detL1, x1mx2, detL2, x3mx4);
+    float ynom = det_2d(detL1, y1my2, detL2, y3my4);
+    float denom = det_2d(x1mx2, y1my2, x3mx4, y3my4);
+    if(denom == 0.0)
+    {
+        return false;
+    }
+
+    ixOut = xnom / denom;   
+    iyOut = ynom / denom;
+    if(!isfinite(ixOut) || !isfinite(iyOut)) //проверяем ответ на бесконечность
+        return false;
+
+    return true; 
+}
+
 void search_one_kvadrat(dot *&dots, int &num_dots, distance_index **&distance_indexes, int &num_indicies, int **&kvadrati, int &num_kvadrats)
 {
     for (int i = 0; i < num_dots; i++)
@@ -276,7 +307,7 @@ void search_one_kvadrat(dot *&dots, int &num_dots, distance_index **&distance_in
     }
 }
 
-void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvadrat_idx1, int kvadrat_idx2, dot * & dots, int ** & kvadrati)
+void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvadrat_idx1, int kvadrat_idx2, dot * & dots, int ** & kvadrati, int num_dots)
 {
     // см. картинку 6, там нам надо найти все углы ... 
     // нужно найти коор-ты недостающих 8 точек (точек пересечений квадратов) и проверить их наличие в массиве dots
@@ -303,9 +334,9 @@ void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvad
     {
         // см рис. 7
         dot dot2 = dots[kvadrat_dot_idx[i]]; // dot2 = dot_i
-        int a = dot1.distance_from(center);
-        int b = center.distance_from(dot2);
-        int c = dot1.distance_from(dot2);
+        float a = dot1.distance_from(center);
+        float b = center.distance_from(dot2);
+        float c = dot1.distance_from(dot2);
 
         float ugol = acos((a*a + b*b - c*c)/(2*a*b));
         ugli[i-1] = ugol;
@@ -331,13 +362,17 @@ void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvad
     }
     // на данный момент точки в kvadrat_dot_idx отсортированны по величине угла относительно первой точки и центра фигуры
     // проверим что углы между соседними точками составляют 45 гр (Pi/4)
-    // нужно воспользоваться эпислон погрешностью из-за неточности чисеk с плавающей точкой
+    // нужно воспользоваться эпислон погрешностью из-за неточности чисел с плавающей точкой
     if (abs(ugli[0] - PI_OVER_4) > EPSILON)
         return;
     for (int i = 1; i < 6; ++i) 
     {
         if (abs(ugli[i] - ugli[i-1] - PI_OVER_4) > EPSILON)
-            return; 
+        {
+            cout << " ОШИБКА 1" << endl;
+            return;
+        }
+             
     }
     // теперь надо проверить что стороны квадратов имеют приемлемое соотношение (сторона большего квадрата больше стороны меньшего не более чем в корень из двух раз)
     float stor1 = dots[kvadrat_dot_idx[0]].distance_from(dots[kvadrat_dot_idx[2]]);
@@ -349,44 +384,59 @@ void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvad
         stor2 = tmp;
     }
     if (stor1 > sqrt(2.0)*stor2)
+    {
+        cout << " ОШИБКА 2" << endl;
         return;
+    }
+        
 
     // расчитаем координаты оставшихся 8ми точек нашей фигуры чтобы потом попытаться найти их среди исходных
-
-}
-
-// функция расчета детерминанта матрицы [[a,b],[c,d]]
-float det_2d(float a, float b, float c, float d)
-{
-    return a*d - b*c;
-}
-// функция для нахождения координат точки пересечения двух прямых заданных двумя точками каждая
-bool line_itersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, float &ixOut, float &iyOut) 
-{
-    float detL1 = det_2d(x1, y1, x2, y2);
-    float detL2 = det_2d(x3, y3, x4, y4);
-    float x1mx2 = x1 - x2;
-    float x3mx4 = x3 - x4;
-    float y1my2 = y1 - y2;
-    float y3my4 = y3 - y4;
-
-    float xnom = det_2d(detL1, x1mx2, detL2, x3mx4);
-    float ynom = det_2d(detL1, y1my2, detL2, y3my4);
-    float denom = det_2d(x1mx2, y1my2, x3mx4, y3my4);
-    if(denom == 0.0)
+    dot cross_dots[8];
+    for (int i = 0; i < 8; i++)
     {
-        ixOut = NAN;
-        iyOut = NAN;
-        return false;
+        float ix = 0;
+        float iy = 0;
+        float x1 = dots[kvadrat_dot_idx[i]].x;
+        float y1 = dots[kvadrat_dot_idx[i]].y;
+        float x2 = dots[kvadrat_dot_idx[(i+2)%8]].x;
+        float y2 = dots[kvadrat_dot_idx[(i+2)%8]].y;
+        float x3 = dots[kvadrat_dot_idx[(i+1)%8]].x;
+        float y3 = dots[kvadrat_dot_idx[(i+1)%8]].y;
+        float x4 = dots[kvadrat_dot_idx[(i+3)%8]].x;
+        float y4 = dots[kvadrat_dot_idx[(i+3)%8]].y;
+        if (line_itersect(x1, y1, x2, y2, x3, y3, x4, y4, ix, iy) == false)
+        {
+            cout << " ОШИБКА 3" << endl;
+            return;
+        }
+             // СООБЩИТЬ ОБ ОЩИБКЕ
+        cross_dots[i].x = ix;    
+        cross_dots[i].y = iy;   //записываем точки пересечения
     }
 
-    ixOut = xnom / denom;   
-    iyOut = ynom / denom;
-    if(!isfinite(ixOut) || !isfinite(iyOut))
-        return false;
+    for (int i = 0; i < 8; i++)
+    {
+        bool found = false;
+        for (int j = 0; j < num_dots; j++)
+        {
+            if(cross_dots[i].distance_from(dots[j]) < EPSILON)
+            {
+                found = true;
+                break;
+            }            
+        }
+        if (found == false)
+        {
+            //СООБЩИТЬ ОБ ОЩИБКЕ
+            cout << " ОШИБКА 4" << endl;
+            return;
+        }
+    }
+    cout << " НАША ФИГУРА НАШЛАСЬ УРА! " << endl;
 
-    return true; 
 }
+
+
 
 int main(int argc, char *argv[])
 {
@@ -469,7 +519,7 @@ int main(int argc, char *argv[])
                 if (kvadrat_indexes[i].zentr.x == kvadrat_indexes[j].zentr.x &&
                  kvadrat_indexes[i].zentr.y == kvadrat_indexes[j].zentr.y)
                 {
-                    figura_check(kvadrat_indexes[i], kvadrat_indexes[j], i, j, dots, kvadrati);
+                    figura_check(kvadrat_indexes[i], kvadrat_indexes[j], i, j, dots, kvadrati, num_dots);
                 }
             }
         }
