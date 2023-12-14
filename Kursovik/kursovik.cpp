@@ -93,6 +93,14 @@ bool read_dots(std::string filename, dot *&p_dots, int &num_dots)
                     p_dots[num_dots] = tmp;
                     num_dots++;
                 }
+                else
+                {
+                    cout << "Не хватает 2й координаты" << endl;
+                }
+            }
+            else
+            {
+                cout << "Не хватает 1й координаты" << endl;
             }
         }
         while (input.peek() == ' ' || input.peek() == '\r' || input.peek() == '\n')
@@ -397,7 +405,7 @@ void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvad
     {
         if (angle_between_points_and_center(dots[kvadrat_dot_idx[i]], dots[kvadrat_dot_idx[(i+1)%8]], kvadrate1.zentr) - PI_OVER_4 > EPSILON)
         {
-            cout << " ОШИБКА 1" << endl;
+            cout << " Углы между квадратами не подходят" << endl;
             return;
         }
     }
@@ -412,7 +420,7 @@ void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvad
     }
     if (stor1 > sqrt(2.0)*stor2)
     {
-        cout << " ОШИБКА 2" << endl;
+        cout << " Стороны квадратов не подходят (один квадрат полностью в другом)" << endl;
         return;
     }
         
@@ -434,7 +442,7 @@ void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvad
         float y4 = dots[kvadrat_dot_idx[(i+3)%8]].y;
         if (line_itersect(x1, y1, x2, y2, x3, y3, x4, y4, ix, iy) == false)
         {
-            cout << " ОШИБКА 3" << endl;
+            cout << " Линии не пересекаются" << endl;
             return;
         }
              // СООБЩИТЬ ОБ ОЩИБКЕ
@@ -457,7 +465,7 @@ void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvad
         if (found == false)
         {
             //СООБЩИТЬ ОБ ОЩИБКЕ
-            cout << " ОШИБКА 4" << endl;
+            cout << " Точки пересечения не найдено в исходном файле" << endl;
             return;
         }
     }
@@ -513,6 +521,9 @@ int main(int argc, char *argv[])
 {
     std::cout << "Добро пожаловать в курсовик Калюжной Марии 3352 26.11.23 !" << endl
               << endl;
+
+    string filename1 = "result.txt";
+    ofstream of(filename1, ios::out | ios::trunc);
 
     string filename = "input.txt";
     dot *dots = nullptr; // указатель под динамический массив для хранения точек (и их координат)
@@ -649,6 +660,21 @@ int main(int argc, char *argv[])
         {
             std::cout << "Фигура победитель под индексом " << figura_idx[counter] << " кол-во точек внутри: " << dots_in_figura[counter]<< std::endl;
             print_figura(figuri[figura_idx[counter]], dots);
+            std::cout << "Точки входящие в фигуру:" << std::endl;
+            for (int j = 0; j < num_dots; ++j)
+            {
+                bool early_continue = false;
+                for (int k = 0; k < 16; ++k) 
+                {
+                    if (figuri[figura_idx[counter]][k] == j)
+                        early_continue = true;
+                }
+                if (early_continue)
+                    continue;
+                if (point_in_figure(dots, figuri[figura_idx[counter]],dots[j].x, dots[j].y))
+                    std::cout << "(" << dots[j].x << "," << dots[j].y << ")" << std::endl;
+            }
+
             ++counter;
         }
 
