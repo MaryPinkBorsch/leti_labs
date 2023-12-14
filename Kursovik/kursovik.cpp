@@ -492,7 +492,7 @@ void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvad
         }
     }
 
-asdf
+    print_figura(figuri[num_figuras], dots);
 
     num_figuras++;
 }
@@ -602,12 +602,21 @@ int main(int argc, char *argv[])
         int * dots_in_figura = new int[num_figuras];
 
         // пройдемся по всем фигурам и посчитаем сколько точек содержится в каждой из них
+        // не считая тех из которых она сделана
         for (int i = 0; i < num_figuras; ++i) 
         {
             figura_idx[i] = i;
             dots_in_figura[i] = 0;
             for (int j = 0; j < num_dots; ++j)
             {
+                bool early_continue = false;
+                for (int k = 0; k < 16; ++k) 
+                {
+                    if (figuri[i][k] == j)
+                        early_continue = true;
+                }
+                if (early_continue)
+                    continue;
                 if (point_in_figure(dots, figuri[i],dots[j].x, dots[j].y))
                     dots_in_figura[i] = dots_in_figura[i] + 1;
             }
@@ -620,7 +629,7 @@ int main(int argc, char *argv[])
             sorted = true; // надеемся на то что оно уже отсортированно
             for (int i = 0; i < num_figuras - 1; i++)
             {
-                if (dots_in_figura[i] > dots_in_figura[i+1])
+                if (dots_in_figura[i] < dots_in_figura[i+1])
                 {
                     int tmp = dots_in_figura[i];
                     int tmp1 = figura_idx[i];
@@ -636,9 +645,11 @@ int main(int argc, char *argv[])
         // выведем самые большие (если несколько с одинаковым максимальным количеством) или одну если такая только одна
         int max_dots_in_figura = dots_in_figura[0];
         int counter = 0;
-        while(counter < num_figuras) 
+        while(counter < num_figuras && dots_in_figura[counter] == max_dots_in_figura) 
         {
-            std::cout << figura_idx[counter++] << std:endl;
+            std::cout << "Фигура победитель под индексом " << figura_idx[counter] << " кол-во точек внутри: " << dots_in_figura[counter]<< std::endl;
+            print_figura(figuri[figura_idx[counter]], dots);
+            ++counter;
         }
 
         delete[] figura_idx;    
