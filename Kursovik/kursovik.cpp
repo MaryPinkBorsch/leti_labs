@@ -58,7 +58,7 @@ struct kvadrat_index
     dot zentr; // точка - центр квадрата
 };
 
-bool read_dots(std::string filename, dot *&p_dots, int &num_dots)
+bool read_dots(std::string filename, dot *&p_dots, int &num_dots, ofstream & of)
 {
     ifstream input;
     input.open(filename, std::ios_base::in);
@@ -108,12 +108,14 @@ bool read_dots(std::string filename, dot *&p_dots, int &num_dots)
                 }
                 else
                 {
-                    cout << "Не хватает 2й координаты" << endl;
+                    cout << "Не хватает 2й координаты (пропуск строки)" << endl;
+                    of << "Не хватает 2й координаты (пропуск строки)" << endl;
                 }
             }
             else
             {
-                cout << "Не хватает 1й координаты" << endl;
+                cout << "Не хватает 1й координаты (пропуск строки)" << endl;
+                of << "Не хватает 1й координаты (пропуск строки)" << endl;
             }
         }
         while (input.peek() == ' ' || input.peek() == '\r' || input.peek() == '\n')
@@ -254,7 +256,7 @@ bool line_itersect(float x1, float y1, float x2, float y2, float x3, float y3, f
     return true; 
 }
 
-void search_one_kvadrat(dot *&dots, int &num_dots, distance_index **&distance_indexes, int &num_indicies, int **&kvadrati, int &num_kvadrats)
+void search_one_kvadrat(dot *&dots, int &num_dots, distance_index **&distance_indexes, int &num_indicies, int **&kvadrati, int &num_kvadrats, ofstream & of)
 {
     for (int i = 0; i < num_dots; i++)
     {
@@ -318,6 +320,7 @@ void search_one_kvadrat(dot *&dots, int &num_dots, distance_index **&distance_in
                             num_kvadrats++;
 
                             cout << setw(10) << " ОДИН Квадрат составляют точки с индексами: " << new_kvadrat[0] << " " << new_kvadrat[1] << " " << new_kvadrat[2] << " " << new_kvadrat[3] << endl;
+                            of <<  setw(10) << " ОДИН Квадрат составляют точки с индексами: " << new_kvadrat[0] << " " << new_kvadrat[1] << " " << new_kvadrat[2] << " " << new_kvadrat[3] << endl;
                             // см картинку 4:  мы сравниваем расстояние от точки 3 до т 1 с расстоянием от точки 1 то точки 0 и одновременнно с этим сравниваем расстояния 3-2 и 2-0, если они все равны, то это квадрат
                             // см рис 4: если 3-1 = 1-0 и 3-2 = 2-0, то это квадрат (все расстояния равны, 3-1 это расстояние от 3 до 1)
                         }
@@ -365,18 +368,24 @@ float angle_between_points_and_center(dot & a, dot & b, dot & center)
     return acos((x*x + y*y - z*z)/(2*x*y));
 }
 
-void print_figura(int * & figura, dot * & dots) 
+void print_figura(int * & figura, dot * & dots, ofstream & of, ofstream & res) 
 {
     cout << " ФИГУРУ СОСТАВЛЯЮТ ТОЧКИ С ИНДЕКСАМИ: " << endl;
+    of << " ФИГУРУ СОСТАВЛЯЮТ ТОЧКИ С ИНДЕКСАМИ: " << endl;
+    res << " ФИГУРУ СОСТАВЛЯЮТ ТОЧКИ С ИНДЕКСАМИ: " << endl;
     for (int i = 0; i<16; i++)
     {
-        cout <<" "<< figura[i] << " (" << dots[figura[i]].x << ", " << dots[figura[i]].y << ") " << std::endl;
+        cout <<" "<< figura[i] << " (" << dots[figura[i]].x << ", " << dots[figura[i]].y << ") " <<  endl;
+        of << " "<< figura[i] << " (" << dots[figura[i]].x << ", " << dots[figura[i]].y << ") " <<  endl;
+        res << " "<< figura[i] << " (" << dots[figura[i]].x << ", " << dots[figura[i]].y << ") " <<  endl;
     }
     cout << endl;
+    of << endl;
+    res << endl;
 
 }
 
-void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvadrat_idx1, int kvadrat_idx2, dot * & dots, int ** & kvadrati, int num_dots, int ** & figuri, int & num_figuras)
+void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvadrat_idx1, int kvadrat_idx2, dot * & dots, int ** & kvadrati, int num_dots, int ** & figuri, int & num_figuras, ofstream & of, ofstream & res)
 {
     // см. картинку 6, там нам надо найти все углы ... 
     // нужно найти коор-ты недостающих 8 точек (точек пересечений квадратов) и проверить их наличие в массиве dots
@@ -419,6 +428,7 @@ void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvad
         if (angle_between_points_and_center(dots[kvadrat_dot_idx[i]], dots[kvadrat_dot_idx[(i+1)%8]], kvadrate1.zentr) - PI_OVER_4 > EPSILON)
         {
             cout << " Углы между квадратами не подходят" << endl;
+            of << " Углы между квадратами не подходят" << endl;
             return;
         }
     }
@@ -434,6 +444,7 @@ void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvad
     if (stor1 > sqrt(2.0)*stor2)
     {
         cout << " Стороны квадратов не подходят (один квадрат полностью в другом)" << endl;
+        of << " Стороны квадратов не подходят (один квадрат полностью в другом)" << endl;
         return;
     }
         
@@ -456,6 +467,7 @@ void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvad
         if (line_itersect(x1, y1, x2, y2, x3, y3, x4, y4, ix, iy) == false)
         {
             cout << " Линии не пересекаются" << endl;
+            of << " Линии не пересекаются" << endl;
             return;
         }
              // СООБЩИТЬ ОБ ОЩИБКЕ
@@ -479,10 +491,12 @@ void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvad
         {
             //СООБЩИТЬ ОБ ОЩИБКЕ
             cout << " Точки пересечения не найдено в исходном файле" << endl;
+            of << " Точки пересечения не найдено в исходном файле" << endl;
             return;
         }
     }
     cout << " НАША ФИГУРА НАШЛАСЬ УРА! " << endl;
+    of << " НАША ФИГУРА НАШЛАСЬ УРА! " << endl;
 
     //заполним массив индексами/(самими точками), которые образуют фигуру
     figuri[num_figuras] = new int [16];
@@ -513,7 +527,7 @@ void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvad
         }
     }
 
-    print_figura(figuri[num_figuras], dots);
+    print_figura(figuri[num_figuras], dots, of, res);
 
     num_figuras++;
 }
@@ -532,11 +546,14 @@ int point_in_figure(dot * & dots, int * figura_dots_idx, float testx, float test
 
 int main(int argc, char *argv[])
 {
-    std::cout << "Добро пожаловать в курсовик Калюжной Марии 3352 26.11.23 !" << endl
-              << endl;
-
-    string filename1 = "result.txt";
+    string filename2 = "result.txt";
+    string filename1 = "LOG.txt";
     ofstream of(filename1, ios::out | ios::trunc);
+    ofstream res(filename2, ios::out | ios::trunc);
+    cout << "Добро пожаловать в курсовик Калюжной Марии 3352 26.11.23- 14.12.23! !" << endl << endl;
+    of << "Добро пожаловать в курсовик Калюжной Марии 3352 26.11.23 - 14.12.23!" << endl << endl;
+
+    
 
     string filename = "input.txt";
     dot *dots = nullptr; // указатель под динамический массив для хранения точек (и их координат)
@@ -559,14 +576,16 @@ int main(int argc, char *argv[])
     int num_figuras = 0;
 
     // загрузить координаты точек из файла
-    if (read_dots(filename, dots, num_dots))
+    if (read_dots(filename, dots, num_dots, of))
     {
-        cout << setw(10) << "Координата X"
-             << "  " << setw(10) << "Координата Y" << endl;
+        cout << setw(10) << "Координата X"<< "  " << setw(10) << "Координата Y" << endl;
+
+        of << setw(10) << "Координата X" << "  " << setw(10) << "Координата Y" << endl;
         int len = num_dots;
         for (int i = 0; i < len; i++)
         {
             cout << setw(10) << dots[i].x << "  " << setw(10) << dots[i].y << endl;
+            of << setw(10) << dots[i].x << "  " << setw(10) << dots[i].y << endl;
         }
 
         // 1. посчитать все парные расстояния между точками (построить матрицу расстояний между двумя любыми точками)
@@ -578,25 +597,29 @@ int main(int argc, char *argv[])
             for (int j = i + 1; j < num_distances; j++)
             {
                 cout << "Расстояние между точкой номер " << i << " и " << j << " равно: " << setw(10) << distances[i][j] << endl;
+                of << "Расстояние между точкой номер " << i << " и " << j << " равно: " << setw(10) << distances[i][j] << endl;
             }
         }
         cout << endl << endl;
-
+        of << endl << endl;
         // 2.  для каждой точки отсортировать все остальные точки по расстояниям
         sort_pair_distances(dots, num_dots, distances, num_dots, sorted_distance_indexes, num_dots);
         cout << "       Результаты сортировки: " << endl;
+        of<<  "       Результаты сортировки: " << endl;
         for (int i = 0; i < num_dots; i++)
         {
             for (int j = 0; j < num_dots; j++)
             {
+                of << "Расстояние между точкой номер " << i << " и " << sorted_distance_indexes[i][j].idx << " равно: " << setw(10) << sorted_distance_indexes[i][j].distance << endl;
                 cout << "Расстояние между точкой номер " << i << " и " << sorted_distance_indexes[i][j].idx << " равно: " << setw(10) << sorted_distance_indexes[i][j].distance << endl;
             }
         }
         cout << endl << endl;
+        of << endl << endl;
 
         // 3. обработать отсортированную последовательность - найти все пары точек для конкретной точки отстоящие от нее (этой точки) на одинаковое расстояние A              
         // 4. для каждой из таких пар попытаться найти еще одну на расстоянии A*Sqrt(2)
-        search_one_kvadrat(dots, num_dots, sorted_distance_indexes, num_dots, kvadrati, num_kvadrats);
+        search_one_kvadrat(dots, num_dots, sorted_distance_indexes, num_dots, kvadrati, num_kvadrats, of);
         kvadrat_indexes = new kvadrat_index[num_kvadrats];
 
         //5. заполним массив с индексами всех квадратов
@@ -615,7 +638,7 @@ int main(int argc, char *argv[])
                 if (kvadrat_indexes[i].zentr.x == kvadrat_indexes[j].zentr.x &&
                  kvadrat_indexes[i].zentr.y == kvadrat_indexes[j].zentr.y)
                 {
-                    figura_check(kvadrat_indexes[i], kvadrat_indexes[j], i, j, dots, kvadrati, num_dots, figuri, num_figuras);
+                    figura_check(kvadrat_indexes[i], kvadrat_indexes[j], i, j, dots, kvadrati, num_dots, figuri, num_figuras, of, res);
                 }
             }
         }
@@ -671,9 +694,14 @@ int main(int argc, char *argv[])
         int counter = 0;
         while(counter < num_figuras && dots_in_figura[counter] == max_dots_in_figura) 
         {
-            std::cout << "Фигура победитель под индексом " << figura_idx[counter] << " кол-во точек внутри: " << dots_in_figura[counter]<< std::endl;
-            print_figura(figuri[figura_idx[counter]], dots);
-            std::cout << "Точки входящие в фигуру:" << std::endl;
+            cout << "Фигура победитель под индексом " << figura_idx[counter] << " макс. кол-во точек внутри: " << dots_in_figura[counter]<< endl;
+            of<<"Фигура победитель под индексом " << figura_idx[counter] << " макс. кол-во точек внутри: " << dots_in_figura[counter]<< endl;
+            res << endl<<"Фигура победитель под индексом " << figura_idx[counter] << " максимальное кол-во точек внутри: " << dots_in_figura[counter]<< endl;
+            
+            print_figura(figuri[figura_idx[counter]], dots, of, res);
+            cout << "Точки входящие в фигуру:" << endl;
+            of << "Точки входящие в фигуру:" << endl;
+            res << "Точки входящие в фигуру:" << endl;
             for (int j = 0; j < num_dots; ++j)
             {
                 bool early_continue = false;
@@ -685,7 +713,11 @@ int main(int argc, char *argv[])
                 if (early_continue)
                     continue;
                 if (point_in_figure(dots, figuri[figura_idx[counter]],dots[j].x, dots[j].y))
-                    std::cout << "(" << dots[j].x << "," << dots[j].y << ")" << std::endl;
+                    {
+                        cout << "(" << dots[j].x << "," << dots[j].y << ")" << endl<< endl;
+                        of << "(" << dots[j].x << "," << dots[j].y << ")" << endl<< endl;
+                        res << "(" << dots[j].x << "," << dots[j].y << ")" << endl;
+                    }
             }
 
             ++counter;
