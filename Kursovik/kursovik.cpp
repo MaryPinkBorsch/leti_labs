@@ -90,8 +90,21 @@ bool read_dots(std::string filename, dot *&p_dots, int &num_dots)
                 dot_y_empty = false;
                 if (dot_x_empty == false && dot_y_empty == false)
                 {
-                    p_dots[num_dots] = tmp;
-                    num_dots++;
+                    // дублирующие точки считать не будем
+                    bool already_exists = false;
+                    for (int i = 0; i < num_dots; ++i) 
+                    {
+                        if (p_dots[i].x == tmp.x && p_dots[i].y == tmp.y) 
+                        {
+                            already_exists = true;
+                            break;
+                        }
+                    }
+                    if (!already_exists) 
+                    {
+                        p_dots[num_dots] = tmp;
+                        num_dots++;
+                    }
                 }
                 else
                 {
@@ -680,7 +693,7 @@ int main(int argc, char *argv[])
 
         delete[] figura_idx;    
         delete[] dots_in_figura;    
-        // нужен лог файл
+        // нужен лог файл ./kursovik > kursovik.log
         // нужен файл с результатом
     }
 
