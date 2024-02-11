@@ -2,6 +2,8 @@
 #include <fstream>
 #include <iomanip>
 
+#include <cstring> //!!! only devug
+
 using namespace std;
 static const int N = 100;
 struct StrM
@@ -117,6 +119,85 @@ void Bubble_sort(StrM *Slova, int num_slova)
     }
 }
 
+// эта функция меняет местами подстроки в строке
+void inplace_swap_slova(StrM &stroka, int start1, int end1, int start2, int end2)
+{
+    // !!!! слово1 это левое слово то есть end1 < start2
+    if (end1 > start2)
+    {
+        cout << "NE TAK SLOVA raspologeni" << endl;
+        abort();
+    }
+    int len1 = end1 - start1 + 1;
+    int len2 = end2 - start2 + 1;
+    // если слово1 короче слова2 тогда
+    if (len1 < len2)
+    {
+        // меняем буквы пока позволяет длинна слова1
+        for (int i = 0; i < len1; i++)
+        {
+            char tmp = stroka.massiv[start1 + i];
+            stroka.massiv[start1 + i] = stroka.massiv[start2 + i];
+            stroka.massiv[start2 + i] = tmp;
+        }
+        // после этого по одной переносим оставшиеся буквы слова два влево и сдвигаем остаток вправо
+        // количество сдвигаемых симовлов равно start2 - start1
+        int sdvig = start2 - start1; // na skolko sdvigat
+        int nado_sdvinut = len2 - len1;
+        for (int i = 0; i < nado_sdvinut; i++)
+        {
+            char tmp = stroka.massiv[start2 + len1 + i];
+            for (int j = 0; j < sdvig; j++)
+            {
+                stroka.massiv[start2 + len1 + i - j] = stroka.massiv[start2 + len1 + i - j - 1]; // прямо как a[i+1] = a[i] pochti СПРАВА НАЛЕВО
+            }
+            stroka.massiv[end1 + 1 + i] = tmp;
+        }
+    }
+    else
+    {
+        // иначе если слово2 короче слова1 тогда
+        // меняем буквы пока позволяет длинна слова2
+        for (int i = 0; i < len2; i++)
+        {
+            char tmp = stroka.massiv[start1 + i];
+            stroka.massiv[start1 + i] = stroka.massiv[start2 + i];
+            stroka.massiv[start2 + i] = tmp;
+        }
+        // после этого по одной переносим оставшиеся буквы слова1  вправо и сдвигаем остаток влево
+        int sdvig = end2 - end1 + 1;    // na skolko sdvigat
+        int nado_sdvinut = len1 - len2; // кол-во перемещаемых элеменотов
+        for (int i = 0; i < nado_sdvinut; i++)
+        {
+            char tmp = stroka.massiv[start1 + len2];
+            for (int j = 0; j < sdvig; j++)
+            {
+                stroka.massiv[start1 + len2 + j] = stroka.massiv[start1 + len2 + j + 1]; // прямо как a[i+1] = a[i] pochti
+            }
+            stroka.massiv[end2] = tmp;
+        }
+    }
+}
+
+void process_inPlace(StrM &stroka)
+{
+    // -------- МАСИНЫ СТРАДАНИЯ ------------
+
+    // пройтись по массиву и "запомнитьь" каждый 1й и последн. символ слова (т.е. запомнить каждый индекс начала слова)
+    // если 2 первых символа одинаковы запустить проверку всего слова до того момента пока не станет яясно какое слово меньще
+    // если 2 слова индентичны записать их по очереди
+
+    // после сравнить первыйе символы и найти самое "маленткое слово" (по алфавиту)
+    // найти его длину в символах
+    // найти место куда вставить
+    // сдвинуть с того места весь массив на Н символов вправо и вставить слово
+
+    // -------- ПАПИНЫ СТРАДАНИЯ ------------
+
+    // заполнить массив индексов начала и конца слов в строке
+    // отсортировать этот массив так чтобы слова в нем распологались в алфавитном порядке
+}
+
 void process_fM(StrM &stroka)
 {
     // разбить строку на слова, сохраним в массив StrM
@@ -162,6 +243,7 @@ void process_fM(StrM &stroka)
         counter++;
     }
     result.massiv[counter] = result.Marker;
+    stroka = result;
 }
 
 void print(StrM stroka)
@@ -182,9 +264,50 @@ int main(int argc, char *argv[])
     ofstream res(filename2, ios::out | ios::trunc);
     cout << "Добро пожаловать в lab 1.1.1 Калюжной Марии 3352 " << endl;
 
+    // DEBUG!!!!
+    StrM wtf;
+    std::strcpy(wtf.massiv, "abcxxxdefgh");
+    print(wtf);
+    inplace_swap_slova(wtf, 0, 2, 6, 10);
+    print(wtf);
+    cout << endl;
+
+    std::strcpy(wtf.massiv, "abcMxxxdefgh");
+    print(wtf);
+    inplace_swap_slova(wtf, 0, 3, 7, 11);
+    print(wtf);
+    cout << endl;
+
+    std::strcpy(wtf.massiv, "abcMxxxdefghxxx");
+    print(wtf);
+    inplace_swap_slova(wtf, 0, 3, 7, 11);
+    print(wtf);
+    cout << endl;
+
+    std::strcpy(wtf.massiv, "defghxxxabc");
+    print(wtf);
+    inplace_swap_slova(wtf, 0, 4, 8, 10);
+    print(wtf);
+    cout << endl;
+
+    std::strcpy(wtf.massiv, "defghxxxabcM");
+    print(wtf);
+    inplace_swap_slova(wtf, 0, 4, 8, 11);
+    print(wtf);
+    cout << endl;
+
+    std::strcpy(wtf.massiv, "defxxxabc");
+    print(wtf);
+    inplace_swap_slova(wtf, 0, 2, 6, 8);
+    print(wtf);
+    cout << endl;
+
+    // DEBUG!!!!
+
     StrM s1;
     read_fM(filename1, s1);
     print(s1);
     process_fM(s1);
+    print(s1);
     return 0;
 }
