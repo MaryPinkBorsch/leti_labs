@@ -22,13 +22,12 @@ static const float PI_OVER_4 = E_PI / 4.0;
 
 //  см картинку 4:  мы сравниваем расстояние от точки 3 до т 1 с расстоянием от точки 1 то точки 0 и одновременнно с этим сравниваем расстояния 3-2 и 2-0, если они все равны, то это квадрат
 // см рис 4: если 3-1 = 1-0 и 3-2 = 2-0, то это квадрат (все расстояния равны, 3-1 это расстояние от 3 до 1)
-                        
 
-//6. потом перебором найдем все квадраты которые имеют одинаковый центр и повернуты на 45 градусов
-// из них выберем те у которых соотношение сторон подходящее ( КВАДРАТЫ ПЕРЕСЕКАЮТСЯ, соотношение сторон A<sqrt(2)*B где А сторона большего из квадратов),
-// это даст нам список всех подходящих фигур
-// потом для каждой из фигур посчитать количество точек которые входят в нее (см рисунок, квадрат + 4 треугольничка)
-// отсортировать и выбрать те куда попадает максимальное количество точек
+// 6. потом перебором найдем все квадраты которые имеют одинаковый центр и повернуты на 45 градусов
+//  из них выберем те у которых соотношение сторон подходящее ( КВАДРАТЫ ПЕРЕСЕКАЮТСЯ, соотношение сторон A<sqrt(2)*B где А сторона большего из квадратов),
+//  это даст нам список всех подходящих фигур
+//  потом для каждой из фигур посчитать количество точек которые входят в нее (см рисунок, квадрат + 4 треугольничка)
+//  отсортировать и выбрать те куда попадает максимальное количество точек
 
 using namespace std;
 // объявим тип (структуру) "Точка", этот тип имеет 2 флоат переменные - х и у, коор-ты точки
@@ -54,11 +53,11 @@ struct dot
 
 struct kvadrat_index
 {
-    int idx; // индекс данного квадрата в массиве квадратов
+    int idx;   // индекс данного квадрата в массиве квадратов
     dot zentr; // точка - центр квадрата
 };
 
-bool read_dots(std::string filename, dot *&p_dots, int &num_dots, ofstream & of)
+bool read_dots(std::string filename, dot *&p_dots, int &num_dots, ofstream &of)
 {
     ifstream input;
     input.open(filename, std::ios_base::in);
@@ -92,15 +91,15 @@ bool read_dots(std::string filename, dot *&p_dots, int &num_dots, ofstream & of)
                 {
                     // дублирующие точки считать не будем
                     bool already_exists = false;
-                    for (int i = 0; i < num_dots; ++i) 
+                    for (int i = 0; i < num_dots; ++i)
                     {
-                        if (p_dots[i].x == tmp.x && p_dots[i].y == tmp.y) 
+                        if (p_dots[i].x == tmp.x && p_dots[i].y == tmp.y)
                         {
                             already_exists = true;
                             break;
                         }
                     }
-                    if (!already_exists) 
+                    if (!already_exists)
                     {
                         p_dots[num_dots] = tmp;
                         num_dots++;
@@ -228,10 +227,10 @@ bool binary_search(distance_index *&distance_indexes, int L, int R, float value,
 // вспомогательная функция расчета детерминанта матрицы [[a,b],[c,d]]
 float det_2d(float a, float b, float c, float d)
 {
-    return a*d - b*c;
+    return a * d - b * c;
 }
 // функция для нахождения координат точки пересечения двух прямых заданных двумя точками каждая, см. https://ru.wikipedia.org/wiki/%D0%9F%D0%B5%D1%80%D0%B5%D1%81%D0%B5%D1%87%D0%B5%D0%BD%D0%B8%D0%B5_%D0%BF%D1%80%D1%8F%D0%BC%D1%8B%D1%85
-bool line_itersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, float &ixOut, float &iyOut) 
+bool line_itersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, float &ixOut, float &iyOut)
 {
     float detL1 = det_2d(x1, y1, x2, y2);
     float detL2 = det_2d(x3, y3, x4, y4);
@@ -243,20 +242,20 @@ bool line_itersect(float x1, float y1, float x2, float y2, float x3, float y3, f
     float xnom = det_2d(detL1, x1mx2, detL2, x3mx4);
     float ynom = det_2d(detL1, y1my2, detL2, y3my4);
     float denom = det_2d(x1mx2, y1my2, x3mx4, y3my4);
-    if(denom == 0.0)
+    if (denom == 0.0)
     {
         return false;
     }
 
-    ixOut = xnom / denom;   
+    ixOut = xnom / denom;
     iyOut = ynom / denom;
-    if(!isfinite(ixOut) || !isfinite(iyOut)) //проверяем ответ на бесконечность
+    if (!isfinite(ixOut) || !isfinite(iyOut)) // проверяем ответ на бесконечность
         return false;
 
-    return true; 
+    return true;
 }
 
-void search_one_kvadrat(dot *&dots, int &num_dots, distance_index **&distance_indexes, int &num_indicies, int **&kvadrati, int &num_kvadrats, ofstream & of)
+void search_one_kvadrat(dot *&dots, int &num_dots, distance_index **&distance_indexes, int &num_indicies, int **&kvadrati, int &num_kvadrats, ofstream &of)
 {
     for (int i = 0; i < num_dots; i++)
     {
@@ -268,7 +267,7 @@ void search_one_kvadrat(dot *&dots, int &num_dots, distance_index **&distance_in
                 if (binary_search(distance_indexes[i], j + 2, num_dots - 1, distance_indexes[i][j].distance * sqrt(2.0), result_index))
                 {
                     if (dots[distance_indexes[i][result_index].idx].distance_from(dots[distance_indexes[i][j].idx]) == distance_indexes[i][j].distance &&
-                     dots[distance_indexes[i][result_index].idx].distance_from(dots[distance_indexes[i][j + 1].idx]) == distance_indexes[i][j + 1].distance) // жуткая функция для определения квадрата
+                        dots[distance_indexes[i][result_index].idx].distance_from(dots[distance_indexes[i][j + 1].idx]) == distance_indexes[i][j + 1].distance) // жуткая функция для определения квадрата
                     {
                         int new_kvadrat[4]; // тут хранятся индексы точек составляющие один квадрат
                         new_kvadrat[0] = i;
@@ -320,7 +319,7 @@ void search_one_kvadrat(dot *&dots, int &num_dots, distance_index **&distance_in
                             num_kvadrats++;
 
                             cout << setw(10) << " ОДИН Квадрат составляют точки с индексами: " << new_kvadrat[0] << " " << new_kvadrat[1] << " " << new_kvadrat[2] << " " << new_kvadrat[3] << endl;
-                            of <<  setw(10) << " ОДИН Квадрат составляют точки с индексами: " << new_kvadrat[0] << " " << new_kvadrat[1] << " " << new_kvadrat[2] << " " << new_kvadrat[3] << endl;
+                            of << setw(10) << " ОДИН Квадрат составляют точки с индексами: " << new_kvadrat[0] << " " << new_kvadrat[1] << " " << new_kvadrat[2] << " " << new_kvadrat[3] << endl;
                             // см картинку 4:  мы сравниваем расстояние от точки 3 до т 1 с расстоянием от точки 1 то точки 0 и одновременнно с этим сравниваем расстояния 3-2 и 2-0, если они все равны, то это квадрат
                             // см рис 4: если 3-1 = 1-0 и 3-2 = 2-0, то это квадрат (все расстояния равны, 3-1 это расстояние от 3 до 1)
                         }
@@ -332,19 +331,20 @@ void search_one_kvadrat(dot *&dots, int &num_dots, distance_index **&distance_in
 }
 
 // эта функция поможет нам упорядочить точки по часовой стрелке относительно центра
-bool order_dots_clockwise(const dot & a,const dot & b, const dot & center)
+bool order_dots_clockwise(const dot &a, const dot &b, const dot &center)
 {
     if (a.x - center.x >= 0 && b.x - center.x < 0)
         return true;
     if (a.x - center.x < 0 && b.x - center.x >= 0)
         return false;
-    if (a.x - center.x == 0 && b.x - center.x == 0) {
+    if (a.x - center.x == 0 && b.x - center.x == 0)
+    {
         if (a.y - center.y >= 0 || b.y - center.y >= 0)
             return a.y > b.y;
         return b.y > a.y;
     }
 
-    //скалярное произведение векторов (center -> a) x (center -> b)
+    // скалярное произведение векторов (center -> a) x (center -> b)
     double det = (a.x - center.x) * (b.y - center.y) - (b.x - center.x) * (a.y - center.y);
     if (det < 0)
         return true;
@@ -359,46 +359,45 @@ bool order_dots_clockwise(const dot & a,const dot & b, const dot & center)
 }
 
 // вспомогательная функция нахождения угла между двумя точками и центром
-float angle_between_points_and_center(dot & a, dot & b, dot & center) 
+float angle_between_points_and_center(dot &a, dot &b, dot &center)
 {
     float x = a.distance_from(center);
     float y = center.distance_from(b);
     float z = a.distance_from(b);
 
-    return acos((x*x + y*y - z*z)/(2*x*y));
+    return acos((x * x + y * y - z * z) / (2 * x * y));
 }
 
-void print_figura(int * & figura, dot * & dots, ofstream & of, ofstream & res) 
+void print_figura(int *&figura, dot *&dots, ofstream &of, ofstream &res)
 {
     cout << " ФИГУРУ СОСТАВЛЯЮТ ТОЧКИ С ИНДЕКСАМИ: " << endl;
     of << " ФИГУРУ СОСТАВЛЯЮТ ТОЧКИ С ИНДЕКСАМИ: " << endl;
     res << " ФИГУРУ СОСТАВЛЯЮТ ТОЧКИ С ИНДЕКСАМИ: " << endl;
-    for (int i = 0; i<16; i++)
+    for (int i = 0; i < 16; i++)
     {
-        cout <<" "<< figura[i] << " (" << dots[figura[i]].x << ", " << dots[figura[i]].y << ") " <<  endl;
-        of << " "<< figura[i] << " (" << dots[figura[i]].x << ", " << dots[figura[i]].y << ") " <<  endl;
-        res << " "<< figura[i] << " (" << dots[figura[i]].x << ", " << dots[figura[i]].y << ") " <<  endl;
+        cout << " " << figura[i] << " (" << dots[figura[i]].x << ", " << dots[figura[i]].y << ") " << endl;
+        of << " " << figura[i] << " (" << dots[figura[i]].x << ", " << dots[figura[i]].y << ") " << endl;
+        res << " " << figura[i] << " (" << dots[figura[i]].x << ", " << dots[figura[i]].y << ") " << endl;
     }
     cout << endl;
     of << endl;
     res << endl;
-
 }
 
-void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvadrat_idx1, int kvadrat_idx2, dot * & dots, int ** & kvadrati, int num_dots, int ** & figuri, int & num_figuras, ofstream & of, ofstream & res)
+void figura_check(kvadrat_index &kvadrate1, kvadrat_index &kvadrate2, int kvadrat_idx1, int kvadrat_idx2, dot *&dots, int **&kvadrati, int num_dots, int **&figuri, int &num_figuras, ofstream &of, ofstream &res)
 {
-    // см. картинку 6, там нам надо найти все углы ... 
+    // см. картинку 6, там нам надо найти все углы ...
     // нужно найти коор-ты недостающих 8 точек (точек пересечений квадратов) и проверить их наличие в массиве dots
 
     int kvadrat_dot_idx[8]; // массив на 8 точек с 2х квадратов, тут хранятся их индексы
-    float ugli[7]; // массив углов меж точками
+    float ugli[7];          // массив углов меж точками
 
-    //индексы точек сост-х 1й квадрат
+    // индексы точек сост-х 1й квадрат
     kvadrat_dot_idx[0] = kvadrati[kvadrat_idx1][0];
     kvadrat_dot_idx[1] = kvadrati[kvadrat_idx1][1];
     kvadrat_dot_idx[2] = kvadrati[kvadrat_idx1][2];
     kvadrat_dot_idx[3] = kvadrati[kvadrat_idx1][3];
-    //индексы точек сост-х 2й квадрат
+    // индексы точек сост-х 2й квадрат
     kvadrat_dot_idx[4] = kvadrati[kvadrat_idx2][0];
     kvadrat_dot_idx[5] = kvadrati[kvadrat_idx2][1];
     kvadrat_dot_idx[6] = kvadrati[kvadrat_idx2][2];
@@ -411,11 +410,11 @@ void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvad
         sorted = true; // надеемся на то что оно уже отсортированно
         for (int i = 0; i < 7; i++)
         {
-            if (order_dots_clockwise(dots[kvadrat_dot_idx[i]], dots[kvadrat_dot_idx[i+1]], kvadrate1.zentr) == false)
+            if (order_dots_clockwise(dots[kvadrat_dot_idx[i]], dots[kvadrat_dot_idx[i + 1]], kvadrate1.zentr) == false)
             {
                 int tmp = kvadrat_dot_idx[i];
-                kvadrat_dot_idx[i] = kvadrat_dot_idx[i+1];
-                kvadrat_dot_idx[i+1] = tmp;
+                kvadrat_dot_idx[i] = kvadrat_dot_idx[i + 1];
+                kvadrat_dot_idx[i + 1] = tmp;
                 sorted = false;
             }
         }
@@ -423,9 +422,9 @@ void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvad
     // на данный момент точки в kvadrat_dot_idx отсортированны по величине угла относительно первой точки и центра фигуры
     // проверим что углы между соседними точками составляют 45 гр (Pi/4)
     // нужно воспользоваться эпислон погрешностью из-за неточности чисел с плавающей точкой
-    for (int i = 0; i < 8; ++i) 
+    for (int i = 0; i < 8; ++i)
     {
-        if (angle_between_points_and_center(dots[kvadrat_dot_idx[i]], dots[kvadrat_dot_idx[(i+1)%8]], kvadrate1.zentr) - PI_OVER_4 > EPSILON)
+        if (angle_between_points_and_center(dots[kvadrat_dot_idx[i]], dots[kvadrat_dot_idx[(i + 1) % 8]], kvadrate1.zentr) - PI_OVER_4 > EPSILON)
         {
             cout << " Углы между квадратами не подходят" << endl;
             of << " Углы между квадратами не подходят" << endl;
@@ -441,13 +440,12 @@ void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvad
         stor1 = stor2;
         stor2 = tmp;
     }
-    if (stor1 > sqrt(2.0)*stor2)
+    if (stor1 > sqrt(2.0) * stor2)
     {
         cout << " Стороны квадратов не подходят (один квадрат полностью в другом)" << endl;
         of << " Стороны квадратов не подходят (один квадрат полностью в другом)" << endl;
         return;
     }
-        
 
     // расчитаем координаты оставшихся 8ми точек нашей фигуры чтобы потом попытаться найти их среди исходных
     dot cross_dots[8];
@@ -458,21 +456,21 @@ void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvad
         float iy = 0;
         float x1 = dots[kvadrat_dot_idx[i]].x;
         float y1 = dots[kvadrat_dot_idx[i]].y;
-        float x2 = dots[kvadrat_dot_idx[(i+2)%8]].x;
-        float y2 = dots[kvadrat_dot_idx[(i+2)%8]].y;
-        float x3 = dots[kvadrat_dot_idx[(i+1)%8]].x;
-        float y3 = dots[kvadrat_dot_idx[(i+1)%8]].y;
-        float x4 = dots[kvadrat_dot_idx[(i+3)%8]].x;
-        float y4 = dots[kvadrat_dot_idx[(i+3)%8]].y;
+        float x2 = dots[kvadrat_dot_idx[(i + 2) % 8]].x;
+        float y2 = dots[kvadrat_dot_idx[(i + 2) % 8]].y;
+        float x3 = dots[kvadrat_dot_idx[(i + 1) % 8]].x;
+        float y3 = dots[kvadrat_dot_idx[(i + 1) % 8]].y;
+        float x4 = dots[kvadrat_dot_idx[(i + 3) % 8]].x;
+        float y4 = dots[kvadrat_dot_idx[(i + 3) % 8]].y;
         if (line_itersect(x1, y1, x2, y2, x3, y3, x4, y4, ix, iy) == false)
         {
             cout << " Линии не пересекаются" << endl;
             of << " Линии не пересекаются" << endl;
             return;
         }
-             // СООБЩИТЬ ОБ ОЩИБКЕ
-        cross_dots[i].x = ix;    
-        cross_dots[i].y = iy;   //записываем точки пересечения
+        // СООБЩИТЬ ОБ ОЩИБКЕ
+        cross_dots[i].x = ix;
+        cross_dots[i].y = iy; // записываем точки пересечения
     }
 
     for (int i = 0; i < 8; i++)
@@ -480,16 +478,16 @@ void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvad
         bool found = false;
         for (int j = 0; j < num_dots; j++)
         {
-            if(cross_dots[i].distance_from(dots[j]) < EPSILON)
+            if (cross_dots[i].distance_from(dots[j]) < EPSILON)
             {
                 cross_dot_idx[i] = j;
                 found = true;
                 break;
-            }            
+            }
         }
         if (found == false)
         {
-            //СООБЩИТЬ ОБ ОЩИБКЕ
+            // СООБЩИТЬ ОБ ОЩИБКЕ
             cout << " Точки пересечения не найдено в исходном файле" << endl;
             of << " Точки пересечения не найдено в исходном файле" << endl;
             return;
@@ -498,16 +496,16 @@ void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvad
     cout << " НАША ФИГУРА НАШЛАСЬ УРА! " << endl;
     of << " НАША ФИГУРА НАШЛАСЬ УРА! " << endl;
 
-    //заполним массив индексами/(самими точками), которые образуют фигуру
-    figuri[num_figuras] = new int [16];
+    // заполним массив индексами/(самими точками), которые образуют фигуру
+    figuri[num_figuras] = new int[16];
 
-    for(int i = 0; i<8; i++)
+    for (int i = 0; i < 8; i++)
     {
         figuri[num_figuras][i] = kvadrat_dot_idx[i];
     }
-    for(int i = 8; i<17; i++)
+    for (int i = 8; i < 17; i++)
     {
-        figuri[num_figuras][i] = cross_dot_idx[i-8];
+        figuri[num_figuras][i] = cross_dot_idx[i - 8];
     }
 
     // надо отсортировать точки фигуры относительно центра и самой первой точки с использованием функции упорядочивания order_dots_clockwise
@@ -517,11 +515,11 @@ void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvad
         sorted = true; // надеемся на то что оно уже отсортированно
         for (int i = 0; i < 15; i++)
         {
-            if (order_dots_clockwise(dots[figuri[num_figuras][i]], dots[figuri[num_figuras][i+1]], kvadrate1.zentr) == false)
+            if (order_dots_clockwise(dots[figuri[num_figuras][i]], dots[figuri[num_figuras][i + 1]], kvadrate1.zentr) == false)
             {
                 int tmp = figuri[num_figuras][i];
-                figuri[num_figuras][i] = figuri[num_figuras][i+1];
-                figuri[num_figuras][i+1] = tmp;
+                figuri[num_figuras][i] = figuri[num_figuras][i + 1];
+                figuri[num_figuras][i + 1] = tmp;
                 sorted = false;
             }
         }
@@ -532,17 +530,17 @@ void figura_check(kvadrat_index & kvadrate1, kvadrat_index & kvadrate2, int kvad
     num_figuras++;
 }
 
-int point_in_figure(dot * & dots, int * figura_dots_idx, float testx, float testy)
+int point_in_figure(dot *&dots, int *figura_dots_idx, float testx, float testy)
 {
     int i, j, c = 0;
-    for (i = 0, j = 15; i < 16; j = i++) {
-        if ( ((dots[figura_dots_idx[i]].y > testy) != (dots[figura_dots_idx[j]].y > testy)) &&
-        (testx < (dots[figura_dots_idx[j]].x- dots[figura_dots_idx[i]].x) * (testy-dots[figura_dots_idx[i]].y) / (dots[figura_dots_idx[j]].y-dots[figura_dots_idx[i]].y) + dots[figura_dots_idx[i]].x) )
+    for (i = 0, j = 15; i < 16; j = i++)
+    {
+        if (((dots[figura_dots_idx[i]].y > testy) != (dots[figura_dots_idx[j]].y > testy)) &&
+            (testx < (dots[figura_dots_idx[j]].x - dots[figura_dots_idx[i]].x) * (testy - dots[figura_dots_idx[i]].y) / (dots[figura_dots_idx[j]].y - dots[figura_dots_idx[i]].y) + dots[figura_dots_idx[i]].x))
             c = !c;
     }
     return c;
 }
-
 
 int main(int argc, char *argv[])
 {
@@ -550,14 +548,14 @@ int main(int argc, char *argv[])
     string filename1 = "LOG.txt";
     ofstream of(filename1, ios::out | ios::trunc);
     ofstream res(filename2, ios::out | ios::trunc);
-    cout << "Добро пожаловать в курсовик Калюжной Марии 3352 26.11.23- 14.12.23! !" << endl << endl;
-    of << "Добро пожаловать в курсовик Калюжной Марии 3352 26.11.23 - 14.12.23!" << endl << endl;
-
-    
+    cout << "Добро пожаловать в курсовик Калюжной Марии 3352 26.11.23- 14.12.23! !" << endl
+         << endl;
+    of << "Добро пожаловать в курсовик Калюжной Марии 3352 26.11.23 - 14.12.23!" << endl
+       << endl;
 
     string filename = "input.txt";
     dot *dots = nullptr; // указатель под динамический массив для хранения точек (и их координат)
-    dots = new dot[MAX_DOTS_NUM]; 
+    dots = new dot[MAX_DOTS_NUM];
     int num_dots = 0;
 
     float **distances = nullptr; // указатель на указатель - для динамического двумерного массива попарных расстояний
@@ -570,7 +568,7 @@ int main(int argc, char *argv[])
     int num_kvadrats = 0;
     kvadrat_index *kvadrat_indexes = nullptr;
 
-    //этот массив для хранения индексов точек, которые составляют 1 нужную фигуру
+    // этот массив для хранения индексов точек, которые составляют 1 нужную фигуру
     int **figuri = nullptr;
     figuri = new int *[MAX_KAVADRATS_NUM];
     int num_figuras = 0;
@@ -578,9 +576,11 @@ int main(int argc, char *argv[])
     // загрузить координаты точек из файла
     if (read_dots(filename, dots, num_dots, of))
     {
-        cout << setw(10) << "Координата X"<< "  " << setw(10) << "Координата Y" << endl;
+        cout << setw(10) << "Координата X"
+             << "  " << setw(10) << "Координата Y" << endl;
 
-        of << setw(10) << "Координата X" << "  " << setw(10) << "Координата Y" << endl;
+        of << setw(10) << "Координата X"
+           << "  " << setw(10) << "Координата Y" << endl;
         int len = num_dots;
         for (int i = 0; i < len; i++)
         {
@@ -600,12 +600,14 @@ int main(int argc, char *argv[])
                 of << "Расстояние между точкой номер " << i << " и " << j << " равно: " << setw(10) << distances[i][j] << endl;
             }
         }
-        cout << endl << endl;
-        of << endl << endl;
+        cout << endl
+             << endl;
+        of << endl
+           << endl;
         // 2.  для каждой точки отсортировать все остальные точки по расстояниям
         sort_pair_distances(dots, num_dots, distances, num_dots, sorted_distance_indexes, num_dots);
         cout << "       Результаты сортировки: " << endl;
-        of<<  "       Результаты сортировки: " << endl;
+        of << "       Результаты сортировки: " << endl;
         for (int i = 0; i < num_dots; i++)
         {
             for (int j = 0; j < num_dots; j++)
@@ -614,29 +616,31 @@ int main(int argc, char *argv[])
                 cout << "Расстояние между точкой номер " << i << " и " << sorted_distance_indexes[i][j].idx << " равно: " << setw(10) << sorted_distance_indexes[i][j].distance << endl;
             }
         }
-        cout << endl << endl;
-        of << endl << endl;
+        cout << endl
+             << endl;
+        of << endl
+           << endl;
 
-        // 3. обработать отсортированную последовательность - найти все пары точек для конкретной точки отстоящие от нее (этой точки) на одинаковое расстояние A              
+        // 3. обработать отсортированную последовательность - найти все пары точек для конкретной точки отстоящие от нее (этой точки) на одинаковое расстояние A
         // 4. для каждой из таких пар попытаться найти еще одну на расстоянии A*Sqrt(2)
         search_one_kvadrat(dots, num_dots, sorted_distance_indexes, num_dots, kvadrati, num_kvadrats, of);
         kvadrat_indexes = new kvadrat_index[num_kvadrats];
 
-        //5. заполним массив с индексами всех квадратов
+        // 5. заполним массив с индексами всех квадратов
         for (int i = 0; i < num_kvadrats; i++)
         {
             kvadrat_indexes[i].idx = i; // вычисляем центры квадратов через среднее арифметическое
-            kvadrat_indexes[i].zentr.x = ( dots[kvadrati[i][0]].x + dots[kvadrati[i][1]].x + dots[kvadrati[i][2]].x + dots[kvadrati[i][3]].x)/ 4.0;
-            kvadrat_indexes[i].zentr.y = ( dots[kvadrati[i][0]].y + dots[kvadrati[i][1]].y + dots[kvadrati[i][2]].y + dots[kvadrati[i][3]].y)/ 4.0;
+            kvadrat_indexes[i].zentr.x = (dots[kvadrati[i][0]].x + dots[kvadrati[i][1]].x + dots[kvadrati[i][2]].x + dots[kvadrati[i][3]].x) / 4.0;
+            kvadrat_indexes[i].zentr.y = (dots[kvadrati[i][0]].y + dots[kvadrati[i][1]].y + dots[kvadrati[i][2]].y + dots[kvadrati[i][3]].y) / 4.0;
         }
 
         // пройдемся вложенным циклом по всем квадратам и посмотрим какие пары из них составляют нужные нам фигуры, заполним массив фигур
-        for( int i = 0; i < num_kvadrats; i++)
+        for (int i = 0; i < num_kvadrats; i++)
         {
-            for (int j = i+1; j < num_kvadrats; j++)
+            for (int j = i + 1; j < num_kvadrats; j++)
             {
                 if (kvadrat_indexes[i].zentr.x == kvadrat_indexes[j].zentr.x &&
-                 kvadrat_indexes[i].zentr.y == kvadrat_indexes[j].zentr.y)
+                    kvadrat_indexes[i].zentr.y == kvadrat_indexes[j].zentr.y)
                 {
                     figura_check(kvadrat_indexes[i], kvadrat_indexes[j], i, j, dots, kvadrati, num_dots, figuri, num_figuras, of, res);
                 }
@@ -644,27 +648,27 @@ int main(int argc, char *argv[])
         }
 
         // массив индексов фигур, потом отсортируем вместе с количеством входящих точек
-        int * figura_idx = new int[num_figuras];
+        int *figura_idx = new int[num_figuras];
         // количество точек входящих в эту фигуру
-        int * dots_in_figura = new int[num_figuras];
+        int *dots_in_figura = new int[num_figuras];
 
         // пройдемся по всем фигурам и посчитаем сколько точек содержится в каждой из них
         // не считая тех из которых она сделана
-        for (int i = 0; i < num_figuras; ++i) 
+        for (int i = 0; i < num_figuras; ++i)
         {
             figura_idx[i] = i;
             dots_in_figura[i] = 0;
             for (int j = 0; j < num_dots; ++j)
             {
                 bool early_continue = false;
-                for (int k = 0; k < 16; ++k) 
+                for (int k = 0; k < 16; ++k)
                 {
                     if (figuri[i][k] == j)
                         early_continue = true;
                 }
                 if (early_continue)
                     continue;
-                if (point_in_figure(dots, figuri[i],dots[j].x, dots[j].y))
+                if (point_in_figure(dots, figuri[i], dots[j].x, dots[j].y))
                     dots_in_figura[i] = dots_in_figura[i] + 1;
             }
         }
@@ -676,14 +680,14 @@ int main(int argc, char *argv[])
             sorted = true; // надеемся на то что оно уже отсортированно
             for (int i = 0; i < num_figuras - 1; i++)
             {
-                if (dots_in_figura[i] < dots_in_figura[i+1])
+                if (dots_in_figura[i] < dots_in_figura[i + 1])
                 {
                     int tmp = dots_in_figura[i];
                     int tmp1 = figura_idx[i];
-                    dots_in_figura[i] = dots_in_figura[i+1];
-                    figura_idx[i] = figura_idx[i+1];
-                    dots_in_figura[i+1] = tmp;
-                    figura_idx[i+1] = tmp1;
+                    dots_in_figura[i] = dots_in_figura[i + 1];
+                    figura_idx[i] = figura_idx[i + 1];
+                    dots_in_figura[i + 1] = tmp;
+                    figura_idx[i + 1] = tmp1;
                     sorted = false;
                 }
             }
@@ -692,12 +696,13 @@ int main(int argc, char *argv[])
         // выведем самые большие (если несколько с одинаковым максимальным количеством) или одну если такая только одна
         int max_dots_in_figura = dots_in_figura[0];
         int counter = 0;
-        while(counter < num_figuras && dots_in_figura[counter] == max_dots_in_figura) 
+        while (counter < num_figuras && dots_in_figura[counter] == max_dots_in_figura)
         {
-            cout << "Фигура победитель под индексом " << figura_idx[counter] << " макс. кол-во точек внутри: " << dots_in_figura[counter]<< endl;
-            of<<"Фигура победитель под индексом " << figura_idx[counter] << " макс. кол-во точек внутри: " << dots_in_figura[counter]<< endl;
-            res << endl<<"Фигура победитель под индексом " << figura_idx[counter] << " максимальное кол-во точек внутри: " << dots_in_figura[counter]<< endl;
-            
+            cout << "Фигура победитель под индексом " << figura_idx[counter] << " макс. кол-во точек внутри: " << dots_in_figura[counter] << endl;
+            of << "Фигура победитель под индексом " << figura_idx[counter] << " макс. кол-во точек внутри: " << dots_in_figura[counter] << endl;
+            res << endl
+                << "Фигура победитель под индексом " << figura_idx[counter] << " максимальное кол-во точек внутри: " << dots_in_figura[counter] << endl;
+
             print_figura(figuri[figura_idx[counter]], dots, of, res);
             cout << "Точки входящие в фигуру:" << endl;
             of << "Точки входящие в фигуру:" << endl;
@@ -705,26 +710,28 @@ int main(int argc, char *argv[])
             for (int j = 0; j < num_dots; ++j)
             {
                 bool early_continue = false;
-                for (int k = 0; k < 16; ++k) 
+                for (int k = 0; k < 16; ++k)
                 {
                     if (figuri[figura_idx[counter]][k] == j)
                         early_continue = true;
                 }
                 if (early_continue)
                     continue;
-                if (point_in_figure(dots, figuri[figura_idx[counter]],dots[j].x, dots[j].y))
-                    {
-                        cout << "(" << dots[j].x << "," << dots[j].y << ")" << endl<< endl;
-                        of << "(" << dots[j].x << "," << dots[j].y << ")" << endl<< endl;
-                        res << "(" << dots[j].x << "," << dots[j].y << ")" << endl;
-                    }
+                if (point_in_figure(dots, figuri[figura_idx[counter]], dots[j].x, dots[j].y))
+                {
+                    cout << "(" << dots[j].x << "," << dots[j].y << ")" << endl
+                         << endl;
+                    of << "(" << dots[j].x << "," << dots[j].y << ")" << endl
+                       << endl;
+                    res << "(" << dots[j].x << "," << dots[j].y << ")" << endl;
+                }
             }
 
             ++counter;
         }
 
-        delete[] figura_idx;    
-        delete[] dots_in_figura;    
+        delete[] figura_idx;
+        delete[] dots_in_figura;
         // нужен лог файл ./kursovik > kursovik.log
         // нужен файл с результатом
     }
@@ -748,7 +755,7 @@ int main(int argc, char *argv[])
     }
     delete[] kvadrati;
 
-    for(int i = 0; i < num_figuras; i++)
+    for (int i = 0; i < num_figuras; i++)
     {
         delete[] figuri[i];
     }
