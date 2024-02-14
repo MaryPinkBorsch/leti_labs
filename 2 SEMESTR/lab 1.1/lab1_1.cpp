@@ -19,6 +19,13 @@ struct StrL
     int len;
 };
 
+struct SlovoIdx
+{
+    int start = -1; // индекс начала слова
+    int end = -1;   // индекс конца слова
+    int oldidx = -1;
+};
+
 void readf()
 {
 }
@@ -119,14 +126,67 @@ void Bubble_sort(StrM *Slova, int num_slova)
     }
 }
 
+// если start1-end1 слово меньше start2-end2 по алфавиту, то вернут -1
+// если start1-end1 слово больше start2-end2 по алфавиту, то вернут 1
+// если РАВНЫ вернут 0
+int Compare_slova_idx(StrM &stroka, int start1, int end1, int start2, int end2) // сравниваем слова
+{
+    int i = 0;
+    while (start1 + i != end1 && start2 + i != end2)
+    {
+        if (stroka.massiv[start1 + i] < stroka.massiv[start2 + i])
+            return -1;
+        if (stroka.massiv[start1 + i] > stroka.massiv[start2 + i])
+            return 1;
+        i++;
+    }
+    if (start1 + i == end1 && start2 + i == end2)
+    {
+        return 0; // абсолютно одинаковые слова
+    }
+
+    if (start1 + i != end1) // так левое слово длиннее правого т.е. больше го
+        return 1;
+    else
+        return -1;
+}
+
+void Bubble_sort_idx(StrM &stroka, SlovoIdx *SlovaIdx, int num_slova)
+{
+    // sorting
+    bool swapped = true;
+    while (swapped)
+    {
+        swapped = false;
+        for (int i = 0; i < num_slova - 1; i++)
+        {
+            if (Compare_slova_idx(stroka, SlovaIdx[i].start, SlovaIdx[i].end, SlovaIdx[i + 1].start, SlovaIdx[i + 1].end) == 1)
+            {
+                SlovoIdx tmp = SlovaIdx[i];
+                SlovaIdx[i] = SlovaIdx[i + 1];
+                SlovaIdx[i + 1] = tmp;
+                swapped = true;
+            }
+        }
+    }
+}
+
 // эта функция меняет местами подстроки в строке
 void inplace_swap_slova(StrM &stroka, int start1, int end1, int start2, int end2)
 {
+    if (start1 == start2 && end1 == end2)
+        return;
+
     // !!!! слово1 это левое слово то есть end1 < start2
     if (end1 > start2)
     {
         cout << "NE TAK SLOVA raspologeni" << endl;
-        abort();
+        int tmp = start1;
+        start1 = start2;
+        start2 = tmp;
+        tmp = end1;
+        end1 = end2;
+        end2 = tmp;
     }
     int len1 = end1 - start1 + 1;
     int len2 = end2 - start2 + 1;
@@ -192,10 +252,54 @@ void process_inPlace(StrM &stroka)
     // найти место куда вставить
     // сдвинуть с того места весь массив на Н символов вправо и вставить слово
 
-    // -------- ПАПИНЫ СТРАДАНИЯ ------------
+    // -------- eshe СТРАДАНИЯ ------------
 
     // заполнить массив индексов начала и конца слов в строке
-    // отсортировать этот массив так чтобы слова в нем распологались в алфавитном порядке
+    // сделать копию массива и отстортировать копию
+    // завести массив булов для того чтобы отмечать какие слова уже меняли местами
+    // поменять слова местами
+
+    int i = 0;
+    int num_slova = 0;
+    SlovoIdx Slova[N];
+    SlovoIdx SlovaSorted[N];
+    while (stroka.massiv[i] != stroka.Marker)
+    {
+        if (stroka.massiv[i] != ' ')
+        {
+            if (Slova[num_slova].start == -1)
+            {
+                Slova[num_slova].start = i;
+                Slova[num_slova].oldidx = num_slova;
+            }
+        }
+        else if (stroka.massiv[i] == ' ')
+        {
+            if (Slova[num_slova].start != -1)
+            {
+                Slova[num_slova].end = i - 1;
+                num_slova++;
+            }
+        }
+        i++;
+    }
+    bool Swapped[N];
+    for (int i = 0; i < num_slova; ++i)
+    {
+        SlovaSorted[i] = Slova[i];
+        Swapped[i] = false;
+    }
+
+    Bubble_sort_idx(stroka, SlovaSorted, num_slova);
+    for (int i = 0; i < num_slova; ++i)
+    {
+        if (Swapped[i] == false)
+        {
+            inplace_swap_slova(stroka, Slova[i].start, Slova[i].end, SlovaSorted[i].start, SlovaSorted[i].end);
+            Swapped[Slova[i].oldidx] = true;
+            Swapped[SlovaSorted[i].oldidx] = true;
+        }
+    }
 }
 
 void process_fM(StrM &stroka)
@@ -265,49 +369,49 @@ int main(int argc, char *argv[])
     cout << "Добро пожаловать в lab 1.1.1 Калюжной Марии 3352 " << endl;
 
     // DEBUG!!!!
-    StrM wtf;
-    std::strcpy(wtf.massiv, "abcxxxdefgh");
-    print(wtf);
-    inplace_swap_slova(wtf, 0, 2, 6, 10);
-    print(wtf);
-    cout << endl;
+    // StrM wtf;
+    // std::strcpy(wtf.massiv, "abcxxxdefgh");
+    // print(wtf);
+    // inplace_swap_slova(wtf, 0, 2, 6, 10);
+    // print(wtf);
+    // cout << endl;
 
-    std::strcpy(wtf.massiv, "abcMxxxdefgh");
-    print(wtf);
-    inplace_swap_slova(wtf, 0, 3, 7, 11);
-    print(wtf);
-    cout << endl;
+    // std::strcpy(wtf.massiv, "abcMxxxdefgh");
+    // print(wtf);
+    // inplace_swap_slova(wtf, 0, 3, 7, 11);
+    // print(wtf);
+    // cout << endl;
 
-    std::strcpy(wtf.massiv, "abcMxxxdefghxxx");
-    print(wtf);
-    inplace_swap_slova(wtf, 0, 3, 7, 11);
-    print(wtf);
-    cout << endl;
+    // std::strcpy(wtf.massiv, "abcMxxxdefghxxx");
+    // print(wtf);
+    // inplace_swap_slova(wtf, 0, 3, 7, 11);
+    // print(wtf);
+    // cout << endl;
 
-    std::strcpy(wtf.massiv, "defghxxxabc");
-    print(wtf);
-    inplace_swap_slova(wtf, 0, 4, 8, 10);
-    print(wtf);
-    cout << endl;
+    // std::strcpy(wtf.massiv, "defghxxxabc");
+    // print(wtf);
+    // inplace_swap_slova(wtf, 0, 4, 8, 10);
+    // print(wtf);
+    // cout << endl;
 
-    std::strcpy(wtf.massiv, "defghxxxabcM");
-    print(wtf);
-    inplace_swap_slova(wtf, 0, 4, 8, 11);
-    print(wtf);
-    cout << endl;
+    // std::strcpy(wtf.massiv, "defghxxxabcM");
+    // print(wtf);
+    // inplace_swap_slova(wtf, 0, 4, 8, 11);
+    // print(wtf);
+    // cout << endl;
 
-    std::strcpy(wtf.massiv, "defxxxabc");
-    print(wtf);
-    inplace_swap_slova(wtf, 0, 2, 6, 8);
-    print(wtf);
-    cout << endl;
-
+    // std::strcpy(wtf.massiv, "defxxxabc");
+    // print(wtf);
+    // inplace_swap_slova(wtf, 0, 2, 6, 8);
+    // print(wtf);
+    // cout << endl;
     // DEBUG!!!!
 
     StrM s1;
     read_fM(filename1, s1);
     print(s1);
-    process_fM(s1);
+    // process_fM(s1);
+    process_inPlace(s1);
     print(s1);
     return 0;
 }
