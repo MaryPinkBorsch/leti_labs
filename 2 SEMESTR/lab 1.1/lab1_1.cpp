@@ -248,7 +248,7 @@ void inplace_swap_slova(StrM &stroka, int start1, int end1, int start2, int end2
             stroka.massiv[start2 + i] = tmp;
         }
         // после этого по одной переносим оставшиеся буквы слова1  вправо и сдвигаем остаток влево
-        int sdvig = end2 - end1 + 1;    // na skolko sdvigat
+        int sdvig = end2 - (start1 + len2);    // na skolko sdvigat (сколько символов переедет за 1 цикл налево на 1 символ)
         int nado_sdvinut = len1 - len2; // кол-во перемещаемых элеменотов
         for (int i = 0; i < nado_sdvinut; i++)
         {
@@ -314,7 +314,7 @@ void inplace_swap_slova2(StrL &stroka, int start1, int end1, int start2, int end
             stroka.massiv[start2 + i] = tmp;
         }
         // после этого по одной переносим оставшиеся буквы слова1  вправо и сдвигаем остаток влево
-        int sdvig = end2 - end1 + 1;    // na skolko sdvigat
+        int sdvig = end2 - (start1 + len2);    // na skolko sdvigat (сколько символов переедет за 1 цикл налево на 1 символ)
         int nado_sdvinut = len1 - len2; // кол-во перемещаемых элеменотов
         for (int i = 0; i < nado_sdvinut; i++)
         {
