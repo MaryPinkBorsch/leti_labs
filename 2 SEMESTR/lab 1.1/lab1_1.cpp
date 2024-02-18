@@ -763,7 +763,44 @@ int main(int argc, char *argv[])
         << endl
         << endl;
 
+        StrM s11;
+    file_process_1("in1_1m11.txt", s11, res);
+    cout << endl
+         << endl
+         << endl;
+    res << endl
+        << endl
+        << endl;
+
+        StrM s12;
+    file_process_1("in1_1m12.txt", s12, res);
+    cout << endl
+         << endl
+         << endl;
+    res << endl
+        << endl
+        << endl;
+
+        StrM s13;
+    file_process_1("in1_1m13.txt", s13, res);
+    cout << endl
+         << endl
+         << endl;
+    res << endl
+        << endl
+        << endl;
+
+        StrM s14;
+    file_process_1("in1_1m14.txt", s14, res);
+    cout << endl
+         << endl
+         << endl;
+    res << endl
+        << endl
+        << endl;
+
     ////////////////////////////////////////////////////////////////////////////////////////////////// 1.1.2.
+    
     StrL ss1;
     file_process_2("in1_2m.txt", ss1, res);
     cout << endl
@@ -825,6 +862,58 @@ int main(int argc, char *argv[])
         << endl
         << endl;
 
-    // res << " все";
+        StrL ss8;
+    file_process_2("in1_2m8.txt", ss8, res);
+    cout << endl
+         << endl
+         << endl;
+    res << endl
+        << endl
+        << endl;
+
+        StrL ss9;
+    file_process_2("in1_2m9.txt", ss9, res);
+    cout << endl
+         << endl
+         << endl;
+    res << endl
+        << endl
+        << endl;
+
+StrL ss10;
+    file_process_2("in1_2m10.txt", ss10, res);
+    cout << endl
+         << endl
+         << endl;
+    res << endl
+        << endl
+        << endl;
+
+        StrL ss11;
+    file_process_2("in1_2m11.txt", ss11, res);
+    cout << endl
+         << endl
+         << endl;
+    res << endl
+        << endl
+        << endl;
+
+StrL ss12;
+    file_process_2("in1_2m12.txt", ss12, res);
+    cout << endl
+         << endl
+         << endl;
+    res << endl
+        << endl
+        << endl; 
+
+        StrL ss13;
+    file_process_2("in1_2m13.txt", ss13, res);
+    cout << endl
+         << endl
+         << endl;
+    res << endl
+        << endl
+        << endl;  
     return 0;
 }
