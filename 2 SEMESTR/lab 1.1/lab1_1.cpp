@@ -15,7 +15,7 @@ struct StrM
 struct StrL
 {
     char massiv[N];
-    // char Marker;
+    char Marker;
     int len;
 };
 
@@ -27,7 +27,7 @@ struct SlovoIdx
 };
 
 // CHTENIE S MARKEROM 1.1.1
-bool read_fM(std::string filename, StrM &stroka)
+bool read_fM(std::string filename, StrM &stroka, ofstream &res)
 {
     ifstream input;
     input.open(filename, std::ios_base::in);
@@ -50,6 +50,9 @@ bool read_fM(std::string filename, StrM &stroka)
         cout << " Файл " << filename << " пуст, упс";
         cout << endl;
 
+        res << " Файл " << filename << " пуст, упс";
+        res << endl;
+
         return false;
     }
     char MMarker = -1; // второй маркер для прерывания чтения с файла
@@ -59,6 +62,7 @@ bool read_fM(std::string filename, StrM &stroka)
     {
         stroka.massiv[0] = stroka.Marker;
         cout << "stroka pusta v " << filename << endl;
+        res << "stroka pusta v " << filename << endl;
     }
     else
     {
@@ -87,10 +91,14 @@ bool read_fM(std::string filename, StrM &stroka)
     {
         cout << "Не хватает 2-го маркера  в файле " << filename;
         cout << endl;
+
+        res << "Не хватает 2-го маркера  в файле " << filename;
+        res << endl;
     }
     if (stroka.massiv[0] == stroka.Marker && MMarker != -1)
     {
         cout << " Строка пуста, 2 маркера есть v  " << filename << endl;
+        res << " Строка пуста, 2 маркера есть v  " << filename << endl;
     }
     return true;
 }
@@ -154,7 +162,7 @@ int Compare_slova_idx(StrM &stroka, int start1, int end1, int start2, int end2) 
             return 1;
         i++;
     }
-    if (start1 + i == end1 && start2 + i == end2)
+    if (start1 + i == end1 && start2 + i == end2) //????
     {
         return 0; // абсолютно одинаковые слова
     }
@@ -404,53 +412,65 @@ void process_inPlace(StrM &stroka)
 }
 
 //
-void print(StrM stroka)
+void print(StrM stroka, ofstream &res)
 {
     int i = 0;
     while (stroka.massiv[i] != stroka.Marker)
     {
         cout << stroka.massiv[i];
+        res << stroka.massiv[i];
         i++;
     }
     cout << endl;
+    res << endl;
 }
 
-void print2(StrL stroka)
+void print2(StrL stroka, ofstream &res)
 {
     int i = 0;
-    for (i; i < stroka.len; i++)
+    // for (i; i < stroka.len || stroka[i] != stroka.Marker; i++)
+    // {
+    //     cout << stroka.massiv[i];
+    // }
+    while (stroka.massiv[i] != stroka.Marker || i < stroka.len)
     {
         cout << stroka.massiv[i];
+        res << stroka.massiv[i];
+        i++;
     }
+    res << endl;
     cout << endl;
 }
 
-int file_process_1(string filename, StrM s)
+int file_process_1(string filename, StrM s, ofstream &res)
 {
 
     string filename2 = "result.txt";
-    ofstream res(filename2, ios::out | ios::trunc);
+    // ofstream res(filename2, ios::out | ios::trunc);
     cout << "Добро пожаловать в lab 1.1.1 Калюжной Марии 3352 " << endl;
+    res << "Добро пожаловать в lab 1.1.1 Калюжной Марии 3352 " << endl;
 
     // StrM s1;
     // read_fM(filename, s); !!!!!
 
-    if (read_fM(filename, s) == false)
+    if (read_fM(filename, s, res) == false)
     {
         cout << "Обработка файла " << filename << " завершена " << endl;
+        res << "Обработка файла " << filename << " завершена " << endl;
         return 1;
         abort;
     }
     else
     {
 
-        print(s);
+        print(s, res);
         // tut sdelat vivod  v res nashalo/itog
         // process_fM(s1);
         process_inPlace(s);
-        print(s);
+        print(s, res);
 
         cout << "Обработка файла " << filename << " завершена " << endl;
+        res << "Обработка файла " << filename << " завершена " << endl;
         return 0;
     }
     // print(s);
@@ -464,14 +484,15 @@ int file_process_1(string filename, StrM s)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////// 1.1.2.
 // CHTENIE S len 1.1.2
-bool read_fM2(std::string filename, StrL &stroka)
+bool read_fM2(std::string filename, StrL &stroka, ofstream &res)
 {
     ifstream input;
     input.open(filename, std::ios_base::in);
     // // TODO: тут проверить что файл открылся gotovo
     if (input.eof())
     {
-        cout << " Файл input пуст, упс" << endl;
+        cout << " Файл input пуст, упс 1" << endl;
+        res << " Файл input пуст, упс 1" << endl;
         return false;
     }
 
@@ -484,46 +505,90 @@ bool read_fM2(std::string filename, StrL &stroka)
     {
         stroka.len = 0;
         cout << "Отрицательная длина исправлена в 0 в  " << filename << endl;
+        res << "Отрицательная длина исправлена в 0 в  " << filename << endl;
+        return false;
     }
 
     if (stroka.len > N)
     {
         stroka.len = N;
         cout << "Слишком большая длина исправлена в " << filename << endl;
+        res << "Слишком большая длина исправлена в " << filename << endl;
     }
 
-    // if (input.eof())
-    // {
-    //     cout << " Файл " << filename << " пуст, упс";
-    //     cout << endl;
+    input >> stroka.Marker; //  маркер для нашего массива
 
-    //     return false;
-    // }
+    if (input.eof())
+    {
+        cout << " МАркера нет " << endl;
+        cout << " Файл " << filename << " пуст, упс 2";
+        cout << endl;
+
+        res << " МАркера нет " << endl;
+        res << " Файл " << filename << " пуст, упс 2";
+        res << endl;
+
+        return false;
+    }
+
+    if (input.eof())
+    {
+        cout << " Файл " << filename << " пуст, упс 3";
+        cout << endl;
+
+        res << " Файл " << filename << " пуст, упс 3";
+        res << endl;
+
+        return false;
+    }
 
     if (input.eof())
     {
         cout << "stroka pusta v " << filename << endl;
+        res << "stroka pusta v " << filename << endl;
+
+        stroka.massiv[0] = stroka.Marker;
     }
     else
     {
         while (1)
         {
+            if (i >= N || i >= stroka.len) // i >= ?
+            {
+                // stroka.massiv[i + 1] = stroka.Marker; //
+                break;
+            }
             input >> noskipws >> s;
             if (s == '\n')
                 break;
 
             if (input.eof())
                 break;
+            if (s == stroka.Marker)
+                break;
 
             stroka.massiv[i] = s;
             i++;
-            if (i >= N || i >= stroka.len) // i >= ?
-            {
-                break;
-            }
+            // if (i >= N || i >= stroka.len) // i >= ?
+            // {
+            //     // stroka.massiv[i + 1] = stroka.Marker; //
+            //     break;
+            // }
         }
         if (stroka.len > i)
+        {
+            cout << " реальная длина меньше заданной " << endl;
+            res << " реальная длина меньше заданной " << endl;
             stroka.len = i;
+            // stroka.massiv[i + 1] = stroka.Marker;
+        }
+
+        stroka.massiv[i] = stroka.Marker; //
+    }
+    if (stroka.massiv[0] == stroka.Marker)
+    {
+        cout << "stroka pusta v " << filename << endl;
+        res << "stroka pusta v " << filename << endl;
     }
 
     return true;
@@ -538,7 +603,7 @@ void process_inPlace2(StrL &stroka)
     int num_slova = 0;
     SlovoIdx Slova[N];
 
-    while (i < stroka.len)
+    while (i < stroka.len || stroka.massiv[i] != stroka.Marker) /////!
     {
         if (stroka.massiv[i] != ' ')
         {
@@ -567,118 +632,199 @@ void process_inPlace2(StrL &stroka)
     Bubble_sort_idx2(stroka, Slova, num_slova);
 }
 
-int file_process_2(string filename, StrL s)
+int file_process_2(string filename, StrL s, ofstream &res)
 {
 
-    string filename2 = "result.txt";
-    ofstream res(filename2, ios::out | ios::trunc);
+    // string filename2 = "result.txt";
+    // ofstream res(filename2, ios::out | ios::trunc);
     cout << "Добро пожаловать в lab 1.1.1 Калюжной Марии 3352 " << endl;
+    res << "Добро пожаловать в lab 1.1.1 Калюжной Марии 3352 " << endl;
 
     // StrM s1;
     // read_fM(filename, s); !!!!!
 
-    if (read_fM2(filename, s) == false)
+    if (read_fM2(filename, s, res) == false)
     {
         cout << "Обработка файла " << filename << " завершена (2)" << endl;
+        res << "Обработка файла " << filename << " завершена (2)" << endl;
         return 1;
         abort;
     }
     else
     {
 
-        print2(s);
+        print2(s, res);
         // tut sdelat vivod  v res nashalo/itog
         // process_fM(s1);
         process_inPlace2(s);
-        print2(s);
+        print2(s, res);
 
         cout << "Обработка файла " << filename << " завершена (2)" << endl;
+        res << "Обработка файла " << filename << " завершена (2)" << endl;
         return 0;
     }
 }
 
 int main(int argc, char *argv[])
 {
-    // string filename2 = "result.txt";
+    string filename2 = "result.txt";
     // string filename1 = "in1_1m.txt";
-    // ofstream res(filename2, ios::out | ios::trunc);
+    ofstream res(filename2, ios::out | ios::trunc);
     // cout << "Добро пожаловать в lab 1.1.1 Калюжной Марии 3352 " << endl;
 
     StrM s1;
-    file_process_1("in1_1m.txt", s1);
+    file_process_1("in1_1m.txt", s1, res);
     cout << endl
          << endl
          << endl;
+
+    res << endl
+        << endl
+        << endl;
 
     StrM s2;
-    file_process_1("in1_1m2.txt", s2);
+    file_process_1("in1_1m2.txt", s2, res);
     cout << endl
          << endl
          << endl;
+    res << endl
+        << endl
+        << endl;
 
     StrM s3;
-    file_process_1("in1_1m3.txt", s3);
+    file_process_1("in1_1m3.txt", s3, res);
     cout << endl
          << endl
          << endl;
+    res << endl
+        << endl
+        << endl;
 
     StrM s4;
-    file_process_1("in1_1m4.txt", s4);
+    file_process_1("in1_1m4.txt", s4, res);
     cout << endl
          << endl
          << endl;
+    res << endl
+        << endl
+        << endl;
 
     StrM s5;
-    file_process_1("in1_1m5.txt", s5);
+    file_process_1("in1_1m5.txt", s5, res);
     cout << endl
          << endl
          << endl;
+    res << endl
+        << endl
+        << endl;
 
     StrM s6;
-    file_process_1("in1_1m6.txt", s6);
+    file_process_1("in1_1m6.txt", s6, res);
     cout << endl
          << endl
          << endl;
+    res << endl
+        << endl
+        << endl;
 
     StrM s7;
-    file_process_1("in1_1m7.txt", s7);
+    file_process_1("in1_1m7.txt", s7, res);
     cout << endl
          << endl
          << endl;
+    res << endl
+        << endl
+        << endl;
 
     StrM s8;
-    file_process_1("in1_1m8.txt", s8);
+    file_process_1("in1_1m8.txt", s8, res);
     cout << endl
          << endl
          << endl;
+    res << endl
+        << endl
+        << endl;
 
     StrM s9;
-    file_process_1("in1_1m9.txt", s9);
+    file_process_1("in1_1m9.txt", s9, res);
     cout << endl
          << endl
          << endl;
+    res << endl
+        << endl
+        << endl;
 
     StrM s10;
-    file_process_1("in1_1m10.txt", s10);
+    file_process_1("in1_1m10.txt", s10, res);
     cout << endl
          << endl
          << endl;
+    res << endl
+        << endl
+        << endl;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////// 1.1.2.
     StrL ss1;
-    file_process_2("in1_2m.txt", ss1);
+    file_process_2("in1_2m.txt", ss1, res);
     cout << endl
          << endl
          << endl;
+    res << endl
+        << endl
+        << endl;
     StrL ss2;
-    file_process_2("in1_2m2.txt", ss2);
+    file_process_2("in1_2m2.txt", ss2, res);
     cout << endl
          << endl
          << endl;
+    res << endl
+        << endl
+        << endl;
     StrL ss3;
-    file_process_2("in1_2m3.txt", ss3);
+    file_process_2("in1_2m3.txt", ss3, res);
     cout << endl
          << endl
          << endl;
+    res << endl
+        << endl
+        << endl;
+
+    StrL ss4;
+    file_process_2("in1_2m4.txt", ss4, res);
+    cout << endl
+         << endl
+         << endl;
+    res << endl
+        << endl
+        << endl;
+
+    StrL ss5;
+    file_process_2("in1_2m5.txt", ss5, res);
+    cout << endl
+         << endl
+         << endl;
+    res << endl
+        << endl
+        << endl;
+
+    StrL ss6;
+    file_process_2("in1_2m6.txt", ss6, res);
+    cout << endl
+         << endl
+         << endl;
+    res << endl
+        << endl
+        << endl;
+
+    StrL ss7;
+    file_process_2("in1_2m7.txt", ss7, res);
+    cout << endl
+         << endl
+         << endl;
+    res << endl
+        << endl
+        << endl;
+
+    // res << " все";
     return 0;
 }
