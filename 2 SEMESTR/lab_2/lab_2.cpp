@@ -2,81 +2,173 @@
 
 using namespace std;
 
-// CHTENIE S MARKEROM 1.1.1
-bool read_fM(std::string filename, StrM &stroka, std::ofstream &res)
+void StrM::print1(std::ofstream &res) 
 {
-    ifstream input;
-    input.open(filename, std::ios_base::in);
-    
+    int i = 0;
+    while (massiv[i] != Marker)
+    {
+        cout << massiv[i];
+        res << massiv[i];
+        i++;
+    }
+    cout << endl;
+    res << endl;
+}
+
+// CHTENIE S MARKEROM 1.1.1
+bool StrM::read_StrM(std::ifstream & input, std::ofstream &res)
+{
     int i = 0;
     char s;
     
-    input >> stroka.Marker; // первый маркер для нашего массива
+    input >> Marker; // первый маркер для нашего массива
     if (input.eof())
     {
-        cout << " Файл " << filename << " пуст, упс";
-        cout << endl;
+        // cout << " Файл пуст, упс"; ///// !!!! s etim toje nado choto sdelat
+        // cout << endl;
 
-        res << " Файл " << filename << " пуст, упс";
-        res << endl;
+        // res << " Файл пуст, упс";
+        // res << endl;
 
         return false;
     }
-    char MMarker = -1; // второй маркер для прерывания чтения с файла
-    input >> MMarker;
+    // char MMarker = -1; // второй маркер для прерывания чтения с файла
+    // input >> MMarker;
 
     if (input.eof())
     {
-        stroka.massiv[0] = stroka.Marker;
-        cout << "stroka pusta v " << filename << endl;
-        res << "stroka pusta v " << filename << endl;
+        massiv[0] = Marker;
+        cout << "stroka pusta v " << endl;
+        res << "stroka pusta v " << endl;
     }
     else
     {
         while (1)
         {
             input >> noskipws >> s;
-            if (s == MMarker)
-                break;
+           
             if (s == '\n')
                 break;
 
             if (input.eof())
                 break;
 
-            stroka.massiv[i] = s;
+            massiv[i] = s;
             i++;
             if (i >= N)
             {
                 break;
             }
         }
-        stroka.massiv[i] = stroka.Marker;
+        massiv[i] = Marker;
     }
 
-    if (stroka.massiv[0] == stroka.Marker && MMarker == -1)
+    
+    if (massiv[0] == Marker )
     {
-        cout << "Не хватает 2-го маркера  в файле " << filename;
-        cout << endl;
-
-        res << "Не хватает 2-го маркера  в файле " << filename;
-        res << endl;
-    }
-    if (stroka.massiv[0] == stroka.Marker && MMarker != -1)
-    {
-        cout << " Строка пуста, 2 маркера есть v  " << filename << endl;
-        res << " Строка пуста, 2 маркера есть v  " << filename << endl;
+        cout << " Строка пуста  " << endl;
+        res << " Строка пуста  " << endl;
     }
     return true;
 }
 
+void Text::print2(std::ofstream &res) 
+{
+    for(int i = 0; i < num_stroki; i++)
+    {
+        stroki[i].print1(res);
+    }
+}
+
+
+bool Text::read_file(std::string filename, std::ofstream &res)
+{
+    ifstream input;
+    input.open(filename, std::ios_base::in);
+    num_stroki = 0;
+    //TODO proverka eof i return false!!!!!!!!!!!!!!!!!
+
+    // пока в стриме есть что читать и в тексте есть место, считываем строки
+    while(!input.eof() && num_stroki < M) 
+    {
+        if (stroki[num_stroki].read_StrM(input, res) == false)
+            break;
+        ++num_stroki;
+    }
+    return true;
+}
+
+bool Text::IsRazdelitel(char c) 
+{
+    return c == ';' || c == '.' || c == '?' || c == '!'; // TODO: "..."
+}
+
+bool Text::IsZnak(char c) 
+{
+    return  c == ',' || c == ':' || c == '-' || c == '\'';
+}
+
+void Text::process_znaki(std::ofstream &res)
+{
+    // идем по всем строкам
+    num_predlojenia = 0;
+    for (int i=0; i < num_stroki; i++)
+    {
+        int j = 0;
+        // идем по всем символам каждой строки
+        while(stroki[i].massiv[j] != stroki[i].Marker)
+        {
+            // если символ - разделитель предложений            
+            if (IsRazdelitel(stroki[i].massiv[j]))
+            {
+                // и при этом у нас уже было начало предолжения
+                if (indexi_predlojenii[num_predlojenia].stroka_idx_start != -1) 
+                {
+                    // заполним текущее предложение (концы)
+                    indexi_predlojenii[num_predlojenia].stroka_idx_end = i;
+                    indexi_predlojenii[num_predlojenia].stroka_smeschenie_end = j;
+                    indexi_predlojenii[num_predlojenia].num_znaki++;
+                    // увеличим счетчик предложений
+                    ++num_predlojenia;
+                }
+            }
+            else 
+            {
+                // у нас обычный символ. Если начала предолжения не было, то это оно
+                if (indexi_predlojenii[num_predlojenia].stroka_idx_start == -1) 
+                {
+                    // заполняем начало предолжения
+                    indexi_predlojenii[num_predlojenia].stroka_idx_start = i;
+                    indexi_predlojenii[num_predlojenia].stroka_smeschenie_start = j;
+                }
+                if (IsZnak(stroki[i].massiv[j]))
+                    indexi_predlojenii[num_predlojenia].num_znaki++;
+            }
+            // следующий символ
+            ++j;
+        }
+    }
+}
 // 17. Предложения могут находится в разных строках текста. 
 // Удалить в тексте те предложения, которые: 3) содержат максимальное
 // число знаков препинания
 
 int main(int argc, char * argv[]) 
 {
+    std::string filename2 = "result2.txt";
+    std::ofstream res(filename2, ios::out | ios::trunc);
+
     // Считать файл в объект структуры Text
+    Text text;
+    text.read_file("in2_1.txt", res);
+    text.print2(res);
+    text.process_znaki(res);
+
+    Text text1;
+    text1.read_file("in2.txt", res);
+    text1.print2(res);
+    text1.process_znaki(res);
+
     // Пройти по строкам и выделить предложения
     // Отсортировать предложения по количеству знаков препинания
     // inplace удалить из объекта текст предложения имевшие макс. число знаков препинания
