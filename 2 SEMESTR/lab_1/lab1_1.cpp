@@ -473,13 +473,7 @@ int file_process_1(string filename, StrM s, ofstream &res)
         res << "Обработка файла " << filename << " завершена " << endl;
         return 0;
     }
-    // print(s);
-    // // tut sdelat vivod  v res nashalo/itog
-    // // process_fM(s1);
-    // process_inPlace(s);
-    // print(s);
-
-    // return 0;
+   
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////// 1.1.2.
