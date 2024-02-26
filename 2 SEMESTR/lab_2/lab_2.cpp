@@ -149,6 +149,50 @@ void Text::process_znaki(std::ofstream &res)
         }
     }
 }
+
+int Text::MaxZnaki(std::ofstream &res)
+{
+    int Max= -1;
+    for (int i = 0; i < num_predlojenia; i++)
+    {
+        if(indexi_predlojenii[i].num_znaki > Max)
+        {
+            Max = indexi_predlojenii[i].num_znaki;
+        }
+    }
+    cout << "max kol-vo znakov = " << Max << endl;
+    res << "max kol-vo znakov = " << Max << endl;
+    return Max;
+} 
+
+void Text::Delete(std::ofstream &res)
+{
+    int Max = MaxZnaki(res);
+    int FromStr = 0;
+    int FromChar = 0;
+    int ToStr = 0;
+    int ToChar = 0;
+    bool NadoPerenesti = false;
+
+    for(int i = 0; i < num_predlojenia; i++)
+    {
+        if(NadoPerenesti)
+        {
+            //
+        }
+        else
+        {
+            if(indexi_predlojenii[i].num_znaki == Max)
+            {
+                NadoPerenesti == true;
+            }
+        }
+    }
+
+    
+}
+
+
 // 17. Предложения могут находится в разных строках текста. 
 // Удалить в тексте те предложения, которые: 3) содержат максимальное
 // число знаков препинания

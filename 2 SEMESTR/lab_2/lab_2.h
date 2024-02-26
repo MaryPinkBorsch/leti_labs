@@ -41,5 +41,7 @@ struct Text
     void process_znaki(std::ofstream &res);
     bool IsRazdelitel(char c);
     bool IsZnak(char c);
+    int MaxZnaki(std::ofstream &res); 
+    void Delete(std::ofstream &res);
 };
 
