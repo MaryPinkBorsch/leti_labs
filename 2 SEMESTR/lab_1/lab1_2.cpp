@@ -274,7 +274,7 @@ class StrL1
         }
     }
 
-    void process_inPlace2(StrL1 &stroka)
+    void process_inPlace2()
     {
         // заполнить массив индексов начала и конца слов в строке
         // отстортировать массив одновременно меняя местами слова
@@ -309,12 +309,12 @@ class StrL1
             Slova[num_slova].end = i - 1;
             num_slova++;
         }
-        Bubble_sort_idx2(stroka, Slova, num_slova);
+        Bubble_sort_idx2(*this, Slova, num_slova);
     }
 
 
 
-    int file_process_21(string filename, StrL1 s, ofstream &res)
+    int file_process_21(string filename, ofstream &res)
     {
 
     
@@ -323,7 +323,7 @@ class StrL1
 
     
 
-        if (s.Read1(filename, res) == false)
+        if (Read1(filename, res) == false)
         {
             cout << "Обработка файла " << filename << " завершена (2)" << endl;
             res << "Обработка файла " << filename << " завершена (2)" << endl;
@@ -332,10 +332,10 @@ class StrL1
         }
         else
         {
-            s.print2(res);
+            print2(res);
             // tut sdelat vivod  v res nashalo/itog            
-            s.process_inPlace2(s); // norm?
-            s.print2(res);
+            process_inPlace2(); // norm?
+            print2(res);
 
             cout << "Обработка файла " << filename << " завершена (2.1)" << endl;
             res << "Обработка файла " << filename << " завершена (2.1)" << endl;
@@ -353,7 +353,7 @@ int main(int argc, char *argv[])
     // cout << "Добро пожаловать в lab 1.1.1 Калюжной Марии 3352 " << endl;
 
     StrL1 s1;
-    s1.file_process_21("in1_2m.txt", s1, res); // norm?????????? pro s1??
+    s1.file_process_21("in1_2m.txt", res); // norm?????????? pro s1??
     res << endl << endl;
     cout << endl << endl;
     
