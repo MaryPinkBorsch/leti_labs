@@ -168,28 +168,65 @@ int Text::MaxZnaki(std::ofstream &res)
 void Text::Delete(std::ofstream &res)
 {
     int Max = MaxZnaki(res);
-    int FromStr = 0;
-    int FromChar = 0;
-    int ToStr = 0;
-    int ToChar = 0;
-    bool NadoPerenesti = false;
+    int FromStr = 0;         // строка откуда переносится предложение 
+    int FromChar = 0;        // символ в строке откуда переносится предложение
+    int ToStr = 0;           // строка куда переносится предложение 
+    int ToChar = 0;          //символ в строке куда переносится предложение
+    bool NadoPerenesti = false; // flag
 
+    // цикл по предложениям
     for(int i = 0; i < num_predlojenia; i++)
     {
-        if(NadoPerenesti)
+        // если перенос еще не начался
+        if(!NadoPerenesti)
         {
-            //
-        }
-        else
-        {
+            // проверить должен ли начаться перенос
             if(indexi_predlojenii[i].num_znaki == Max)
             {
-                NadoPerenesti == true;
+                NadoPerenesti = true;
+            }
+            else
+                continue; // переход к след. предложению
+        }
+        // если перенос уже начался
+        if(NadoPerenesti)
+        {
+            int next_predlojenie = i; // индекс предложения из которого будем переносить
+            if(indexi_predlojenii[i].num_znaki == Max)
+            {
+                ToStr = indexi_predlojenii[i].stroka_idx_start;
+                ToChar = indexi_predlojenii[i].stroka_smeschenie_start;
+                while(indexi_predlojenii[next_predlojenie].num_znaki == Max && next_predlojenie < num_predlojenia)
+                    ++next_predlojenie;
+                if (next_predlojenie == num_predlojenia)
+                    break;
+                FromStr = indexi_predlojenii[next_predlojenie].stroka_idx_start;
+                FromChar = indexi_predlojenii[next_predlojenie].stroka_smeschenie_start;
+            }
+            while(FromStr <= indexi_predlojenii[next_predlojenie].stroka_idx_end && (
+                FromStr < indexi_predlojenii[next_predlojenie].stroka_smeschenie_end || (
+                FromChar <= indexi_predlojenii[next_predlojenie].stroka_smeschenie_end)))
+            {
+                stroki[ToStr].massiv[ToChar] = stroki[FromStr].massiv[FromChar];
+                ++ToChar;
+                if (stroki[ToStr].massiv[ToChar] == stroki[ToStr].Marker) 
+                {
+                    ++ToStr;
+                    ToChar = 0;
+                }
+                ++FromChar;
+                if (stroki[FromStr].massiv[FromChar] == stroki[FromStr].Marker) 
+                {
+                    ++FromStr;
+                    FromChar = 0;
+                }
             }
         }
     }
-
-    
+    if (ToChar != 0)
+        stroki[ToStr].massiv[ToChar] = stroki[ToStr].Marker;
+    if (ToStr < num_stroki - 1)
+        num_stroki = ToStr + 1;
 }
 
 
@@ -212,6 +249,9 @@ int main(int argc, char * argv[])
     text1.read_file("in2.txt", res);
     text1.print2(res);
     text1.process_znaki(res);
+    text1.Delete(res);
+    cout<<endl;
+    text1.print2(res);
 
     // Пройти по строкам и выделить предложения
     // Отсортировать предложения по количеству знаков препинания
