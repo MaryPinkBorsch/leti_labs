@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-
 using namespace std;
 static const int N = 100;
 // class SlovoIdx
@@ -10,6 +9,8 @@ static const int N = 100;
 //     int end = -1;   // индекс конца слова
 //     int oldidx = -1;
 // };
+
+
 // 1.2.1 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 class StrL1
 {
@@ -19,7 +20,7 @@ class StrL1
 
     class SlovoIdx
     {
-        public: // norm vashe??
+        public: // ??
         int start = -1; // индекс начала слова
         int end = -1;   // индекс конца слова
         int oldidx = -1;
@@ -145,8 +146,7 @@ class StrL1
                 Len = i;
                 
             }
-
-            massiv[i] = Marker; //?????????
+            massiv[i] = Marker; 
         }
         if (massiv[0] == Marker)
         {
@@ -357,7 +357,7 @@ class StrL2
     int Len;
     class SlovoIdx
     {
-        public: // norm vashe??
+        public: // norm??
         int start = -1; // индекс начала слова
         int end = -1;   // индекс конца слова
         int oldidx = -1;
@@ -444,7 +444,6 @@ class StrL2
             {
                 if (i >= N || i >= Len) // i >= ?
                 {
-                    // stroka.massiv[i + 1] = stroka.Marker; //
                     break;
                 }
                 input >> noskipws >> s;
@@ -670,8 +669,7 @@ class StrL2
 
 int main(int argc, char *argv[])
 {
-    string filename2 = "result2_1.txt";
-    string filename1 = "input1_2_1m1.txt";
+    string filename2 = "result1_2.txt";   
     ofstream res(filename2, ios::out | ios::trunc);
     // cout << "Добро пожаловать в lab 1.1.1 Калюжной Марии 3352 " << endl;
 

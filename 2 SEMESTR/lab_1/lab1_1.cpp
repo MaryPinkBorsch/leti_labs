@@ -631,8 +631,8 @@ int file_process_2(string filename, StrL s, ofstream &res)
 
     // string filename2 = "result.txt";
     // ofstream res(filename2, ios::out | ios::trunc);
-    cout << "Добро пожаловать в lab 1.1.1 Калюжной Марии 3352 " << endl;
-    res << "Добро пожаловать в lab 1.1.1 Калюжной Марии 3352 " << endl;
+    cout << "Добро пожаловать в lab 1.1.2 Калюжной Марии 3352 " << endl;
+    res << "Добро пожаловать в lab 1.1.2 Калюжной Марии 3352 " << endl;
 
     // StrM s1;
     // read_fM(filename, s); !!!!!
