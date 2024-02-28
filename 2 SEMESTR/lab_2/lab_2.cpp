@@ -172,59 +172,57 @@ void Text::Delete(std::ofstream &res)
     int FromChar = 0;        // символ в строке откуда переносится предложение
     int ToStr = 0;           // строка куда переносится предложение 
     int ToChar = 0;          //символ в строке куда переносится предложение
-    bool NadoPerenesti = false; // flag
+    int next_predlojenie = 0;
 
-    // цикл по предложениям
-    for(int i = 0; i < num_predlojenia; i++)
+    // пока не прошли весь текст 
+    while((next_predlojenie < num_predlojenia) && 
+        ((FromStr < indexi_predlojenii[num_predlojenia - 1].stroka_idx_end) || 
+        (FromStr == indexi_predlojenii[num_predlojenia - 1].stroka_idx_end && 
+            (FromChar <= indexi_predlojenii[num_predlojenia - 1].stroka_smeschenie_end))))
     {
-        // если перенос еще не начался
-        if(!NadoPerenesti)
+        // пропускаем предложения с максимальным количеством знаком
+        while(indexi_predlojenii[next_predlojenie].num_znaki == Max) 
         {
-            // проверить должен ли начаться перенос
-            if(indexi_predlojenii[i].num_znaki == Max)
-            {
-                NadoPerenesti = true;
-            }
-            else
-                continue; // переход к след. предложению
+            ++next_predlojenie;
+            if (next_predlojenie == num_predlojenia)
+                break;
+            // выставляем то откуда копировать в начало следующего предложения
+            FromStr = indexi_predlojenii[next_predlojenie].stroka_idx_start;
+            FromChar = indexi_predlojenii[next_predlojenie].stroka_smeschenie_start;
         }
-        // если перенос уже начался
-        if(NadoPerenesti)
+        if (next_predlojenie == num_predlojenia)
+            break;
+        // начинаем перетаскивать предложение налево\вверх
+        while(FromStr < indexi_predlojenii[next_predlojenie].stroka_idx_end || (
+            FromStr == indexi_predlojenii[next_predlojenie].stroka_idx_end && (
+            FromChar <= indexi_predlojenii[next_predlojenie].stroka_smeschenie_end)))
         {
-            int next_predlojenie = i; // индекс предложения из которого будем переносить
-            if(indexi_predlojenii[i].num_znaki == Max)
-            {
-                ToStr = indexi_predlojenii[i].stroka_idx_start;
-                ToChar = indexi_predlojenii[i].stroka_smeschenie_start;
-                while(indexi_predlojenii[next_predlojenie].num_znaki == Max && next_predlojenie < num_predlojenia)
-                    ++next_predlojenie;
-                if (next_predlojenie == num_predlojenia)
-                    break;
-                FromStr = indexi_predlojenii[next_predlojenie].stroka_idx_start;
-                FromChar = indexi_predlojenii[next_predlojenie].stroka_smeschenie_start;
-            }
-            while(FromStr <= indexi_predlojenii[next_predlojenie].stroka_idx_end && (
-                FromStr < indexi_predlojenii[next_predlojenie].stroka_smeschenie_end || (
-                FromChar <= indexi_predlojenii[next_predlojenie].stroka_smeschenie_end)))
-            {
+            // копируем только если надо (смещение ненулевое) т е  если FromStr!=ToStr
+            // и FromChar != ToChar
+            if (! ((FromStr == ToStr) && (FromChar == ToChar)) )
                 stroki[ToStr].massiv[ToChar] = stroki[FromStr].massiv[FromChar];
-                ++ToChar;
-                if (stroki[ToStr].massiv[ToChar] == stroki[ToStr].Marker) 
-                {
-                    ++ToStr;
-                    ToChar = 0;
-                }
-                ++FromChar;
-                if (stroki[FromStr].massiv[FromChar] == stroki[FromStr].Marker) 
-                {
-                    ++FromStr;
-                    FromChar = 0;
-                }
+            ++ToChar;
+            // переезжаем в начало следующей строчки куда копировать если надо
+            if (stroki[ToStr].massiv[ToChar] == stroki[ToStr].Marker) 
+            {
+                ++ToStr;
+                ToChar = 0;
+            }
+            ++FromChar;
+            // переезжаем в начало следующей строчки откуда копировать если надо
+            if (stroki[FromStr].massiv[FromChar] == stroki[FromStr].Marker) 
+            {
+                ++FromStr;
+                FromChar = 0;
             }
         }
+        // следующее предложение
+        ++next_predlojenie;
     }
+    // ставим новый маркер после всееех сдвигов
     if (ToChar != 0)
         stroki[ToStr].massiv[ToChar] = stroki[ToStr].Marker;
+    // отбрасываем лишние строчки после сдвигов если таковые остались
     if (ToStr < num_stroki - 1)
         num_stroki = ToStr + 1;
 }
@@ -244,6 +242,9 @@ int main(int argc, char * argv[])
     text.read_file("in2_1.txt", res);
     text.print2(res);
     text.process_znaki(res);
+    text.Delete(res);
+    cout<<endl;
+    text.print2(res);
 
     Text text1;
     text1.read_file("in2.txt", res);
