@@ -291,6 +291,9 @@ int main(int argc, char * argv[])
     Text text2;
     BIG_process("in2_2.txt", res, text2);
 
+    Text text3;
+    BIG_process("in2_3.txt", res, text3);
+
 
     // Пройти по строкам и выделить предложения
     // Отсортировать предложения по количеству знаков препинания
