@@ -43,5 +43,7 @@ struct Text
     bool IsZnak(char c);
     int MaxZnaki(std::ofstream &res); 
     void Delete(std::ofstream &res);
+
+    void BIG_process(std::string filename, std::ofstream &res, Text textik);
 };
 

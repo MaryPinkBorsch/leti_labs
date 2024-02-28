@@ -160,8 +160,8 @@ int Text::MaxZnaki(std::ofstream &res)
             Max = indexi_predlojenii[i].num_znaki;
         }
     }
-    cout << "max kol-vo znakov = " << Max << endl;
-    res << "max kol-vo znakov = " << Max << endl;
+    cout << endl << "max kol-vo znakov = " << Max << endl;
+    res << endl<< "max kol-vo znakov = " << Max << endl;
     return Max;
 } 
 
@@ -232,6 +232,35 @@ void Text::Delete(std::ofstream &res)
 // Удалить в тексте те предложения, которые: 3) содержат максимальное
 // число знаков препинания
 
+void BIG_process(string filename, ofstream &res, Text textik)
+{
+    if(!textik.read_file(filename, res))
+    {
+        res << "Oshibka reading" << endl;
+        cout << "Oshibka reading" << endl;
+    }
+    else
+    {
+        cout<< endl << " Началась обработка файла " << filename<< endl<<endl;
+        res<< endl << " Началась обработка файла " << filename<< endl<<endl;
+        textik.print2(res);
+        textik.process_znaki(res);
+        textik.Delete(res);
+
+        cout<<endl<<endl;
+        cout << "RESULT: "<<endl<<endl;
+
+        res<<endl<<endl;
+        res << "RESULT: "<<endl<<endl;
+
+        textik.print2(res);
+
+        cout << " Кончилась обработка файла " << filename<< endl<<endl;
+        res << " Кончилась обработка файла " << filename<< endl<<endl;
+    }
+
+}
+
 int main(int argc, char * argv[]) 
 {
     std::string filename2 = "result2.txt";
@@ -239,20 +268,29 @@ int main(int argc, char * argv[])
 
     // Считать файл в объект структуры Text
     Text text;
-    text.read_file("in2_1.txt", res);
-    text.print2(res);
-    text.process_znaki(res);
-    text.Delete(res);
-    cout<<endl;
-    text.print2(res);
+    BIG_process("in2_1.txt", res, text);
+    // text.read_file("in2_1.txt", res);
+    // text.print2(res);
+    // text.process_znaki(res);
+    // text.Delete(res);
+    // cout<<endl;
+    // text.print2(res);
 
     Text text1;
-    text1.read_file("in2.txt", res);
-    text1.print2(res);
-    text1.process_znaki(res);
-    text1.Delete(res);
-    cout<<endl;
-    text1.print2(res);
+    BIG_process("in2.txt", res, text1);
+
+    // cout << " OBRABOTKA F1"<<endl;   
+    // text1.read_file("in2.txt", res);
+    // text1.print2(res);
+    // text1.process_znaki(res);
+    // text1.Delete(res);
+    // cout<<endl;
+    // text1.print2(res);
+    // cout << " OBRABOTKA F1 zavershena"<<endl;
+
+    Text text2;
+    BIG_process("in2_2.txt", res, text2);
+
 
     // Пройти по строкам и выделить предложения
     // Отсортировать предложения по количеству знаков препинания
