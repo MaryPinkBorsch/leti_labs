@@ -57,8 +57,8 @@ bool StrM::read_StrM(std::ifstream & input, std::ofstream &res)
             if (input.eof())
                 break;
 
-            if (s == Marker)
-                break;                
+            // if (s == Marker)
+            //     break;                
 
             massiv[i] = s;
             i++;
@@ -112,7 +112,7 @@ bool Text::read_file(std::string filename, std::ofstream &res)
 
 bool Text::IsRazdelitel(char c) 
 {
-    return c == ';' || c == '.' || c == '?' || c == '!'; // TODO: "..."
+    return c == ';' || c == '.' || c == '?' || c == '!'; 
 }
 
 bool Text::IsZnak(char c) 
@@ -255,6 +255,9 @@ void BIG_process(string filename, ofstream &res, Text textik)
     {
         cout<< endl << " Началась обработка файла " << filename<< endl<<endl;
         res<< endl << " Началась обработка файла " << filename<< endl<<endl;
+
+        cout<< endl << " Исходный текст: " <<endl;
+        res<< endl << " Исходный текст: " <<endl;
         textik.print2(res);
         textik.process_znaki(res);
         textik.Delete(res);
@@ -266,9 +269,11 @@ void BIG_process(string filename, ofstream &res, Text textik)
         res << "RESULT: "<<endl<<endl;
 
         textik.print2(res);
-
-        cout << " Кончилась обработка файла " << filename<< endl<<endl;
-        res << " Кончилась обработка файла " << filename<< endl<<endl;
+        cout<<endl;
+        res<<endl;
+    
+        cout << " Кончилась обработка файла " << filename<< endl<<endl<< endl<<endl;
+        res << " Кончилась обработка файла " << filename<< endl<<endl<< endl<<endl;
     }
 
 }
@@ -280,25 +285,11 @@ int main(int argc, char * argv[])
 
     // Считать файл в объект структуры Text
     Text text;
-    BIG_process("in2_1.txt", res, text);
-    // text.read_file("in2_1.txt", res);
-    // text.print2(res);
-    // text.process_znaki(res);
-    // text.Delete(res);
-    // cout<<endl;
-    // text.print2(res);
+    BIG_process("in2_1.txt", res, text); 
+   
 
     Text text1;
-    BIG_process("in2.txt", res, text1);
-
-    // cout << " OBRABOTKA F1"<<endl;   
-    // text1.read_file("in2.txt", res);
-    // text1.print2(res);
-    // text1.process_znaki(res);
-    // text1.Delete(res);
-    // cout<<endl;
-    // text1.print2(res);
-    // cout << " OBRABOTKA F1 zavershena"<<endl;
+    BIG_process("in2.txt", res, text1);   
 
     Text text2;
     BIG_process("in2_2.txt", res, text2);
@@ -306,6 +297,14 @@ int main(int argc, char * argv[])
     Text text3;
     BIG_process("in2_3.txt", res, text3);
 
+    Text text4;
+    BIG_process("in2_4.txt", res, text4);
+
+    Text text5;
+    BIG_process("in2_5.txt", res, text5);
+
+    Text text6;
+    BIG_process("in2_6.txt", res, text6);
 
     // Пройти по строкам и выделить предложения
     // Отсортировать предложения по количеству знаков препинания
