@@ -22,6 +22,10 @@ bool StrM::read_StrM(std::ifstream & input, std::ofstream &res)
     char s;
     
     input >> Marker; // первый маркер для нашего массива
+    if (Marker == '\n') 
+    {
+        return false;
+    }
     if (input.eof())
     {
         // cout << " Файл пуст, упс"; ///// !!!! s etim toje nado choto sdelat
@@ -52,6 +56,9 @@ bool StrM::read_StrM(std::ifstream & input, std::ofstream &res)
 
             if (input.eof())
                 break;
+
+            if (s == Marker)
+                break;                
 
             massiv[i] = s;
             i++;
@@ -92,9 +99,13 @@ bool Text::read_file(std::string filename, std::ofstream &res)
     // пока в стриме есть что читать и в тексте есть место, считываем строки
     while(!input.eof() && num_stroki < M) 
     {
-        if (stroki[num_stroki].read_StrM(input, res) == false)
-            break;
-        ++num_stroki;
+        if (stroki[num_stroki].read_StrM(input, res) == false) 
+        {
+            if (input.eof())
+                break;
+        }
+        else
+            ++num_stroki;
     }
     return true;
 }
