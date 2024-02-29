@@ -86,7 +86,8 @@ bool Text::read_file(std::string filename, std::ofstream &res)
     ifstream input;
     input.open(filename, std::ios_base::in);
     num_stroki = 0;
-    //TODO proverka eof i return false!!!!!!!!!!!!!!!!!
+
+    // !! TODO proverka eof i return false !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     // пока в стриме есть что читать и в тексте есть место, считываем строки
     while(!input.eof() && num_stroki < M) 
