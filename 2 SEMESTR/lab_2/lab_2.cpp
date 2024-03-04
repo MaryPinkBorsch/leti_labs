@@ -60,15 +60,17 @@ bool StrM::read_StrM(std::ifstream &input, std::ofstream &res)
                 break;
 
             if (input.eof())
-                break;
-
-            // if (s == Marker)
-            //     break;
+                break;          
 
             massiv[i] = s;
             i++;
             if (i >= N)
             {
+                char nextChar;
+                do
+                {
+                    input >> noskipws >> nextChar;
+                } while(nextChar!='\n');
                 break;
             }
         }
@@ -110,6 +112,13 @@ bool Text::read_file(std::string filename, std::ofstream &res)
         else
             ++num_stroki;
     }
+
+    if(!input.eof() && num_stroki == M)
+    {
+        cout << "ОБРАБОТКА НЕВОЗМОЖНА, слишком много строк!" << endl;
+        res << "ОБРАБОТКА НЕВОЗМОЖНА, слишком много строк!"<< endl;
+        exit(1);
+    }
     return true;
 }
 
@@ -145,6 +154,12 @@ void Text::process_znaki(std::ofstream &res)
                     indexi_predlojenii[num_predlojenia].num_znaki++;
                     // увеличим счетчик предложений
                     ++num_predlojenia;
+                    if(num_predlojenia == M)
+                    {
+                        cout << "ОБРАБОТКА НЕВОЗМОЖНА, слишком много предложений!" << endl;
+                        res << "ОБРАБОТКА НЕВОЗМОЖНА, слишком много предложений!"<< endl;
+                        exit(1);
+                    }
                 }
             }
             else
@@ -215,7 +230,7 @@ void Text::Delete(std::ofstream &res)
             // копируем только если надо (смещение ненулевое) т е  если FromStr!=ToStr
             // и FromChar != ToChar
             if (!((FromStr == ToStr) && (FromChar == ToChar)))
-                stroki[ToStr].massiv[ToChar] = stroki[FromStr].massiv[FromChar]; //! вынести 2мерность в 1дномерность!!!!!! добавить еще функций
+                stroki[ToStr].massiv[ToChar] = stroki[FromStr].massiv[FromChar]; //! "ЭТО НЕ 2МЕРНЫЙ МАССИВ!!!! это структура в стркутуре" вынести 2мерность в 1дномерность!!!!!! добавить еще функций
             ++ToChar;
             // переезжаем в начало следующей строчки куда копировать если надо
             if (stroki[ToStr].massiv[ToChar] == stroki[ToStr].Marker)
@@ -235,18 +250,18 @@ void Text::Delete(std::ofstream &res)
         ++next_predlojenie;
     }
     // ставим новый маркер после всееех сдвигов
-    if (ToChar != 0)
-        stroki[ToStr].massiv[ToChar] = stroki[ToStr].Marker;
+    //if (ToChar != 0)
+    stroki[ToStr].massiv[ToChar] = stroki[ToStr].Marker;
     // отбрасываем лишние строчки после сдвигов если таковые остались
     if (ToStr < num_stroki - 1)
-        num_stroki = ToStr + 1;
+        num_stroki = ToStr + (ToChar != 0 ? 1 : 0);
 }
 
 // 17. Предложения могут находится в разных строках текста.
 // Удалить в тексте те предложения, которые: 3) содержат максимальное
 // число знаков препинания
 
-void BIG_process(string filename, ofstream &res, Text textik)
+void Text::BIG_process(string filename, ofstream &res)
 {
     cout << endl
          << " Началась обработка файла " << filename << endl
@@ -254,7 +269,7 @@ void BIG_process(string filename, ofstream &res, Text textik)
     res << endl
         << " Началась обработка файла " << filename << endl
         << endl;
-    if (!textik.read_file(filename, res))
+    if (!read_file(filename, res))
     {
         res << "Oshibka reading" << endl;
         cout << "Oshibka reading" << endl;
@@ -266,9 +281,9 @@ void BIG_process(string filename, ofstream &res, Text textik)
              << " Исходный текст: " << endl;
         res << endl
             << " Исходный текст: " << endl;
-        textik.print2(res);
-        textik.process_znaki(res);
-        textik.Delete(res);
+        print2(res);
+        process_znaki(res);
+        Delete(res);
 
         cout << endl
              << endl;
@@ -280,7 +295,7 @@ void BIG_process(string filename, ofstream &res, Text textik)
         res << "RESULT: " << endl
             << endl;
 
-        textik.print2(res);
+        print2(res);
         cout << endl;
         res << endl;
 
@@ -302,28 +317,28 @@ int main(int argc, char *argv[])
 
     // Считать файл в объект структуры Text
     Text text;
-    // BIG_process("in2_1.txt", res, text);
+    text.BIG_process("in2_1.txt", res);
 
     Text text1;
-    BIG_process("in2.txt", res, text1);
+    text1.BIG_process("in2.txt", res);
 
-    // Text text2;
-    // BIG_process("in2_2.txt", res, text2);
+    Text text2;
+    text2.BIG_process("in2_2.txt", res);
 
-    // Text text3;
-    // BIG_process("in2_3.txt", res, text3);
+    Text text3;
+    text3.BIG_process("in2_3.txt", res);
 
-    // Text text4;
-    // BIG_process("in2_4.txt", res, text4);
+    Text text4;
+    text4.BIG_process("in2_4.txt", res);
 
-    // Text text5;
-    // BIG_process("in2_5.txt", res, text5);
+    Text text5;
+    text5.BIG_process("in2_5.txt", res);
 
-    // Text text6;
-    // BIG_process("in2_6.txt", res, text6);
+    Text text6;
+    text6.BIG_process("in2_6.txt", res);
 
-    // Text text7;
-    // BIG_process("in2_7.txt", res, text7);
+    Text text7;
+    text7.BIG_process("in2_7.txt", res);
 
     // Пройти по строкам и выделить предложения
     // Отсортировать предложения по количеству знаков препинания

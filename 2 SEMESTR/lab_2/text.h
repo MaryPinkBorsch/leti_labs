@@ -17,5 +17,5 @@ struct Text
     int MaxZnaki(std::ofstream &res);
     void Delete(std::ofstream &res);
 
-    void BIG_process(std::string filename, std::ofstream &res, Text textik);
+    void BIG_process(std::string filename, std::ofstream &res);
 };

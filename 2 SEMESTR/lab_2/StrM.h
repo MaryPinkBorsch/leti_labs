@@ -6,8 +6,8 @@
 #include <iomanip>
 // #include "struct_predl.h"
 
-static const int N = 100;
-static const int M = 100;
+static const int N = 1000;
+static const int M = 1000;
 
 struct StrM
 {
