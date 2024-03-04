@@ -1,8 +1,13 @@
-#include "lab_2.h"
+// #include "lab_2.h"
+
+// #include "predl.h"
+// #include "StrM.h"
+
+#include "text.h"
 
 using namespace std;
 
-void StrM::print1(std::ofstream &res) 
+void StrM::print1(std::ofstream &res)
 {
     int i = 0;
     while (massiv[i] != Marker)
@@ -16,13 +21,13 @@ void StrM::print1(std::ofstream &res)
 }
 
 // CHTENIE S MARKEROM 1.1.1
-bool StrM::read_StrM(std::ifstream & input, std::ofstream &res)
+bool StrM::read_StrM(std::ifstream &input, std::ofstream &res)
 {
     int i = 0;
     char s;
-    
+
     input >> Marker; // первый маркер для нашего массива
-    if (Marker == '\n') 
+    if (Marker == '\n')
     {
         return false;
     }
@@ -50,7 +55,7 @@ bool StrM::read_StrM(std::ifstream & input, std::ofstream &res)
         while (1)
         {
             input >> noskipws >> s;
-           
+
             if (s == '\n')
                 break;
 
@@ -58,7 +63,7 @@ bool StrM::read_StrM(std::ifstream & input, std::ofstream &res)
                 break;
 
             // if (s == Marker)
-            //     break;                
+            //     break;
 
             massiv[i] = s;
             i++;
@@ -70,8 +75,7 @@ bool StrM::read_StrM(std::ifstream & input, std::ofstream &res)
         massiv[i] = Marker;
     }
 
-    
-    if (massiv[0] == Marker )
+    if (massiv[0] == Marker)
     {
         cout << " Строка пуста  " << endl;
         res << " Строка пуста  " << endl;
@@ -79,14 +83,13 @@ bool StrM::read_StrM(std::ifstream & input, std::ofstream &res)
     return true;
 }
 
-void Text::print2(std::ofstream &res) 
+void Text::print2(std::ofstream &res)
 {
-    for(int i = 0; i < num_stroki; i++)
+    for (int i = 0; i < num_stroki; i++)
     {
         stroki[i].print1(res);
     }
 }
-
 
 bool Text::read_file(std::string filename, std::ofstream &res)
 {
@@ -97,9 +100,9 @@ bool Text::read_file(std::string filename, std::ofstream &res)
     // !! TODO proverka eof i return false !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     // пока в стриме есть что читать и в тексте есть место, считываем строки
-    while(!input.eof() && num_stroki < M) 
+    while (!input.eof() && num_stroki < M)
     {
-        if (stroki[num_stroki].read_StrM(input, res) == false) 
+        if (stroki[num_stroki].read_StrM(input, res) == false)
         {
             if (input.eof())
                 break;
@@ -110,31 +113,31 @@ bool Text::read_file(std::string filename, std::ofstream &res)
     return true;
 }
 
-bool Text::IsRazdelitel(char c) 
+bool Text::IsRazdelitel(char c)
 {
-    return c == ';' || c == '.' || c == '?' || c == '!'; 
+    return c == ';' || c == '.' || c == '?' || c == '!';
 }
 
-bool Text::IsZnak(char c) 
+bool Text::IsZnak(char c)
 {
-    return  c == ',' || c == ':' || c == '-' || c == '\'';
+    return c == ',' || c == ':' || c == '-' || c == '\'';
 }
 
 void Text::process_znaki(std::ofstream &res)
 {
     // идем по всем строкам
     num_predlojenia = 0;
-    for (int i=0; i < num_stroki; i++)
+    for (int i = 0; i < num_stroki; i++)
     {
         int j = 0;
         // идем по всем символам каждой строки
-        while(stroki[i].massiv[j] != stroki[i].Marker)
+        while (stroki[i].massiv[j] != stroki[i].Marker)
         {
-            // если символ - разделитель предложений            
+            // если символ - разделитель предложений
             if (IsRazdelitel(stroki[i].massiv[j]))
             {
                 // и при этом у нас уже было начало предолжения
-                if (indexi_predlojenii[num_predlojenia].stroka_idx_start != -1) 
+                if (indexi_predlojenii[num_predlojenia].stroka_idx_start != -1)
                 {
                     // заполним текущее предложение (концы)
                     indexi_predlojenii[num_predlojenia].stroka_idx_end = i;
@@ -144,10 +147,10 @@ void Text::process_znaki(std::ofstream &res)
                     ++num_predlojenia;
                 }
             }
-            else 
+            else
             {
                 // у нас обычный символ. Если начала предолжения не было, то это оно
-                if (indexi_predlojenii[num_predlojenia].stroka_idx_start == -1) 
+                if (indexi_predlojenii[num_predlojenia].stroka_idx_start == -1)
                 {
                     // заполняем начало предолжения
                     indexi_predlojenii[num_predlojenia].stroka_idx_start = i;
@@ -164,36 +167,38 @@ void Text::process_znaki(std::ofstream &res)
 
 int Text::MaxZnaki(std::ofstream &res)
 {
-    int Max= -1;
+    int Max = -1;
     for (int i = 0; i < num_predlojenia; i++)
     {
-        if(indexi_predlojenii[i].num_znaki > Max)
+        if (indexi_predlojenii[i].num_znaki > Max)
         {
             Max = indexi_predlojenii[i].num_znaki;
         }
     }
-    cout << endl << "max kol-vo znakov = " << Max << endl;
-    res << endl<< "max kol-vo znakov = " << Max << endl;
+    cout << endl
+         << "max kol-vo znakov = " << Max << endl;
+    res << endl
+        << "max kol-vo znakov = " << Max << endl;
     return Max;
-} 
+}
 
 void Text::Delete(std::ofstream &res)
 {
     int Max = MaxZnaki(res);
-    int FromStr = 0;         // строка откуда переносится предложение 
-    int FromChar = 0;        // символ в строке откуда переносится предложение
-    int ToStr = 0;           // строка куда переносится предложение 
-    int ToChar = 0;          //символ в строке куда переносится предложение
+    int FromStr = 0;  // строка откуда переносится предложение
+    int FromChar = 0; // символ в строке откуда переносится предложение
+    int ToStr = 0;    // строка куда переносится предложение
+    int ToChar = 0;   // символ в строке куда переносится предложение
     int next_predlojenie = 0;
 
-    // пока не прошли весь текст 
-    while((next_predlojenie < num_predlojenia) && 
-        ((FromStr < indexi_predlojenii[num_predlojenia - 1].stroka_idx_end) || 
-        (FromStr == indexi_predlojenii[num_predlojenia - 1].stroka_idx_end && 
-            (FromChar <= indexi_predlojenii[num_predlojenia - 1].stroka_smeschenie_end))))
+    // пока не прошли весь текст
+    while ((next_predlojenie < num_predlojenia) &&
+           ((FromStr < indexi_predlojenii[num_predlojenia - 1].stroka_idx_end) ||
+            (FromStr == indexi_predlojenii[num_predlojenia - 1].stroka_idx_end &&
+             (FromChar <= indexi_predlojenii[num_predlojenia - 1].stroka_smeschenie_end))))
     {
         // пропускаем предложения с максимальным количеством знаком
-        while(indexi_predlojenii[next_predlojenie].num_znaki == Max) 
+        while (indexi_predlojenii[next_predlojenie].num_znaki == Max)
         {
             ++next_predlojenie;
             if (next_predlojenie == num_predlojenia)
@@ -205,24 +210,22 @@ void Text::Delete(std::ofstream &res)
         if (next_predlojenie == num_predlojenia)
             break;
         // начинаем перетаскивать предложение налево\вверх
-        while(FromStr < indexi_predlojenii[next_predlojenie].stroka_idx_end || (
-            FromStr == indexi_predlojenii[next_predlojenie].stroka_idx_end && (
-            FromChar <= indexi_predlojenii[next_predlojenie].stroka_smeschenie_end)))
+        while (FromStr < indexi_predlojenii[next_predlojenie].stroka_idx_end || (FromStr == indexi_predlojenii[next_predlojenie].stroka_idx_end && (FromChar <= indexi_predlojenii[next_predlojenie].stroka_smeschenie_end)))
         {
             // копируем только если надо (смещение ненулевое) т е  если FromStr!=ToStr
             // и FromChar != ToChar
-            if (! ((FromStr == ToStr) && (FromChar == ToChar)) )
-                stroki[ToStr].massiv[ToChar] = stroki[FromStr].massiv[FromChar];
+            if (!((FromStr == ToStr) && (FromChar == ToChar)))
+                stroki[ToStr].massiv[ToChar] = stroki[FromStr].massiv[FromChar]; //! вынести 2мерность в 1дномерность!!!!!! добавить еще функций
             ++ToChar;
             // переезжаем в начало следующей строчки куда копировать если надо
-            if (stroki[ToStr].massiv[ToChar] == stroki[ToStr].Marker) 
+            if (stroki[ToStr].massiv[ToChar] == stroki[ToStr].Marker)
             {
                 ++ToStr;
                 ToChar = 0;
             }
             ++FromChar;
             // переезжаем в начало следующей строчки откуда копировать если надо
-            if (stroki[FromStr].massiv[FromChar] == stroki[FromStr].Marker) 
+            if (stroki[FromStr].massiv[FromChar] == stroki[FromStr].Marker)
             {
                 ++FromStr;
                 FromChar = 0;
@@ -239,76 +242,92 @@ void Text::Delete(std::ofstream &res)
         num_stroki = ToStr + 1;
 }
 
-
-// 17. Предложения могут находится в разных строках текста. 
+// 17. Предложения могут находится в разных строках текста.
 // Удалить в тексте те предложения, которые: 3) содержат максимальное
 // число знаков препинания
 
 void BIG_process(string filename, ofstream &res, Text textik)
 {
-    if(!textik.read_file(filename, res))
+    cout << endl
+         << " Началась обработка файла " << filename << endl
+         << endl;
+    res << endl
+        << " Началась обработка файла " << filename << endl
+        << endl;
+    if (!textik.read_file(filename, res))
     {
         res << "Oshibka reading" << endl;
         cout << "Oshibka reading" << endl;
     }
     else
     {
-        cout<< endl << " Началась обработка файла " << filename<< endl<<endl;
-        res<< endl << " Началась обработка файла " << filename<< endl<<endl;
 
-        cout<< endl << " Исходный текст: " <<endl;
-        res<< endl << " Исходный текст: " <<endl;
+        cout << endl
+             << " Исходный текст: " << endl;
+        res << endl
+            << " Исходный текст: " << endl;
         textik.print2(res);
         textik.process_znaki(res);
         textik.Delete(res);
 
-        cout<<endl<<endl;
-        cout << "RESULT: "<<endl<<endl;
+        cout << endl
+             << endl;
+        cout << "RESULT: " << endl
+             << endl;
 
-        res<<endl<<endl;
-        res << "RESULT: "<<endl<<endl;
+        res << endl
+            << endl;
+        res << "RESULT: " << endl
+            << endl;
 
         textik.print2(res);
-        cout<<endl;
-        res<<endl;
-    
-        cout << " Кончилась обработка файла " << filename<< endl<<endl<< endl<<endl;
-        res << " Кончилась обработка файла " << filename<< endl<<endl<< endl<<endl;
-    }
+        cout << endl;
+        res << endl;
 
+        cout << " Кончилась обработка файла " << filename << endl
+             << endl
+             << endl
+             << endl;
+        res << " Кончилась обработка файла " << filename << endl
+            << endl
+            << endl
+            << endl;
+    }
 }
 
-int main(int argc, char * argv[]) 
+int main(int argc, char *argv[])
 {
     std::string filename2 = "result2.txt";
     std::ofstream res(filename2, ios::out | ios::trunc);
 
     // Считать файл в объект структуры Text
     Text text;
-    BIG_process("in2_1.txt", res, text); 
-   
+    // BIG_process("in2_1.txt", res, text);
 
     Text text1;
-    BIG_process("in2.txt", res, text1);   
+    BIG_process("in2.txt", res, text1);
 
-    Text text2;
-    BIG_process("in2_2.txt", res, text2);
+    // Text text2;
+    // BIG_process("in2_2.txt", res, text2);
 
-    Text text3;
-    BIG_process("in2_3.txt", res, text3);
+    // Text text3;
+    // BIG_process("in2_3.txt", res, text3);
 
-    Text text4;
-    BIG_process("in2_4.txt", res, text4);
+    // Text text4;
+    // BIG_process("in2_4.txt", res, text4);
 
-    Text text5;
-    BIG_process("in2_5.txt", res, text5);
+    // Text text5;
+    // BIG_process("in2_5.txt", res, text5);
 
-    Text text6;
-    BIG_process("in2_6.txt", res, text6);
+    // Text text6;
+    // BIG_process("in2_6.txt", res, text6);
+
+    // Text text7;
+    // BIG_process("in2_7.txt", res, text7);
 
     // Пройти по строкам и выделить предложения
     // Отсортировать предложения по количеству знаков препинания
     // inplace удалить из объекта текст предложения имевшие макс. число знаков препинания
-    
+
     return 0;
 }
