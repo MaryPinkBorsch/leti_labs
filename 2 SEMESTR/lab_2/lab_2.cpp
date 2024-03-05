@@ -1,7 +1,8 @@
 // #include "lab_2.h"
-
 // #include "predl.h"
 // #include "StrM.h"
+
+// раскидать по .срр файлам и что-то сделать в процессе с двумерностью (?)
 
 #include "text.h"
 
@@ -26,7 +27,7 @@ bool StrM::read_StrM(std::ifstream &input, std::ofstream &res)
     int i = 0;
     char s;
 
-    input >> Marker; // первый маркер для нашего массива
+    input >> Marker; //  маркер для нашего массива
     if (Marker == '\n')
     {
         return false;
@@ -227,20 +228,27 @@ void Text::Delete(std::ofstream &res)
         // начинаем перетаскивать предложение налево\вверх
         while (FromStr < indexi_predlojenii[next_predlojenie].stroka_idx_end || (FromStr == indexi_predlojenii[next_predlojenie].stroka_idx_end && (FromChar <= indexi_predlojenii[next_predlojenie].stroka_smeschenie_end)))
         {
+            StrM & strTo = stroki[ToStr];
+            StrM & strFrom = stroki[FromStr];
             // копируем только если надо (смещение ненулевое) т е  если FromStr!=ToStr
             // и FromChar != ToChar
             if (!((FromStr == ToStr) && (FromChar == ToChar)))
-                stroki[ToStr].massiv[ToChar] = stroki[FromStr].massiv[FromChar]; //! "ЭТО НЕ 2МЕРНЫЙ МАССИВ!!!! это структура в стркутуре" вынести 2мерность в 1дномерность!!!!!! добавить еще функций
+            {
+                
+                strTo.massiv[ToChar] = strFrom.massiv[FromChar];
+                //stroki[ToStr].massiv[ToChar] = stroki[FromStr].massiv[FromChar];
+            }  
+            /////!!!!//! "ЭТО НЕ 2МЕРНЫЙ МАССИВ!!!! это структура в стркутуре" вынести 2мерность в 1дномерность!!!!!! добавить еще функций
             ++ToChar;
             // переезжаем в начало следующей строчки куда копировать если надо
-            if (stroki[ToStr].massiv[ToChar] == stroki[ToStr].Marker)
+            if (strTo.massiv[ToChar] == stroki[ToStr].Marker)
             {
                 ++ToStr;
                 ToChar = 0;
             }
             ++FromChar;
             // переезжаем в начало следующей строчки откуда копировать если надо
-            if (stroki[FromStr].massiv[FromChar] == stroki[FromStr].Marker)
+            if (strFrom.massiv[FromChar] == stroki[FromStr].Marker)
             {
                 ++FromStr;
                 FromChar = 0;
@@ -249,9 +257,10 @@ void Text::Delete(std::ofstream &res)
         // следующее предложение
         ++next_predlojenie;
     }
+    StrM & strTo = stroki[ToStr];
     // ставим новый маркер после всееех сдвигов
     //if (ToChar != 0)
-    stroki[ToStr].massiv[ToChar] = stroki[ToStr].Marker;
+    strTo.massiv[ToChar] = stroki[ToStr].Marker;
     // отбрасываем лишние строчки после сдвигов если таковые остались
     if (ToStr < num_stroki - 1)
         num_stroki = ToStr + (ToChar != 0 ? 1 : 0);
