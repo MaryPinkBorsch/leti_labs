@@ -9,6 +9,7 @@
 static const int N = 1000;
 static const int M = 1000;
 
+
 struct StrM
 {
     char massiv[N + 1];

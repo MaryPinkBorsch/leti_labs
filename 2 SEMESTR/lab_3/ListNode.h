@@ -1,9 +1,7 @@
-#include "StrM3.h" 
+#include "StrM3.h"
 
-struct ListNode 
+struct ListNode
 {
-    StrM strochka;              
+    StrM strochka;
     ListNode *next = nullptr; // указатель на следующий элемент списка
-
-   // bool search2(std::ofstream &res);
 };

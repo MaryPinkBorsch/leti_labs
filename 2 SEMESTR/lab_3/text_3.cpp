@@ -5,10 +5,7 @@ using namespace std;
 void Text::print2(std::ofstream &res)
 {
     ListNode *cur = head;
-    // for (int i = 0; i < num_stroki; i++)
-    // {
-    //     stroki[i].print1(res);
-    // }
+    
     while (cur != nullptr)
     {
         cur->strochka.print1(res);
@@ -105,58 +102,10 @@ void Text::process_znaki(std::ofstream &res)
         }
     }
 
-    // // идем по всем строкам
-    // int num_predlojenia = 0;
-    // for (int i = 0; i < num_stroki; i++)
-    // {
-    //     int j = 0;
-    //     // идем по всем символам каждой строки
-    //     while (stroki[i].massiv[j] != stroki[i].Marker)
-    //     {
-    //         // если символ - разделитель предложений
-    //         if (IsRazdelitel(stroki[i].massiv[j]))
-    //         {
-    //             // и при этом у нас уже было начало предолжения
-    //             if (1)
-    //             {
-    //                 // заполним текущее предложение (концы)
-    //                 // indexi_predlojenii[num_predlojenia].stroka_idx_end = i;
-    //                 // indexi_predlojenii[num_predlojenia].stroka_smeschenie_end = j;
-    //                 // indexi_predlojenii[num_predlojenia].num_znaki++;
-    //                 // увеличим счетчик предложений
-    //                 //++num_predlojenia;
-    //                 if (num_predlojenia == M)
-    //                 {
-    //                     cout << "ОБРАБОТКА НЕВОЗМОЖНА, слишком много предложений!" << endl;
-    //                     res << "ОБРАБОТКА НЕВОЗМОЖНА, слишком много предложений!" << endl;
-    //                     exit(1);
-    //                 }
-    //             }
-    //         }
-    //         else
-    //         {
-    //             // у нас обычный символ. Если начала предолжения не было, то это оно
-
-    //             // if (IsZnak(stroki[i].massiv[j]))
-    //             //!;
-    //         }
-    //         // следующий символ
-    //         ++j;
-    //     }
-    // }
+    
 }
 
-void Text::Delete(std::ofstream &res)
-{
-    // int Max = MaxZnaki(res);
-    int FromStr = 0;  // строка откуда переносится предложение
-    int FromChar = 0; // символ в строке откуда переносится предложение
-    int ToStr = 0;    // строка куда переносится предложение
-    int ToChar = 0;   // символ в строке куда переносится предложение
-    int next_predlojenie = 0;
 
-    // пока не прошли весь текст
-}
 
 // 17. Предложения могут находится в разных строках текста.
 // Удалить в тексте те предложения, которые: 3) содержат максимальное
@@ -184,7 +133,7 @@ void Text::BIG_process(string filename, ofstream &res)
             << " Исходный текст: " << endl;
         print2(res);
         process_znaki(res);
-        // Delete(res);
+        
 
         cout << endl
              << endl;
