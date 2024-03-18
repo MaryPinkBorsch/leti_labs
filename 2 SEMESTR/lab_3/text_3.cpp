@@ -5,7 +5,7 @@ using namespace std;
 void Text::print2(std::ofstream &res)
 {
     ListNode *cur = head;
-    
+
     while (cur != nullptr)
     {
         cur->strochka.print1(res);
@@ -21,6 +21,14 @@ bool Text::read_file(std::string filename, std::ofstream &res)
 
     // !! TODO proverka eof i return false !!!!!!
 
+    if (input.eof())
+    {
+        cout << "ФАЙЛ ПУСТ!" << endl;
+        res << "ФАЙЛ ПУСТ!" << endl;
+
+        return 0;
+    }
+
     if (1) //! input.eof()
     {
         head = new ListNode;
@@ -34,7 +42,7 @@ bool Text::read_file(std::string filename, std::ofstream &res)
         //     cur = new ListNode;
         // }
         if (cur->strochka.read_StrM(input, res) == false)
-        {
+        {           
             if (input.eof())
                 break;
         }
@@ -90,7 +98,7 @@ void Text::process_znaki(std::ofstream &res)
             cur->next = tmp;
             cur2 = tmp;
         }
-        else if(cur2->strochka.search1(res) == 1 && cur2->next == 0)
+        else if (cur2->strochka.search1(res) == 1 && cur2->next == 0)
         {
             delete cur2;
             cur->next = nullptr;
@@ -101,11 +109,7 @@ void Text::process_znaki(std::ofstream &res)
             cur2 = cur2->next;
         }
     }
-
-    
 }
-
-
 
 // 17. Предложения могут находится в разных строках текста.
 // Удалить в тексте те предложения, которые: 3) содержат максимальное
@@ -133,7 +137,6 @@ void Text::BIG_process(string filename, ofstream &res)
             << " Исходный текст: " << endl;
         print2(res);
         process_znaki(res);
-        
 
         cout << endl
              << endl;

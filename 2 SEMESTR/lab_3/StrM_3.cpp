@@ -30,6 +30,7 @@ bool StrM::read_StrM(std::ifstream &input, std::ofstream &res)
 
         return false;
     }
+    
 
     if (input.eof())
     {
@@ -42,6 +43,8 @@ bool StrM::read_StrM(std::ifstream &input, std::ofstream &res)
         while (1)
         {
             input >> noskipws >> s;
+            if (s == Marker)
+                break;
 
             if (s == '\n')
                 break;
@@ -53,10 +56,15 @@ bool StrM::read_StrM(std::ifstream &input, std::ofstream &res)
             i++;
             if (i >= N)
             {
+                // ????
+                if (input.eof())
+                    break;
                 char nextChar;
                 do
                 {
                     input >> noskipws >> nextChar;
+                    if (input.eof())
+                        break;
                 } while (nextChar != '\n');
                 break;
             }

@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     text.BIG_process("in3_1.txt", res);
 
     Text text1;
-    text1.BIG_process("in3.txt", res);
+    //text1.BIG_process("in3.txt", res); !!!!!!!!!!!!
 
     Text text2;
     text2.BIG_process("in3_2.txt", res);
