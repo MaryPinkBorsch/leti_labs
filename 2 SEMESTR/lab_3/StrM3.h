@@ -16,4 +16,5 @@ struct StrM
 
     bool read_StrM(std::ifstream &input, std::ofstream &res);
     void print1(std::ofstream &res);
+    bool search1(std::ofstream &res);
 };

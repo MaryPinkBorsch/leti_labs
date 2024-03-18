@@ -79,3 +79,19 @@ bool StrM::read_StrM(std::ifstream &input, std::ofstream &res)
     }
     return true;
 }
+
+bool StrM::search1(std::ofstream &res)
+{
+    
+    int i = 0;  
+    while(massiv[i]!=Marker)
+    {
+        if (massiv[i]== ',' || massiv[i] == ':' || massiv[i] == '-' || massiv[i] == '\'' || massiv[i] == ';' || massiv[i] == '.' || massiv[i] == '?' || massiv[i] == '!')
+        {
+            cout<<"Найдено предложение для удаления!"<< endl;
+            return true;
+        }
+        i++;
+    }
+    return false;
+}

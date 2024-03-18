@@ -5,7 +5,7 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    std::string filename2 = "result2.txt";
+    std::string filename2 = "result3.txt";
     std::ofstream res(filename2, ios::out | ios::trunc);
 
     // Считать файл в объект структуры Text
