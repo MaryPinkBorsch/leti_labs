@@ -42,7 +42,7 @@ bool Text::read_file(std::string filename, std::ofstream &res)
         //     cur = new ListNode;
         // }
         if (cur->strochka.read_StrM(input, res) == false)
-        {           
+        {
             if (input.eof())
                 break;
         }
@@ -111,6 +111,38 @@ void Text::process_znaki(std::ofstream &res)
     }
 }
 
+void Text::deleteng(std::ofstream &res)
+{
+    ListNode *tmp = head->next;
+    ListNode *cur = head;
+    if (cur == nullptr)
+    {
+
+        abort;
+    }
+    if (cur->next == nullptr)
+    {
+        delete cur;
+        abort;
+    }
+
+    while (cur != nullptr)
+    {
+        delete cur;
+        head = tmp;
+        cur = head;
+        if (cur->next == nullptr)
+        {
+            delete cur;
+            break;
+        }
+        tmp = cur->next;
+    }
+
+    cout<<" Список был удален. "<<endl;
+    res<<" Список был удален. "<<endl;
+}
+
 // 17. Предложения могут находится в разных строках текста.
 // Удалить в тексте те предложения, которые: 3) содержат максимальное
 // число знаков препинания
@@ -161,4 +193,5 @@ void Text::BIG_process(string filename, ofstream &res)
             << endl
             << endl;
     }
+    deleteng(res);
 }

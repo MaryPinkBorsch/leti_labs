@@ -11,4 +11,5 @@ struct Text
   void process_znaki(std::ofstream &res);
   bool IsZnak(char c);
   void BIG_process(std::string filename, std::ofstream &res);
+  void deleteng(std::ofstream &res);
 };
