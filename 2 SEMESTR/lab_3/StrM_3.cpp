@@ -3,9 +3,14 @@ using namespace std;
 
 void StrM::print1(std::ofstream &res)
 {
+    if(massiv[0]== -1)
+    {
+        return;
+    }
     int i = 0;
     while (massiv[i] != Marker)
     {
+        
         cout << massiv[i];
         res << massiv[i];
         i++;
@@ -82,10 +87,16 @@ bool StrM::read_StrM(std::ifstream &input, std::ofstream &res)
 
 bool StrM::search1(std::ofstream &res)
 {
+    if(massiv[0] == -1)
+    {
+        return false;
+    }
 
     int i = 0;
     while (massiv[i] != Marker)
     {
+        if(massiv[i] ==0)
+            return false;
         if (massiv[i] == ',' || massiv[i] == ':' || massiv[i] == '-' || massiv[i] == '\'' || massiv[i] == ';' || massiv[i] == '.' || massiv[i] == '?' || massiv[i] == '!')
         {
             cout << "Найдено предложение для удаления!" << endl;
