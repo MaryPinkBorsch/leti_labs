@@ -63,12 +63,11 @@ bool Text::read_file(std::string filename, std::ofstream &res)
     }
     // if(cur==0)
     //     delete cur;
-    if(head->strochka.massiv[0]==-1)
+    if (head->strochka.massiv[0] == -1)
     {
-        cout << " Файл пуст! "<<endl;
-        res << " Файл пуст! "<<endl;
+        cout << " Файл пуст! " << endl;
+        res << " Файл пуст! " << endl;
     }
-    
 
     if (!input.eof() && num_stroki == M)
     {
@@ -143,18 +142,22 @@ void Text::process_znaki(std::ofstream &res)
 
 void Text::deleteng(std::ofstream &res)
 {
-    if (head == 0)
-        return;
+    // if (head == 0)
+    //     return;
     ListNode *tmp = head->next;
     ListNode *cur = head;
     if (cur == nullptr)
     {
+        cout << " Список пуст " << endl;
+        res << " Список пуст " << endl;
         return;
         abort();
     }
     if (cur->next == nullptr)
     {
         delete cur;
+        cout << " Список был удален. " << endl;
+        res << " Список был удален. " << endl;
         return;
         abort();
     }
