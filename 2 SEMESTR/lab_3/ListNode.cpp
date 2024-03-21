@@ -12,7 +12,7 @@ void ListNode::addMemo(ListNode*&cur)
     }
 }
 
-void ListNode::addNext(ListNode*cur)
+void ListNode::addNext(ListNode*&cur)
 {
     cur->next = new ListNode;
     if(cur->next == nullptr)
@@ -22,7 +22,7 @@ void ListNode::addNext(ListNode*cur)
     }
 }
 
-void ListNode::infoInput(ListNode*cur)
-{   if(cur!=0)
-        cur->strochka.massiv[0] = {-1};
-}
+// void ListNode::infoInput(ListNode*&cur)
+// {   if(cur!=0)
+//         cur->strochka.massiv[0] = {-1};
+// }

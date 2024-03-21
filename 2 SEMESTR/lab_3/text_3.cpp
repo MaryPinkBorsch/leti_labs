@@ -6,15 +6,16 @@ void Text::print2(std::ofstream &res)
 {
     ListNode *cur = head;
 
-    while (cur->next != nullptr)    //(cur != nullptr)
+    while (cur != nullptr) //(cur != nullptr)
     {
         cur->strochka.print1(res);
 
-        res<<" ----> "<<endl;
+        res << " ----> " << endl;
 
         cur = cur->next;
     }
-    res << endl <<" NULL "<<endl;
+    res << endl
+        << " NULL (конец списка)" << endl;
 }
 
 bool Text::read_file(std::string filename, std::ofstream &res)
@@ -36,12 +37,13 @@ bool Text::read_file(std::string filename, std::ofstream &res)
     if (!input.eof()) //! input.eof()
     {
         head->addMemo(head);
-        //head = new ListNode; // addMemo
+        // head = new ListNode; // addMemo
 
-       // head->infoInput(head);
-        head->strochka.massiv[0] = {-1}; // infoInput
+        // head->infoInput(head);
+        //  head->strochka.massiv[0] = {-1}; // infoInput
     }
     ListNode *cur = head;
+    ListNode *prev = nullptr;
     // пока в стриме есть что читать и в тексте есть место, считываем строки
     while (!input.eof() && num_stroki < M) // && cur != nullptr ?
     {
@@ -55,22 +57,38 @@ bool Text::read_file(std::string filename, std::ofstream &res)
         //     cur->next = new ListNode;
         //     cur = cur->next;
         // }
-        if (cur->strochka.read_StrM(input, res) == false)
+
+        //     cur->addNext(cur);
+        //    // cur->next = new ListNode; // addMemo
+        //     cur = cur->next;
+        //     cur->infoInput(cur);
+        //     //cur->strochka.massiv[0] = {-1}; // infoInput
+
+        // пытаемся прочесть строку в cur
+        if (cur->strochka.read_StrM(input, res))
         {
-            if (input.eof())
-                break;
-        }
-        else
-        {
+            // если получилось, увеличиваем количество строк и
+            // выделяем память под следующий элемент списка, одновременно
+            // запоминаем текущий в prev
             ++num_stroki;
-            cur->next = new ListNode; // addMemo
+            cur->addNext(cur);
+            prev = cur;
             cur = cur->next;
-            cur->strochka.massiv[0] = {-1}; // infoInput
         }
     }
+    // иначе если  не получилось считать у нас хвост в котором ничего нет, надо его удалить, а
+    // предыдущий элемент сделать новым хвостом (-> next = nullptr)
+    {
+        delete cur;
+        if (prev)
+            prev->next = nullptr;
+        else
+            head = nullptr; // если предыдущего  не было значит только что удалили голову, запишем в голову ноль
+    }
+
     // if(cur==0)
     //     delete cur;
-    if (head->strochka.massiv[0] == -1)
+    if (head == nullptr)
     {
         cout << " Файл пуст! " << endl;
         res << " Файл пуст! " << endl;
@@ -93,96 +111,54 @@ bool Text::IsZnak(char c)
 void Text::process_znaki(std::ofstream &res)
 {
     ListNode *cur = head;
-    ListNode *cur2 = head->next;
-    if (cur2 == nullptr && cur->strochka.search1(res) == 1)
+    if (head == nullptr)
     {
-        delete cur;
-        res << " Голова была удалена!!!" << endl;
-        cout << " Голова была удалена!!!" << endl;
+        res << "Список пуст!! " << endl;
+        // если пустой список сразу возвращаемся
         return;
     }
-    while (cur2 != nullptr)
+    ListNode *prev = nullptr;
+    while (cur != nullptr)
     {
-        if (cur->strochka.search1(res) == 1 && cur == head)
+        if (cur->strochka.search1(res) == true)
         {
-            ListNode *tmp = head->next;
+            ListNode *tmp = cur->next;
+            if (prev)
+                prev->next = tmp;
             delete cur;
-            head = tmp;
+            if (cur == head) // если только что удалили голову - переставим ее вперед
+            {
+                head = tmp;
+               // res<<"голова удалена"<< endl;
+            }
             cur = tmp;
-            if (cur->next == nullptr)
-                break;
-            cur2 = cur->next;
-            // continue;
-        }
-        else if (cur2->strochka.search1(res) == 1 && cur2->next != 0)
-        {
-            if (cur->next == nullptr)
-                break;
-            if (cur2 == 0)
-                break;
-            ListNode *tmp = cur2->next;
-            delete cur2;
-            cur->next = tmp;
-            cur2 = tmp;
-            // continue;
-        }
-        else if (cur2->strochka.search1(res) == 1 && cur2->next == 0 && cur2 != 0)
-        {
-            if (cur->next == nullptr)
-                break;
-            if (cur2 == 0)
-                break;
-            delete cur2;
-            cur->next = nullptr;
-            return;
-            abort;
         }
         else
         {
-            if (cur->next == 0 || cur2->next == 0)
-                break;
+            prev = cur;
             cur = cur->next;
-            cur2 = cur2->next;
         }
     }
 }
 
 void Text::deleteng(std::ofstream &res)
 {
-    // if (head == 0)
-    //     return;
-    ListNode *tmp = head->next;
     ListNode *cur = head;
     if (cur == nullptr)
     {
         cout << " Список пуст " << endl;
         res << " Список пуст " << endl;
         return;
-        abort();
     }
-    if (cur->next == nullptr)
-    {
-        delete cur;
-        cout << " Список был удален. " << endl;
-        res << " Список был удален. " << endl;
-        return;
-        abort();
-    }
-
+    ListNode *tmp = nullptr;
     while (cur != nullptr)
     {
-        delete cur;
-        head = tmp;
-        cur = head;
-        if (cur->next == nullptr)
-        {
-            delete cur;
-            break;
-        }
         tmp = cur->next;
+        delete cur;
+        cur = tmp;
     }
 
-    cout << " Список был удален. " << endl;
+    std::cout << " Список был удален. " << endl;
     res << " Список был удален. " << endl;
 }
 

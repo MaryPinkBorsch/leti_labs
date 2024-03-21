@@ -12,10 +12,10 @@ int main(int argc, char *argv[])
     text.BIG_process("in3_1.txt", res);
 
     Text text1;
-   text1.BIG_process("in3.txt", res); //!
+    text1.BIG_process("in3.txt", res); //!
 
     Text text2;
-   text2.BIG_process("in3_2.txt", res); 
+    text2.BIG_process("in3_2.txt", res);
 
     Text text3;
     text3.BIG_process("in3_3.txt", res); //!!
@@ -34,6 +34,9 @@ int main(int argc, char *argv[])
 
     Text text8;
     text8.BIG_process("in3_8.txt", res);
+
+    Text text9;
+    text9.BIG_process("in3_9.txt", res);
 
     // Пройти по строкам и выделить предложения
     // Отсортировать предложения по количеству знаков препинания

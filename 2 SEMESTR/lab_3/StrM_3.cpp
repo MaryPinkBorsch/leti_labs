@@ -3,10 +3,11 @@ using namespace std;
 
 void StrM::print1(std::ofstream &res)
 {
-    // if(massiv[0]== -1)       // !?????????? оставить или ?
+    // if(massiv[0]== -1)       // пропуск пустой стр
     // {
     //     return;
     // }
+    
     int i = 0;
     while (massiv[i] != Marker)
     {
