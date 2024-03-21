@@ -2,15 +2,13 @@
 // #include "predl.h"
 // #include "StrM.h"
 
-// раскидать по .срр файлам и что-то сделать в процессе с двумерностью (?)
-
 #include "text.h"
 
 using namespace std;
 
-
 int main(int argc, char *argv[])
 {
+    // std::cout << " Привет! " << endl;
     std::string filename2 = "result2.txt";
     std::ofstream res(filename2, ios::out | ios::trunc);
 

@@ -30,10 +30,10 @@ bool Text::read_file(std::string filename, std::ofstream &res)
             ++num_stroki;
     }
 
-    if(!input.eof() && num_stroki == M)
+    if (!input.eof() && num_stroki == M)
     {
         cout << "ОБРАБОТКА НЕВОЗМОЖНА, слишком много строк!" << endl;
-        res << "ОБРАБОТКА НЕВОЗМОЖНА, слишком много строк!"<< endl;
+        res << "ОБРАБОТКА НЕВОЗМОЖНА, слишком много строк!" << endl;
         exit(1);
     }
     return true;
@@ -71,10 +71,10 @@ void Text::process_znaki(std::ofstream &res)
                     indexi_predlojenii[num_predlojenia].num_znaki++;
                     // увеличим счетчик предложений
                     ++num_predlojenia;
-                    if(num_predlojenia == M)
+                    if (num_predlojenia == M)
                     {
                         cout << "ОБРАБОТКА НЕВОЗМОЖНА, слишком много предложений!" << endl;
-                        res << "ОБРАБОТКА НЕВОЗМОЖНА, слишком много предложений!"<< endl;
+                        res << "ОБРАБОТКА НЕВОЗМОЖНА, слишком много предложений!" << endl;
                         exit(1);
                     }
                 }
@@ -144,13 +144,13 @@ void Text::Delete(std::ofstream &res)
         // начинаем перетаскивать предложение налево\вверх
         while (FromStr < indexi_predlojenii[next_predlojenie].stroka_idx_end || (FromStr == indexi_predlojenii[next_predlojenie].stroka_idx_end && (FromChar <= indexi_predlojenii[next_predlojenie].stroka_smeschenie_end)))
         {
-            StrM & strTo = stroki[ToStr];
-            StrM & strFrom = stroki[FromStr];
+            StrM &strTo = stroki[ToStr];
+            StrM &strFrom = stroki[FromStr];
             // копируем только если надо (смещение ненулевое) т е  если FromStr!=ToStr
             // и FromChar != ToChar
             if (!((FromStr == ToStr) && (FromChar == ToChar)))
             {
-                
+
                 strTo.massiv[ToChar] = strFrom.massiv[FromChar];
                 //stroki[ToStr].massiv[ToChar] = stroki[FromStr].massiv[FromChar];
             }  
@@ -173,9 +173,9 @@ void Text::Delete(std::ofstream &res)
         // следующее предложение
         ++next_predlojenie;
     }
-    StrM & strTo = stroki[ToStr];
+    StrM &strTo = stroki[ToStr];
     // ставим новый маркер после всееех сдвигов
-    //if (ToChar != 0)
+    // if (ToChar != 0)
     strTo.massiv[ToChar] = stroki[ToStr].Marker;
     // отбрасываем лишние строчки после сдвигов если таковые остались
     if (ToStr < num_stroki - 1)
