@@ -3,10 +3,10 @@ using namespace std;
 
 void StrM::print1(std::ofstream &res)
 {
-    if(massiv[0]== -1)
-    {
-        return;
-    }
+    // if(massiv[0]== -1)       // !?????????? оставить или ?
+    // {
+    //     return;
+    // }
     int i = 0;
     while (massiv[i] != Marker)
     {

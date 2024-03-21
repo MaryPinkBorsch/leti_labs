@@ -154,7 +154,7 @@ void Text::Delete(std::ofstream &res)
                 strTo.massiv[ToChar] = strFrom.massiv[FromChar];
                 //stroki[ToStr].massiv[ToChar] = stroki[FromStr].massiv[FromChar];
             }  
-            /////!!!!//! "ЭТО НЕ 2МЕРНЫЙ МАССИВ!!!! это структура в стркутуре" вынести 2мерность в 1дномерность!!!!!! добавить еще функций
+            
             ++ToChar;
             // переезжаем в начало следующей строчки куда копировать если надо
             if (strTo.massiv[ToChar] == stroki[ToStr].Marker)

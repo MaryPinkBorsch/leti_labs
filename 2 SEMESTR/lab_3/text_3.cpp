@@ -6,11 +6,15 @@ void Text::print2(std::ofstream &res)
 {
     ListNode *cur = head;
 
-    while (cur != nullptr)
+    while (cur->next != nullptr)    //(cur != nullptr)
     {
         cur->strochka.print1(res);
+
+        res<<" ----> "<<endl;
+
         cur = cur->next;
     }
+    res << endl <<" NULL "<<endl;
 }
 
 bool Text::read_file(std::string filename, std::ofstream &res)
@@ -31,8 +35,11 @@ bool Text::read_file(std::string filename, std::ofstream &res)
 
     if (!input.eof()) //! input.eof()
     {
-        head = new ListNode;
-        head->strochka.massiv[0] = {-1};
+        head->addMemo(head);
+        //head = new ListNode; // addMemo
+
+       // head->infoInput(head);
+        head->strochka.massiv[0] = {-1}; // infoInput
     }
     ListNode *cur = head;
     // пока в стриме есть что читать и в тексте есть место, считываем строки
@@ -56,9 +63,9 @@ bool Text::read_file(std::string filename, std::ofstream &res)
         else
         {
             ++num_stroki;
-            cur->next = new ListNode;
+            cur->next = new ListNode; // addMemo
             cur = cur->next;
-            cur->strochka.massiv[0] = {-1};
+            cur->strochka.massiv[0] = {-1}; // infoInput
         }
     }
     // if(cur==0)
