@@ -356,6 +356,12 @@ void process(StrM &a1, ofstream &res)
                         if (spaceEnd < j_start)
                         {
                             inplace_swap_slova(a1, spaceStart, spaceEnd, j_start, j_end);
+                            int p = i_end;
+                            while(a1.A[p] != a1.Mark)
+                            {
+                                a1.A[p] = a1.A[p+1];
+                                p++;
+                            }
                         }
                     }
                 }
@@ -689,6 +695,15 @@ void process2(StrL &a1, ofstream &res)
                         if (spaceEnd < j_start)
                         {
                             inplace_swap_slova2(a1, spaceStart, spaceEnd, j_start, j_end);
+                            int p = i_end;
+                            while(p< a1.len)
+                            {
+                                a1.A[p] = a1.A[p+1];
+                                p++;
+                            }
+                            int tmp = a1.len;
+                            if(tmp != 0)
+                                a1.len = tmp - 1;
                         }
                     }
                 }
@@ -737,7 +752,7 @@ int file_process_2(string filename, StrL s, ofstream &res)
 
 int main(int argc, char *argv[])
 {
-    string filename2 = "result3.txt";
+    string filename2 = "result33.txt";
     // string filename1 = "in1_1m.txt";
     ofstream res(filename2, ios::out | ios::trunc);
     // cout << "Добро пожаловать в lab 1.1.1 Калюжной Марии 3352 " << endl;
