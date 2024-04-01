@@ -8,5 +8,6 @@ struct ListNodeV
     ListNodeV * next = nullptr;
 
     bool ReadV(std::ifstream & input, std::ofstream & res);
+    void print1(std::ofstream & res);
 
 };

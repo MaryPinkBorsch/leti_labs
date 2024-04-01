@@ -5,5 +5,5 @@
 struct StrL
 {
     char massiv[N];   
-    int len;
+    int len = 0;
 };
