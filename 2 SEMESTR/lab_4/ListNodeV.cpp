@@ -44,10 +44,10 @@ void ListNodeV::print1(std::ofstream &res)
             cout << f_H.cur->podstroka.massiv[i];
             res << f_H.cur->podstroka.massiv[i];
         }
-        cout << " ---> ";
-        res << " ---> ";
+        cout << " -> ";
+        res << " -> ";
         f_H.cur = f_H.cur->next;
     }
-    cout << " null_Horisontal " << endl;
-    res << " null_Horisontal " << endl;
+    cout << " NULL_H" << endl;
+    res << " NULL_H" << endl;
 }

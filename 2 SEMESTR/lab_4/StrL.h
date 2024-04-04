@@ -4,6 +4,8 @@
 
 struct StrL
 {
-    char massiv[N];   
+    char massiv[N];
     int len = 0;
+    
+    bool search1(std::ofstream &res);
 };
