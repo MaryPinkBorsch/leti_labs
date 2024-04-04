@@ -6,9 +6,9 @@ using namespace std;
 
 bool Read_file(std::ifstream &input, std::ofstream &res, FormularV &formularVert)
 {
-    if(input.eof())
+    if (input.eof())
     {
-        cout<< "SPISOK PUST" <<endl;
+        cout << "SPISOK PUST" << endl;
         return false;
     }
 
@@ -182,6 +182,54 @@ void Delete_Znaki2(FormularV &toProcess_F, std::ofstream &res)
     }
 }
 
+void Swap_Znaki(FormularV &toProcess_F, std::ofstream &res)
+{
+    toProcess_F.cur = toProcess_F.head;
+    bool swap = false;
+
+    if (toProcess_F.cur == nullptr)
+    {
+        cout << " пустой верт. список! " << endl;
+        return;
+    }
+    toProcess_F.prev = nullptr;
+
+    while (toProcess_F.cur != nullptr)
+    {
+        swap = false;
+        toProcess_F.cur->f_H.cur = toProcess_F.cur->f_H.head;
+        while (toProcess_F.cur->f_H.cur != nullptr)
+        {
+            if (toProcess_F.cur->f_H.cur->podstroka.search1(res) == true)
+            {
+                swap = true;
+                break;
+            }
+
+            toProcess_F.cur->f_H.cur = toProcess_F.cur->f_H.cur->next;
+        }
+        if (swap == true)
+        {
+            // (prev) -> (cur) -> (cur->next) -> (cur->next->next)
+            // если в (cur) есть знаки препинания, поменяем местами (cur) и (cur->next)
+            if (toProcess_F.cur && toProcess_F.cur->next)
+            {
+                ListNodeV *tmp = toProcess_F.cur->next;              // запомнили (cur->next)
+                toProcess_F.cur->next = toProcess_F.cur->next->next; // то что раньше указывало на tmp теперь указывает на cur->next->next
+                if (toProcess_F.prev)
+                    toProcess_F.prev->next = tmp; // prev->next узаывает на tmp
+                else
+                { // если prev не было, только что head поменяли
+                    toProcess_F.head = tmp;
+                }
+                tmp->next = toProcess_F.cur; // tmp (то что раньше было (cur->next)) теперь указывает на (cur)
+            }
+        }
+        toProcess_F.prev = toProcess_F.cur;
+        toProcess_F.cur = toProcess_F.cur->next;
+    }
+}
+
 void BIG_process(std::ofstream &res, std::string in_filename)
 {
     ifstream input;
@@ -208,13 +256,16 @@ void BIG_process(std::ofstream &res, std::string in_filename)
              << " 0 - смена всего шрифта на заглавный, "
              << endl
              << " 2 - удаление горизонтального элемента, содержащего знаки препинания," << endl
-             << " 3 - удаление вертик. элемента, содержащего знаки препинания" << endl;
-       res << "Выберите режим обработки: " << endl
-             << " 1 - смена всего шрифта на прописной," << endl
-             << " 0 - смена всего шрифта на заглавный, "
-             << endl
-             << " 2 - удаление горизонтального элемента, содержащего знаки препинания," << endl
-             << " 3 - удаление вертик. элемента, содержащего знаки препинания" << endl;
+             << " 3 - удаление вертик. элемента, содержащего знаки препинания" << endl
+             << " 4 - обмен элемента с последующ-м, если он содержит знак препинания"<< endl;
+
+        res << "Выберите режим обработки: " << endl
+            << " 1 - смена всего шрифта на прописной," << endl
+            << " 0 - смена всего шрифта на заглавный, "
+            << endl
+            << " 2 - удаление горизонтального элемента, содержащего знаки препинания," << endl
+            << " 3 - удаление вертик. элемента, содержащего знаки препинания" << endl
+            << " 4 - обмен элемента с последующ-м, если он содержит знак препинания"<< endl;
         cin >> rezhim;
 
         cout << " Выбран режим: " << rezhim << endl;
@@ -234,13 +285,16 @@ void BIG_process(std::ofstream &res, std::string in_filename)
         case 3:
             myFunction2 = &Delete_Znaki2;
             break;
+        case 4:
+            myFunction2 = &Swap_Znaki;
+            break;
         default:
             break;
         }
 
         if (rezhim == 0 || rezhim == 1 || rezhim == 2)
             PrimenitIzmenenia(res, f1, myFunction);
-        else if (rezhim == 3)
+        else if (rezhim == 3 || rezhim == 4)
             PrimenitIzmenenia2(res, f1, myFunction2);
         else
         {
@@ -249,9 +303,11 @@ void BIG_process(std::ofstream &res, std::string in_filename)
             return;
         }
 
-        cout<< endl << "RESULT: " << endl
+        cout << endl
+             << "RESULT: " << endl
              << endl;
-        res<< endl << "RESULT: " << endl
+        res << endl
+            << "RESULT: " << endl
             << endl;
 
         print2(res, f1);
@@ -261,6 +317,8 @@ void BIG_process(std::ofstream &res, std::string in_filename)
         cout << " конец обработки " << in_filename << endl
              << endl;
         res << " конец обработки " << in_filename << endl
-            << endl<< endl<< endl;
+            << endl
+            << endl
+            << endl;
     }
 }

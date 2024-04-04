@@ -12,6 +12,8 @@ void ToLowerCase(ListNodeV& toProcess,std::ofstream &res);
 void ToUpperCase(ListNodeV& toProcess,std::ofstream &res);
 void Delete_Znaki(ListNodeV& toProcess,std::ofstream &res);
 void Delete_Znaki2(FormularV& toProcess_F, std::ofstream &res);
+void Swap_Znaki(FormularV &toProcess_F, std::ofstream &res);
+
 
 bool Read_file(std::ifstream &input, std::ofstream &res, FormularV &formularVert);
 void BIG_process(std::ofstream &res, std::string in_filename);

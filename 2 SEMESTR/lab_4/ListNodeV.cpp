@@ -17,6 +17,8 @@ bool ListNodeV::ReadV(std::ifstream &input, std::ofstream &res)
         if (input.eof())
             break;
         input >> noskipws >> s;
+        if (input.eof())
+            break;
         if (s == '\n'||s == 0) //!!   if (s == '\n')
             break;
         f_H.cur->podstroka.massiv[counter % N] = s;
