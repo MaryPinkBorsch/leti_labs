@@ -6,6 +6,12 @@ using namespace std;
 
 bool Read_file(std::ifstream &input, std::ofstream &res, FormularV &formularVert)
 {
+    if(input.eof())
+    {
+        cout<< "SPISOK PUST" <<endl;
+        return false;
+    }
+
     formularVert.head = new ListNodeV;
     formularVert.cur = formularVert.head;
     while (!input.eof())
@@ -198,14 +204,17 @@ void BIG_process(std::ofstream &res, std::string in_filename)
 
         ListNodeVFunction2 myFunction2; // для обработки вертикальных элементов
         cout << "Выберите режим обработки: " << endl
-             << " 1 - смена всего шрифта на прописной, 0 - смена всего шрифта на заглавный, "
+             << " 1 - смена всего шрифта на прописной," << endl
+             << " 0 - смена всего шрифта на заглавный, "
              << endl
-             << " 2 - удаление горизонтального элемента, содержащего знаки препинания, 3 - удаление вертик. элемента, содержащего знаки препинания" << endl;
-        res << "Выберите режим обработки: " << endl
-            << " 1 - смена всего шрифта на прописной, 0 - смена всего шрифта на заглавный, "
-            << endl
-            << " 2 - удаление горизонтального элемента, содержащего знаки препинания, 3 - удаление вертик. элемента, содержащего знаки препинания" << endl;
-
+             << " 2 - удаление горизонтального элемента, содержащего знаки препинания," << endl
+             << " 3 - удаление вертик. элемента, содержащего знаки препинания" << endl;
+       res << "Выберите режим обработки: " << endl
+             << " 1 - смена всего шрифта на прописной," << endl
+             << " 0 - смена всего шрифта на заглавный, "
+             << endl
+             << " 2 - удаление горизонтального элемента, содержащего знаки препинания," << endl
+             << " 3 - удаление вертик. элемента, содержащего знаки препинания" << endl;
         cin >> rezhim;
 
         cout << " Выбран режим: " << rezhim << endl;
@@ -237,8 +246,13 @@ void BIG_process(std::ofstream &res, std::string in_filename)
         {
             cout << "ВЫБРАННЫЙ РЕЖИМ НЕ СУЩЕСТВУЕТ (купите очки)" << endl;
             res << "ВЫБРАННЫЙ РЕЖИМ НЕ СУЩЕСТВУЕТ (купите очки)" << endl;
-            abort;
+            return;
         }
+
+        cout<< endl << "RESULT: " << endl
+             << endl;
+        res<< endl << "RESULT: " << endl
+            << endl;
 
         print2(res, f1);
 
@@ -247,6 +261,6 @@ void BIG_process(std::ofstream &res, std::string in_filename)
         cout << " конец обработки " << in_filename << endl
              << endl;
         res << " конец обработки " << in_filename << endl
-            << endl;
+            << endl<< endl<< endl;
     }
 }
