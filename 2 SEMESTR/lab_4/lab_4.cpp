@@ -129,6 +129,68 @@ void Delete_Znaki(ListNodeV &toProcess, std::ofstream &res)
     }
 }
 
+void deleteng(FormularV &toProcess_F, std::ofstream &res)
+{
+    toProcess_F.cur = toProcess_F.head;
+    FormularV tmp4;
+    if (toProcess_F.cur == nullptr)
+    {
+        cout << " Список пуст " << endl;
+        res << " Список пуст " << endl;
+        return;
+    }
+    while (toProcess_F.cur != nullptr)
+    {
+        FormularH tmp3;
+        toProcess_F.cur->f_H.cur = toProcess_F.cur->f_H.head;
+        while (toProcess_F.cur->f_H.cur != nullptr)
+        {
+            tmp3.cur = toProcess_F.cur->f_H.cur->next;
+            delete toProcess_F.cur->f_H.cur;
+            toProcess_F.cur->f_H.cur = tmp3.cur;
+        }
+        tmp4.cur = toProcess_F.cur->next;
+        delete toProcess_F.cur;
+
+        toProcess_F.cur = tmp4.cur;
+    }
+
+    // ListNodeV *tmp11 = nullptr;
+    // while (toProcess_F.cur != 0)
+    // {
+    //     if (toProcess_F.cur == 0)
+    //         break;
+    //     toProcess_F.cur->f_H.cur = toProcess_F.cur->f_H.head;
+    //     FormularV tmp;
+    //     while (toProcess_F.cur->f_H.cur != 0)
+    //     {
+    //         if (toProcess_F.cur->f_H.cur == 0 || toProcess_F.cur->f_H.cur->next == 0)
+    //             break;
+    //         tmp.cur->f_H.cur = toProcess_F.cur->f_H.cur->next;
+    //         delete toProcess_F.cur->f_H.cur;
+    //         toProcess_F.cur->f_H.cur = tmp.cur->f_H.cur;
+    //     }
+    //     tmp11 = toProcess_F.cur->next;
+    //     toProcess_F.head = tmp11;
+    //     delete toProcess_F.cur;
+    // }
+}
+
+// ListNode *cur = head;
+//     if (cur == nullptr)
+//     {
+//         cout << " Список пуст " << endl;
+//         res << " Список пуст " << endl;
+//         return;
+//     }
+//     ListNode *tmp = nullptr;
+//     while (cur != nullptr)
+//     {
+//         tmp = cur->next;
+//         delete cur;
+//         cur = tmp;
+//     }
+
 void Delete_Znaki2(FormularV &toProcess_F, std::ofstream &res)
 {
     // ListNode *cur = head;
@@ -223,13 +285,16 @@ void Swap_Znaki(FormularV &toProcess_F, std::ofstream &res)
                     toProcess_F.head = tmp;
                 }
                 tmp->next = toProcess_F.cur; // tmp (то что раньше было (cur->next)) теперь указывает на (cur)
+                if (toProcess_F.prev)
+                    toProcess_F.cur = toProcess_F.prev->next;
+                else
+                    toProcess_F.cur = toProcess_F.head;
             }
         }
         toProcess_F.prev = toProcess_F.cur;
         toProcess_F.cur = toProcess_F.cur->next;
     }
 }
-
 void BIG_process(std::ofstream &res, std::string in_filename)
 {
     ifstream input;
@@ -257,7 +322,7 @@ void BIG_process(std::ofstream &res, std::string in_filename)
              << endl
              << " 2 - удаление горизонтального элемента, содержащего знаки препинания," << endl
              << " 3 - удаление вертик. элемента, содержащего знаки препинания" << endl
-             << " 4 - обмен элемента с последующ-м, если он содержит знак препинания"<< endl;
+             << " 4 - первый эл-т в списке, содерж-й знак препинания, будет перенесен в конец списка путем обмена споследующим эл-м" << endl;
 
         res << "Выберите режим обработки: " << endl
             << " 1 - смена всего шрифта на прописной," << endl
@@ -265,7 +330,7 @@ void BIG_process(std::ofstream &res, std::string in_filename)
             << endl
             << " 2 - удаление горизонтального элемента, содержащего знаки препинания," << endl
             << " 3 - удаление вертик. элемента, содержащего знаки препинания" << endl
-            << " 4 - обмен элемента с последующ-м, если он содержит знак препинания"<< endl;
+            << " 4 - первый эл-т в списке, содерж-й знак препинания, будет перенесен в конец списка путем обмена споследующим эл-м" << endl;
         cin >> rezhim;
 
         cout << " Выбран режим: " << rezhim << endl;
@@ -312,7 +377,10 @@ void BIG_process(std::ofstream &res, std::string in_filename)
 
         print2(res, f1);
 
-        // deleteng
+        deleteng(f1, res);
+
+        cout << " список удален " << endl;
+        res << " список удален " << endl;
 
         cout << " конец обработки " << in_filename << endl
              << endl;
