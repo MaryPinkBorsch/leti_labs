@@ -1,3 +1,4 @@
+#pragma once
 struct F_w_field
 {
     //List_w_field  * head =0;

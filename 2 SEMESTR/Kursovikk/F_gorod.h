@@ -1,3 +1,4 @@
+#pragma once
 struct F_gorod
 {
     // List_gorod  * head =0;

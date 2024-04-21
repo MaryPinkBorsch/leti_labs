@@ -1,6 +1,11 @@
+#pragma once
+
+#include"F_familia.h"
+#include"F_imya.h"
+#include"F_otchestvo.h"
 struct F_fio
 {
-    // F_familia;
-    // F_imya;
-    // F_otchestvo;
+    F_familia familia;
+    F_imya imya;
+    F_otchestvo otchestvo;
 };

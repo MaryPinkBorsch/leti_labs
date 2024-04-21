@@ -1,3 +1,4 @@
+#pragma once
 struct F_imya
 {
     //List_imya  * head =0;

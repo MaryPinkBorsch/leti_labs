@@ -1,3 +1,4 @@
+#pragma once
 struct F_offer
 {
     //List_offer  * head =0;

@@ -1,3 +1,4 @@
+#pragma once
 struct F_resume
 {
     // List_resume  * head =0;

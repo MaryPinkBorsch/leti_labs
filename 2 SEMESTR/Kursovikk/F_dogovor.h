@@ -1,3 +1,4 @@
+#pragma once
 struct F_dogovor
 { 
     // List_dogovor * head =0;
