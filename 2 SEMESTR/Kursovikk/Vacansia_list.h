@@ -5,15 +5,30 @@
 #include "F_gorod.h"
 #include "F_professia.h"
 #include "F_education_lvl.h"
-struct Vacansia_list
+#include "Employer_list.h"
+
+struct Vacansia
 {
-    F_w_field work_field; // рабочая область
-    F_professia professia;
-    F_gorod adress; // gorod
+    WorkField work_field; // рабочая область
+    Professia professia;
+    Gorod adress; // gorod
     int salary;
-    F_education_lvl education_lvl; // уровень образования
+    Obrazovanie education_lvl; // уровень образования
 
-    // F_offer  offers;
+    EmployerNode *Rabotodatel = nullptr;
 
-    Vacansia_list *next = 0;
+    bool Read(std::string & filename);
+    bool Write(std::string & filename);
+};
+
+struct VacansiaNode
+{
+    Vacansia value;
+    VacansiaNode *next = nullptr;
+};
+
+struct F_Vacancia
+{
+    VacansiaNode *head = nullptr;
+    VacansiaNode *cur = nullptr;
 };

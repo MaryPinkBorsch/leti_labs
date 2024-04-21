@@ -6,12 +6,24 @@
 #include "F_fio.h"
 #include "F_professia.h"
 #include "F_education_lvl.h"
-struct Worker_list
+#include "F_resume.h"
+
+struct Worker
 {
     F_fio F_I_O;
-    F_professia wanted_profession; // желаемая professia
-    F_education_lvl education_lvl; // уровень образования
-    int wanted_salary;             // желаемая z/p
+    Obrazovanie education_lvl;   // уровень образования
+    // int opit; // лет опыта 
+    F_resume resumes; // все резюме работника
+};
 
-    Worker_list *next = 0;
+struct WorkerNode
+{
+    Worker value;
+    WorkerNode *next = 0;
+};
+
+struct F_Worker 
+{
+    WorkerNode * head = nullptr;
+    WorkerNode * cur = nullptr;
 };

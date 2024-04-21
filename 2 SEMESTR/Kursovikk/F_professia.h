@@ -1,6 +1,14 @@
 #pragma once
-struct F_professia
+
+enum Professia
 {
-    //List_professia  * head =0;
-    // List_professia * cur =0;
+    STROITEL,
+    TRAKTORIST,
+    PROGRAMIST,
+    TESTER,
+    DOKTOR,
+    MEDRABOTNIK,
+    VODITEL, 
+    MANAGER
 };
+

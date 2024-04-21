@@ -1,6 +1,10 @@
 #pragma once
-struct F_gorod
+
+enum Gorod 
 {
-    // List_gorod  * head =0;
-    // List_gorod * cur =0;
+    MOSCOW,
+    SAINT_PETERSBURG,
+    NOVGOROD,
+    NOVOSIBIRSK
 };
+
