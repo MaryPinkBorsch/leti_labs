@@ -14,6 +14,9 @@ struct Worker
     Obrazovanie education_lvl;   // уровень образования
     // int opit; // лет опыта 
     F_resume resumes; // все резюме работника
+
+    bool Read(std::string & filename);
+    bool Write(std::string & filename);    
 };
 
 struct WorkerNode

@@ -29,8 +29,8 @@ struct Birga
     void PrintDogovors();
     void PrintDogovor();
     
-    bool Read(std::string filename);
-    bool Write(std::string filename);
+    bool Read(std::string & filename);
+    bool Write(std::string & filename);
 
 
 };
