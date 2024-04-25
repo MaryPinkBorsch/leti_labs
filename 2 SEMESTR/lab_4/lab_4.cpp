@@ -155,25 +155,7 @@ void deleteng(FormularV &toProcess_F, std::ofstream &res)
         toProcess_F.cur = tmp4.cur;
     }
 
-    // ListNodeV *tmp11 = nullptr;
-    // while (toProcess_F.cur != 0)
-    // {
-    //     if (toProcess_F.cur == 0)
-    //         break;
-    //     toProcess_F.cur->f_H.cur = toProcess_F.cur->f_H.head;
-    //     FormularV tmp;
-    //     while (toProcess_F.cur->f_H.cur != 0)
-    //     {
-    //         if (toProcess_F.cur->f_H.cur == 0 || toProcess_F.cur->f_H.cur->next == 0)
-    //             break;
-    //         tmp.cur->f_H.cur = toProcess_F.cur->f_H.cur->next;
-    //         delete toProcess_F.cur->f_H.cur;
-    //         toProcess_F.cur->f_H.cur = tmp.cur->f_H.cur;
-    //     }
-    //     tmp11 = toProcess_F.cur->next;
-    //     toProcess_F.head = tmp11;
-    //     delete toProcess_F.cur;
-    // }
+    
 }
 
 // ListNode *cur = head;
