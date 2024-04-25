@@ -1,5 +1,7 @@
 #pragma once
-#include <string>
+
+
+#include "common.h"
 
 struct F_fio
 {

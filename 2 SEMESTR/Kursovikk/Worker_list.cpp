@@ -4,9 +4,57 @@ using namespace std;
 
 bool Worker::Read(std::ifstream &input, std::ofstream &log)
 {
-    return false;
+    F_I_O.Read(input, log);
+
+    std::string obrazovanie_string = "";
+    input >> obrazovanie_string; // считываем номер профессии
+    education_lvl = (Obrazovanie)std::atoi(obrazovanie_string.c_str());
+
+    std::string num_resumes_string = "";
+    input >> num_resumes_string; // считываем номер профессии
+    resumes.num_resumes = (int)std::atoi(num_resumes_string.c_str());
+
+    resumes.head = new ResumeNode();
+    resumes.cur = resumes.head;
+    for (int i = 0; i < resumes.num_resumes; i++)
+    {
+        resumes.cur->value.Read(input, log);
+        resumes.cur->next = new ResumeNode();
+        resumes.cur = resumes.cur->next;
+    }
+    return true;
 }
 bool Worker::Write(std::ofstream &output, std::ofstream &log)
 {
-    return false;
+    F_I_O.Write(output, log);
+
+    std::string obrazovanie_string = "";
+    obrazovanie_string = std::to_string(education_lvl);
+    output << obrazovanie_string;
+
+    std::string num_resumes_string = "";
+    num_resumes_string = std::to_string(resumes.num_resumes);
+    output << num_resumes_string;
+
+    resumes.cur = resumes.head;
+    for (int i = 0; i < resumes.num_resumes; i++)
+    {
+        resumes.cur->value.Write(output, log);
+        resumes.cur = resumes.cur->next;
+    }
+    return true;
+}
+void Worker::Print(std::ofstream &log)
+{
+    cout << "ФИО: " << F_I_O.familia << " " << F_I_O.imya << " " << F_I_O.otchestvo << endl;
+    log << "ФИО: " << F_I_O.familia << " " << F_I_O.imya << " " << F_I_O.otchestvo << endl;
+
+    cout << "Образование: " << (int)education_lvl << endl;
+    log << "Образование: " << (int)education_lvl << endl;
+    resumes.cur = resumes.head;
+    for(int i = 0; i < resumes.num_resumes; i++)
+    {
+        resumes.cur->value.Print(log);
+        resumes.cur=resumes.cur->next;
+    }
 }

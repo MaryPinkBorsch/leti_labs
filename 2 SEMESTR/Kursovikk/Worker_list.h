@@ -1,5 +1,5 @@
 #pragma once
-#include <string>
+#include "common.h"
 // #include "F_w_field.h"
 // #include "F_gorod.h"
 
@@ -11,12 +11,13 @@
 struct Worker
 {
     F_fio F_I_O;
-    Obrazovanie education_lvl;   // уровень образования
-    // int opit; // лет опыта 
+    Obrazovanie education_lvl; // уровень образования
+
     F_resume resumes; // все резюме работника
 
-    bool Read(std::ifstream & input, std::ofstream & log);
-    bool Write(std::ofstream & output, std::ofstream & log);    
+    bool Read(std::ifstream &input, std::ofstream &log);
+    bool Write(std::ofstream &output, std::ofstream &log);
+    void Print(std::ofstream &log);
 };
 
 struct WorkerNode
@@ -25,8 +26,9 @@ struct WorkerNode
     WorkerNode *next = 0;
 };
 
-struct F_Worker 
+struct F_Worker
 {
-    WorkerNode * head = nullptr;
-    WorkerNode * cur = nullptr;
+    WorkerNode *head = nullptr;
+    WorkerNode *cur = nullptr;
+    int num_workers = 0;
 };

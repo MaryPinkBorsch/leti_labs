@@ -1,4 +1,6 @@
 #include"Birga.h"
+#include "common.h"
+using namespace std;
 
 // нужны структуры:
 // 1) Еmployer, поля - name, work_field, adress, phone 
@@ -23,5 +25,6 @@
 
 int main(int argc, char * argv[])
 {
+    std::ofstream log("log.txt", ios::out);
     return 0;
 }

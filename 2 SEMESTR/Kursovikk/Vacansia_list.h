@@ -1,11 +1,11 @@
 #pragma once
-#include <string>
 
 #include "F_w_field.h"
 #include "F_gorod.h"
 #include "F_professia.h"
 #include "F_education_lvl.h"
 
+#include "common.h"
 struct EmployerNode;
 
 struct Vacansia

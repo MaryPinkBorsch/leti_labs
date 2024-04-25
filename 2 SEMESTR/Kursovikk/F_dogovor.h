@@ -4,6 +4,8 @@
 #include "Worker_list.h"
 #include "Vacansia_list.h"
 
+#include "common.h"
+
 struct Dogovor 
 {
     EmployerNode * rabotodatel = nullptr; // работодатель

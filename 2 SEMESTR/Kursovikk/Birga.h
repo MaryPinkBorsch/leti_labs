@@ -19,7 +19,7 @@ struct Birga
     void AddEmployer();
     void PrintWorkers();
     void PrintEmployers();
-    void PrintWorker();
+    void PrintWorker(WorkerNode *cur);
     void PrintEmployer();
     void AddWorkerResume();
     void AddEmployerVacancy();
@@ -29,8 +29,8 @@ struct Birga
     void PrintDogovors();
     void PrintDogovor();
     
-    bool Read(std::string & filename);
-    bool Write(std::string & filename);
+    bool Read(std::string &filename, std::ofstream &log);
+    bool Write(std::string &filename, std::ofstream &log);
 
 
 };

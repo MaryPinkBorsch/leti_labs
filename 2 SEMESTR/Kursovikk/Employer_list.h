@@ -7,6 +7,8 @@
 #include "F_professia.h"
 #include "Vacansia_list.h"
 
+#include "common.h"
+
 struct Employer
 {
     F_fio F_I_O;
