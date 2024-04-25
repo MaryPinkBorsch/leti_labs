@@ -4,6 +4,7 @@
 struct Resume
 {
     WorkerNode * soiskatel = 0;
+    
     Professia wanted_profession; // желаемая professia
     int wanted_salary;
 
