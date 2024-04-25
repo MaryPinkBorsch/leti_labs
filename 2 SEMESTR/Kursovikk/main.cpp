@@ -1,5 +1,9 @@
-#include"Birga.h"
 #include "common.h"
+
+#include <filesystem>
+
+#include"Birga.h"
+
 using namespace std;
 
 // нужны структуры:
@@ -25,6 +29,22 @@ using namespace std;
 
 int main(int argc, char * argv[])
 {
+
+    Birga birga;
+
     std::ofstream log("log.txt", ios::out);
+
+    std::string filename = "baza_dannih.txt";
+
+    // перед началом работы надо считать базу данных если она есть
+    if (std::filesystem::exists(filename)) 
+    {
+        birga.Read(filename, log);
+    }
+
+
+
+    // после окончания работы надо записать базу данных
+    birga.Write(filename, log);
     return 0;
 }

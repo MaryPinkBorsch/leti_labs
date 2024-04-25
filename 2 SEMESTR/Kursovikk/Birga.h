@@ -15,11 +15,11 @@ struct Birga
     F_Worker    workers;
     F_Employer  employers;
 
-    void AddWorker();
+    WorkerNode* AddWorker(std::ofstream &log);
     void AddEmployer();
-    void PrintWorkers();
+    void PrintWorkers(std::ofstream &log);
     void PrintEmployers();
-    void PrintWorker(WorkerNode *cur);
+    void PrintWorker(WorkerNode *cur, std::ofstream &log);
     void PrintEmployer();
     void AddWorkerResume();
     void AddEmployerVacancy();
@@ -28,9 +28,9 @@ struct Birga
     void MakeDogovor();
     void PrintDogovors();
     void PrintDogovor();
+
+    void BigProcess(std::ofstream &log);
     
     bool Read(std::string &filename, std::ofstream &log);
     bool Write(std::string &filename, std::ofstream &log);
-
-
 };
