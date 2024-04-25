@@ -1,3 +1,5 @@
+#include"Birga.h"
+
 // нужны структуры:
 // 1) Еmployer, поля - name, work_field, adress, phone 
 // 2) Worker, поля - name, familia, otchestvo, wanted_profession, work_field, worked_time, salary

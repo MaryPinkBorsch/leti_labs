@@ -7,8 +7,9 @@ struct Resume
     Professia wanted_profession; // желаемая professia
     int wanted_salary;
 
-    bool Read(std::string & filename);
-    bool Write(std::string & filename);
+    
+    bool Read(std::ifstream & input, std::ofstream & log);
+    bool Write(std::ofstream & output, std::ofstream & log); 
 };
 
 struct ResumeNode

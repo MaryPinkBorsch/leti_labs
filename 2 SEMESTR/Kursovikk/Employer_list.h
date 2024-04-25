@@ -16,8 +16,9 @@ struct Employer
 
     VacansiaNode * offered_vacansii=0;
 
-    bool Read(std::string & filename);
-    bool Write(std::string & filename);
+   
+    bool Read(std::ifstream & input, std::ofstream & log);
+    bool Write(std::ofstream & output, std::ofstream & log); 
 };
 
 struct EmployerNode 

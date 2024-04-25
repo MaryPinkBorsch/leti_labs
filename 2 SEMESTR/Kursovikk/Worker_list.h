@@ -15,8 +15,8 @@ struct Worker
     // int opit; // лет опыта 
     F_resume resumes; // все резюме работника
 
-    bool Read(std::string & filename);
-    bool Write(std::string & filename);    
+    bool Read(std::ifstream & input, std::ofstream & log);
+    bool Write(std::ofstream & output, std::ofstream & log);    
 };
 
 struct WorkerNode

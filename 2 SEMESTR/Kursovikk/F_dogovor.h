@@ -10,8 +10,9 @@ struct Dogovor
     WorkerNode * rabotnik = nullptr; // работник
     VacansiaNode * next = nullptr;// закрытая вакансия
 
-    bool Read(std::string & filename);
-    bool Write(std::string & filename);
+  
+    bool Read(std::ifstream & input, std::ofstream & log);
+    bool Write(std::ofstream & output, std::ofstream & log); 
 };
 
 struct DogovorNode 
