@@ -42,7 +42,7 @@ int main(int argc, char * argv[])
         birga.Read(filename, log);
     }
 
-
+    birga.BigProcess(log);
 
     // после окончания работы надо записать базу данных
     birga.Write(filename, log);

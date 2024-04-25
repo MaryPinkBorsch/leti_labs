@@ -19,10 +19,10 @@ bool Resume::Write(std::ofstream &output, std::ofstream &log)
 {
     std::string professia_string = "";
     professia_string = std::to_string(wanted_profession);
-    output << professia_string;
+    output << professia_string<< std::endl;
     std::string wanted_salary_string = "";
     wanted_salary_string = std::to_string(wanted_salary);
-    output << wanted_salary_string;
+    output << wanted_salary_string<< std::endl;
 
     return true;
 }

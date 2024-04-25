@@ -6,20 +6,20 @@ WorkerNode* Birga::AddWorker(std::ofstream &log)
 {
     WorkerNode* newWorker = new WorkerNode();
 
-    std::cout << "Введите Имя";
+    std::cout << "Введите Имя" << std::endl;
     std::cin >> newWorker->value.F_I_O.imya;
-    std::cout << "Введите Отчество";
+    std::cout << "Введите Отчество" << std::endl;
     std::cin >> newWorker->value.F_I_O.otchestvo;
-    std::cout << "Введите фамилиё";
+    std::cout << "Введите фамилиё" << std::endl;
     std::cin >> newWorker->value.F_I_O.familia;
 
     std::string obrazovanie_string = "";
-    std::cout << "Введите уровень образования цифрой";
+    std::cout << "Введите уровень образования цифрой" << std::endl;
     std::cin >> obrazovanie_string; // считываем номер профессии
     newWorker->value.education_lvl = (Obrazovanie)std::atoi(obrazovanie_string.c_str());
 
     int counter = 0;
-    std::cout << "Добавить резюме? Y/N";
+    std::cout << "Добавить резюме? Y/N" << std::endl;
     char answer = 'f';
     std::cin >> answer;
     newWorker->value.resumes.head = nullptr;
@@ -35,12 +35,12 @@ WorkerNode* Birga::AddWorker(std::ofstream &log)
             newWorker->value.resumes.cur->next = new ResumeNode();
             newWorker->value.resumes.cur = newWorker->value.resumes.cur->next;
         }
-        std::cout << "Введите профессию цифрой";
+        std::cout << "Введите профессию цифрой" << std::endl;
         std::cin >> (int&)newWorker->value.resumes.cur->value.wanted_profession;
-        std::cout << "Введите желаемую зарплату";
+        std::cout << "Введите желаемую зарплату" << std::endl;
         std::cin >> newWorker->value.resumes.cur->value.wanted_salary;
         ++counter;
-        std::cout << "Добавить еще резюме? Y/N";
+        std::cout << "Добавить еще резюме? Y/N" << std::endl;
         std::cin >> answer;
     }
     newWorker->value.resumes.num_resumes = counter;
@@ -96,7 +96,7 @@ bool Birga::Write(std::string &filename, std::ofstream &log)
 
     std::string num_workers_string = "";
     num_workers_string = std::to_string(workers.num_workers);
-    output << num_workers_string;
+    output << num_workers_string << endl;
 
     workers.cur = workers.head;
     for (int i = 0; i < workers.num_workers; i++)
@@ -117,7 +117,7 @@ void Birga::BigProcess(std::ofstream &log)
         std::cout << "2) добавить работника" << std::endl;
         std::cout << "3) распечатать работников" << std::endl;
 
-        char action = 1;
+        int action = 1;
         std::cin >> action;
         switch (action) 
         {
@@ -128,7 +128,18 @@ void Birga::BigProcess(std::ofstream &log)
             break;
             case 2:
             {
-                AddWorker(log);
+                WorkerNode* newWorker = AddWorker(log);
+                if (workers.head == nullptr)
+                    workers.head = newWorker;
+                else 
+                {
+                    workers.cur = workers.head;
+                    while (workers.cur->next != nullptr)
+                        workers.cur = workers.cur->next;
+
+                    workers.cur->next = newWorker;
+                }
+                workers.num_workers++;
             }
             break;
             case 3:

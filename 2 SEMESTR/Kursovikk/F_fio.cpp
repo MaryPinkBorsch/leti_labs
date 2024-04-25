@@ -11,8 +11,8 @@ bool F_fio::Read(std::ifstream &input, std::ofstream &log)
 }
 bool F_fio::Write(std::ofstream &output, std::ofstream &log)
 {
-    output << familia;
-    output << imya;
-    output << otchestvo;
+    output << familia<< std::endl;
+    output << imya<< std::endl;
+    output << otchestvo<< std::endl;
     return true;
 }

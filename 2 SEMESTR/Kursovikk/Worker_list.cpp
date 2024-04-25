@@ -30,11 +30,11 @@ bool Worker::Write(std::ofstream &output, std::ofstream &log)
 
     std::string obrazovanie_string = "";
     obrazovanie_string = std::to_string(education_lvl);
-    output << obrazovanie_string;
+    output << obrazovanie_string<< std::endl;
 
     std::string num_resumes_string = "";
     num_resumes_string = std::to_string(resumes.num_resumes);
-    output << num_resumes_string;
+    output << num_resumes_string<< std::endl;
 
     resumes.cur = resumes.head;
     for (int i = 0; i < resumes.num_resumes; i++)
