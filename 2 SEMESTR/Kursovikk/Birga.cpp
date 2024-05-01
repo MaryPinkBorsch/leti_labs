@@ -45,6 +45,18 @@ WorkerNode *Birga::AddWorker(std::ofstream &log)
     }
     newWorker->value.resumes.num_resumes = counter;
 
+    std::cout << "Найти подходящие вакансии? Y/N" << std::endl;
+    std::cin >> answer;
+    if(answer=='y'||answer=='Y')
+    {
+        
+    }
+    // if (yes) 
+    // {
+    //     F_Vacancia vac = FindResumesForEmployer(newWorker);
+    //     пройти по формуляру и вызвать Print(log)
+    // }
+
     return newWorker;
 }
 
@@ -291,3 +303,44 @@ void Birga::BigProcess(std::ofstream &log)
         }
     }
 }
+
+F_Vacancia Birga::FindVacanciiForWorker(WorkerNode* worker) 
+{
+    F_Vacancia res;
+    employers.cur = employers.head;
+    for (int i = 0; i < employers.num_employers; i++)
+    {
+        employers.cur->value.offered_vacansii.cur = employers.cur->value.offered_vacansii.head;
+        for (int j = 0; j < employers.cur->value.offered_vacansii.num_vacansii; j++)
+        {
+            employers.cur->value.offered_vacansii.cur->value.professia;
+
+            worker->value.resumes.cur = worker->value.resumes.head;
+            for (int k = 0; k < worker->value.resumes.num_resumes; k++)
+            {
+                if (employers.cur->value.offered_vacansii.cur->value.professia == worker->value.resumes.cur->value.wanted_profession
+                    && employers.cur->value.offered_vacansii.cur->value.salary >= worker->value.resumes.cur->value.wanted_salary) 
+                    {
+                        if (res.head == nullptr) 
+                        {
+                            res.head = new VacansiaNode();
+                            res.cur = res.head;
+                        }
+                        else 
+                        {
+                            res.cur->next = new VacansiaNode();
+                            res.cur = res.cur->next;
+                        }
+                        res.cur->value = employers.cur->value.offered_vacansii.cur->value;
+                    }
+                
+                worker->value.resumes.cur = worker->value.resumes.cur->next;
+            }
+
+            employers.cur->value.offered_vacansii.cur = employers.cur->value.offered_vacansii.cur->next;
+        }
+        employers.cur = employers.cur->next;
+    }
+    return res;
+}
+

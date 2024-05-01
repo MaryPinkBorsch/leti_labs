@@ -28,6 +28,7 @@ struct Birga
     void MakeDogovor();
     void PrintDogovors();
     void PrintDogovor();
+    F_Vacancia FindVacanciiForWorker(WorkerNode* worker);
 
     void BigProcess(std::ofstream &log);
     
