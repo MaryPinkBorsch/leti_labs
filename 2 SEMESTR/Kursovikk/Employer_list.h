@@ -19,6 +19,8 @@ struct Employer
 
     bool Read(std::ifstream &input, std::ofstream &log);
     bool Write(std::ofstream &output, std::ofstream &log);
+    void Print(std::ofstream &log);
+
 };
 
 struct EmployerNode

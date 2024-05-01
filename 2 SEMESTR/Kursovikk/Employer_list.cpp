@@ -58,3 +58,18 @@ bool Employer::Write(std::ofstream &output, std::ofstream &log)
     output << std::endl;
     return true;
 }
+
+void Employer::Print(std::ofstream &log)
+{
+    cout << "ФИО: " << F_I_O.familia << " " << F_I_O.imya << " " << F_I_O.otchestvo << endl;
+    log << "ФИО: " << F_I_O.familia << " " << F_I_O.imya << " " << F_I_O.otchestvo << endl;
+
+    cout << "Рабочая область: " << (int)work_field << endl;
+    log << "Рабочая область: " << (int)work_field << endl;
+    offered_vacansii.cur = offered_vacansii.head;
+    for(int i = 0; i < offered_vacansii.num_vacansii; i++)
+    {
+        offered_vacansii.cur->value.Print(log);
+        offered_vacansii.cur=offered_vacansii.cur->next;
+    }
+}

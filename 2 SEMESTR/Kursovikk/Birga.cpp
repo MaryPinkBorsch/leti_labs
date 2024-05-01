@@ -58,7 +58,7 @@ void Birga::PrintWorkers(std::ofstream &log)
     for (int i = 0; i < workers.num_workers; i++)
     {
         workers.cur->value.Print(log);
-        // log << endl;
+
         workers.cur = workers.cur->next;
     }
 }
@@ -120,8 +120,22 @@ EmployerNode *Birga::AddEmployer(std::ofstream &log)
     return newEmployer;
 }
 
-void Birga::PrintEmployers() {}
-void Birga::PrintEmployer() {}
+void Birga::PrintEmployers(std::ofstream &log)
+{
+    employers.cur = employers.head;
+    for (int i = 0; i < employers.num_employers; i++)
+    {
+        employers.cur->value.Print(log);
+
+        employers.cur = employers.cur->next;
+    }
+}
+
+void Birga::PrintEmployer(EmployerNode *cur, std::ofstream &log)
+{
+    cur->value.Print(log);
+}
+
 void Birga::AddWorkerResume() {}
 void Birga::AddEmployerVacancy() {}
 void Birga::FindVacanciesForWorker() {}
@@ -246,6 +260,23 @@ void Birga::BigProcess(std::ofstream &log)
             PrintWorkers(log);
         }
         break;
+        case 4:
+        {
+            EmployerNode *newEmployer = AddEmployer(log);
+            if (employers.head == nullptr)
+                employers.head = newEmployer;
+            else
+            {
+                employers.cur = employers.head;
+                while (employers.cur->next != nullptr)
+                    employers.cur = employers.cur->next;
+
+                employers.cur->next = newEmployer;
+            }
+            employers.num_employers++;
+        }
+        break;
+
         default:
         {
             exit = true;

@@ -54,3 +54,14 @@ bool Vacansia::Write(std::ofstream &output, std::ofstream &log)
 
     return true;
 }
+
+void Vacansia::Print(std::ofstream &log)
+{
+    cout << "Предлагаемая professia: " << (int)professia << endl
+         << "Предлагаемая зарплата: " << salary << endl
+         << "Необходимый уровень образования: " << (int)education_lvl << endl;
+
+    log << "Предлагаемая professia: " << (int)professia << endl
+        << "Предлагаемая зарплата: " << salary << endl
+        << "Необходимый уровень образования: " << (int)education_lvl << endl;
+}

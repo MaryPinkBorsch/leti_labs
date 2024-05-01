@@ -18,9 +18,9 @@ struct Birga
     WorkerNode* AddWorker(std::ofstream &log);
     EmployerNode * AddEmployer(std::ofstream &log);
     void PrintWorkers(std::ofstream &log);
-    void PrintEmployers();
+    void PrintEmployers(std::ofstream &log);
     void PrintWorker(WorkerNode *cur, std::ofstream &log);
-    void PrintEmployer();
+    void PrintEmployer(EmployerNode *cur, std::ofstream &log);
     void AddWorkerResume();
     void AddEmployerVacancy();
     void FindVacanciesForWorker();
