@@ -16,7 +16,6 @@ bool Employer::Read(std::ifstream &input, std::ofstream &log)
 
     std::string num_vacansii_string = "";
     getline(input, num_vacansii_string, '+');
-    //input >> num_vacansii_string; //
     offered_vacansii.num_vacansii = (int)std::atoi(num_vacansii_string.c_str());
 
     offered_vacansii.head = new VacansiaNode();
@@ -66,6 +65,10 @@ void Employer::Print(std::ofstream &log)
 
     cout << "Рабочая область: " << (int)work_field << endl;
     log << "Рабочая область: " << (int)work_field << endl;
+
+    cout << "Город: "<< Gorod2String(adress) << endl;
+    log << "Город: "<< Gorod2String(adress) << endl;
+
     offered_vacansii.cur = offered_vacansii.head;
     for(int i = 0; i < offered_vacansii.num_vacansii; i++)
     {

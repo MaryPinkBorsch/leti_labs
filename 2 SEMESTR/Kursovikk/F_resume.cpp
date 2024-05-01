@@ -15,7 +15,7 @@ bool Resume::Read(std::ifstream &input, std::ofstream &log)
     // input >> wanted_salary_string; // считываем желаемую зарплату
     getline(input, wanted_salary_string, '*');
 
-    wanted_salary = (Professia)std::atoi(wanted_salary_string.c_str()); //???  почему профессия !?
+    wanted_salary = std::atoi(wanted_salary_string.c_str()); 
 
     return true;
 }
@@ -33,9 +33,9 @@ bool Resume::Write(std::ofstream &output, std::ofstream &log)
 
 void Resume::Print(std::ofstream &log)
 {
-    cout << "Желаемая professia: " << (int)wanted_profession << endl
+    cout << "Желаемая professia: " << Prof2String(wanted_profession) << endl
          << "Желаемая зарплата: " << wanted_salary << endl;
 
-    log << "Желаемая professia: " << (int)wanted_profession << endl
+    log << "Желаемая professia: " << Prof2String(wanted_profession) << endl
         << "Желаемая зарплата: " << wanted_salary << endl;
 }

@@ -55,8 +55,8 @@ void Worker::Print(std::ofstream &log)
     cout << "ФИО: " << F_I_O.familia << " " << F_I_O.imya << " " << F_I_O.otchestvo << endl;
     log << "ФИО: " << F_I_O.familia << " " << F_I_O.imya << " " << F_I_O.otchestvo << endl;
 
-    cout << "Образование: " << (int)education_lvl << endl;
-    log << "Образование: " << (int)education_lvl << endl;
+    cout << "Образование: " << Obraz2String(education_lvl) << endl;
+    log << "Образование: " << Obraz2String(education_lvl) << endl;
     resumes.cur = resumes.head;
     for(int i = 0; i < resumes.num_resumes; i++)
     {

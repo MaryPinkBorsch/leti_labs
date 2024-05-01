@@ -21,7 +21,7 @@ bool Vacansia::Read(std::ifstream &input, std::ofstream &log)
 
     std::string salary_string = "";
     getline(input, salary_string, '*');
-    salary = (Professia)std::atoi(salary_string.c_str());
+    salary = std::atoi(salary_string.c_str());
 
     std::string obrazovanie_string = "";
     getline(input, obrazovanie_string, '!');
@@ -32,17 +32,10 @@ bool Vacansia::Read(std::ifstream &input, std::ofstream &log)
 
 bool Vacansia::Write(std::ofstream &output, std::ofstream &log)
 {
-    // std::string work_field_string = "";
-    // work_field_string = std::to_string(work_field);
-    // output << work_field_string << '?';
 
     std::string professia_string = "";
     professia_string = std::to_string(professia);
     output << professia_string << '^';
-
-    // std::string gorod_string = "";
-    // gorod_string = std::to_string(adress);
-    // output << gorod_string << '&';
 
     std::string salary_string = "";
     salary_string = std::to_string(salary);
@@ -57,11 +50,11 @@ bool Vacansia::Write(std::ofstream &output, std::ofstream &log)
 
 void Vacansia::Print(std::ofstream &log)
 {
-    cout << "Предлагаемая professia: " << (int)professia << endl
+    cout << "Предлагаемая professia: " << Prof2String(professia) << endl
          << "Предлагаемая зарплата: " << salary << endl
-         << "Необходимый уровень образования: " << (int)education_lvl << endl;
+         << "Необходимый уровень образования: " << Obraz2String(education_lvl) << endl;
 
-    log << "Предлагаемая professia: " << (int)professia << endl
+    log << "Предлагаемая professia: " << Prof2String(professia) << endl
         << "Предлагаемая зарплата: " << salary << endl
-        << "Необходимый уровень образования: " << (int)education_lvl << endl;
+        << "Необходимый уровень образования: " << Obraz2String(education_lvl) << endl;
 }
