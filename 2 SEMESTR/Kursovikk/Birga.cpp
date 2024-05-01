@@ -277,6 +277,12 @@ void Birga::BigProcess(std::ofstream &log)
         }
         break;
 
+        case 5:
+        {
+            PrintEmployers(log);
+        }
+        break;
+
         default:
         {
             exit = true;
