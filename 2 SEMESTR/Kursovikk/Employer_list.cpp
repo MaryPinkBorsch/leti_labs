@@ -38,15 +38,15 @@ bool Employer::Write(std::ofstream &output, std::ofstream &log)
 
     std::string work_field_string = "";
     work_field_string = std::to_string(work_field);
-    output << work_field_string<< '$';
+    output << work_field_string << '$';
 
     std::string gorod_string = "";
     gorod_string = std::to_string(adress);
-    output << gorod_string<< '%';
+    output << gorod_string << '%';
 
     std::string num_vacansii_string = "";
     num_vacansii_string = std::to_string(offered_vacansii.num_vacansii);
-    output << num_vacansii_string<< '+';
+    output << num_vacansii_string << '+';
 
     offered_vacansii.cur = offered_vacansii.head;
     for (int i = 0; i < offered_vacansii.num_vacansii; i++)
@@ -63,16 +63,16 @@ void Employer::Print(std::ofstream &log)
     cout << "ФИО: " << F_I_O.familia << " " << F_I_O.imya << " " << F_I_O.otchestvo << endl;
     log << "ФИО: " << F_I_O.familia << " " << F_I_O.imya << " " << F_I_O.otchestvo << endl;
 
-    cout << "Рабочая область: " << (int)work_field << endl;
-    log << "Рабочая область: " << (int)work_field << endl;
+    cout << "Рабочая область: " << W_field2String(work_field) << endl;
+    log << "Рабочая область: " << W_field2String(work_field) << endl;
 
-    cout << "Город: "<< Gorod2String(adress) << endl;
-    log << "Город: "<< Gorod2String(adress) << endl;
+    cout << "Город: " << Gorod2String(adress) << endl;
+    log << "Город: " << Gorod2String(adress) << endl;
 
     offered_vacansii.cur = offered_vacansii.head;
-    for(int i = 0; i < offered_vacansii.num_vacansii; i++)
+    for (int i = 0; i < offered_vacansii.num_vacansii; i++)
     {
         offered_vacansii.cur->value.Print(log);
-        offered_vacansii.cur=offered_vacansii.cur->next;
+        offered_vacansii.cur = offered_vacansii.cur->next;
     }
 }
