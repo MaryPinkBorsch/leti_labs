@@ -10,9 +10,9 @@ struct EmployerNode;
 
 struct Vacansia
 {
-    WorkField work_field; // рабочая область
+   // WorkField work_field; // рабочая область
     Professia professia;
-    Gorod adress; // gorod
+   // Gorod adress; // gorod
     int salary;
     Obrazovanie education_lvl; // уровень образования
 
@@ -32,4 +32,6 @@ struct F_Vacancia
 {
     VacansiaNode *head = nullptr;
     VacansiaNode *cur = nullptr;
+
+    int num_vacansii = 0;
 };

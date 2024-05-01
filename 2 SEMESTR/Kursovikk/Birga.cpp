@@ -62,7 +62,64 @@ void Birga::PrintWorkers(std::ofstream &log)
         workers.cur = workers.cur->next;
     }
 }
-void Birga::AddEmployer() {}
+
+EmployerNode *Birga::AddEmployer(std::ofstream &log)
+{
+    EmployerNode *newEmployer = new EmployerNode();
+
+    std::cout << "Введите Имя" << std::endl;
+    std::cin >> newEmployer->value.F_I_O.imya;
+    std::cout << "Введите Отчество" << std::endl;
+    std::cin >> newEmployer->value.F_I_O.otchestvo;
+    std::cout << "Введите фамилиё" << std::endl;
+    std::cin >> newEmployer->value.F_I_O.familia;
+
+    std::string W_field_string = "";
+    std::cout << "Введите рабочую область цифрой" << std::endl;
+    std::cin >> W_field_string; // считываем номер профессии
+    newEmployer->value.work_field = (WorkField)std::atoi(W_field_string.c_str());
+
+    std::string adress_string = "";
+    std::cout << "Введите город цифрой" << std::endl;
+    std::cin >> adress_string; // считываем номер профессии
+    newEmployer->value.adress = (Gorod)std::atoi(adress_string.c_str());
+
+    int counter = 0;
+    std::cout << "Добавить новую предлагаемую вакансию? Y/N" << std::endl;
+    char answer = 'f';
+    std::cin >> answer;
+    newEmployer->value.offered_vacansii.head = nullptr;
+    while (answer == 'Y' || answer == 'y')
+    {
+        if (newEmployer->value.offered_vacansii.head == nullptr)
+        {
+            newEmployer->value.offered_vacansii.head = new VacansiaNode();
+            newEmployer->value.offered_vacansii.cur = newEmployer->value.offered_vacansii.head;
+        }
+        else
+        {
+            newEmployer->value.offered_vacansii.cur->next = new VacansiaNode();
+            newEmployer->value.offered_vacansii.cur = newEmployer->value.offered_vacansii.cur->next;
+        }
+        std::cout << "Введите профессию цифрой" << std::endl;
+        std::cin >> (int &)newEmployer->value.offered_vacansii.cur->value.professia;
+
+        std::cout << "Введите предлагаемую зарплату" << std::endl;
+        std::cin >> newEmployer->value.offered_vacansii.cur->value.salary;
+
+        std::cout << "Введите требуемый уровень образования цифрой" << std::endl;
+        std::cin >> (int &)newEmployer->value.offered_vacansii.cur->value.education_lvl;
+
+        ++counter;
+
+        std::cout << "Добавить еще новую предлагаемую вакансию? Y/N" << std::endl;
+        std::cin >> answer;
+    }
+    newEmployer->value.offered_vacansii.num_vacansii = counter;
+
+    return newEmployer;
+}
+
 void Birga::PrintEmployers() {}
 void Birga::PrintEmployer() {}
 void Birga::AddWorkerResume() {}
@@ -94,6 +151,26 @@ bool Birga::Read(std::string &filename, std::ofstream &log)
             workers.cur = workers.cur->next;
         }
     }
+
+    ///////////////////////////////////////////////////// Employers
+
+    std::string num_employers_string = "";
+    //  input >> num_workers_string;
+    getline(input, num_employers_string, '?');
+    employers.num_employers = (int)std::atoi(num_employers_string.c_str());
+    if (employers.num_employers == 0)
+        return true;
+    employers.head = new EmployerNode();
+    employers.cur = employers.head;
+    for (int i = 0; i < employers.num_employers; i++)
+    {
+        employers.cur->value.Read(input, log);
+        if (i != employers.num_employers - 1)
+        {
+            employers.cur->next = new EmployerNode();
+            employers.cur = employers.cur->next;
+        }
+    }
     return true;
 }
 bool Birga::Write(std::string &filename, std::ofstream &log)
@@ -110,7 +187,21 @@ bool Birga::Write(std::string &filename, std::ofstream &log)
         workers.cur->value.Write(output, log);
         workers.cur = workers.cur->next;
     }
-    return false;
+    // return true;
+
+    /////////////////////////////////////////////////// employers
+
+    std::string num_employers_string = "";
+    num_employers_string = std::to_string(employers.num_employers);
+    output << num_employers_string << "?";
+
+    employers.cur = employers.head;
+    for (int i = 0; i < employers.num_employers; i++)
+    {
+        employers.cur->value.Write(output, log);
+        employers.cur = employers.cur->next;
+    }
+    return true;
 }
 
 void Birga::BigProcess(std::ofstream &log)
@@ -122,6 +213,8 @@ void Birga::BigProcess(std::ofstream &log)
         std::cout << "1) выход" << std::endl;
         std::cout << "2) добавить работника" << std::endl;
         std::cout << "3) распечатать работников" << std::endl;
+        std::cout << "4) добавить работодателя" << std::endl;
+        std::cout << "5) распечатать работодателей" << std::endl;
 
         int action = 1;
         std::cin >> action;

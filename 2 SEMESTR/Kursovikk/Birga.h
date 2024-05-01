@@ -16,7 +16,7 @@ struct Birga
     F_Employer  employers;
 
     WorkerNode* AddWorker(std::ofstream &log);
-    void AddEmployer();
+    EmployerNode * AddEmployer(std::ofstream &log);
     void PrintWorkers(std::ofstream &log);
     void PrintEmployers();
     void PrintWorker(WorkerNode *cur, std::ofstream &log);

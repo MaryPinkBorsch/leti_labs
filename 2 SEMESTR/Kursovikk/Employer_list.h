@@ -13,23 +13,24 @@ struct Employer
 {
     F_fio F_I_O;
     WorkField work_field; // рабочая область
-    Gorod adress;       // gorod
-    int number;           // telephone
+    Gorod adress;         // gorod
 
-    VacansiaNode * offered_vacansii=0;
+    F_Vacancia offered_vacansii; // формуляр на список предлагаемых вакансий
 
-    bool Read(std::ifstream & input, std::ofstream & log);
-    bool Write(std::ofstream & output, std::ofstream & log); 
+    bool Read(std::ifstream &input, std::ofstream &log);
+    bool Write(std::ofstream &output, std::ofstream &log);
 };
 
-struct EmployerNode 
+struct EmployerNode
 {
     Employer value;
-    EmployerNode * next = nullptr;
+    EmployerNode *next = nullptr;
 };
 
-struct F_Employer 
+struct F_Employer
 {
-    EmployerNode * head = nullptr;
-    EmployerNode * cur = nullptr;
+    EmployerNode *head = nullptr;
+    EmployerNode *cur = nullptr;
+
+    int num_employers = 0;
 };
