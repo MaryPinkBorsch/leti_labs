@@ -2,9 +2,9 @@
 
 using namespace std;
 
-WorkerNode* Birga::AddWorker(std::ofstream &log) 
+WorkerNode *Birga::AddWorker(std::ofstream &log)
 {
-    WorkerNode* newWorker = new WorkerNode();
+    WorkerNode *newWorker = new WorkerNode();
 
     std::cout << "Введите Имя" << std::endl;
     std::cin >> newWorker->value.F_I_O.imya;
@@ -23,20 +23,20 @@ WorkerNode* Birga::AddWorker(std::ofstream &log)
     char answer = 'f';
     std::cin >> answer;
     newWorker->value.resumes.head = nullptr;
-    while (answer == 'Y' || answer == 'y') 
+    while (answer == 'Y' || answer == 'y')
     {
         if (newWorker->value.resumes.head == nullptr)
         {
             newWorker->value.resumes.head = new ResumeNode();
             newWorker->value.resumes.cur = newWorker->value.resumes.head;
         }
-        else 
+        else
         {
             newWorker->value.resumes.cur->next = new ResumeNode();
             newWorker->value.resumes.cur = newWorker->value.resumes.cur->next;
         }
         std::cout << "Введите профессию цифрой" << std::endl;
-        std::cin >> (int&)newWorker->value.resumes.cur->value.wanted_profession;
+        std::cin >> (int &)newWorker->value.resumes.cur->value.wanted_profession;
         std::cout << "Введите желаемую зарплату" << std::endl;
         std::cin >> newWorker->value.resumes.cur->value.wanted_salary;
         ++counter;
@@ -58,6 +58,7 @@ void Birga::PrintWorkers(std::ofstream &log)
     for (int i = 0; i < workers.num_workers; i++)
     {
         workers.cur->value.Print(log);
+        // log << endl;
         workers.cur = workers.cur->next;
     }
 }
@@ -77,18 +78,23 @@ bool Birga::Read(std::string &filename, std::ofstream &log)
     std::ifstream input(filename, ios::in);
 
     std::string num_workers_string = "";
-    input >> num_workers_string; //
+    //  input >> num_workers_string;
+    getline(input, num_workers_string, '?');
     workers.num_workers = (int)std::atoi(num_workers_string.c_str());
-
+    if (workers.num_workers == 0)
+        return true;
     workers.head = new WorkerNode();
     workers.cur = workers.head;
     for (int i = 0; i < workers.num_workers; i++)
     {
         workers.cur->value.Read(input, log);
-        workers.cur->next = new WorkerNode();
-        workers.cur = workers.cur->next;
+        if (i != workers.num_workers - 1)
+        {
+            workers.cur->next = new WorkerNode();
+            workers.cur = workers.cur->next;
+        }
     }
-    return false;
+    return true;
 }
 bool Birga::Write(std::string &filename, std::ofstream &log)
 {
@@ -96,7 +102,7 @@ bool Birga::Write(std::string &filename, std::ofstream &log)
 
     std::string num_workers_string = "";
     num_workers_string = std::to_string(workers.num_workers);
-    output << num_workers_string << endl;
+    output << num_workers_string << "?";
 
     workers.cur = workers.head;
     for (int i = 0; i < workers.num_workers; i++)
@@ -110,7 +116,7 @@ bool Birga::Write(std::string &filename, std::ofstream &log)
 void Birga::BigProcess(std::ofstream &log)
 {
     bool exit = false;
-    while (!exit) 
+    while (!exit)
     {
         std::cout << "Меню:" << std::endl;
         std::cout << "1) выход" << std::endl;
@@ -119,39 +125,39 @@ void Birga::BigProcess(std::ofstream &log)
 
         int action = 1;
         std::cin >> action;
-        switch (action) 
+        switch (action)
         {
-            case 1:
+        case 1:
+        {
+            exit = true;
+        }
+        break;
+        case 2:
+        {
+            WorkerNode *newWorker = AddWorker(log);
+            if (workers.head == nullptr)
+                workers.head = newWorker;
+            else
             {
-                exit = true;
-            }
-            break;
-            case 2:
-            {
-                WorkerNode* newWorker = AddWorker(log);
-                if (workers.head == nullptr)
-                    workers.head = newWorker;
-                else 
-                {
-                    workers.cur = workers.head;
-                    while (workers.cur->next != nullptr)
-                        workers.cur = workers.cur->next;
+                workers.cur = workers.head;
+                while (workers.cur->next != nullptr)
+                    workers.cur = workers.cur->next;
 
-                    workers.cur->next = newWorker;
-                }
-                workers.num_workers++;
+                workers.cur->next = newWorker;
             }
-            break;
-            case 3:
-            {
-                PrintWorkers(log);
-            }
-            break;
-            default:
-            {
-                exit = true;
-            }
-            break;
+            workers.num_workers++;
+        }
+        break;
+        case 3:
+        {
+            PrintWorkers(log);
+        }
+        break;
+        default:
+        {
+            exit = true;
+        }
+        break;
         }
     }
 }

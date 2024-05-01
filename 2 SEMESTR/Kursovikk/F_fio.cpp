@@ -4,15 +4,19 @@ using namespace std;
 
 bool F_fio::Read(std::ifstream &input, std::ofstream &log)
 {
-    input >> familia;
-    input >> imya;
-    input >> otchestvo;
+    // input >> familia;
+    // input >> imya;
+    // input >> otchestvo;
+    getline(input, familia, '@');
+    getline(input, imya, '@');
+    getline(input, otchestvo, '#');
+
     return true;
 }
 bool F_fio::Write(std::ofstream &output, std::ofstream &log)
 {
-    output << familia<< std::endl;
-    output << imya<< std::endl;
-    output << otchestvo<< std::endl;
+    output << familia<< "@";
+    output << imya<< "@";
+    output << otchestvo<< "#";
     return true;
 }
