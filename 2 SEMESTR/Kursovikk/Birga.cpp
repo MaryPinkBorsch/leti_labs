@@ -63,10 +63,11 @@ WorkerNode *Birga::AddWorker(std::ofstream &log)
             suitable_vac.cur = suitable_vac.head;
             while (suitable_vac.cur != nullptr)
             {
-                //cout << "Работодатель: " << suitable_vac.cur->value.Employerr.familia << endl;
-                //   log << "Работодатель: " << suitable_vac.cur->value.Rabotodatel->value.F_I_O.familia <<
-                //  " " << suitable_vac.cur->value.Rabotodatel->value.F_I_O.imya <<
-                //   " " << suitable_vac.cur->value.Rabotodatel->value.F_I_O.otchestvo << endl;
+                cout << "Работодатель: " << suitable_vac.cur->value.Rabotodatel->value.F_I_O.familia << " " << suitable_vac.cur->value.Rabotodatel->value.F_I_O.imya << " " << suitable_vac.cur->value.Rabotodatel->value.F_I_O.otchestvo << endl;
+                log << "Работодатель: " << suitable_vac.cur->value.Rabotodatel->value.F_I_O.familia << " " << suitable_vac.cur->value.Rabotodatel->value.F_I_O.imya << " " << suitable_vac.cur->value.Rabotodatel->value.F_I_O.otchestvo << endl;
+                //    log << "Работодатель: " << suitable_vac.cur->value.Rabotodatel->value.F_I_O.familia <<
+                //   " " << suitable_vac.cur->value.Rabotodatel->value.F_I_O.imya <<
+                //    " " << suitable_vac.cur->value.Rabotodatel->value.F_I_O.otchestvo << endl;
 
                 // !!!
 
@@ -131,17 +132,14 @@ EmployerNode *Birga::AddEmployer(std::ofstream &log)
         {
             newEmployer->value.offered_vacansii.head = new VacansiaNode();
             newEmployer->value.offered_vacansii.cur = newEmployer->value.offered_vacansii.head;
-           // newEmployer->value.offered_vacansii.cur->value.Rabotodatel = newEmployer; // !!!
-           //newEmployer->value.offered_vacansii.cur->value.Employerr = newEmployer->value.F_I_O;
-           // !!!
+            //  !!!
         }
         else
         {
             newEmployer->value.offered_vacansii.cur->next = new VacansiaNode();
             newEmployer->value.offered_vacansii.cur = newEmployer->value.offered_vacansii.cur->next;
-           // newEmployer->value.offered_vacansii.cur->value.Rabotodatel = newEmployer;    // !!!
-          // newEmployer->value.offered_vacansii.cur->value.Employerr = newEmployer->value.F_I_O;
-           // !!!
+            // newEmployer->value.offered_vacansii.cur->value.Employerr = newEmployer->value.F_I_O;
+            // !!!
         }
         std::cout << "Введите профессию цифрой" << std::endl;
         std::cin >> (int &)newEmployer->value.offered_vacansii.cur->value.professia;
@@ -227,6 +225,19 @@ bool Birga::Read(std::string &filename, std::ofstream &log)
             employers.cur = employers.cur->next;
         }
     }
+    // нам нужно починить указатели в вакансиях работодателя чтобы те верно указывали на их работодателя
+    employers.cur = employers.head;
+    for (int i = 0; i < employers.num_employers; i++)
+    {
+        employers.cur->value.offered_vacansii.cur = employers.cur->value.offered_vacansii.head;
+        for (int j = 0; j < employers.cur->value.offered_vacansii.num_vacansii; j++)
+        {
+            employers.cur->value.offered_vacansii.cur->value.Rabotodatel = employers.cur; // восстановили указатель
+            employers.cur->value.offered_vacansii.cur = employers.cur->value.offered_vacansii.cur->next;
+        }
+        employers.cur = employers.cur->next;
+    }
+
     return true;
 }
 bool Birga::Write(std::string &filename, std::ofstream &log)
