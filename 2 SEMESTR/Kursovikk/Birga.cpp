@@ -63,6 +63,13 @@ WorkerNode *Birga::AddWorker(std::ofstream &log)
             suitable_vac.cur = suitable_vac.head;
             while (suitable_vac.cur != nullptr)
             {
+                //cout << "Работодатель: " << suitable_vac.cur->value.Employerr.familia << endl;
+                //   log << "Работодатель: " << suitable_vac.cur->value.Rabotodatel->value.F_I_O.familia <<
+                //  " " << suitable_vac.cur->value.Rabotodatel->value.F_I_O.imya <<
+                //   " " << suitable_vac.cur->value.Rabotodatel->value.F_I_O.otchestvo << endl;
+
+                // !!!
+
                 suitable_vac.cur->value.Print(log);
                 suitable_vac.cur = suitable_vac.cur->next;
             }
@@ -124,11 +131,17 @@ EmployerNode *Birga::AddEmployer(std::ofstream &log)
         {
             newEmployer->value.offered_vacansii.head = new VacansiaNode();
             newEmployer->value.offered_vacansii.cur = newEmployer->value.offered_vacansii.head;
+           // newEmployer->value.offered_vacansii.cur->value.Rabotodatel = newEmployer; // !!!
+           //newEmployer->value.offered_vacansii.cur->value.Employerr = newEmployer->value.F_I_O;
+           // !!!
         }
         else
         {
             newEmployer->value.offered_vacansii.cur->next = new VacansiaNode();
             newEmployer->value.offered_vacansii.cur = newEmployer->value.offered_vacansii.cur->next;
+           // newEmployer->value.offered_vacansii.cur->value.Rabotodatel = newEmployer;    // !!!
+          // newEmployer->value.offered_vacansii.cur->value.Employerr = newEmployer->value.F_I_O;
+           // !!!
         }
         std::cout << "Введите профессию цифрой" << std::endl;
         std::cin >> (int &)newEmployer->value.offered_vacansii.cur->value.professia;
@@ -335,8 +348,7 @@ F_Vacancia Birga::FindVacanciiForWorker(WorkerNode *worker)
             worker->value.resumes.cur = worker->value.resumes.head;
             for (int k = 0; k < worker->value.resumes.num_resumes; k++)
             {
-                if (employers.cur->value.offered_vacansii.cur->value.professia == worker->value.resumes.cur->value.wanted_profession && employers.cur->value.offered_vacansii.cur->value.salary >= worker->value.resumes.cur->value.wanted_salary
-                &&employers.cur->value.offered_vacansii.cur->value.education_lvl == worker->value.education_lvl)
+                if (employers.cur->value.offered_vacansii.cur->value.professia == worker->value.resumes.cur->value.wanted_profession && employers.cur->value.offered_vacansii.cur->value.salary >= worker->value.resumes.cur->value.wanted_salary && employers.cur->value.offered_vacansii.cur->value.education_lvl == worker->value.education_lvl)
                 {
                     if (res.head == nullptr)
                     {

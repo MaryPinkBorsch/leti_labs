@@ -4,6 +4,7 @@
 #include "F_gorod.h"
 #include "F_professia.h"
 #include "F_education_lvl.h"
+#include "F_fio.h"
 
 #include "common.h"
 struct EmployerNode;
@@ -16,7 +17,8 @@ struct Vacansia
     int salary;
     Obrazovanie education_lvl; // уровень образования
 
-    EmployerNode *Rabotodatel = nullptr;
+    EmployerNode *Rabotodatel = nullptr; //!!!!
+    //F_fio Employerr;
     
     bool Read(std::ifstream & input, std::ofstream & log);
     bool Write(std::ofstream & output, std::ofstream & log);
