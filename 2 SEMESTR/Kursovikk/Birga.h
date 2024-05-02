@@ -12,6 +12,7 @@ struct Birga
     F_Vacancia  vacancii;
     F_resume    resumes;
     F_dogovor   dogovori;
+
     F_Worker    workers;
     F_Employer  employers;
 

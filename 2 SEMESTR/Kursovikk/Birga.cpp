@@ -47,13 +47,30 @@ WorkerNode *Birga::AddWorker(std::ofstream &log)
 
     std::cout << "Найти подходящие вакансии? Y/N" << std::endl;
     std::cin >> answer;
-    if(answer=='y'||answer=='Y')
+    if (answer == 'y' || answer == 'Y')
     {
-        
+        F_Vacancia suitable_vac = FindVacanciiForWorker(newWorker);
+        if (suitable_vac.head == 0)
+        {
+            cout << " Не найдено подходящих вакансий для данного работника" << endl;
+
+            log << " Не найдено подходящих вакансий для данного работника" << endl;
+        }
+        else
+        {
+            cout << "Подходящие предложения по вакансиям: " << endl;
+            log << "ПОДХОДЯЩИЕ предложения по вакансиям: " << endl;
+            suitable_vac.cur = suitable_vac.head;
+            while (suitable_vac.cur != nullptr)
+            {
+                suitable_vac.cur->value.Print(log);
+                suitable_vac.cur = suitable_vac.cur->next;
+            }
+        }
     }
-    // if (yes) 
+    // if (yes)
     // {
-    //     F_Vacancia vac = FindResumesForEmployer(newWorker);
+    //     F_Vacancia suitable_vac = FindResumesForEmployer(newWorker);
     //     пройти по формуляру и вызвать Print(log)
     // }
 
@@ -304,7 +321,7 @@ void Birga::BigProcess(std::ofstream &log)
     }
 }
 
-F_Vacancia Birga::FindVacanciiForWorker(WorkerNode* worker) 
+F_Vacancia Birga::FindVacanciiForWorker(WorkerNode *worker)
 {
     F_Vacancia res;
     employers.cur = employers.head;
@@ -318,22 +335,22 @@ F_Vacancia Birga::FindVacanciiForWorker(WorkerNode* worker)
             worker->value.resumes.cur = worker->value.resumes.head;
             for (int k = 0; k < worker->value.resumes.num_resumes; k++)
             {
-                if (employers.cur->value.offered_vacansii.cur->value.professia == worker->value.resumes.cur->value.wanted_profession
-                    && employers.cur->value.offered_vacansii.cur->value.salary >= worker->value.resumes.cur->value.wanted_salary) 
+                if (employers.cur->value.offered_vacansii.cur->value.professia == worker->value.resumes.cur->value.wanted_profession && employers.cur->value.offered_vacansii.cur->value.salary >= worker->value.resumes.cur->value.wanted_salary
+                &&employers.cur->value.offered_vacansii.cur->value.education_lvl == worker->value.education_lvl)
+                {
+                    if (res.head == nullptr)
                     {
-                        if (res.head == nullptr) 
-                        {
-                            res.head = new VacansiaNode();
-                            res.cur = res.head;
-                        }
-                        else 
-                        {
-                            res.cur->next = new VacansiaNode();
-                            res.cur = res.cur->next;
-                        }
-                        res.cur->value = employers.cur->value.offered_vacansii.cur->value;
+                        res.head = new VacansiaNode();
+                        res.cur = res.head;
                     }
-                
+                    else
+                    {
+                        res.cur->next = new VacansiaNode();
+                        res.cur = res.cur->next;
+                    }
+                    res.cur->value = employers.cur->value.offered_vacansii.cur->value;
+                }
+
                 worker->value.resumes.cur = worker->value.resumes.cur->next;
             }
 
@@ -343,4 +360,3 @@ F_Vacancia Birga::FindVacanciiForWorker(WorkerNode* worker)
     }
     return res;
 }
-
