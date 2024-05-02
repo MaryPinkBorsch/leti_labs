@@ -2,18 +2,15 @@
 
 #include <filesystem>
 
-#include"Birga.h"
+#include "Birga.h"
 
 using namespace std;
 
 // нужны структуры:
-// 1) Еmployer, поля - name, work_field, adress, phone 
+// 1) Еmployer, поля - name, work_field, adress, phone
 // 2) Worker, поля - name, familia, otchestvo, wanted_profession, work_field, worked_time, salary
-// 3) Vacancia , поля - profession, grafik, salary, education_lvl  
+// 3) Vacancia , поля - profession, grafik, salary, education_lvl
 // 4) birga_vacanciy - offers, resumes, closed_vacancis
-
-
-
 
 // 5. Обеспечить эффективное хранение данных и быстрый поиск информации в бюро по трудоустройству.
 // Должна быть представлена информация о:
@@ -27,7 +24,7 @@ using namespace std;
 // Должны добавляться новые соискатели, работодатели, вакансии. В случае совпадения интересов
 // работодателя и соискателя вакансия должна быть занята и перемещена в список удовлетворенных заявок.
 
-int main(int argc, char * argv[])
+int main(int argc, char *argv[])
 {
 
     Birga birga;
@@ -36,8 +33,9 @@ int main(int argc, char * argv[])
 
     std::string filename = "baza_dannih.txt";
 
-    // перед началом работы надо считать базу данных если она есть
-    if (std::filesystem::exists(filename)) 
+    // перед началом работы надо считать базу данных если она есть (в самом начале ее нет,
+    // позже будет введена ручками, а потом считываться с маркерами)
+    if (std::filesystem::exists(filename))
     {
         birga.Read(filename, log);
     }

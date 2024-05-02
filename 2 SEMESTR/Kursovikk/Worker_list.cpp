@@ -58,9 +58,9 @@ void Worker::Print(std::ofstream &log)
     cout << "Образование: " << Obraz2String(education_lvl) << endl;
     log << "Образование: " << Obraz2String(education_lvl) << endl;
     resumes.cur = resumes.head;
-    for(int i = 0; i < resumes.num_resumes; i++)
+    for (int i = 0; i < resumes.num_resumes; i++)
     {
         resumes.cur->value.Print(log);
-        resumes.cur=resumes.cur->next;
+        resumes.cur = resumes.cur->next;
     }
 }

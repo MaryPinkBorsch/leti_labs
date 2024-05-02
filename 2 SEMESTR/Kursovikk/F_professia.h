@@ -1,7 +1,7 @@
 #pragma once
 #include "common.h"
 
-enum Professia
+enum Professia // пока сто вводится цифрой, позже будет обрабатываться по человечески
 {
     STROITEL,
     TRAKTORIST,

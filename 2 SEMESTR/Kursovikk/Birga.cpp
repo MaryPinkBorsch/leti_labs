@@ -6,22 +6,22 @@ WorkerNode *Birga::AddWorker(std::ofstream &log)
 {
     WorkerNode *newWorker = new WorkerNode();
 
-    std::cout << "Введите Имя" << std::endl;
-    std::cin >> newWorker->value.F_I_O.imya;
-    std::cout << "Введите Отчество" << std::endl;
-    std::cin >> newWorker->value.F_I_O.otchestvo;
-    std::cout << "Введите фамилиё" << std::endl;
-    std::cin >> newWorker->value.F_I_O.familia;
+    cout << "Введите Имя" << endl;
+    cin >> newWorker->value.F_I_O.imya;
+    cout << "Введите Отчество" << endl;
+    cin >> newWorker->value.F_I_O.otchestvo;
+    cout << "Введите фамилиё" << endl;
+    cin >> newWorker->value.F_I_O.familia;
 
-    std::string obrazovanie_string = "";
-    std::cout << "Введите уровень образования цифрой" << std::endl;
-    std::cin >> obrazovanie_string; // считываем номер профессии
-    newWorker->value.education_lvl = (Obrazovanie)std::atoi(obrazovanie_string.c_str());
+    string obrazovanie_string = "";
+    cout << "Введите уровень образования цифрой" << endl;
+    cin >> obrazovanie_string; // считываем номер профессии
+    newWorker->value.education_lvl = (Obrazovanie)atoi(obrazovanie_string.c_str());
 
     int counter = 0;
-    std::cout << "Добавить резюме? Y/N" << std::endl;
+    cout << "Добавить резюме? Y/N" << endl;
     char answer = 'f';
-    std::cin >> answer;
+    cin >> answer;
     newWorker->value.resumes.head = nullptr;
     while (answer == 'Y' || answer == 'y')
     {
@@ -40,8 +40,8 @@ WorkerNode *Birga::AddWorker(std::ofstream &log)
         std::cout << "Введите желаемую зарплату" << std::endl;
         std::cin >> newWorker->value.resumes.cur->value.wanted_salary;
         ++counter;
-        std::cout << "Добавить еще резюме? Y/N" << std::endl;
-        std::cin >> answer;
+        cout << "Добавить еще резюме? Y/N" << endl;
+        cin >> answer;
     }
     newWorker->value.resumes.num_resumes = counter;
 
@@ -188,7 +188,7 @@ void Birga::PrintDogovor() {}
 
 bool Birga::Read(std::string &filename, std::ofstream &log)
 {
-    std::ifstream input(filename, ios::in);
+    ifstream input(filename, ios::in);
 
     std::string num_workers_string = "";
     //  input >> num_workers_string;
@@ -231,7 +231,7 @@ bool Birga::Read(std::string &filename, std::ofstream &log)
 }
 bool Birga::Write(std::string &filename, std::ofstream &log)
 {
-    std::ofstream output(filename, ios::out | ios::trunc);
+    ofstream output(filename, ios::out | ios::trunc);
 
     std::string num_workers_string = "";
     num_workers_string = std::to_string(workers.num_workers);
