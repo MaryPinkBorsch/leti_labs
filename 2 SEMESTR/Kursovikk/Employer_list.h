@@ -1,7 +1,7 @@
 #pragma once
-#include <string>
 
-#include "F_fio.h"
+
+#include "StrL.h"
 #include "F_w_field.h"
 #include "F_gorod.h"
 #include "F_professia.h"
@@ -11,7 +11,7 @@
 
 struct Employer
 {
-    F_fio F_I_O;
+    StrL F_I_O;
     WorkField work_field; // рабочая область
     Gorod adress;         // gorod
 

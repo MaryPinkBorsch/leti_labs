@@ -4,7 +4,7 @@
 #include "F_gorod.h"
 #include "F_professia.h"
 #include "F_education_lvl.h"
-#include "F_fio.h"
+#include "StrL.h"
 
 #include "common.h"
 struct EmployerNode;

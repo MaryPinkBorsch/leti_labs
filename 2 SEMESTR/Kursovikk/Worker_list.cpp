@@ -8,12 +8,12 @@ bool Worker::Read(std::ifstream &input, std::ofstream &log)
 
     std::string obrazovanie_string = "";
     getline(input, obrazovanie_string, '$');
-    //input >> obrazovanie_string; // считываем номер профессии
+    // input >> obrazovanie_string; // считываем номер профессии
     education_lvl = (Obrazovanie)std::atoi(obrazovanie_string.c_str());
 
     std::string num_resumes_string = "";
     getline(input, num_resumes_string, '%');
-    //input >> num_resumes_string; // считываем номер профессии
+    // input >> num_resumes_string; // считываем номер профессии
     resumes.num_resumes = (int)std::atoi(num_resumes_string.c_str());
 
     resumes.head = new ResumeNode();
@@ -26,7 +26,7 @@ bool Worker::Read(std::ifstream &input, std::ofstream &log)
     }
     char toSkip;
     while (!input.eof() && input.peek() == '\n')
-        input >> std::noskipws>> toSkip;
+        input >> std::noskipws >> toSkip;
     return true;
 }
 bool Worker::Write(std::ofstream &output, std::ofstream &log)
@@ -35,11 +35,11 @@ bool Worker::Write(std::ofstream &output, std::ofstream &log)
 
     std::string obrazovanie_string = "";
     obrazovanie_string = std::to_string(education_lvl);
-    output << obrazovanie_string<< '$';
+    output << obrazovanie_string << '$';
 
     std::string num_resumes_string = "";
     num_resumes_string = std::to_string(resumes.num_resumes);
-    output << num_resumes_string<< '%';
+    output << num_resumes_string << '%';
 
     resumes.cur = resumes.head;
     for (int i = 0; i < resumes.num_resumes; i++)
@@ -52,8 +52,9 @@ bool Worker::Write(std::ofstream &output, std::ofstream &log)
 }
 void Worker::Print(std::ofstream &log)
 {
-    cout << "ФИО: " << F_I_O.familia << " " << F_I_O.imya << " " << F_I_O.otchestvo << endl;
-    log << "ФИО: " << F_I_O.familia << " " << F_I_O.imya << " " << F_I_O.otchestvo << endl;
+    cout << "ФИО: ";
+    log << "ФИО: ";
+    F_I_O.Print(log);
 
     cout << "Образование: " << Obraz2String(education_lvl) << endl;
     log << "Образование: " << Obraz2String(education_lvl) << endl;

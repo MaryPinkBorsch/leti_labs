@@ -60,8 +60,9 @@ bool Employer::Write(std::ofstream &output, std::ofstream &log)
 
 void Employer::Print(std::ofstream &log)
 {
-    cout << "ФИО: " << F_I_O.familia << " " << F_I_O.imya << " " << F_I_O.otchestvo << endl;
-    log << "ФИО: " << F_I_O.familia << " " << F_I_O.imya << " " << F_I_O.otchestvo << endl;
+    cout << "ФИО: ";
+    log << "ФИО: ";
+    F_I_O.Print(log);
 
     cout << "Рабочая область: " << W_field2String(work_field) << endl;
     log << "Рабочая область: " << W_field2String(work_field) << endl;
