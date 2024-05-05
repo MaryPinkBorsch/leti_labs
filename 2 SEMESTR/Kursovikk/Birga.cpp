@@ -282,6 +282,7 @@ void Birga::BigProcess(std::ofstream &log)
         std::cout << "3) распечатать работников" << std::endl;
         std::cout << "4) добавить работодателя" << std::endl;
         std::cout << "5) распечатать работодателей" << std::endl;
+        std::cout << "6) Считать с нового файла" << std::endl;
 
         int action = 1;
         std::cin >> action;
@@ -336,6 +337,13 @@ void Birga::BigProcess(std::ofstream &log)
         }
         break;
 
+        case 6:
+        {
+            cout << "ВВЕДИТЕ НОМЕР ФАЙЛА" << endl;
+            ReadNew_file_base("new_base1.txt", log, "baza_dannih.txt");
+        }
+        break;
+
         default:
         {
             exit = true;
@@ -382,4 +390,40 @@ F_Vacancia Birga::FindVacanciiForWorker(WorkerNode *worker)
         employers.cur = employers.cur->next;
     }
     return res;
+}
+
+void Birga::ReadNew_file_base(std::string filename22, std::ofstream &log, std::string filename1)
+{
+    // // ifstream input2(filename, ios::in);
+    // Read(filename22, log);
+    // // Write(filename22, log);
+    // PrintEmployers(log);
+
+    // ofstream output(filename1, ios::out | ios::app);
+
+    // // std::string num_workers_string = "";
+    // // num_workers_string = std::to_string(workers.num_workers);
+    // // output << num_workers_string << "?";
+
+    // // // workers.cur = workers.head;
+    // for (int i = 0; i < workers.num_workers; i++)
+    // {
+    //     workers.cur->value.Write(output, log);
+    //     workers.cur = workers.cur->next;
+    // }
+    // // return true;
+
+    // /////////////////////////////////////////////////// employers
+
+    // // std::string num_employers_string = "";
+    // // num_employers_string = std::to_string(employers.num_employers);
+    // // output << num_employers_string << "?";
+
+    // // employers.cur = employers.head;
+    // for (int i = 0; i < employers.num_employers; i++)
+    // {
+    //     employers.cur->value.Write(output, log);
+    //     employers.cur = employers.cur->next;
+    // }
+    // // return true;
 }
