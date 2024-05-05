@@ -65,3 +65,25 @@ void StrL::Clear(std::ofstream &log)
 {
     // ОНО ДОЛЖНО ОЧИСТИТЬ ПАМЯТЬ В STRL
 }
+
+bool StrL::Equal(StrL &another, std::ofstream &log)
+{
+    StrL *cur = this;
+    StrL *cur_other = &another;
+    while (cur_other != nullptr && cur != nullptr)
+    {
+        if (cur->len != cur_other->len)
+            return false;
+        for (int i = 0; i < cur->len; i++)
+        {
+            if (cur->massiv[i] != cur_other->massiv[i])
+                return false;
+        }
+        cur = cur->next;
+        cur_other = cur_other->next;
+    }
+    if (cur != cur_other)
+        return false;
+
+    return true;
+}

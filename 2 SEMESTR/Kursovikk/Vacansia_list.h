@@ -1,9 +1,5 @@
 #pragma once
 
-#include "F_w_field.h"
-#include "F_gorod.h"
-#include "F_professia.h"
-#include "F_education_lvl.h"
 #include "StrL.h"
 
 #include "common.h"
@@ -12,10 +8,10 @@ struct EmployerNode;
 struct Vacansia
 {
    // WorkField work_field; // рабочая область
-    Professia professia;
+    StrL professia;
    // Gorod adress; // gorod
     int salary;
-    Obrazovanie education_lvl; // уровень образования
+    StrL education_lvl; // уровень образования
 
     EmployerNode *Rabotodatel = nullptr; //!!!!
     //F_fio Employerr;

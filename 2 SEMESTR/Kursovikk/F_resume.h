@@ -2,15 +2,13 @@
 
 #include "common.h"
 
-#include "F_professia.h"
-
 struct WorkerNode;
 
 struct Resume
 {
     WorkerNode *soiskatel = 0;
 
-    Professia wanted_profession; // желаемая professia
+    StrL wanted_profession; // желаемая professia
     int wanted_salary;
 
     bool Read(std::ifstream &input, std::ofstream &log);

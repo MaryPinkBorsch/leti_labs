@@ -38,3 +38,5 @@ struct Birga
     bool Read(std::string &filename, std::ofstream &log);
     bool Write(std::string &filename, std::ofstream &log);
 };
+
+/// ♥️ ///

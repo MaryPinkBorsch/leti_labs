@@ -1,10 +1,6 @@
 #pragma once
 
-
 #include "StrL.h"
-#include "F_w_field.h"
-#include "F_gorod.h"
-#include "F_professia.h"
 #include "Vacansia_list.h"
 
 #include "common.h"
@@ -12,15 +8,14 @@
 struct Employer
 {
     StrL F_I_O;
-    WorkField work_field; // рабочая область
-    Gorod adress;         // gorod
+    StrL work_field; // рабочая область
+    StrL adress;     // gorod
 
     F_Vacancia offered_vacansii; // формуляр на список предлагаемых вакансий
 
     bool Read(std::ifstream &input, std::ofstream &log);
     bool Write(std::ofstream &output, std::ofstream &log);
     void Print(std::ofstream &log);
-
 };
 
 struct EmployerNode

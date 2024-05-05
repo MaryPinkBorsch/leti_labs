@@ -4,14 +4,12 @@
 // #include "F_gorod.h"
 
 #include "StrL.h"
-#include "F_professia.h"
-#include "F_education_lvl.h"
 #include "F_resume.h"
 
 struct Worker
 {
     StrL F_I_O;
-    Obrazovanie education_lvl; // уровень образования
+    StrL education_lvl; // уровень образования
 
     F_resume resumes; // все резюме работника
 

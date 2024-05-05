@@ -14,4 +14,6 @@ struct StrL
     void Write(std::ofstream &output, std::ofstream &log);
     void Print(std::ofstream &log);
     void Clear(std::ofstream &log);
+
+bool Equal(StrL& another, std::ofstream &log);
 };
