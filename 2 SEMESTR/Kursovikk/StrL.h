@@ -4,7 +4,7 @@
 
 struct StrL
 {
-    static const int N = 15;
+    static const int N = 25;
     char massiv[N];
     int len = 0;
     StrL *next = nullptr;

@@ -29,7 +29,7 @@ struct Birga
     void MakeDogovor();
     void PrintDogovors();
     void PrintDogovor();
-    F_Vacancia FindVacanciiForWorker(WorkerNode *worker);
+    F_Vacancia FindVacanciiForWorker(WorkerNode *worker, std::ofstream &log);
 
     void ReadNew_file_base(std::string filename22, std::ofstream &log, std::string filename1);
 
