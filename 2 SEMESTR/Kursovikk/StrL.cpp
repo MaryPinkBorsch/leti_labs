@@ -1,6 +1,8 @@
 #include "StrL.h"
 
 #include <cstring>
+#include "stdio.h"
+
 
 using namespace std;
 void StrL::Read(std::ifstream &input, std::ofstream &log)
@@ -90,12 +92,13 @@ bool StrL::Equal(StrL &another, std::ofstream &log)
     return true;
 }
 
-void StrL::Vvod(std::ofstream &log) 
+void StrL::Vvod(std::ofstream &log)
 {
     Clear(log); // почистили память
     static const int MAX_LEN = 1000;
     char read_buf[MAX_LEN]; // завели массив на 1000 символов макс
-    scanf("%s",read_buf); // считали с клавиатуры строку в массив
+    scanf("%[^\n]",read_buf); // считали с клавиатуры строку в массив
+
     int total_len = std::strlen(read_buf); // нашли общую длинну введенной строки
     // надо разбить длинную строку на фрагменты StrL
     StrL *cur = this;
