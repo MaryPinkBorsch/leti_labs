@@ -6,17 +6,11 @@ WorkerNode *Birga::AddWorker(std::ofstream &log)
 {
     WorkerNode *newWorker = new WorkerNode();
 
-    cout << "Введите Имя" << endl;
-    cin >> newWorker->value.F_I_O.imya;
-    cout << "Введите Отчество" << endl;
-    cin >> newWorker->value.F_I_O.otchestvo;
-    cout << "Введите фамилиё" << endl;
-    cin >> newWorker->value.F_I_O.familia;
+    cout << "Введите FIO" << endl;
+    newWorker->value.F_I_O.Vvod(log);
 
-    string obrazovanie_string = "";
-    cout << "Введите уровень образования цифрой" << endl;
-    cin >> obrazovanie_string; // считываем номер профессии
-    newWorker->value.education_lvl = (Obrazovanie)atoi(obrazovanie_string.c_str());
+    cout << "Введите уровень образования (srednee / vishee) " << endl;
+    newWorker->value.education_lvl.Vvod(log);
 
     int counter = 0;
     cout << "Добавить резюме? Y/N" << endl;
@@ -35,8 +29,12 @@ WorkerNode *Birga::AddWorker(std::ofstream &log)
             newWorker->value.resumes.cur->next = new ResumeNode();
             newWorker->value.resumes.cur = newWorker->value.resumes.cur->next;
         }
-        std::cout << "Введите профессию цифрой" << std::endl;
-        std::cin >> (int &)newWorker->value.resumes.cur->value.wanted_profession;
+
+        std::cout << "Введите профессию (doktor / tester)" << std::endl;
+        StrL wanted_profession_s;
+        wanted_profession_s.Vvod(log);
+        newWorker->value.resumes.cur->value.wanted_profession = wanted_profession_s;
+
         std::cout << "Введите желаемую зарплату" << std::endl;
         std::cin >> newWorker->value.resumes.cur->value.wanted_salary;
         ++counter;
@@ -49,7 +47,7 @@ WorkerNode *Birga::AddWorker(std::ofstream &log)
     std::cin >> answer;
     if (answer == 'y' || answer == 'Y')
     {
-        F_Vacancia suitable_vac = FindVacanciiForWorker(newWorker);
+        F_Vacancia suitable_vac = FindVacanciiForWorker(newWorker, log);
         if (suitable_vac.head == 0)
         {
             cout << " Не найдено подходящих вакансий для данного работника" << endl;
@@ -64,7 +62,7 @@ WorkerNode *Birga::AddWorker(std::ofstream &log)
             while (suitable_vac.cur != nullptr)
             {
                 cout << "Работодатель: ";
-                log << "Работодатель: " ;
+                log << "Работодатель: ";
                 suitable_vac.cur->value.Rabotodatel->value.F_I_O.Print(log);
                 //    log << "Работодатель: " << suitable_vac.cur->value.Rabotodatel->value.F_I_O.familia <<
                 //   " " << suitable_vac.cur->value.Rabotodatel->value.F_I_O.imya <<
@@ -77,11 +75,6 @@ WorkerNode *Birga::AddWorker(std::ofstream &log)
             }
         }
     }
-    // if (yes)
-    // {
-    //     F_Vacancia suitable_vac = FindResumesForEmployer(newWorker);
-    //     пройти по формуляру и вызвать Print(log)
-    // }
 
     return newWorker;
     return 0;
@@ -106,22 +99,14 @@ EmployerNode *Birga::AddEmployer(std::ofstream &log)
 {
     EmployerNode *newEmployer = new EmployerNode();
 
-    std::cout << "Введите Имя" << std::endl;
-    std::cin >> newEmployer->value.F_I_O.imya;
-    std::cout << "Введите Отчество" << std::endl;
-    std::cin >> newEmployer->value.F_I_O.otchestvo;
-    std::cout << "Введите фамилиё" << std::endl;
-    std::cin >> newEmployer->value.F_I_O.familia;
+    cout << "Введите FIO" << endl;
+    newEmployer->value.F_I_O.Vvod(log);
 
-    std::string W_field_string = "";
-    std::cout << "Введите рабочую область цифрой" << std::endl;
-    std::cin >> W_field_string; // считываем номер профессии
-    newEmployer->value.work_field = (WorkField)std::atoi(W_field_string.c_str());
+    std::cout << "Введите рабочую область (med / it)" << std::endl;
+    newEmployer->value.work_field.Vvod(log);
 
-    std::string adress_string = "";
-    std::cout << "Введите город цифрой" << std::endl;
-    std::cin >> adress_string; // считываем номер профессии
-    newEmployer->value.adress = (Gorod)std::atoi(adress_string.c_str());
+    std::cout << "Введите город (moskva / spb)" << std::endl;
+    newEmployer->value.adress.Vvod(log);
 
     int counter = 0;
     std::cout << "Добавить новую предлагаемую вакансию? Y/N" << std::endl;
@@ -134,23 +119,21 @@ EmployerNode *Birga::AddEmployer(std::ofstream &log)
         {
             newEmployer->value.offered_vacansii.head = new VacansiaNode();
             newEmployer->value.offered_vacansii.cur = newEmployer->value.offered_vacansii.head;
-            //  !!!
         }
         else
         {
             newEmployer->value.offered_vacansii.cur->next = new VacansiaNode();
             newEmployer->value.offered_vacansii.cur = newEmployer->value.offered_vacansii.cur->next;
-            // newEmployer->value.offered_vacansii.cur->value.Employerr = newEmployer->value.F_I_O;
-            // !!!
         }
-        std::cout << "Введите профессию цифрой" << std::endl;
-        std::cin >> (int &)newEmployer->value.offered_vacansii.cur->value.professia;
+        StrL prof;
+        std::cout << "Введите профессию (doktor / tester)" << std::endl;
+        newEmployer->value.offered_vacansii.cur->value.professia.Vvod(log);
 
         std::cout << "Введите предлагаемую зарплату" << std::endl;
         std::cin >> newEmployer->value.offered_vacansii.cur->value.salary;
 
-        std::cout << "Введите требуемый уровень образования цифрой" << std::endl;
-        std::cin >> (int &)newEmployer->value.offered_vacansii.cur->value.education_lvl;
+        std::cout << "Введите требуемый уровень образования (srednee / vishee)" << std::endl;
+        newEmployer->value.offered_vacansii.cur->value.education_lvl.Vvod(log);
 
         ++counter;
 

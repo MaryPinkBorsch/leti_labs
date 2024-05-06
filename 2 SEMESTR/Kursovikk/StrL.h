@@ -13,6 +13,7 @@ struct StrL
     void Read(std::ifstream &input, std::ofstream &log);
     void Write(std::ofstream &output, std::ofstream &log);
     void Print(std::ofstream &log);
+    void Vvod(std::ofstream &log);
     void Clear(std::ofstream &log);
 
 bool Equal(StrL& another, std::ofstream &log);
