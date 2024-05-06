@@ -10,21 +10,21 @@ bool Employer::Read(std::ifstream &input, std::ofstream &log)
 
     adress.Read(input, log);
 
-    // std::string num_vacansii_string = "";
+    StrL num_vacansii_string;
+    num_vacansii_string.Read(input, log);
+    offered_vacansii.num_vacansii = atoi(num_vacansii_string.massiv);
 
-    // offered_vacansii.num_vacansii = (int)std::atoi(num_vacansii_string.c_str());
-
-    // offered_vacansii.head = new VacansiaNode();
-    // offered_vacansii.cur = offered_vacansii.head;
-    // for (int i = 0; i < offered_vacansii.num_vacansii; i++)
-    // {
-    //     offered_vacansii.cur->value.Read(input, log);
-    //     offered_vacansii.cur->next = new VacansiaNode();
-    //     offered_vacansii.cur = offered_vacansii.cur->next;
-    // }
-    // char toSkip;
-    // while (!input.eof() && input.peek() == '\n')
-    //     input >> std::noskipws >> toSkip;
+    offered_vacansii.head = new VacansiaNode();
+    offered_vacansii.cur = offered_vacansii.head;
+    for (int i = 0; i < offered_vacansii.num_vacansii; i++)
+    {
+        offered_vacansii.cur->value.Read(input, log); // if ?
+        offered_vacansii.cur->next = new VacansiaNode();
+        offered_vacansii.cur = offered_vacansii.cur->next;
+    }
+    char toSkip;
+    while (!input.eof() && input.peek() == '\n')
+        input >> std::noskipws >> toSkip;
     return true;
 }
 
@@ -36,17 +36,17 @@ bool Employer::Write(std::ofstream &output, std::ofstream &log)
 
     adress.Write(output, log);
 
-    // std::string num_vacansii_string = "";
-    // num_vacansii_string = std::to_string(offered_vacansii.num_vacansii);
-    // output << num_vacansii_string << '+';
+    StrL num_vacansii_string;
+    snprintf(num_vacansii_string.massiv, StrL::N, "%d", offered_vacansii.num_vacansii); // запись в строку стрL числа салари в форме строки
+    num_vacansii_string.Write(output, log);
 
-    // offered_vacansii.cur = offered_vacansii.head;
-    // for (int i = 0; i < offered_vacansii.num_vacansii; i++)
-    // {
-    //     offered_vacansii.cur->value.Write(output, log);
-    //     offered_vacansii.cur = offered_vacansii.cur->next;
-    // }
-    // output << std::endl;
+    offered_vacansii.cur = offered_vacansii.head;
+    for (int i = 0; i < offered_vacansii.num_vacansii; i++)
+    {
+        offered_vacansii.cur->value.Write(output, log);
+        offered_vacansii.cur = offered_vacansii.cur->next;
+    }
+    output << std::endl;
     return true;
 }
 

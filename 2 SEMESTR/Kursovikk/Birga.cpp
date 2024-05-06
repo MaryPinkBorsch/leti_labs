@@ -4,86 +4,86 @@ using namespace std;
 
 WorkerNode *Birga::AddWorker(std::ofstream &log)
 {
-    // WorkerNode *newWorker = new WorkerNode();
+    WorkerNode *newWorker = new WorkerNode();
 
-    // cout << "Введите Имя" << endl;
-    // cin >> newWorker->value.F_I_O.imya;
-    // cout << "Введите Отчество" << endl;
-    // cin >> newWorker->value.F_I_O.otchestvo;
-    // cout << "Введите фамилиё" << endl;
-    // cin >> newWorker->value.F_I_O.familia;
+    cout << "Введите Имя" << endl;
+    cin >> newWorker->value.F_I_O.imya;
+    cout << "Введите Отчество" << endl;
+    cin >> newWorker->value.F_I_O.otchestvo;
+    cout << "Введите фамилиё" << endl;
+    cin >> newWorker->value.F_I_O.familia;
 
-    // string obrazovanie_string = "";
-    // cout << "Введите уровень образования цифрой" << endl;
-    // cin >> obrazovanie_string; // считываем номер профессии
-    // newWorker->value.education_lvl = (Obrazovanie)atoi(obrazovanie_string.c_str());
+    string obrazovanie_string = "";
+    cout << "Введите уровень образования цифрой" << endl;
+    cin >> obrazovanie_string; // считываем номер профессии
+    newWorker->value.education_lvl = (Obrazovanie)atoi(obrazovanie_string.c_str());
 
-    // int counter = 0;
-    // cout << "Добавить резюме? Y/N" << endl;
-    // char answer = 'f';
-    // cin >> answer;
-    // newWorker->value.resumes.head = nullptr;
-    // while (answer == 'Y' || answer == 'y')
+    int counter = 0;
+    cout << "Добавить резюме? Y/N" << endl;
+    char answer = 'f';
+    cin >> answer;
+    newWorker->value.resumes.head = nullptr;
+    while (answer == 'Y' || answer == 'y')
+    {
+        if (newWorker->value.resumes.head == nullptr)
+        {
+            newWorker->value.resumes.head = new ResumeNode();
+            newWorker->value.resumes.cur = newWorker->value.resumes.head;
+        }
+        else
+        {
+            newWorker->value.resumes.cur->next = new ResumeNode();
+            newWorker->value.resumes.cur = newWorker->value.resumes.cur->next;
+        }
+        std::cout << "Введите профессию цифрой" << std::endl;
+        std::cin >> (int &)newWorker->value.resumes.cur->value.wanted_profession;
+        std::cout << "Введите желаемую зарплату" << std::endl;
+        std::cin >> newWorker->value.resumes.cur->value.wanted_salary;
+        ++counter;
+        cout << "Добавить еще резюме? Y/N" << endl;
+        cin >> answer;
+    }
+    newWorker->value.resumes.num_resumes = counter;
+
+    std::cout << "Найти подходящие вакансии? Y/N" << std::endl;
+    std::cin >> answer;
+    if (answer == 'y' || answer == 'Y')
+    {
+        F_Vacancia suitable_vac = FindVacanciiForWorker(newWorker);
+        if (suitable_vac.head == 0)
+        {
+            cout << " Не найдено подходящих вакансий для данного работника" << endl;
+
+            log << " Не найдено подходящих вакансий для данного работника" << endl;
+        }
+        else
+        {
+            cout << "Подходящие предложения по вакансиям: " << endl;
+            log << "ПОДХОДЯЩИЕ предложения по вакансиям: " << endl;
+            suitable_vac.cur = suitable_vac.head;
+            while (suitable_vac.cur != nullptr)
+            {
+                cout << "Работодатель: ";
+                log << "Работодатель: " ;
+                suitable_vac.cur->value.Rabotodatel->value.F_I_O.Print(log);
+                //    log << "Работодатель: " << suitable_vac.cur->value.Rabotodatel->value.F_I_O.familia <<
+                //   " " << suitable_vac.cur->value.Rabotodatel->value.F_I_O.imya <<
+                //    " " << suitable_vac.cur->value.Rabotodatel->value.F_I_O.otchestvo << endl;
+
+                // !!!
+
+                suitable_vac.cur->value.Print(log);
+                suitable_vac.cur = suitable_vac.cur->next;
+            }
+        }
+    }
+    // if (yes)
     // {
-    //     if (newWorker->value.resumes.head == nullptr)
-    //     {
-    //         newWorker->value.resumes.head = new ResumeNode();
-    //         newWorker->value.resumes.cur = newWorker->value.resumes.head;
-    //     }
-    //     else
-    //     {
-    //         newWorker->value.resumes.cur->next = new ResumeNode();
-    //         newWorker->value.resumes.cur = newWorker->value.resumes.cur->next;
-    //     }
-    //     std::cout << "Введите профессию цифрой" << std::endl;
-    //     std::cin >> (int &)newWorker->value.resumes.cur->value.wanted_profession;
-    //     std::cout << "Введите желаемую зарплату" << std::endl;
-    //     std::cin >> newWorker->value.resumes.cur->value.wanted_salary;
-    //     ++counter;
-    //     cout << "Добавить еще резюме? Y/N" << endl;
-    //     cin >> answer;
+    //     F_Vacancia suitable_vac = FindResumesForEmployer(newWorker);
+    //     пройти по формуляру и вызвать Print(log)
     // }
-    // newWorker->value.resumes.num_resumes = counter;
 
-    // std::cout << "Найти подходящие вакансии? Y/N" << std::endl;
-    // std::cin >> answer;
-    // if (answer == 'y' || answer == 'Y')
-    // {
-    //     F_Vacancia suitable_vac = FindVacanciiForWorker(newWorker);
-    //     if (suitable_vac.head == 0)
-    //     {
-    //         cout << " Не найдено подходящих вакансий для данного работника" << endl;
-
-    //         log << " Не найдено подходящих вакансий для данного работника" << endl;
-    //     }
-    //     else
-    //     {
-    //         cout << "Подходящие предложения по вакансиям: " << endl;
-    //         log << "ПОДХОДЯЩИЕ предложения по вакансиям: " << endl;
-    //         suitable_vac.cur = suitable_vac.head;
-    //         while (suitable_vac.cur != nullptr)
-    //         {
-    //             cout << "Работодатель: ";
-    //             log << "Работодатель: " ;
-    //             suitable_vac.cur->value.Rabotodatel->value.F_I_O.Print(log);
-    //             //    log << "Работодатель: " << suitable_vac.cur->value.Rabotodatel->value.F_I_O.familia <<
-    //             //   " " << suitable_vac.cur->value.Rabotodatel->value.F_I_O.imya <<
-    //             //    " " << suitable_vac.cur->value.Rabotodatel->value.F_I_O.otchestvo << endl;
-
-    //             // !!!
-
-    //             suitable_vac.cur->value.Print(log);
-    //             suitable_vac.cur = suitable_vac.cur->next;
-    //         }
-    //     }
-    // }
-    // // if (yes)
-    // // {
-    // //     F_Vacancia suitable_vac = FindResumesForEmployer(newWorker);
-    // //     пройти по формуляру и вызвать Print(log)
-    // // }
-
-    // return newWorker;
+    return newWorker;
     return 0;
 }
 
@@ -104,62 +104,62 @@ void Birga::PrintWorkers(std::ofstream &log)
 
 EmployerNode *Birga::AddEmployer(std::ofstream &log)
 {
-    // EmployerNode *newEmployer = new EmployerNode();
+    EmployerNode *newEmployer = new EmployerNode();
 
-    // std::cout << "Введите Имя" << std::endl;
-    // std::cin >> newEmployer->value.F_I_O.imya;
-    // std::cout << "Введите Отчество" << std::endl;
-    // std::cin >> newEmployer->value.F_I_O.otchestvo;
-    // std::cout << "Введите фамилиё" << std::endl;
-    // std::cin >> newEmployer->value.F_I_O.familia;
+    std::cout << "Введите Имя" << std::endl;
+    std::cin >> newEmployer->value.F_I_O.imya;
+    std::cout << "Введите Отчество" << std::endl;
+    std::cin >> newEmployer->value.F_I_O.otchestvo;
+    std::cout << "Введите фамилиё" << std::endl;
+    std::cin >> newEmployer->value.F_I_O.familia;
 
-    // std::string W_field_string = "";
-    // std::cout << "Введите рабочую область цифрой" << std::endl;
-    // std::cin >> W_field_string; // считываем номер профессии
-    // newEmployer->value.work_field = (WorkField)std::atoi(W_field_string.c_str());
+    std::string W_field_string = "";
+    std::cout << "Введите рабочую область цифрой" << std::endl;
+    std::cin >> W_field_string; // считываем номер профессии
+    newEmployer->value.work_field = (WorkField)std::atoi(W_field_string.c_str());
 
-    // std::string adress_string = "";
-    // std::cout << "Введите город цифрой" << std::endl;
-    // std::cin >> adress_string; // считываем номер профессии
-    // newEmployer->value.adress = (Gorod)std::atoi(adress_string.c_str());
+    std::string adress_string = "";
+    std::cout << "Введите город цифрой" << std::endl;
+    std::cin >> adress_string; // считываем номер профессии
+    newEmployer->value.adress = (Gorod)std::atoi(adress_string.c_str());
 
-    // int counter = 0;
-    // std::cout << "Добавить новую предлагаемую вакансию? Y/N" << std::endl;
-    // char answer = 'f';
-    // std::cin >> answer;
-    // newEmployer->value.offered_vacansii.head = nullptr;
-    // while (answer == 'Y' || answer == 'y')
-    // {
-    //     if (newEmployer->value.offered_vacansii.head == nullptr)
-    //     {
-    //         newEmployer->value.offered_vacansii.head = new VacansiaNode();
-    //         newEmployer->value.offered_vacansii.cur = newEmployer->value.offered_vacansii.head;
-    //         //  !!!
-    //     }
-    //     else
-    //     {
-    //         newEmployer->value.offered_vacansii.cur->next = new VacansiaNode();
-    //         newEmployer->value.offered_vacansii.cur = newEmployer->value.offered_vacansii.cur->next;
-    //         // newEmployer->value.offered_vacansii.cur->value.Employerr = newEmployer->value.F_I_O;
-    //         // !!!
-    //     }
-    //     std::cout << "Введите профессию цифрой" << std::endl;
-    //     std::cin >> (int &)newEmployer->value.offered_vacansii.cur->value.professia;
+    int counter = 0;
+    std::cout << "Добавить новую предлагаемую вакансию? Y/N" << std::endl;
+    char answer = 'f';
+    std::cin >> answer;
+    newEmployer->value.offered_vacansii.head = nullptr;
+    while (answer == 'Y' || answer == 'y')
+    {
+        if (newEmployer->value.offered_vacansii.head == nullptr)
+        {
+            newEmployer->value.offered_vacansii.head = new VacansiaNode();
+            newEmployer->value.offered_vacansii.cur = newEmployer->value.offered_vacansii.head;
+            //  !!!
+        }
+        else
+        {
+            newEmployer->value.offered_vacansii.cur->next = new VacansiaNode();
+            newEmployer->value.offered_vacansii.cur = newEmployer->value.offered_vacansii.cur->next;
+            // newEmployer->value.offered_vacansii.cur->value.Employerr = newEmployer->value.F_I_O;
+            // !!!
+        }
+        std::cout << "Введите профессию цифрой" << std::endl;
+        std::cin >> (int &)newEmployer->value.offered_vacansii.cur->value.professia;
 
-    //     std::cout << "Введите предлагаемую зарплату" << std::endl;
-    //     std::cin >> newEmployer->value.offered_vacansii.cur->value.salary;
+        std::cout << "Введите предлагаемую зарплату" << std::endl;
+        std::cin >> newEmployer->value.offered_vacansii.cur->value.salary;
 
-    //     std::cout << "Введите требуемый уровень образования цифрой" << std::endl;
-    //     std::cin >> (int &)newEmployer->value.offered_vacansii.cur->value.education_lvl;
+        std::cout << "Введите требуемый уровень образования цифрой" << std::endl;
+        std::cin >> (int &)newEmployer->value.offered_vacansii.cur->value.education_lvl;
 
-    //     ++counter;
+        ++counter;
 
-    //     std::cout << "Добавить еще новую предлагаемую вакансию? Y/N" << std::endl;
-    //     std::cin >> answer;
-    // }
-    // newEmployer->value.offered_vacansii.num_vacansii = counter;
+        std::cout << "Добавить еще новую предлагаемую вакансию? Y/N" << std::endl;
+        std::cin >> answer;
+    }
+    newEmployer->value.offered_vacansii.num_vacansii = counter;
 
-    // return newEmployer;
+    return newEmployer;
     return 0;
 }
 

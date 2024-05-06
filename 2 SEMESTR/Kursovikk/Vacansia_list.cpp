@@ -9,6 +9,7 @@ bool Vacansia::Read(std::ifstream &input, std::ofstream &log)
     professia.Read(input, log);
 
     StrL salary_str;
+    salary_str.Read(input, log);
     salary = atoi(salary_str.massiv);
 
     education_lvl.Read(input, log);
@@ -22,7 +23,8 @@ bool Vacansia::Write(std::ofstream &output, std::ofstream &log)
     professia.Write(output, log);
 
     StrL salary_str;
-    snprintf(salary_str.massiv, StrL::N,"%d",salary); // запись в строку стрл числа салари в форме строки
+    snprintf(salary_str.massiv, StrL::N, "%d", salary); // запись в строку стрL числа салари в форме строки
+    salary_str.Write(output, log);
 
     education_lvl.Write(output, log);
 
@@ -31,11 +33,13 @@ bool Vacansia::Write(std::ofstream &output, std::ofstream &log)
 
 void Vacansia::Print(std::ofstream &log)
 {
-    // cout << "Предлагаемая professia: " << Prof2String(professia) << endl
-    //      << "Предлагаемая зарплата: " << salary << endl
-    //      << "Необходимый уровень образования: " << Obraz2String(education_lvl) << endl;
+    cout << "Предлагаемая professia: ";
+    log << "Предлагаемая professia: ";
+    professia.Print(log);
+    cout << "Предлагаемая зарплата: " << salary << endl;
+    log << "Предлагаемая зарплата: " << salary << endl;
 
-    // log << "Предлагаемая professia: " << Prof2String(professia) << endl
-    //     << "Предлагаемая зарплата: " << salary << endl
-    //     << "Необходимый уровень образования: " << Obraz2String(education_lvl) << endl;
+    cout << "Необходимый уровень образования:";
+    log << "Необходимый уровень образования:";
+    education_lvl.Print(log);
 }

@@ -6,36 +6,31 @@ using namespace std;
 
 bool Resume::Read(std::ifstream &input, std::ofstream &log)
 {
-    // std::string professia_string = "";
-    // getline(input, professia_string, '&');
-    // // input >> professia_string; // считываем номер профессии
-    // wanted_profession = (Professia)std::atoi(professia_string.c_str());
+    wanted_profession.Read(input, log);
 
-    // std::string wanted_salary_string = "";
-    // // input >> wanted_salary_string; // считываем желаемую зарплату
-    // getline(input, wanted_salary_string, '*');
-
-    // wanted_salary = std::atoi(wanted_salary_string.c_str()); 
-
+    StrL wanted_salary_string;
+    wanted_salary_string.Read(input, log);
+    wanted_salary = atoi(wanted_salary_string.massiv);
     return true;
 }
 bool Resume::Write(std::ofstream &output, std::ofstream &log)
 {
-    // std::string professia_string = "";
-    // professia_string = std::to_string(wanted_profession);
-    // output << professia_string << '&';
-    // std::string wanted_salary_string = "";
-    // wanted_salary_string = std::to_string(wanted_salary);
-    // output << wanted_salary_string << '*';
+    wanted_profession.Write(output, log);
+
+    StrL wanted_salary_string;
+    snprintf(wanted_salary_string.massiv, StrL::N, "%d", wanted_salary); // запись в строку стрL числа салари в форме строки
+    wanted_salary_string.Write(output, log);
 
     return true;
 }
 
 void Resume::Print(std::ofstream &log)
 {
-    // cout << "Желаемая professia: " << Prof2String(wanted_profession) << endl
-    //      << "Желаемая зарплата: " << wanted_salary << endl;
+    cout << "Желаемая professia: ";
+    log << "Желаемая professia: ";
+    wanted_profession.Print(log);
 
-    // log << "Желаемая professia: " << Prof2String(wanted_profession) << endl
-    //     << "Желаемая зарплата: " << wanted_salary << endl;
+    cout << "Желаемая зарплата: " << wanted_salary << endl;
+
+    log << "Желаемая зарплата: " << wanted_salary << endl;
 }
