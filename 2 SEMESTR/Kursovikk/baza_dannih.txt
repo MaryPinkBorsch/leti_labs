@@ -1,5 +1,2 @@
-3#Maha Kalujnaya I#srednee#2#doktor#10000#tester#1000#
-Pusya Kalujnaya I#srednee#1#tester#666#
-Papa Kalujny V#srednee#1#tester#10#
-2#MOGOMGOM#med#moskva#1#doktor#1000000#srednee#
-WTFWTFWTF#it#spb#1#tester#1000000#srednee#
+1#Maha K I#srednee#1#doktor#22#
+1#Papa K V#med#spb#1#doktor#5556#srednee#0#

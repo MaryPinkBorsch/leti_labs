@@ -25,7 +25,7 @@ struct Vacansia
 
 struct VacansiaNode
 {
-    Vacansia value;
+    Vacansia *value = nullptr;
     VacansiaNode *next = nullptr;
 };
 

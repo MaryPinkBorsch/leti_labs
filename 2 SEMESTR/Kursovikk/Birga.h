@@ -26,8 +26,8 @@ struct Birga
     void FindVacanciesForWorker_name(StrL &name, std::ofstream &log);
     void FindResumesForEmployer();
     void MakeDogovor();
-    void PrintDogovors();
-    void PrintDogovor();
+    void PrintDogovors(std::ofstream &log);
+    void PrintDogovor(DogovorNode* cur, std::ofstream &log);
     F_Vacancia FindVacanciiForWorker(WorkerNode *worker, std::ofstream &log);
 
     void ReadNew_file_base(std::string filename22, std::ofstream &log, std::string filename1);

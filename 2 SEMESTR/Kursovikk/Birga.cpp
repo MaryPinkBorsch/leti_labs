@@ -67,14 +67,14 @@ WorkerNode *Birga::AddWorker(std::ofstream &log)
             {
                 cout << "Работодатель: ";
                 log << "Работодатель: ";
-                suitable_vac.cur->value.Rabotodatel->value.F_I_O.Print(log);
+                suitable_vac.cur->value->Rabotodatel->value.F_I_O.Print(log);
                 //    log << "Работодатель: " << suitable_vac.cur->value.Rabotodatel->value.F_I_O.familia <<
                 //   " " << suitable_vac.cur->value.Rabotodatel->value.F_I_O.imya <<
                 //    " " << suitable_vac.cur->value.Rabotodatel->value.F_I_O.otchestvo << endl;
 
                 // !!!
 
-                suitable_vac.cur->value.Print(log);
+                suitable_vac.cur->value->Print(log);
                 suitable_vac.cur = suitable_vac.cur->next;
             }
         }
@@ -129,18 +129,18 @@ EmployerNode *Birga::AddEmployer(std::ofstream &log)
             newEmployer->value.offered_vacansii.cur->next = new VacansiaNode();
             newEmployer->value.offered_vacansii.cur = newEmployer->value.offered_vacansii.cur->next;
         }
+        newEmployer->value.offered_vacansii.cur->value = new Vacansia();
         StrL prof;
         std::cout << "Введите профессию (doktor / tester)" << std::endl;
-        newEmployer->value.offered_vacansii.cur->value.professia.Vvod(log);
+        newEmployer->value.offered_vacansii.cur->value->professia.Vvod(log);
 
         std::cout << "Введите предлагаемую зарплату" << std::endl;
-        // std::cin >> newEmployer->value.offered_vacansii.cur->value.salary;
         StrL wanted_salary_string;
         wanted_salary_string.Vvod(log);
-        newEmployer->value.offered_vacansii.cur->value.salary = atoi(wanted_salary_string.massiv);
+        newEmployer->value.offered_vacansii.cur->value->salary = atoi(wanted_salary_string.massiv);
 
         std::cout << "Введите требуемый уровень образования (srednee / vishee)" << std::endl;
-        newEmployer->value.offered_vacansii.cur->value.education_lvl.Vvod(log);
+        newEmployer->value.offered_vacansii.cur->value->education_lvl.Vvod(log);
 
         ++counter;
 
@@ -174,8 +174,20 @@ void Birga::AddEmployerVacancy() {}
 
 void Birga::FindResumesForEmployer() {}
 void Birga::MakeDogovor() {}
-void Birga::PrintDogovors() {}
-void Birga::PrintDogovor() {}
+void Birga::PrintDogovors(std::ofstream &log)
+{
+    dogovori.cur = dogovori.head;
+    for (int i = 0; i < dogovori.num_dogovori; i++)
+    {
+        dogovori.cur->value.Print(log);
+
+        dogovori.cur = dogovori.cur->next;
+    }
+}
+void Birga::PrintDogovor(DogovorNode *cur, std::ofstream &log)
+{
+    cur->value.Print(log);
+}
 
 bool Birga::Read(std::string &filename, std::ofstream &log)
 {
@@ -278,7 +290,7 @@ bool Birga::Read(std::string &filename, std::ofstream &log)
         employers.cur->value.offered_vacansii.cur = employers.cur->value.offered_vacansii.head;
         for (int j = 0; j < employers.cur->value.offered_vacansii.num_vacansii; j++)
         {
-            employers.cur->value.offered_vacansii.cur->value.Rabotodatel = employers.cur; // восстановили указатель
+            employers.cur->value.offered_vacansii.cur->value->Rabotodatel = employers.cur; // восстановили указатель
             employers.cur->value.offered_vacansii.cur = employers.cur->value.offered_vacansii.cur->next;
         }
         employers.cur = employers.cur->next;
@@ -332,6 +344,8 @@ void Birga::BigProcess(std::ofstream &log)
         std::cout << "4) добавить работодателя" << std::endl;
         std::cout << "5) распечатать работодателей" << std::endl;
         std::cout << "6) Считать с нового файла" << std::endl;
+        std::cout << "7) Найти работнику вакансию введя его имя" << std::endl;
+        std::cout << "8) Распечатать договоры" << std::endl;
 
         int action = 1;
         char answer[100];
@@ -348,11 +362,13 @@ void Birga::BigProcess(std::ofstream &log)
         {
         case 1:
         {
+            log << "case 1" << endl;
             exit = true;
         }
         break;
         case 2:
         {
+            log << "case 2" << endl;
             WorkerNode *newWorker = AddWorker(log);
             if (workers.head == nullptr)
                 workers.head = newWorker;
@@ -369,11 +385,13 @@ void Birga::BigProcess(std::ofstream &log)
         break;
         case 3:
         {
+            log << "case 3" << endl;
             PrintWorkers(log);
         }
         break;
         case 4:
         {
+            log << "case 4" << endl;
             EmployerNode *newEmployer = AddEmployer(log);
             if (employers.head == nullptr)
                 employers.head = newEmployer;
@@ -391,16 +409,36 @@ void Birga::BigProcess(std::ofstream &log)
 
         case 5:
         {
+            log << "case 5" << endl;
             PrintEmployers(log);
         }
         break;
 
         case 6:
         {
+            log << "case 6" << endl;
             cout << "ВВЕДИТЕ НОМЕР ФАЙЛА" << endl;
             // ReadNew_file_base("new_base1.txt", log, "baza_dannih.txt");
             string f2 = "baza2.txt";
             Read(f2, log);
+        }
+        break;
+
+        case 7:
+        {
+            log << "case 7" << endl;
+            StrL name;
+            cout << "Введите имя работника которому надо найти вакансию и заключить договор" << endl;
+            log << "Введите имя работника которому надо найти вакансию и заключить договор" << endl;
+            name.Vvod(log);
+            FindVacanciesForWorker_name(name, log);
+        }
+        break;
+
+        case 8:
+        {
+            log << "case 8" << endl;
+            PrintDogovors(log);
         }
         break;
 
@@ -422,12 +460,12 @@ F_Vacancia Birga::FindVacanciiForWorker(WorkerNode *worker, std::ofstream &log)
         employers.cur->value.offered_vacansii.cur = employers.cur->value.offered_vacansii.head;
         for (int j = 0; j < employers.cur->value.offered_vacansii.num_vacansii; j++)
         {
-            employers.cur->value.offered_vacansii.cur->value.professia;
+            employers.cur->value.offered_vacansii.cur->value->professia;
 
             worker->value.resumes.cur = worker->value.resumes.head;
             for (int k = 0; k < worker->value.resumes.num_resumes; k++)
             {
-                if (employers.cur->value.offered_vacansii.cur->value.professia.Equal(worker->value.resumes.cur->value.wanted_profession, log) && employers.cur->value.offered_vacansii.cur->value.salary >= worker->value.resumes.cur->value.wanted_salary && employers.cur->value.offered_vacansii.cur->value.education_lvl.Equal(worker->value.education_lvl, log) && employers.cur->value.offered_vacansii.cur->value.closed == false)
+                if (employers.cur->value.offered_vacansii.cur->value->professia.Equal(worker->value.resumes.cur->value.wanted_profession, log) && employers.cur->value.offered_vacansii.cur->value->salary >= worker->value.resumes.cur->value.wanted_salary && employers.cur->value.offered_vacansii.cur->value->education_lvl.Equal(worker->value.education_lvl, log) && employers.cur->value.offered_vacansii.cur->value->closed == false)
                 {
                     if (res.head == nullptr)
                     {
@@ -440,6 +478,7 @@ F_Vacancia Birga::FindVacanciiForWorker(WorkerNode *worker, std::ofstream &log)
                         res.cur = res.cur->next;
                     }
                     res.cur->value = employers.cur->value.offered_vacansii.cur->value;
+                    res.num_vacansii++;
                 }
 
                 worker->value.resumes.cur = worker->value.resumes.cur->next;
@@ -463,7 +502,8 @@ void Birga::FindVacanciesForWorker_name(StrL &name, std::ofstream &log)
             podhodyat_vacansii.cur = podhodyat_vacansii.head;
             for (int i = 0; i < podhodyat_vacansii.num_vacansii; i++)
             {
-                podhodyat_vacansii.cur->value.Print(log);
+                cout << "Предлагается вакансия на заключение договора: " << endl;
+                podhodyat_vacansii.cur->value->Print(log);
                 std::cout << "Заключить договор на данную вакансию? Y/N" << std::endl;
                 char answer[100];
                 fgets(answer, 100, stdin);
@@ -486,21 +526,23 @@ void Birga::FindVacanciesForWorker_name(StrL &name, std::ofstream &log)
                         dogovori.cur = dogovori.cur->next;
                     }
                     dogovori.cur->value.rabotnik = workers.cur;
-                    dogovori.cur->value.rabotodatel = podhodyat_vacansii.cur->value.Rabotodatel;
+                    dogovori.cur->value.rabotodatel = podhodyat_vacansii.cur->value->Rabotodatel;
                     dogovori.cur->value.closed_vacansiaa = podhodyat_vacansii.cur;
 
                     workers.cur->value.resumes.cur = workers.cur->value.resumes.head;
 
                     for (int k = 0; k < workers.cur->value.resumes.num_resumes; k++)
                     {
-                        if (dogovori.cur->value.rabotodatel->value.offered_vacansii.cur->value.professia.Equal(workers.cur->value.resumes.cur->value.wanted_profession, log) && dogovori.cur->value.rabotodatel->value.offered_vacansii.cur->value.salary >= workers.cur->value.resumes.cur->value.wanted_salary && dogovori.cur->value.rabotodatel->value.offered_vacansii.cur->value.education_lvl.Equal(workers.cur->value.education_lvl, log) && dogovori.cur->value.rabotodatel->value.offered_vacansii.cur->value.closed == false)
+                        if (dogovori.cur->value.closed_vacansiaa->value->professia.Equal(workers.cur->value.resumes.cur->value.wanted_profession, log)
+                         && dogovori.cur->value.closed_vacansiaa->value->salary >= workers.cur->value.resumes.cur->value.wanted_salary 
+                         && dogovori.cur->value.closed_vacansiaa->value->education_lvl.Equal(workers.cur->value.education_lvl, log) 
+                         && dogovori.cur->value.closed_vacansiaa->value->closed == false)
                         {
-
                             dogovori.cur->value.closed_resumee = workers.cur->value.resumes.cur;
-                            dogovori.cur->value.closed_vacansiaa->value.closed = true;
+                            dogovori.cur->value.closed_vacansiaa->value->closed = true;
+                            dogovori.num_dogovori++;
                             break;
                         }
-
                         workers.cur->value.resumes.cur = workers.cur->value.resumes.cur->next;
                     }
                 }

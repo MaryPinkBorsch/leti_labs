@@ -30,4 +30,5 @@ struct F_dogovor
 {
     DogovorNode *head = nullptr;
     DogovorNode *cur = nullptr;
+    int num_dogovori = 0;
 };
