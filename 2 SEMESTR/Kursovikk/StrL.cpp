@@ -1,8 +1,8 @@
 #include "StrL.h"
 
 #include <cstring>
+#include <stdio.h>
 #include "stdio.h"
-
 
 using namespace std;
 bool StrL::Read(std::ifstream &input, std::ofstream &log)
@@ -101,10 +101,16 @@ void StrL::Vvod(std::ofstream &log)
     Clear(log); // почистили память
     int counter = 0;
 
-    std::string read_buf;
-    std::getline(std::cin, read_buf);
-
-    int total_len = read_buf.size(); // нашли общую длинну введенной строки
+    // считаем строку с клавиатуры без использования std::string
+    static const int MAX_SIZE = 1000;
+    char read_buf[MAX_SIZE];
+    fgets(read_buf, MAX_SIZE, stdin);
+    int total_len = strlen(read_buf); // нашли общую длинну введенной строки
+    if (read_buf[total_len-1] == '\n')
+    {
+        read_buf[total_len-1] = 0;
+        --total_len;
+    }
     // надо разбить длинную строку на фрагменты StrL
     StrL *cur = this;
     counter = 0;

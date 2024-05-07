@@ -14,8 +14,8 @@ WorkerNode *Birga::AddWorker(std::ofstream &log)
 
     int counter = 0;
     cout << "Добавить резюме? Y/N" << endl;
-    std::string answer;
-    std::getline(std::cin, answer);
+    char answer[100];
+    fgets(answer, 100, stdin);
     newWorker->value.resumes.head = nullptr;
     while (answer[0] == 'Y' || answer[0] == 'y')
     {
@@ -42,12 +42,12 @@ WorkerNode *Birga::AddWorker(std::ofstream &log)
 
         ++counter;
         cout << "Добавить еще резюме? Y/N" << endl;
-        std::getline(std::cin, answer);
+        fgets(answer, 100, stdin);
     }
     newWorker->value.resumes.num_resumes = counter;
 
     std::cout << "Найти подходящие вакансии? Y/N" << std::endl;
-    std::getline(std::cin, answer);
+    fgets(answer, 100, stdin);
 
     if (answer[0] == 'y' || answer[0] == 'Y')
     {
@@ -114,8 +114,8 @@ EmployerNode *Birga::AddEmployer(std::ofstream &log)
 
     int counter = 0;
     std::cout << "Добавить новую предлагаемую вакансию? Y/N" << std::endl;
-    std::string answer;
-    std::getline(std::cin, answer);
+    char answer[100];
+    fgets(answer, 100, stdin);
     newEmployer->value.offered_vacansii.head = nullptr;
     while (answer[0] == 'Y' || answer[0] == 'y')
     {
@@ -145,7 +145,7 @@ EmployerNode *Birga::AddEmployer(std::ofstream &log)
         ++counter;
 
         std::cout << "Добавить еще новую предлагаемую вакансию? Y/N" << std::endl;
-        std::getline(std::cin, answer);
+        fgets(answer, 100, stdin);
     }
     newEmployer->value.offered_vacansii.num_vacansii = counter;
 
@@ -334,9 +334,15 @@ void Birga::BigProcess(std::ofstream &log)
         std::cout << "6) Считать с нового файла" << std::endl;
 
         int action = 1;
-        std::string action_str;
-        std::getline(std::cin, action_str);
-        action = atoi(action_str.c_str());
+        char answer[100];
+        fgets(answer, 100, stdin);
+        int total_len = strlen(answer); // нашли общую длинну введенной строки
+        if (answer[total_len-1] == '\n')
+        {
+            answer[total_len-1] = 0;
+            --total_len;
+        }
+        action = atoi(answer);
 
         switch (action)
         {
