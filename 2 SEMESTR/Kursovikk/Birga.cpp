@@ -417,9 +417,10 @@ void Birga::BigProcess(std::ofstream &log)
         case 6:
         {
             log << "case 6" << endl;
-            cout << "ВВЕДИТЕ НОМЕР ФАЙЛА" << endl;
+            cout << "ВВЕДИТЕ ИМЯ ФАЙЛА (baza1.txt - baza5.txt) " << endl;
             // ReadNew_file_base("new_base1.txt", log, "baza_dannih.txt");
-            string f2 = "baza2.txt";
+            string f2;
+            cin >> f2;
             Read(f2, log);
         }
         break;
@@ -533,10 +534,7 @@ void Birga::FindVacanciesForWorker_name(StrL &name, std::ofstream &log)
 
                     for (int k = 0; k < workers.cur->value.resumes.num_resumes; k++)
                     {
-                        if (dogovori.cur->value.closed_vacansiaa->value->professia.Equal(workers.cur->value.resumes.cur->value.wanted_profession, log)
-                         && dogovori.cur->value.closed_vacansiaa->value->salary >= workers.cur->value.resumes.cur->value.wanted_salary 
-                         && dogovori.cur->value.closed_vacansiaa->value->education_lvl.Equal(workers.cur->value.education_lvl, log) 
-                         && dogovori.cur->value.closed_vacansiaa->value->closed == false)
+                        if (dogovori.cur->value.closed_vacansiaa->value->professia.Equal(workers.cur->value.resumes.cur->value.wanted_profession, log) && dogovori.cur->value.closed_vacansiaa->value->salary >= workers.cur->value.resumes.cur->value.wanted_salary && dogovori.cur->value.closed_vacansiaa->value->education_lvl.Equal(workers.cur->value.education_lvl, log) && dogovori.cur->value.closed_vacansiaa->value->closed == false)
                         {
                             dogovori.cur->value.closed_resumee = workers.cur->value.resumes.cur;
                             dogovori.cur->value.closed_vacansiaa->value->closed = true;
