@@ -422,6 +422,7 @@ void Birga::BigProcess(std::ofstream &log)
             string f2;
             cin >> f2;
             Read(f2, log);
+            auto unused = getc(stdin); // в стдин остался перенос строки, уберем его
         }
         break;
 
