@@ -7,3 +7,6 @@
 #include <stdlib.h>
 #include <cstdlib>
 #include "StrL.h"
+
+#include <stdio.h>
+#include "stdio.h"

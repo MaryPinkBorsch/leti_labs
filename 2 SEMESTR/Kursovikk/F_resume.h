@@ -11,6 +11,8 @@ struct Resume
     StrL wanted_profession; // желаемая professia
     int wanted_salary;
 
+    
+
     bool Read(std::ifstream &input, std::ofstream &log);
     bool Write(std::ofstream &output, std::ofstream &log);
 

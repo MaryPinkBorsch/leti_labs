@@ -1,8 +1,6 @@
 #include "StrL.h"
 
-#include <cstring>
-#include <stdio.h>
-#include "stdio.h"
+
 
 using namespace std;
 bool StrL::Read(std::ifstream &input, std::ofstream &log)

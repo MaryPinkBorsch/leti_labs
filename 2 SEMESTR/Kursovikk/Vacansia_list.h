@@ -15,6 +15,8 @@ struct Vacansia
 
     EmployerNode *Rabotodatel = nullptr; //!!!!
     //F_fio Employerr;
+
+    bool closed = false;
     
     bool Read(std::ifstream & input, std::ofstream & log);
     bool Write(std::ofstream & output, std::ofstream & log);

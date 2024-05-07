@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "Vacansia_list.h"
 #include "Worker_list.h"
 #include "Employer_list.h"
@@ -24,7 +23,7 @@ struct Birga
     void PrintEmployer(EmployerNode *cur, std::ofstream &log);
     void AddWorkerResume();
     void AddEmployerVacancy();
-    void FindVacanciesForWorker();
+    void FindVacanciesForWorker_name(StrL &name, std::ofstream &log);
     void FindResumesForEmployer();
     void MakeDogovor();
     void PrintDogovors();
