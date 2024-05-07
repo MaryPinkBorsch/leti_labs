@@ -24,6 +24,7 @@ bool Vacansia::Write(std::ofstream &output, std::ofstream &log)
 
     StrL salary_str;
     snprintf(salary_str.massiv, StrL::N, "%d", salary); // запись в строку стрL числа салари в форме строки
+    salary_str.len = std::strlen(salary_str.massiv);
     salary_str.Write(output, log);
 
     education_lvl.Write(output, log);

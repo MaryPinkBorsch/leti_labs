@@ -14,10 +14,10 @@ WorkerNode *Birga::AddWorker(std::ofstream &log)
 
     int counter = 0;
     cout << "Добавить резюме? Y/N" << endl;
-    char answer = 'f';
-    cin >> answer;
+    std::string answer;
+    std::getline(std::cin, answer);
     newWorker->value.resumes.head = nullptr;
-    while (answer == 'Y' || answer == 'y')
+    while (answer[0] == 'Y' || answer[0] == 'y')
     {
         if (newWorker->value.resumes.head == nullptr)
         {
@@ -36,16 +36,20 @@ WorkerNode *Birga::AddWorker(std::ofstream &log)
         newWorker->value.resumes.cur->value.wanted_profession = wanted_profession_s;
 
         std::cout << "Введите желаемую зарплату" << std::endl;
-        std::cin >> newWorker->value.resumes.cur->value.wanted_salary;
+        StrL wanted_salary_string;
+        wanted_salary_string.Vvod(log);
+        newWorker->value.resumes.cur->value.wanted_salary = atoi(wanted_salary_string.massiv);
+
         ++counter;
         cout << "Добавить еще резюме? Y/N" << endl;
-        cin >> answer;
+        std::getline(std::cin, answer);
     }
     newWorker->value.resumes.num_resumes = counter;
 
     std::cout << "Найти подходящие вакансии? Y/N" << std::endl;
-    std::cin >> answer;
-    if (answer == 'y' || answer == 'Y')
+    std::getline(std::cin, answer);
+
+    if (answer[0] == 'y' || answer[0] == 'Y')
     {
         F_Vacancia suitable_vac = FindVacanciiForWorker(newWorker, log);
         if (suitable_vac.head == 0)
@@ -110,10 +114,10 @@ EmployerNode *Birga::AddEmployer(std::ofstream &log)
 
     int counter = 0;
     std::cout << "Добавить новую предлагаемую вакансию? Y/N" << std::endl;
-    char answer = 'f';
-    std::cin >> answer;
+    std::string answer;
+    std::getline(std::cin, answer);
     newEmployer->value.offered_vacansii.head = nullptr;
-    while (answer == 'Y' || answer == 'y')
+    while (answer[0] == 'Y' || answer[0] == 'y')
     {
         if (newEmployer->value.offered_vacansii.head == nullptr)
         {
@@ -130,7 +134,10 @@ EmployerNode *Birga::AddEmployer(std::ofstream &log)
         newEmployer->value.offered_vacansii.cur->value.professia.Vvod(log);
 
         std::cout << "Введите предлагаемую зарплату" << std::endl;
-        std::cin >> newEmployer->value.offered_vacansii.cur->value.salary;
+        //std::cin >> newEmployer->value.offered_vacansii.cur->value.salary;
+        StrL wanted_salary_string;
+        wanted_salary_string.Vvod(log);
+        newEmployer->value.offered_vacansii.cur->value.salary = atoi(wanted_salary_string.massiv);
 
         std::cout << "Введите требуемый уровень образования (srednee / vishee)" << std::endl;
         newEmployer->value.offered_vacansii.cur->value.education_lvl.Vvod(log);
@@ -138,7 +145,7 @@ EmployerNode *Birga::AddEmployer(std::ofstream &log)
         ++counter;
 
         std::cout << "Добавить еще новую предлагаемую вакансию? Y/N" << std::endl;
-        std::cin >> answer;
+        std::getline(std::cin, answer);
     }
     newEmployer->value.offered_vacansii.num_vacansii = counter;
 
@@ -173,16 +180,43 @@ void Birga::PrintDogovor() {}
 bool Birga::Read(std::string &filename, std::ofstream &log)
 {
     ifstream input(filename, ios::in);
+    int worker_start = workers.num_workers;
 
-    std::string num_workers_string = "";
-    //  input >> num_workers_string;
-    getline(input, num_workers_string, '?');
-    workers.num_workers = (int)std::atoi(num_workers_string.c_str());
-    if (workers.num_workers == 0)
-        return true;
-    workers.head = new WorkerNode();
-    workers.cur = workers.head;
-    for (int i = 0; i < workers.num_workers; i++)
+    if (workers.head == nullptr) // если считываем в пустую  базу
+    {
+        StrL num_workers_string;
+        if (num_workers_string.Read(input, log)) 
+        {
+            workers.head = new WorkerNode();
+            workers.cur = workers.head;
+
+            workers.num_workers = atoi(num_workers_string.massiv);
+
+            if (workers.num_workers == 0)
+                return true;
+        }
+    }
+    else
+    {
+
+        StrL num_workers_string;
+        if (num_workers_string.Read(input, log)) 
+        {
+            workers.cur = workers.head;
+            while (workers.cur->next != nullptr)
+                workers.cur = workers.cur->next;
+
+            workers.cur->next = new WorkerNode();
+            workers.cur = workers.cur->next;
+
+            workers.num_workers += atoi(num_workers_string.massiv);
+
+            if (workers.num_workers == worker_start)
+                return true;
+        }
+    }
+
+    for (int i = worker_start; i < workers.num_workers; i++)
     {
         workers.cur->value.Read(input, log);
         if (i != workers.num_workers - 1)
@@ -194,15 +228,41 @@ bool Birga::Read(std::string &filename, std::ofstream &log)
 
     ///////////////////////////////////////////////////// Employers
 
-    std::string num_employers_string = "";
-    //  input >> num_workers_string;
-    getline(input, num_employers_string, '?');
-    employers.num_employers = (int)std::atoi(num_employers_string.c_str());
-    if (employers.num_employers == 0)
-        return true;
-    employers.head = new EmployerNode();
-    employers.cur = employers.head;
-    for (int i = 0; i < employers.num_employers; i++)
+    int employer_start = employers.num_employers;
+
+    if (employers.head == nullptr)
+    {
+        StrL num_employers_string;
+        if(num_employers_string.Read(input, log)) 
+        {
+            employers.head = new EmployerNode();
+            employers.cur = employers.head;
+
+            employers.num_employers = atoi(num_employers_string.massiv);
+
+            if (employers.num_employers == 0)
+                return true;
+        }
+    }
+    else
+    {
+        StrL num_employers_string;
+        if (num_employers_string.Read(input, log)) 
+        {
+            employers.cur = employers.head;
+            while (employers.cur->next != nullptr)
+                employers.cur = employers.cur->next;
+
+            employers.cur->next = new EmployerNode();
+            employers.cur = employers.cur->next;
+
+            employers.num_employers += atoi(num_employers_string.massiv);
+            if (employers.num_employers == employer_start)
+                return true;
+        }
+    }
+
+    for (int i = employer_start; i < employers.num_employers; i++)
     {
         employers.cur->value.Read(input, log);
         if (i != employers.num_employers - 1)
@@ -226,13 +286,15 @@ bool Birga::Read(std::string &filename, std::ofstream &log)
 
     return true;
 }
+
 bool Birga::Write(std::string &filename, std::ofstream &log)
 {
     ofstream output(filename, ios::out | ios::trunc);
 
-    std::string num_workers_string = "";
-    num_workers_string = std::to_string(workers.num_workers);
-    output << num_workers_string << "?";
+    StrL num_workers_string;
+    snprintf(num_workers_string.massiv, StrL::N, "%d", workers.num_workers); // запись в строку стрL числа салари в форме строки
+    num_workers_string.len = std::strlen(num_workers_string.massiv);
+    num_workers_string.Write(output, log);
 
     workers.cur = workers.head;
     for (int i = 0; i < workers.num_workers; i++)
@@ -244,9 +306,10 @@ bool Birga::Write(std::string &filename, std::ofstream &log)
 
     /////////////////////////////////////////////////// employers
 
-    std::string num_employers_string = "";
-    num_employers_string = std::to_string(employers.num_employers);
-    output << num_employers_string << "?";
+    StrL num_employers_string;
+    snprintf(num_employers_string.massiv, StrL::N, "%d", employers.num_employers); // запись в строку стрL числа салари в форме строки
+    num_employers_string.len = std::strlen(num_employers_string.massiv);
+    num_employers_string.Write(output, log);
 
     employers.cur = employers.head;
     for (int i = 0; i < employers.num_employers; i++)
@@ -271,7 +334,10 @@ void Birga::BigProcess(std::ofstream &log)
         std::cout << "6) Считать с нового файла" << std::endl;
 
         int action = 1;
-        std::cin >> action;
+        std::string action_str;
+        std::getline(std::cin, action_str);
+        action = atoi(action_str.c_str());
+
         switch (action)
         {
         case 1:
@@ -326,7 +392,9 @@ void Birga::BigProcess(std::ofstream &log)
         case 6:
         {
             cout << "ВВЕДИТЕ НОМЕР ФАЙЛА" << endl;
-            ReadNew_file_base("new_base1.txt", log, "baza_dannih.txt");
+            // ReadNew_file_base("new_base1.txt", log, "baza_dannih.txt");
+            string f2 = "baza2.txt";
+            Read(f2, log);
         }
         break;
 
@@ -376,40 +444,4 @@ F_Vacancia Birga::FindVacanciiForWorker(WorkerNode *worker, std::ofstream &log)
         employers.cur = employers.cur->next;
     }
     return res;
-}
-
-void Birga::ReadNew_file_base(std::string filename22, std::ofstream &log, std::string filename1)
-{
-    // // ifstream input2(filename, ios::in);
-    // Read(filename22, log);
-    // // Write(filename22, log);
-    // PrintEmployers(log);
-
-    // ofstream output(filename1, ios::out | ios::app);
-
-    // // std::string num_workers_string = "";
-    // // num_workers_string = std::to_string(workers.num_workers);
-    // // output << num_workers_string << "?";
-
-    // // // workers.cur = workers.head;
-    // for (int i = 0; i < workers.num_workers; i++)
-    // {
-    //     workers.cur->value.Write(output, log);
-    //     workers.cur = workers.cur->next;
-    // }
-    // // return true;
-
-    // /////////////////////////////////////////////////// employers
-
-    // // std::string num_employers_string = "";
-    // // num_employers_string = std::to_string(employers.num_employers);
-    // // output << num_employers_string << "?";
-
-    // // employers.cur = employers.head;
-    // for (int i = 0; i < employers.num_employers; i++)
-    // {
-    //     employers.cur->value.Write(output, log);
-    //     employers.cur = employers.cur->next;
-    // }
-    // // return true;
 }

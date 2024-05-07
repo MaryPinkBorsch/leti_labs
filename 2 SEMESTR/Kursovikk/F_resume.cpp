@@ -19,6 +19,7 @@ bool Resume::Write(std::ofstream &output, std::ofstream &log)
 
     StrL wanted_salary_string;
     snprintf(wanted_salary_string.massiv, StrL::N, "%d", wanted_salary); // запись в строку стрL числа салари в форме строки
+    wanted_salary_string.len = std::strlen(wanted_salary_string.massiv);
     wanted_salary_string.Write(output, log);
 
     return true;

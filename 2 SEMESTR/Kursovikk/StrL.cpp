@@ -5,14 +5,16 @@
 
 
 using namespace std;
-void StrL::Read(std::ifstream &input, std::ofstream &log)
+bool StrL::Read(std::ifstream &input, std::ofstream &log)
 {
     StrL *cur = this;
     char s = -1;
     int counter = 0;
-    while (s != Marker)
+    while (!input.eof() && s != Marker)
     {
         input >> noskipws >> s;
+        if (input.eof() || s == Marker)
+            break;
 
         cur->massiv[counter % N] = s;
         ++counter;
@@ -24,8 +26,9 @@ void StrL::Read(std::ifstream &input, std::ofstream &log)
         }
     }
     cur->len = counter % N;
+    return counter != 0;
 }
-void StrL::Write(std::ofstream &output, std::ofstream &log)
+bool StrL::Write(std::ofstream &output, std::ofstream &log)
 {
     StrL *cur = this;
     // // посчитаем общую длину
@@ -47,6 +50,7 @@ void StrL::Write(std::ofstream &output, std::ofstream &log)
         cur = cur->next;
     }
     output << Marker;
+    return true;
 }
 void StrL::Print(std::ofstream &log)
 {
@@ -95,14 +99,15 @@ bool StrL::Equal(StrL &another, std::ofstream &log)
 void StrL::Vvod(std::ofstream &log)
 {
     Clear(log); // почистили память
-    static const int MAX_LEN = 1000;
-    char read_buf[MAX_LEN]; // завели массив на 1000 символов макс
-    scanf("%[^\n]",read_buf); // считали с клавиатуры строку в массив
+    int counter = 0;
 
-    int total_len = std::strlen(read_buf); // нашли общую длинну введенной строки
+    std::string read_buf;
+    std::getline(std::cin, read_buf);
+
+    int total_len = read_buf.size(); // нашли общую длинну введенной строки
     // надо разбить длинную строку на фрагменты StrL
     StrL *cur = this;
-    int counter = 0;
+    counter = 0;
     while (counter < total_len)
     {
         cur->massiv[counter % N] = read_buf[counter];

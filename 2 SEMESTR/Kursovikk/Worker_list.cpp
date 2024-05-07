@@ -33,6 +33,7 @@ bool Worker::Write(std::ofstream &output, std::ofstream &log)
 
     StrL num_resumes_string;
     snprintf(num_resumes_string.massiv, StrL::N, "%d", resumes.num_resumes); // запись в строку стрL числа салари в форме строки
+    num_resumes_string.len = std::strlen(num_resumes_string.massiv);
     num_resumes_string.Write(output, log);
 
     resumes.cur = resumes.head;

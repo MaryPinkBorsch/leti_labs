@@ -38,6 +38,7 @@ bool Employer::Write(std::ofstream &output, std::ofstream &log)
 
     StrL num_vacansii_string;
     snprintf(num_vacansii_string.massiv, StrL::N, "%d", offered_vacansii.num_vacansii); // запись в строку стрL числа салари в форме строки
+    num_vacansii_string.len = std::strlen(num_vacansii_string.massiv);
     num_vacansii_string.Write(output, log);
 
     offered_vacansii.cur = offered_vacansii.head;
