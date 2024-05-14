@@ -28,7 +28,7 @@ void Dogovor::Print(std::ofstream &log)
     log << "Закрытая вакансия:" << endl;
     closed_vacansiaa->value->Print(log);
 
-    cout << "Резюме работника:" << endl;
-    log << "Резюме работника:" << endl;
-    closed_resumee->value.Print(log);
+    // cout << "Резюме работника:" << endl;
+    // log << "Резюме работника:" << endl;
+    // closed_resumee->value.Print(log);
 }

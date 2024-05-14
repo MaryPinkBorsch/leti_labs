@@ -12,12 +12,13 @@ struct Dogovor
     WorkerNode *rabotnik = nullptr;      // работник
     // VacansiaNode * next = nullptr;
     VacansiaNode *closed_vacansiaa = nullptr; // закрытая вакансия
-    ResumeNode *closed_resumee = nullptr;
+   // ResumeNode *closed_resumee = nullptr;
 
     bool Read(std::ifstream &input, std::ofstream &log);
     bool Write(std::ofstream &output, std::ofstream &log);
 
     void Print(std::ofstream &log);
+    
 };
 
 struct DogovorNode

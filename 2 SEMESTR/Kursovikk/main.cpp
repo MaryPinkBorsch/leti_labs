@@ -30,6 +30,7 @@ int main(int argc, char *argv[])
     Birga birga;
 
     std::ofstream log("log.txt", ios::out);
+    std::ofstream res("result.txt", ios::out|ios::trunc);
 
     std::string filename = "baza_dannih.txt";
 
@@ -40,7 +41,7 @@ int main(int argc, char *argv[])
         birga.Read(filename, log);
     }
 
-    birga.BigProcess(log);
+    birga.BigProcess(log,res);
 
     // после окончания работы надо записать базу данных
     birga.Write(filename, log);

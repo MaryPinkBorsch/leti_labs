@@ -179,6 +179,7 @@ void Birga::PrintDogovors(std::ofstream &log)
     dogovori.cur = dogovori.head;
     for (int i = 0; i < dogovori.num_dogovori; i++)
     {
+        log << endl;
         dogovori.cur->value.Print(log);
 
         dogovori.cur = dogovori.cur->next;
@@ -203,14 +204,10 @@ bool Birga::Read(std::string &filename, std::ofstream &log)
             workers.cur = workers.head;
 
             workers.num_workers = atoi(num_workers_string.massiv);
-
-            if (workers.num_workers == 0) /// !!!!!!!!!! && input.eof()
-                return true;
         }
     }
     else
     {
-
         StrL num_workers_string;
         if (num_workers_string.Read(input, log))
         {
@@ -222,9 +219,6 @@ bool Birga::Read(std::string &filename, std::ofstream &log)
             workers.cur = workers.cur->next;
 
             workers.num_workers += atoi(num_workers_string.massiv);
-
-            if (workers.num_workers == worker_start)
-                return true;
         }
     }
 
@@ -332,7 +326,7 @@ bool Birga::Write(std::string &filename, std::ofstream &log)
     return true;
 }
 
-void Birga::BigProcess(std::ofstream &log)
+void Birga::BigProcess(std::ofstream &log, std::ofstream &res)
 {
     bool exit = false;
     while (!exit)
@@ -363,6 +357,7 @@ void Birga::BigProcess(std::ofstream &log)
         case 1:
         {
             log << "case 1" << endl;
+            PrintDogovors(res); // вывод всех договоров
             exit = true;
         }
         break;
@@ -501,6 +496,11 @@ void Birga::FindVacanciesForWorker_name(StrL &name, std::ofstream &log)
         if (workers.cur->value.F_I_O.Equal(name, log))
         {
             F_Vacancia podhodyat_vacansii = FindVacanciiForWorker(workers.cur, log);
+            if (podhodyat_vacansii.head == nullptr)
+            {
+                cout << "Подходящих вакансий не найдено!" << endl;
+                log << "Подходящих вакансий не найдено!" << endl;
+            }
             podhodyat_vacansii.cur = podhodyat_vacansii.head;
             for (int i = 0; i < podhodyat_vacansii.num_vacansii; i++)
             {
@@ -537,7 +537,7 @@ void Birga::FindVacanciesForWorker_name(StrL &name, std::ofstream &log)
                     {
                         if (dogovori.cur->value.closed_vacansiaa->value->professia.Equal(workers.cur->value.resumes.cur->value.wanted_profession, log) && dogovori.cur->value.closed_vacansiaa->value->salary >= workers.cur->value.resumes.cur->value.wanted_salary && dogovori.cur->value.closed_vacansiaa->value->education_lvl.Equal(workers.cur->value.education_lvl, log) && dogovori.cur->value.closed_vacansiaa->value->closed == false)
                         {
-                            dogovori.cur->value.closed_resumee = workers.cur->value.resumes.cur;
+                            // dogovori.cur->value.closed_resumee = workers.cur->value.resumes.cur;
                             dogovori.cur->value.closed_vacansiaa->value->closed = true;
                             dogovori.num_dogovori++;
                             break;
@@ -548,8 +548,7 @@ void Birga::FindVacanciesForWorker_name(StrL &name, std::ofstream &log)
 
                 break;
             }
-
-            workers.cur = workers.cur->next;
         }
+        workers.cur = workers.cur->next;
     }
 }

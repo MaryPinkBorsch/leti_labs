@@ -30,9 +30,9 @@ struct Birga
     void PrintDogovor(DogovorNode* cur, std::ofstream &log);
     F_Vacancia FindVacanciiForWorker(WorkerNode *worker, std::ofstream &log);
 
-    void ReadNew_file_base(std::string filename22, std::ofstream &log, std::string filename1);
+    //void ReadNew_file_base(std::string filename22, std::ofstream &log, std::string filename1);
 
-    void BigProcess(std::ofstream &log);
+    void BigProcess(std::ofstream &log, std::ofstream &res);
 
     bool Read(std::string &filename, std::ofstream &log);
     bool Write(std::string &filename, std::ofstream &log);
