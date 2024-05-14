@@ -204,7 +204,7 @@ bool Birga::Read(std::string &filename, std::ofstream &log)
 
             workers.num_workers = atoi(num_workers_string.massiv);
 
-            if (workers.num_workers == 0)
+            if (workers.num_workers == 0) /// !!!!!!!!!! && input.eof()
                 return true;
         }
     }
