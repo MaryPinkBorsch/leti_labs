@@ -56,10 +56,10 @@ void StrL::Print(std::ofstream &log)
 
     while (cur != nullptr)
     {
-        for (int i = 0; i < len; i++)
+        for (int i = 0; i < cur->len; i++)
         {
-            cout << massiv[i];
-            log << massiv[i];
+            cout << cur->massiv[i];
+            log << cur->massiv[i];
         }
         cur = cur->next;
     }
