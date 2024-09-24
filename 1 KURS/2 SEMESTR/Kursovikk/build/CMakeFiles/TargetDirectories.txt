@@ -1,0 +1,3 @@
+/home/kalujny/work/leti_labs/2 SEMESTR/Kursovikk/build/CMakeFiles/Kursovikk.dir
+/home/kalujny/work/leti_labs/2 SEMESTR/Kursovikk/build/CMakeFiles/edit_cache.dir
+/home/kalujny/work/leti_labs/2 SEMESTR/Kursovikk/build/CMakeFiles/rebuild_cache.dir

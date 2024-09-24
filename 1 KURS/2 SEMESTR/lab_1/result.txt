@@ -1,0 +1,205 @@
+Добро пожаловать в lab 1.1.1 Калюжной Марии 3352 
+ zbc ananasban 
+ ananasban zbc 
+Обработка файла in1_1m.txt завершена 
+
+
+
+Добро пожаловать в lab 1.1.1 Калюжной Марии 3352 
+ Файл in1_1m2.txt пуст, упс
+Обработка файла in1_1m2.txt завершена 
+
+
+
+Добро пожаловать в lab 1.1.1 Калюжной Марии 3352 
+stroka pusta v in1_1m3.txt
+Не хватает 2-го маркера  в файле in1_1m3.txt
+
+
+Обработка файла in1_1m3.txt завершена 
+
+
+
+Добро пожаловать в lab 1.1.1 Калюжной Марии 3352 
+ Строка пуста, 2 маркера есть v  in1_1m4.txt
+
+
+Обработка файла in1_1m4.txt завершена 
+
+
+
+Добро пожаловать в lab 1.1.1 Калюжной Марии 3352 
+ 
+ 
+Обработка файла in1_1m5.txt завершена 
+
+
+
+Добро пожаловать в lab 1.1.1 Калюжной Марии 3352 
+ baba arbuz cup almata 
+ almata arbuz baba cup 
+Обработка файла in1_1m6.txt завершена 
+
+
+
+Добро пожаловать в lab 1.1.1 Калюжной Марии 3352 
+ cup baba arbuz 
+ arbuz baba cup 
+Обработка файла in1_1m7.txt завершена 
+
+
+
+Добро пожаловать в lab 1.1.1 Калюжной Марии 3352 
+ zayaz abobaaaaa colkani
+ abobaaaaa colkani zayaz
+Обработка файла in1_1m8.txt завершена 
+
+
+
+Добро пожаловать в lab 1.1.1 Калюжной Марии 3352 
+ bobik abc almataaa arbuzik cupik 
+ abc almataaa arbuzik bobik cupik 
+Обработка файла in1_1m9.txt завершена 
+
+
+
+Добро пожаловать в lab 1.1.1 Калюжной Марии 3352 
+ cup baba arbuz
+ arbuz baba cup
+Обработка файла in1_1m10.txt завершена 
+
+
+
+Добро пожаловать в lab 1.1.1 Калюжной Марии 3352 
+ zalivka ban puk abc zum mumuk ananas abrikos zalivka dedban ban puk abc zum mumuk ananas abrikos de
+ abc abc abrikos abrikos ananas ananas ban ban de dedban mumuk mumuk puk puk zalivka zalivka zum zum
+Обработка файла in1_1m11.txt завершена 
+
+
+
+Добро пожаловать в lab 1.1.1 Калюжной Марии 3352 
+ ban abs mum ananasban abs mum ananas ban abs mumananas 
+ abs abs abs ananas ananasban ban ban mum mum mumananas 
+Обработка файла in1_1m12.txt завершена 
+
+
+
+Добро пожаловать в lab 1.1.1 Калюжной Марии 3352 
+ zban mum amogus peterburg ban ban zban mumum 
+ amogus ban ban mum mumum peterburg zban zban 
+Обработка файла in1_1m13.txt завершена 
+
+
+
+Добро пожаловать в lab 1.1.1 Калюжной Марии 3352 
+ zbanxoxomum amoguspeterburg ban loxban zbanmumum zxanbubub
+ amoguspeterburg ban loxban zbanmumum zbanxoxomum zxanbubub
+Обработка файла in1_1m14.txt завершена 
+
+
+
+Добро пожаловать в lab 1.1.2 Калюжной Марии 3352 
+Слишком большая длина исправлена в in1_2m.txt
+ реальная длина меньше заданной 
+ ban abc mum ananans ban abc mum ananansban abc mum ananansban abc mum ananans
+ abc abc abc abc ananans ananans ananansban ananansban ban ban mum mum mum mum
+Обработка файла in1_2m.txt завершена (2)
+
+
+
+Добро пожаловать в lab 1.1.2 Калюжной Марии 3352 
+Отрицательная длина исправлена в 0 в  in1_2m2.txt
+Обработка файла in1_2m2.txt завершена (2)
+
+
+
+Добро пожаловать в lab 1.1.2 Калюжной Марии 3352 
+Слишком большая длина исправлена в in1_2m3.txt
+ реальная длина меньше заданной 
+ zet ban ananas cub 
+ ananas ban cub zet 
+Обработка файла in1_2m3.txt завершена (2)
+
+
+
+Добро пожаловать в lab 1.1.2 Калюжной Марии 3352 
+ bab cuc a
+ a bab cuc
+Обработка файла in1_2m4.txt завершена (2)
+
+
+
+Добро пожаловать в lab 1.1.2 Калюжной Марии 3352 
+ реальная длина меньше заданной 
+ bab cuc as quq
+ as bab cuc quq
+Обработка файла in1_2m5.txt завершена (2)
+
+
+
+Добро пожаловать в lab 1.1.2 Калюжной Марии 3352 
+ МАркера нет 
+ Файл in1_2m6.txt пуст, упс 2
+Обработка файла in1_2m6.txt завершена (2)
+
+
+
+Добро пожаловать в lab 1.1.2 Калюжной Марии 3352 
+ реальная длина меньше заданной 
+stroka pusta v in1_2m7.txt
+
+
+Обработка файла in1_2m7.txt завершена (2)
+
+
+
+Добро пожаловать в lab 1.1.2 Калюжной Марии 3352 
+ zalivka ban puk abc zum mumuk ananas abrikos zalivka de
+ abc abrikos ananas ban de mumuk puk zalivka zalivka zum
+Обработка файла in1_2m8.txt завершена (2)
+
+
+
+Добро пожаловать в lab 1.1.2 Калюжной Марии 3352 
+Слишком большая длина исправлена в in1_2m9.txt
+ реальная длина меньше заданной 
+ zalivka ban puk abc zum mumuk ananas abrikos ban zalivka dedban 
+ abc abrikos ananas ban ban dedban mumuk puk zalivka zalivka zum 
+Обработка файла in1_2m9.txt завершена (2)
+
+
+
+Добро пожаловать в lab 1.1.2 Калюжной Марии 3352 
+ реальная длина меньше заданной 
+ zban xoxo mum amogus peterburg ban lox ban zban mumum 
+ amogus ban ban lox mum mumum peterburg xoxo zban zban 
+Обработка файла in1_2m10.txt завершена (2)
+
+
+
+Добро пожаловать в lab 1.1.2 Калюжной Марии 3352 
+ реальная длина меньше заданной 
+ zbanxoxomum amoguspeterburg ban loxban zbanmumum 
+ amoguspeterburg ban loxban zbanmumum zbanxoxomum 
+Обработка файла in1_2m11.txt завершена (2)
+
+
+
+Добро пожаловать в lab 1.1.2 Калюжной Марии 3352 
+Слишком большая длина исправлена в in1_2m12.txt
+ реальная длина меньше заданной 
+ xaxax zerobrain ban zoro anubis buba ananasik 
+ ananasik anubis ban buba xaxax zerobrain zoro 
+Обработка файла in1_2m12.txt завершена (2)
+
+
+
+Добро пожаловать в lab 1.1.2 Калюжной Марии 3352 
+Слишком большая длина исправлена в in1_2m13.txt
+ реальная длина меньше заданной 
+ zero unitaz sale abrikose von klassenkameraden guten tag abba
+ abba abrikose guten klassenkameraden sale tag unitaz von zero
+Обработка файла in1_2m13.txt завершена (2)
+
+
+

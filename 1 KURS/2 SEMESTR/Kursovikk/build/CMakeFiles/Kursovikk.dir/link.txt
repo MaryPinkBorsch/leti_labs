@@ -1,0 +1,1 @@
+/usr/bin/c++ -g -rdynamic CMakeFiles/Kursovikk.dir/main.cpp.o CMakeFiles/Kursovikk.dir/Birga.cpp.o CMakeFiles/Kursovikk.dir/Worker_list.cpp.o CMakeFiles/Kursovikk.dir/F_resume.cpp.o CMakeFiles/Kursovikk.dir/F_dogovor.cpp.o CMakeFiles/Kursovikk.dir/Vacansia_list.cpp.o CMakeFiles/Kursovikk.dir/StrL.cpp.o CMakeFiles/Kursovikk.dir/Employer_list.cpp.o -o Kursovikk 

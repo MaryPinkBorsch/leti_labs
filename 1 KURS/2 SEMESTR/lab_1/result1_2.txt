@@ -1,0 +1,97 @@
+Добро пожаловать в lab 1.2.1 Калюжной Марии 3352 
+Слишком большая длина исправлена в in1_2m.txt
+ реальная длина меньше заданной 
+ ban abc mum ananans ban abc mum ananansban abc mum ananansban abc mum ananans
+ abc abc abc abc ananans ananans ananansban ananansban ban ban mum mum mum mum
+Обработка файла in1_2m.txt завершена (2.1)
+
+
+Добро пожаловать в lab 1.2.1 Калюжной Марии 3352 
+Отрицательная длина исправлена в 0 в  in1_2m2.txt
+Обработка файла in1_2m2.txt завершена (2.1)
+
+
+Добро пожаловать в lab 1.2.1 Калюжной Марии 3352 
+Слишком большая длина исправлена в in1_2m3.txt
+ реальная длина меньше заданной 
+ zet ban ananas cub 
+ ananas ban cub zet 
+Обработка файла in1_2m3.txt завершена (2.1)
+
+
+Добро пожаловать в lab 1.2.1 Калюжной Марии 3352 
+ bab cuc a
+ a bab cuc
+Обработка файла in1_2m4.txt завершена (2.1)
+
+
+Добро пожаловать в lab 1.2.1 Калюжной Марии 3352 
+ реальная длина меньше заданной 
+ bab cuc as quq
+ as bab cuc quq
+Обработка файла in1_2m5.txt завершена (2.1)
+
+
+Добро пожаловать в lab 1.2.1 Калюжной Марии 3352 
+ МАркера нет 
+ Файл in1_2m6.txt пуст, упс 2
+Обработка файла in1_2m6.txt завершена (2.1)
+
+
+Добро пожаловать в lab 1.2.1 Калюжной Марии 3352 
+ реальная длина меньше заданной 
+stroka pusta v in1_2m7.txt
+
+
+Обработка файла in1_2m7.txt завершена (2.1)
+
+
+Добро пожаловать в lab 1.2.2 Калюжной Марии 3352 
+Слишком большая длина исправлена в input1.txt
+ реальная длина меньше заданной 
+ ban abc mum ananans ban abc mum ananansban abc mum ananansban abc mum ananans
+ abc abc abc abc ananans ananans ananansban ananansban ban ban mum mum mum mum
+Обработка файла input1.txt завершена (2.2)
+
+
+Добро пожаловать в lab 1.2.2 Калюжной Марии 3352 
+Отрицательная длина исправлена в 0 в  input2.txt
+Обработка файла input2.txt завершена (2.2)
+
+
+Добро пожаловать в lab 1.2.2 Калюжной Марии 3352 
+Слишком большая длина исправлена в input3.txt
+ реальная длина меньше заданной 
+ zet ban ananas cub 
+ ananas ban cub zet 
+Обработка файла input3.txt завершена (2.2)
+
+
+Добро пожаловать в lab 1.2.2 Калюжной Марии 3352 
+ bab cuc a
+ a bab cuc
+Обработка файла input4.txt завершена (2.2)
+
+
+Добро пожаловать в lab 1.2.2 Калюжной Марии 3352 
+Слишком большая длина исправлена в input5.txt
+ реальная длина меньше заданной 
+ banabcmumananansbanabcmumananansbanabcmumananansbanabcmum ananans
+ ananans banabcmumananansbanabcmumananansbanabcmumananansbanabcmum
+Обработка файла input5.txt завершена (2.2)
+
+
+Добро пожаловать в lab 1.2.2 Калюжной Марии 3352 
+Слишком большая длина исправлена в input6.txt
+ реальная длина меньше заданной 
+ zazak piu falsch marinad abrikosen
+ abrikosen falsch marinad piu zazak
+Обработка файла input6.txt завершена (2.2)
+
+
+Добро пожаловать в lab 1.2.2 Калюжной Марии 3352 
+ zazak piu falsch mari
+ falsch mari piu zazak
+Обработка файла input7.txt завершена (2.2)
+
+

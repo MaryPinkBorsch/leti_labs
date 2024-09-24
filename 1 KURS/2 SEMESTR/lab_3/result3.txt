@@ -1,0 +1,386 @@
+
+ Началась обработка файла in3_1.txt
+
+
+ Исходный текст: 
+ Hey we love 
+ ----> 
+ you so MUCH! I CAN'NOT - just imagine: like i got'cha a PINK 
+ ----> 
+ LEMOSINE !!! It is like my dream comes true!  
+ ----> 
+ Have. A. Nice. Day. 
+ ----> 
+ I love pizza, cheesecake, baloons, pink, movies and - you! 
+ ----> 
+ OAOOAOAO  we love 
+ ----> 
+ you so MUCH! 
+ ----> 
+ SHUT UP!
+ ----> 
+
+ NULL (конец списка)
+
+
+RESULT: 
+
+ Hey we love 
+ ----> 
+ OAOOAOAO  we love 
+ ----> 
+
+ NULL (конец списка)
+
+ Список был удален. 
+ Кончилась обработка файла in3_1.txt
+
+
+
+
+ Началась обработка файла in3.txt
+
+
+ Исходный текст: 
+ BABE    hey, what a lovely dayyy! 
+ ----> 
+ yess
+ ----> 
+ I admit, y look nice
+ ----> 
+ I WANNA PINK ICECREAM
+ ----> 
+ right now!!! 
+ ----> 
+
+ NULL (конец списка)
+
+
+RESULT: 
+
+ yess
+ ----> 
+ I WANNA PINK ICECREAM
+ ----> 
+
+ NULL (конец списка)
+
+ Список был удален. 
+ Кончилась обработка файла in3.txt
+
+
+
+
+ Началась обработка файла in3_2.txt
+
+
+ Исходный текст: 
+ bababab lol kak tak ta
+ ----> 
+ bubu 
+ ----> 
+ lal ! 
+ ----> 
+ : lol 
+ ----> 
+ lele 
+ ----> 
+
+ NULL (конец списка)
+
+
+RESULT: 
+
+ bababab lol kak tak ta
+ ----> 
+ bubu 
+ ----> 
+ lele 
+ ----> 
+
+ NULL (конец списка)
+
+ Список был удален. 
+ Кончилась обработка файла in3_2.txt
+
+
+
+
+ Началась обработка файла in3_3.txt
+
+ Файл пуст! 
+
+ Исходный текст: 
+
+ NULL (конец списка)
+Список пуст!! 
+
+
+RESULT: 
+
+
+ NULL (конец списка)
+
+ Список пуст 
+ Кончилась обработка файла in3_3.txt
+
+
+
+
+ Началась обработка файла in3_4.txt
+
+
+ Исходный текст: 
+ 
+ ----> 
+ I lobik  - klee is nice 
+ ----> 
+ SHOOOOOOSH
+ ----> 
+ ITS NOR KRASTIKRABS, ITS ME, PATRICK!!
+ ----> 
+ 
+ ----> 
+ must admit you look fantastik
+ ----> 
+ what are y saying 
+ ----> 
+ 1 + 1 = 3?
+ ----> 
+ I reaaaly love pinkkk
+ ----> 
+
+ NULL (конец списка)
+
+
+RESULT: 
+
+ 
+ ----> 
+ SHOOOOOOSH
+ ----> 
+ 
+ ----> 
+ must admit you look fantastik
+ ----> 
+ what are y saying 
+ ----> 
+ I reaaaly love pinkkk
+ ----> 
+
+ NULL (конец списка)
+
+ Список был удален. 
+ Кончилась обработка файла in3_4.txt
+
+
+
+
+ Началась обработка файла in3_5.txt
+
+
+ Исходный текст: 
+Animal Farm is, after Nineteen Eighty-Four, George Orwell's most famous 
+ ----> 
+book. Published in 1945, the novella (at under 100 pages, it's too 
+ ----> 
+short to be called a full-blown ‘novel') tells the story of how a 
+ ----> 
+group of animals on a farm overthrow the farmer who puts them to work, 
+ ----> 
+and set up an equal society where all animals work and share the fruits 
+ ----> 
+of their labours! 
+ ----> 
+However, as time goes on, it becomes clear that the society the animals 
+ ----> 
+have constructed is not equal at all. It's well-known that the novella 
+ ----> 
+is an allegory for Communist Russia under Josef Stalin, who was leader 
+ ----> 
+of the Soviet Union when Orwell wrote the book. 
+ ----> 
+Curiously, the book very nearly didn't make it into print at all. First, 
+ ----> 
+not long after Orwell completed the first draft in February 1944, his 
+ ----> 
+flat on Mortimer Crescent in London was bombed in June, and he feared the 
+ ----> 
+typescript had been destroyed. Orwell later found it in the rubble. Then, 
+ ----> 
+Orwell had difficulty finding a publisher. T. S. Eliot, at Faber and 
+ ----> 
+Faber, rejected it (you can read Eliot's letter to Orwell here). 
+ ----> 
+The novella was eventually published the following year, in 1945, and 
+ ----> 
+its relevance – as political satire, as animal fable, and as one of 
+ ----> 
+Orwell's two great works of fiction – shows no signs of abating. 
+ ----> 
+Here is the sentence that doesnt have a dot at the end 
+ ----> 
+Here is the sentence... And one more? 
+ ----> 
+
+ NULL (конец списка)
+
+
+RESULT: 
+
+and set up an equal society where all animals work and share the fruits 
+ ----> 
+Here is the sentence that doesnt have a dot at the end 
+ ----> 
+
+ NULL (конец списка)
+
+ Список был удален. 
+ Кончилась обработка файла in3_5.txt
+
+
+
+
+ Началась обработка файла in3_6.txt
+
+
+ Исходный текст: 
+ hey, what a lovely dayyy 
+ ----> 
+ 
+ ----> 
+ ! 
+ ----> 
+ 
+ ----> 
+
+ NULL (конец списка)
+
+
+RESULT: 
+
+ 
+ ----> 
+ 
+ ----> 
+
+ NULL (конец списка)
+
+ Список был удален. 
+ Кончилась обработка файла in3_6.txt
+
+
+
+
+ Началась обработка файла in3_7.txt
+
+
+ Исходный текст: 
+ a, b!  a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ ----> 
+ a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ ----> 
+ a, b!  a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ ----> 
+ a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ ----> 
+ a, b!  a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ ----> 
+ a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ ----> 
+ a, b!  a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ ----> 
+ a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ ----> 
+ a, b!  a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ ----> 
+ a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ ----> 
+ a, b!  a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ ----> 
+ a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ ----> 
+ a, b!  a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ ----> 
+ a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ ----> 
+ a, b!  a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ ----> 
+ a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ ----> 
+ a, b!  a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ ----> 
+ a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ ----> 
+ a, b!  a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ ----> 
+ a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ ----> 
+ a, b!  a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ ----> 
+ a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ ----> 
+
+ NULL (конец списка)
+
+
+RESULT: 
+
+
+ NULL (конец списка)
+
+ Список пуст 
+ Кончилась обработка файла in3_7.txt
+
+
+
+
+ Началась обработка файла in3_8.txt
+
+
+ Исходный текст: 
+ lol
+ ----> 
+ kek
+ ----> 
+ Cheburek! 
+ ----> 
+
+ NULL (конец списка)
+
+
+RESULT: 
+
+ lol
+ ----> 
+ kek
+ ----> 
+
+ NULL (конец списка)
+
+ Список был удален. 
+ Кончилась обработка файла in3_8.txt
+
+
+
+
+ Началась обработка файла in3_9.txt
+
+
+ Исходный текст: 
+ HEAD !!! 
+ ----> 
+
+ NULL (конец списка)
+
+
+RESULT: 
+
+
+ NULL (конец списка)
+
+ Список пуст 
+ Кончилась обработка файла in3_9.txt
+
+
+

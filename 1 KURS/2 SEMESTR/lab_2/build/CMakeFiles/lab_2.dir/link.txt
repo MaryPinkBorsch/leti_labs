@@ -1,0 +1,1 @@
+/usr/bin/c++ -g -rdynamic CMakeFiles/lab_2.dir/lab_2.cpp.o CMakeFiles/lab_2.dir/text.cpp.o CMakeFiles/lab_2.dir/StrM.cpp.o -o lab_2 

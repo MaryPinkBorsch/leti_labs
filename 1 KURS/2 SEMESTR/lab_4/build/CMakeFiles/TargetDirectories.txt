@@ -1,0 +1,3 @@
+/home/kalujny/work/leti_labs/2 SEMESTR/lab_4/build/CMakeFiles/lab_4.dir
+/home/kalujny/work/leti_labs/2 SEMESTR/lab_4/build/CMakeFiles/edit_cache.dir
+/home/kalujny/work/leti_labs/2 SEMESTR/lab_4/build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,1 @@
+/usr/bin/c++ -g -rdynamic CMakeFiles/lab_3.dir/lab_3.cpp.o CMakeFiles/lab_3.dir/text_3.cpp.o CMakeFiles/lab_3.dir/StrM_3.cpp.o CMakeFiles/lab_3.dir/ListNode.cpp.o -o lab_3 

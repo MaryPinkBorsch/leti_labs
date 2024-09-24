@@ -1,0 +1,25 @@
+case 3
+ФИО: popaabcdefdhijklmnoppopoppopaabcdefdhijklmnoppopop
+Образование: srednee
+Желаемая professia: tester
+Желаемая зарплата: 2
+ФИО: tut
+Образование: srednee
+Желаемая professia: doktor
+Желаемая зарплата: 245
+ФИО: pop p p
+Образование: srednee
+Желаемая professia: doktor
+Желаемая зарплата: 23
+ФИО: taha T T 
+Образование: srednee
+Желаемая professia: doktor
+Желаемая зарплата: 2424
+ФИО: p
+Образование: srednee
+Желаемая professia: doktor
+Желаемая зарплата: 2
+ФИО: tut
+Образование: srednee
+Желаемая professia: doktor
+Желаемая зарплата: 245

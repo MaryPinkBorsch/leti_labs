@@ -1,0 +1,249 @@
+
+ Началась обработка файла in2_1.txt
+
+
+ Исходный текст: 
+Animal Farm is, after Nineteen Eighty-Four, George Orwell's most famous 
+book. Published in 1945, the novella (at under 100 pages, it's too 
+short to be called a full-blown ‘novel') tells the story of how a 
+group of animals on a farm overthrow the farmer who puts them to work, 
+and set up an equal society where all animals work and share the fruits 
+of their labours! 
+However, as time goes on, it becomes clear that the society the animals 
+have constructed is not equal at all. It's well-known that the novella 
+is an allegory for Communist Russia under Josef Stalin, who was leader 
+of the Soviet Union when Orwell wrote the book. 
+Curiously, the book very nearly didn't make it into print at all. First, 
+not long after Orwell completed the first draft in February 1944, his 
+flat on Mortimer Crescent in London was bombed in June, and he feared the 
+typescript had been destroyed. Orwell later found it in the rubble. Then, 
+Orwell had difficulty finding a publisher. T. S. Eliot, at Faber and 
+Faber, rejected it (you can read Eliot's letter to Orwell here). 
+The novella was eventually published the following year, in 1945, and 
+its relevance – as political satire, as animal fable, and as one of 
+Orwell's two great works of fiction – shows no signs of abating. 
+Here is the sentence that doesnt have a dot at the end 
+Here is the sentence... And one more? 
+
+max kol-vo znakov = 7
+
+
+RESULT: 
+
+Animal Farm is, after Nineteen Eighty-Four, George Orwell's most famous 
+book. However, as time goes on, it becomes clear that the society t
+he animals have constructed is not equal at all. It's well-known tha
+t the novella is an allegory for Communist Russia under Josef Stalin, w
+ho was leader of the Soviet Union when Orwell wrote the book. Curiously,
+ the book very nea
+rly didn't make it into print at all. First, not long after Orwell compl
+eted the first draft in February 1944, his flat on Mortimer Crescent in
+ London was bombed in June, and he feared the typescript had been destr
+oyed. Orwell later found it in the rubble. Then,
+ Orwell had difficulty finding a publisher. T. S. Eliot, at Faber and Fab
+er, rejected it (you can read Eliot's letter to Orwell here). The nove
+lla was eventually published the following year, in 1945, and its relevanc
+e – as political satire, as animal fable, and as one of Orwell's two gre
+at works of fiction – shows no signs of abating. Here is the senten
+ce that doesnt have a dot at the end Here is the sentence... And 
+one more?
+
+ Кончилась обработка файла in2_1.txt
+
+
+
+
+ Началась обработка файла in2.txt
+
+
+ Исходный текст: 
+ a, b!  a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ a, b!  a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ a, b!  a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ a, b!  a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ a, b!  a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ a, b!  a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ a, b!  a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ a, b!  a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ a, b!  a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ a, b!  a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ a, b!  a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+ a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! a, b! 
+
+max kol-vo znakov = 2
+
+
+RESULT: 
+
+
+ Кончилась обработка файла in2.txt
+
+
+
+
+ Началась обработка файла in2_2.txt
+
+
+ Исходный текст: 
+ OAOOAOAOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA we love 
+ you so MUCH! I CANNOT - just imagine: like i got'cha a PINK 
+ LEMOSINE !!! It is like my dream comes true!  
+ Have. A. Nice. Day. 
+ I love pizza, cheesecake, baloons, pink, movies and - you! 
+ OAOOAOAO  we love 
+ you so MUCH! 
+ SHUT UP!
+ Have. A. Nice. NIGHT. 
+ 1, 2, 3, 4, 5, 6, aaand? 
+ a n n a s 
+ fuk.
+
+max kol-vo znakov = 7
+
+
+RESULT: 
+
+ OAOOAOAOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA we love 
+ you so MUCH! I CANNOT - just imagine: like i got'cha a PINK 
+ LEMOSINE !!! It is like my dream comes true!  
+ Have. A. Nice. Day. 
+ I love pizza, cheesecake, baloons, pink, movies and - you! 
+ OAOOAOAO  we love 
+ you so MUCH! 
+ SHUT UP!
+ Have. A. Nice. NIGHT. 
+ a n n a s  fuk.
+
+ Кончилась обработка файла in2_2.txt
+
+
+
+
+ Началась обработка файла in2_3.txt
+
+
+ Исходный текст: 
+ Hey we love 
+ you so MUCH! I CAN'NOT - just imagine: like i got'cha a PINK 
+ LEMOSINE !!! It is like my dream comes true!  
+ Have. A. Nice. Day. 
+ I love pizza, cheesecake, baloons, pink, movies and - you! 
+ OAOOAOAO  we love 
+ you so MUCH! 
+ SHUT UP!
+
+max kol-vo znakov = 6
+
+
+RESULT: 
+
+ Hey we love 
+ you so MUCH! I CAN'NOT - just imagine: like i got'cha a PINK 
+ LEMOSINE !!! It is like my dream comes true!  
+ Have. A. Nice. Day. 
+ OAOOAOAO  we love  you so MUCH!  SHUT UP!
+
+ Кончилась обработка файла in2_3.txt
+
+
+
+
+ Началась обработка файла in2_4.txt
+
+
+ Исходный текст: 
+ Like WHAT?
+ AAA, i hate it!
+ y know?
+
+max kol-vo znakov = 2
+
+
+RESULT: 
+
+ Like WHAT?
+ y know?
+
+ Кончилась обработка файла in2_4.txt
+
+
+
+
+ Началась обработка файла in2_5.txt
+
+
+ Исходный текст: 
+ Oaoaooaooa i lol 
+ hahahhahahahhahh laaal 
+ hell yea . 
+ Ban, a -  b: ban ;
+ Lol lol lol 
+ banan
+ papa ! 
+
+max kol-vo znakov = 4
+
+
+RESULT: 
+
+ Oaoaooaooa i lol 
+ hahahhahahahhahh laaal 
+ hell yea . 
+Lol lol lol  banan 
+papa !
+
+ Кончилась обработка файла in2_5.txt
+
+
+
+
+ Началась обработка файла in2_6.txt
+
+
+ Исходный текст: 
+ Hey dear. 
+ Hey ' dear. 
+ Hey ' babe :  dear. 
+
+max kol-vo znakov = 3
+
+
+RESULT: 
+
+ Hey dear. 
+ Hey ' dear.
+
+ Кончилась обработка файла in2_6.txt
+
+
+
+
+ Началась обработка файла in2_7.txt
+
+ Строка пуста  
+
+ Исходный текст: 
+ 
+ Lol i love him?
+
+
+max kol-vo znakov = 1
+
+
+RESULT: 
+
+
+ Кончилась обработка файла in2_7.txt
+
+
+
