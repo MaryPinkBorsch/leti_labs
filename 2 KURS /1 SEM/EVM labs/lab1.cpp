@@ -88,14 +88,19 @@ int main(int argc, char *argv[])
             tmp.type = UnsignedCharType;
             int value;
             cin >> value; // вводится инт а после уже преобразуется в чар (чтоб было то число какое мы ввели)
-            // тут нужна проверка на подходячесть            
+            // тут нужна проверка на подходячесть  
+            while(value < 0)
+            {
+                cout << "Значение введено некорректно, повторите ввод" << endl;
+                cin >> value;
+            }          
             tmp.uc = value;
         }
         break;
         case '2':
         {
             tmp.type = DoubleType;
-            cin >> tmp.d;
+            cin >> tmp.d; // нужна ли тут проверка? хз
         }
         break;
         case '3':
