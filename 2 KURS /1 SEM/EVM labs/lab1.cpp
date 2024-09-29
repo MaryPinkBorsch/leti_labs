@@ -1,5 +1,7 @@
 #include <bitset>
 #include <iostream>
+#include <cmath>
+#include <climits>
 
 // надо оформить ввод с клавы чара и интервала для работы с
 // и предусмотреть разных неадекватных пользователей (вывод предупреждейний)
@@ -51,7 +53,7 @@ unsigned long long extract_bits_char(char input, unsigned long long start /*на
     // start - индексация от нуля ( от LSB к MSB (т.е. справа налево))
     // готовим маску
 
-    unsigned long long mask = ((1 << num) - 1) << start;
+    unsigned long long mask = ((1ULL << num) - 1ULL) << start;
     unsigned long long res = input;
     res = res & mask;
     return res;
@@ -61,7 +63,7 @@ unsigned long long extract_bits_double(double input, unsigned long long start /*
 {
     // делаем из дабла тип лонг лонг в побитовом представлении
     unsigned long long res = (*(reinterpret_cast<unsigned long long *>(&input)));
-    unsigned long long mask = ((1 << num) - 1) << start;
+    unsigned long long mask = ((num == 64 ? 0 : (1ULL << num)) - 1ULL) << start; // 1ULL = 1 типа unsigned long long
     res = res & mask;
     return res;
 }
@@ -72,7 +74,7 @@ int count_bits(unsigned long long data)
     int num1 = 0; // количество 1
     for (int i = 0; i < 64; i++)
     {
-        if (data & (1 << i)) // мы проверяем с помощью маленькой маски какой бит стоит на i-той позиции в числе
+        if (data & (1ULL << i)) // мы проверяем с помощью маленькой маски какой бит стоит на i-той позиции в числе
             num1++;
     }
     return num1;
@@ -111,17 +113,41 @@ void get_interval(Data &data, int &bit1, int &num)
             cout << " Ошибка! Неправильный ввод значения! " << endl;
             continue;
         }
-        if (data.type == DoubleType && bit1 + num > 63)
+        if (data.type == DoubleType && bit1 + num > 64)
         {
             cout << " Ошибка! Неправильный ввод значения интервала double! " << endl;
             continue;
         }
-        if (data.type == UnsignedCharType && bit1 + num > 7)
+        if (data.type == UnsignedCharType && bit1 + num > 8)
         {
             cout << " Ошибка! Неправильный ввод значения  интервала unsigned char! " << endl;
             continue;
         }
         break;
+    }
+}
+
+void print_data(Data &data)
+{
+    cout << "Бинарное предстaвление ";
+    switch (data.type)
+    {
+    case UnsignedCharType:
+    {
+        std::cout << "unsigned char: " << std::bitset<8>(data.uc) << std::endl; // в чаре 8 битов (1 байт)
+    }
+    break;
+    case DoubleType:
+    {
+        // так как битсет не умеет создаваться из дабла то
+        // мы его заставим (реинтерпрет каст указателя на дабл к указателю на лонг лонг и разименование)
+        std::cout << "double: " << std::bitset<64>(*(reinterpret_cast<unsigned long long *>(&data.d))) << std::endl; // в дабле 8 байтов
+    }
+    break;
+    default:
+    {
+    }
+    break;
     }
 }
 
@@ -151,7 +177,7 @@ void process(Data &data)
             return;
         }
 
-        unsigned char mask = ((1 << num) - 1) << bit1;
+        unsigned char mask = ((num == 64 ? 0 : (1ULL << num)) - 1ULL) << bit1;
         unsigned char inverted_mask = ~mask; // инвертируем маску
 
         // на примере:
@@ -161,8 +187,8 @@ void process(Data &data)
         // 00010100 - результат сдвига interval_bits при sdvig = 1 вправо    (0)
         // 11000111 - нужна инвертированная маска!
         // 10000010 - результат логического И исходного числа и инвертированной маски   (1)
-        // 00001000 - результат логического И реузльтата сдвига (0) и маски*     (2)
-        // 10001010 - конечный результат логического ИЛИ между (1) и (2)
+        // 00010000 - результат логического И реузльтата сдвига (0) и маски*     (2)
+        // 10010010 - конечный результат логического ИЛИ между (1) и (2)
 
         if (num1 > num0) // делаем сдвиг вправо
         {
@@ -196,7 +222,7 @@ void process(Data &data)
             return;
         }
 
-        unsigned long long mask = ((1 << num) - 1) << bit1;
+        unsigned long long mask = ((num == 64 ? 0 : (1ULL << num)) - 1ULL) << bit1;
         unsigned long long inverted_mask = ~mask; // инвертируем маску
 
         if (num1 > num0) // делаем сдвиг вправо
@@ -219,46 +245,29 @@ void process(Data &data)
     }
     break;
     }
+
+    cout << "Результат: " << endl;
+    print_data(data);
+    cout << endl
+         << endl;
 }
 
 void print_main_menu()
 {
 
     cout << "Меню : " << endl
-         << " 1 = ввод unsigned char " << endl
-         << " 2 = ввод double " << endl
+         << " 1 = ввод числа unsigned char " << endl
+         << " 2 = ввод числа double " << endl
          << " 3 = вывод в двоичном виде " << endl
          << " 4 = выполнение преобразования " << endl
          << " 5 = выход " << endl;
 }
 
-void print_data(Data &data)
-{
-    switch (data.type)
-    {
-    case UnsignedCharType:
-    {
-        std::cout << std::bitset<8>(data.uc) << std::endl; // в чаре 8 битов (1 байт)
-    }
-    break;
-    case DoubleType:
-    {
-        // так как битсет не умеет создаваться из дабла то
-        // мы его заставим (реинтерпрет каст указателя на дабл к указателю на лонг лонг и разименование)
-        std::cout << std::bitset<64>(*(reinterpret_cast<unsigned long long *>(&data.d))) << std::endl; // в дабле 8 байтов
-    }
-    break;
-    default:
-    {
-    }
-    break;
-    }
-}
-
 int main(int argc, char *argv[])
 {
     cout << "Добро пожаловать в лаб М.Калюжной. Е нижейко и Ю. Парфеновой " << endl
-         << " Bведите число от 1 до 5 в меню." << endl;
+         << "Bведите число от 1 до 5 в меню." << endl
+         << endl;
     char choice = -1;
     while (choice != '5')
     {
@@ -267,40 +276,74 @@ int main(int argc, char *argv[])
         cin >> choice;
         switch (choice)
         {
-        case '1':
-        {
-            tmp.type = UnsignedCharType;
-            int value;
-            cin >> value; // вводится инт а после уже преобразуется в чар (чтоб было то число какое мы ввели)
-            // тут нужна проверка на подходячесть
-            while (value < 0)
+            case '1':
             {
-                cout << "Значение введено некорректно, повторите ввод" << endl;
-                cin >> value;
+                cout << "Введите значение UnsignedChar: " << endl;
+                tmp.type = UnsignedCharType;
+                int value;
+                string s;
+                cin >> s;
+                try
+                {
+                    // пытаемся получить инт из строчки
+                    value = stoi(s);
+                }
+                catch (std::exception &ex)
+                {
+                    cout << "Значение введено некорректно, повторите ввод" << endl;
+                    continue;
+                }
+                // тут нужна проверка на подходячесть
+                if (value < 0 || value > 255)
+                {
+                    cout << "Введите значение от 0 до 255 включительно" << endl;
+                    continue;
+                }
+                tmp.uc = value;
+                cout << endl;
             }
-            tmp.uc = value;
-        }
-        break;
-        case '2':
-        {
-            tmp.type = DoubleType;
-            cin >> tmp.d; // нужна ли тут проверка? хз
-        }
-        break;
-        case '3':
-        {
-            print_data(tmp);
-        }
-        break;
-        case '4':
-        {
+            break;
+            case '2':
+            {
+                cout << "Введите значение double: " << endl;
+                tmp.type = DoubleType;
+                string s;
+                cin >> s;
+                try
+                {
+                    // пытаемся получить инт из строчки
+                    tmp.d = stod(s);
+                }
+                catch (std::exception &ex)
+                {
+                    cout << "Значение введено некорректно, повторите попытку ввода!" << endl
+                        << endl;
+                    continue;
+                }
+                cout << endl;
+            }
+            break;
+            case '3':
+            {
 
-            process(tmp);
-        }
-        break;
-        default:
+                print_data(tmp);
+            }
+            break;
+            case '4':
+            {
+
+                process(tmp);
+            }
+            break;
+            default:
+            {
+                cout << "Неверный пункт меню, повторите попытку!" << endl
+                    << endl;
+            }
             break;
         }
     }
     return 0;
 }
+
+// https://www.binaryconvert.com/result_double.html?decimal=049049   = проверялка перевода дабл в бинарный код
