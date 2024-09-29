@@ -335,6 +335,12 @@ int main(int argc, char *argv[])
                 process(tmp);
             }
             break;
+            case '5':
+            {
+
+                return 0;
+            }
+            break;
             default:
             {
                 cout << "Неверный пункт меню, повторите попытку!" << endl
