@@ -86,7 +86,19 @@ void get_interval(Data &data, int &bit1, int &num)
     while (1)
     {
         cout << "Введите индекс первого бита в интервале (индексация идет от 0): " << endl;
-        cin >> bit1;
+        // cin >> bit1;
+        string s;
+        cin >> s;
+        try
+        {
+            // пытаемся получить инт из строчки
+            bit1 = stoi(s);
+        }
+        catch (std::exception &ex)
+        {
+            cout << "Значение введено некорректно, повторите ввод" << endl;
+            continue;
+        }
         if (bit1 < 0)
         {
             cout << " Ошибка! Неправильный ввод значения! " << endl;
@@ -107,7 +119,20 @@ void get_interval(Data &data, int &bit1, int &num)
     while (1)
     {
         cout << "Введите кол-во битов в интервале: " << endl;
-        cin >> num;
+        // cin >> num;
+        string s;
+        cin >> s;
+        try
+        {
+            // пытаемся получить инт из строчки
+            num = stoi(s);
+        }
+        catch (std::exception &ex)
+        {
+            cout << "Значение введено некорректно, повторите ввод" << endl;
+            continue;
+        }
+
         if (num < 0)
         {
             cout << " Ошибка! Неправильный ввод значения! " << endl;
@@ -246,7 +271,11 @@ void process(Data &data)
     break;
     }
 
-    cout << "Результат: " << endl;
+    cout << "Результат: ";
+    if (data.type == UnsignedCharType)
+        cout << (int)data.uc << endl;
+    else
+        cout << data.d << endl;
     print_data(data);
     cout << endl
          << endl;
@@ -276,77 +305,77 @@ int main(int argc, char *argv[])
         cin >> choice;
         switch (choice)
         {
-            case '1':
+        case '1':
+        {
+            cout << "Введите значение UnsignedChar: " << endl;
+            tmp.type = UnsignedCharType;
+            int value;
+            string s;
+            cin >> s;
+            try
             {
-                cout << "Введите значение UnsignedChar: " << endl;
-                tmp.type = UnsignedCharType;
-                int value;
-                string s;
-                cin >> s;
-                try
-                {
-                    // пытаемся получить инт из строчки
-                    value = stoi(s);
-                }
-                catch (std::exception &ex)
-                {
-                    cout << "Значение введено некорректно, повторите ввод" << endl;
-                    continue;
-                }
-                // тут нужна проверка на подходячесть
-                if (value < 0 || value > 255)
-                {
-                    cout << "Введите значение от 0 до 255 включительно" << endl;
-                    continue;
-                }
-                tmp.uc = value;
-                cout << endl;
+                // пытаемся получить инт из строчки
+                value = stoi(s);
             }
-            break;
-            case '2':
+            catch (std::exception &ex)
             {
-                cout << "Введите значение double: " << endl;
-                tmp.type = DoubleType;
-                string s;
-                cin >> s;
-                try
-                {
-                    // пытаемся получить инт из строчки
-                    tmp.d = stod(s);
-                }
-                catch (std::exception &ex)
-                {
-                    cout << "Значение введено некорректно, повторите попытку ввода!" << endl
-                        << endl;
-                    continue;
-                }
-                cout << endl;
+                cout << "Значение введено некорректно, повторите ввод" << endl;
+                continue;
             }
-            break;
-            case '3':
+            // тут нужна проверка на подходячесть
+            if (value < 0 || value > 255)
             {
+                cout << "Введите значение от 0 до 255 включительно" << endl;
+                continue;
+            }
+            tmp.uc = value;
+            cout << endl;
+        }
+        break;
+        case '2':
+        {
+            cout << "Введите значение double: " << endl;
+            tmp.type = DoubleType;
+            string s;
+            cin >> s;
+            try
+            {
+                // пытаемся получить инт из строчки
+                tmp.d = stod(s);
+            }
+            catch (std::exception &ex)
+            {
+                cout << "Значение введено некорректно, повторите попытку ввода!" << endl
+                     << endl;
+                continue;
+            }
+            cout << endl;
+        }
+        break;
+        case '3':
+        {
 
-                print_data(tmp);
-            }
-            break;
-            case '4':
-            {
+            print_data(tmp);
+        }
+        break;
+        case '4':
+        {
 
-                process(tmp);
-            }
-            break;
-            case '5':
-            {
+            process(tmp);
+        }
+        break;
+        case '5':
+        {
 
-                return 0;
-            }
-            break;
-            default:
-            {
-                cout << "Неверный пункт меню, повторите попытку!" << endl
-                    << endl;
-            }
-            break;
+            return 0;
+        }
+        break;
+        default:
+        {
+            cout << "Неверный пункт меню, повторите попытку!" << endl
+                 << endl;
+        }
+        break;
         }
     }
     return 0;
