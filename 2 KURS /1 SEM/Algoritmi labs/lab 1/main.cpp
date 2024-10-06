@@ -4,6 +4,8 @@
 
 #include "selection_sort.h"
 #include "insertion_sort.h"
+#include "boggo_sort.h"
+#include "merge_sort.h"
 
 using namespace std;
 
@@ -34,9 +36,19 @@ int main(int argc, char *argv[])
         check_sorting(A, A_sorted);
     }
     {
-        std::vector<std::string> A = {"Ivanov","Bvanov","Dvanov","Gvanov","Avanov","Cvanov"};
+        std::vector<std::string> A = {"Ivanov", "Bvanov", "Dvanov", "Gvanov", "Avanov", "Cvanov"};
         std::vector<std::string> A_sorted = A;
         insertion_sort(A_sorted);
+        check_sorting(A, A_sorted);
+    }
+    {
+        std::vector<int> A_sorted = A;
+        boggo_sort(A_sorted);
+        check_sorting(A, A_sorted);
+    }
+    {
+        std::vector<int> A_sorted = A;
+        merge_sort(A_sorted);
         check_sorting(A, A_sorted);
     }
 
