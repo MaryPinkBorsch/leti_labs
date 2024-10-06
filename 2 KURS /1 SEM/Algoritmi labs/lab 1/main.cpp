@@ -57,6 +57,11 @@ int main(int argc, char *argv[])
         q_sort(A_sorted);
         check_sorting(A, A_sorted);
     }
+    {
+        std::vector<int> A_sorted = A;
+        insertion_sort_improved(A_sorted);
+        check_sorting(A, A_sorted);
+    }
 
     return 0;
 }
