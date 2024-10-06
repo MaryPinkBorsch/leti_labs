@@ -6,6 +6,7 @@
 #include "insertion_sort.h"
 #include "boggo_sort.h"
 #include "merge_sort.h"
+#include "q_sort.h"
 
 using namespace std;
 
@@ -49,6 +50,11 @@ int main(int argc, char *argv[])
     {
         std::vector<int> A_sorted = A;
         merge_sort(A_sorted);
+        check_sorting(A, A_sorted);
+    }
+    {
+        std::vector<int> A_sorted = A;
+        q_sort(A_sorted);
         check_sorting(A, A_sorted);
     }
 
