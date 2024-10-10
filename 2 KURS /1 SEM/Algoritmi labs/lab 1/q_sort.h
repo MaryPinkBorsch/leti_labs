@@ -1,5 +1,5 @@
 #pragma once
-// СОРТИРОВКА ВЫБОРОМ
+// СОРТИРОВКА QSORT
 #include <vector>
 #include <algorithm>
 
