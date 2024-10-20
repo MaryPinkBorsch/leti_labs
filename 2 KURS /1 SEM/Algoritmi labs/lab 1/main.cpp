@@ -10,6 +10,7 @@
 #include "q_sort.h"
 #include "heap_sort.h"
 #include "bubble_sort.h"
+#include "shell_sort.h"
 
 using namespace std;
 
@@ -71,6 +72,24 @@ int main(int argc, char *argv[])
         heap_sort(A_sorted);
         check_sorting(A, A_sorted);
     }
+    {
+        std::vector<int> A_sorted = A;
+        std::vector<int> gaps = Shell_gaps(A.size());
+        shell_sort(A_sorted, gaps);
+        check_sorting(A, A_sorted);
+    }
+    {
+        std::vector<int> A_sorted = A;
+        std::vector<int> gaps = Hibbard_gaps(A.size());
+        shell_sort(A_sorted, gaps);
+        check_sorting(A, A_sorted);
+    }
+    {
+        std::vector<int> A_sorted = A;
+        std::vector<int> gaps = Pratt_gaps(A.size());
+        shell_sort(A_sorted, gaps);
+        check_sorting(A, A_sorted);
+    }
 
     static int NUM_ELEMENTS = 10000; // миллион
     std::vector<int> sorted_already;
@@ -106,7 +125,8 @@ int main(int argc, char *argv[])
             std::chrono::steady_clock::time_point start_time = std::chrono::steady_clock::now();
             selection_sort(copy);
             std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
-            std::cout << "selection_sort, reverse_sorted " << std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count() << "ms" << std::endl<< std::endl;
+            std::cout << "selection_sort, reverse_sorted " << std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count() << "ms" << std::endl
+                      << std::endl;
         }
     }
     // insertion_sort замеры
@@ -130,11 +150,12 @@ int main(int argc, char *argv[])
             std::chrono::steady_clock::time_point start_time = std::chrono::steady_clock::now();
             insertion_sort(copy);
             std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
-            std::cout << "insertion_sort, reverse_sorted " << std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count() << "ms" << std::endl<< std::endl;
+            std::cout << "insertion_sort, reverse_sorted " << std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count() << "ms" << std::endl
+                      << std::endl;
         }
     }
 
-    // boggo_sort замеры
+    // boggo_sort замеры  \\ ВРОДЕ НЕ НАДО ДЛЯ ЛАБЫ
     // {
     //     {
     //         std::vector<int> copy = sorted_already;
@@ -180,7 +201,8 @@ int main(int argc, char *argv[])
             std::chrono::steady_clock::time_point start_time = std::chrono::steady_clock::now();
             merge_sort(copy);
             std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
-            std::cout << "merge_sort, reverse_sorted " << std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count() << "ms" << std::endl<< std::endl;
+            std::cout << "merge_sort, reverse_sorted " << std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count() << "ms" << std::endl
+                      << std::endl;
         }
     }
 
@@ -205,7 +227,8 @@ int main(int argc, char *argv[])
             std::chrono::steady_clock::time_point start_time = std::chrono::steady_clock::now();
             heap_sort(copy);
             std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
-            std::cout << "heap_sort, reverse_sorted " << std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count() << "ms" << std::endl<< std::endl;
+            std::cout << "heap_sort, reverse_sorted " << std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count() << "ms" << std::endl
+                      << std::endl;
         }
     }
 
@@ -230,7 +253,8 @@ int main(int argc, char *argv[])
             std::chrono::steady_clock::time_point start_time = std::chrono::steady_clock::now();
             q_sort(copy);
             std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
-            std::cout << "q_sort, reverse_sorted " << std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count() << "ms" << std::endl<< std::endl;
+            std::cout << "q_sort, reverse_sorted " << std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count() << "ms" << std::endl
+                      << std::endl;
         }
     }
     // bubble_sort замеры
@@ -254,7 +278,35 @@ int main(int argc, char *argv[])
             std::chrono::steady_clock::time_point start_time = std::chrono::steady_clock::now();
             bubble_sort(copy);
             std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
-            std::cout << "bubble_sort, reverse_sorted " << std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count() << "ms" << std::endl<< std::endl;
+            std::cout << "bubble_sort, reverse_sorted " << std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count() << "ms" << std::endl
+                      << std::endl;
+        }
+    }
+
+    // замеры времени
+    // shell_sort замеры
+    {
+        {
+            std::vector<int> copy = sorted_already;
+            std::chrono::steady_clock::time_point start_time = std::chrono::steady_clock::now();
+            // shell_sort(copy);
+            std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
+            std::cout << "selection_sort, sorted_already " << std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count() << "ms" << std::endl;
+        }
+        {
+            std::vector<int> copy = randomized;
+            std::chrono::steady_clock::time_point start_time = std::chrono::steady_clock::now();
+            selection_sort(copy);
+            std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
+            std::cout << "selection_sort, randomized " << std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count() << "ms" << std::endl;
+        }
+        {
+            std::vector<int> copy = reverse_sorted;
+            std::chrono::steady_clock::time_point start_time = std::chrono::steady_clock::now();
+            selection_sort(copy);
+            std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
+            std::cout << "selection_sort, reverse_sorted " << std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count() << "ms" << std::endl
+                      << std::endl;
         }
     }
 
