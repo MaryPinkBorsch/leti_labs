@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <unordered_map>
 #include <chrono>
 
 #include "selection_sort.h"
@@ -27,7 +28,7 @@ void check_sorting(std::vector<T> &unsorted, std::vector<T> &to_check)
     }
 }
 
-int main(int argc, char *argv[])
+int tests() 
 {
     // проверка валидности
     std::vector<int> A = {58, 934, 1, 0, -54, 605, 19, 18, 25, 2005};
@@ -93,7 +94,7 @@ int main(int argc, char *argv[])
 
     // НАЧАЛО ОБРАБОТКИ!!!!
 
-    static int NUM_ELEMENTS = 1000; // 1000, 10.000, 100.000, 1.000.000, 10.000.000
+    static int NUM_ELEMENTS = 100000; // от 1000 до 100.000 с шагом 10 К
     std::vector<int> sorted_already;
     std::vector<int> randomized;
     std::vector<int> reverse_sorted;
@@ -439,6 +440,137 @@ int main(int argc, char *argv[])
                       << std::endl;
         }
     }
+    return 0;
+}
 
+enum SortAlgorithm : int
+{
+    BUBBLE_SORT = 0,
+    INSERTION_SORT,
+    HEAP_SORT,
+    QUICK_SORT,
+    MERGE_SORT,
+    SELECTION_SORT,
+    SHELL_SORT,
+    SHELL_SORT_HIBBARD,
+    SHELL_SORT_PRATT,
+    SORTING_ALGORITHM_MAX
+};
+
+enum DataMode : int
+{
+    SORTED,
+    ALMOST_SORTED,
+    REVERSE_SORTED,
+    RANDOMIZED,
+    DATA_MODE_MAX
+};
+
+std::unordered_map<int, std::string> SortAlgorithmNames;
+std::unordered_map<int, std::string> DataModeNames;
+
+int main(int argc, char *argv[])
+{
+    SortAlgorithmNames[BUBBLE_SORT] = "Bubble";
+    SortAlgorithmNames[INSERTION_SORT] = "Insertion";
+    SortAlgorithmNames[HEAP_SORT] = "Heap";
+    SortAlgorithmNames[QUICK_SORT] = "Quick";
+    SortAlgorithmNames[MERGE_SORT] = "Merge";
+    SortAlgorithmNames[SELECTION_SORT] = "Selection";
+    SortAlgorithmNames[SHELL_SORT] = "Shell";
+    SortAlgorithmNames[SHELL_SORT_HIBBARD] = "Shell Hibbard";
+    SortAlgorithmNames[SHELL_SORT_PRATT] = "Shell Pratt";
+
+    DataModeNames[SORTED] = "Sorted";
+    DataModeNames[ALMOST_SORTED] = "Almost Sorted";
+    DataModeNames[REVERSE_SORTED] = "Reverse Sorted";
+    DataModeNames[RANDOMIZED] = "Randomized";
+
+    static const size_t DATA_SIZE_MIN = 10000;
+    static const size_t DATA_SIZE_MAX = 1000000;
+    static const size_t DATA_SIZE_STEP = 10000;
+
+    std::unordered_map<int, std::vector<int>> test_data;
+
+    for (int i = 0; i < DATA_SIZE_MAX; i++)
+    {
+        test_data[SORTED].push_back(i);
+        test_data[REVERSE_SORTED].push_back(DATA_SIZE_MAX - i - 1);
+    }
+    test_data[RANDOMIZED] = test_data[SORTED];
+    std::random_shuffle(test_data[RANDOMIZED].begin(), test_data[RANDOMIZED].end());
+    test_data[ALMOST_SORTED] = test_data[SORTED];
+    for (int i = 0; i < DATA_SIZE_MAX / 20; ++i)
+    {
+        // чтобы получить 10% / 90% отсортированную последовательность
+        // мы берем отсортированную и меняем 10% случайно взятых элементов местами
+        std::swap(test_data[ALMOST_SORTED][rand() % test_data[ALMOST_SORTED].size()], test_data[ALMOST_SORTED][rand() % test_data[ALMOST_SORTED].size()]);
+    }
+
+    for (int i = 0; i < SORTING_ALGORITHM_MAX; ++i) 
+    {
+        std::cout << SortAlgorithmNames[(SortAlgorithm)i] << std::endl;
+        for (int j = 0; j < DATA_MODE_MAX; ++j) 
+        {
+            std::cout << DataModeNames[(DataMode)j] << std::endl;
+            for (size_t data_size = DATA_SIZE_MIN; data_size <= DATA_SIZE_MAX; data_size += DATA_SIZE_STEP) 
+            {
+                std::vector<int> to_sort;
+                to_sort.insert(to_sort.begin(), test_data[(DataMode)j].begin(), test_data[(DataMode)j].begin() + data_size);
+                std::vector<int> gaps;
+                switch ((SortAlgorithm)i) 
+                {
+                    case SHELL_SORT:
+                    gaps = Shell_gaps(data_size);
+                    break;
+                    case SHELL_SORT_HIBBARD:
+                    gaps = Hibbard_gaps(data_size);
+                    break;
+                    case SHELL_SORT_PRATT:
+                    gaps = Pratt_gaps(data_size);
+                    break;
+                    default:
+                    break;
+                }
+
+
+                std::chrono::steady_clock::time_point start_time = std::chrono::steady_clock::now();
+                switch ((SortAlgorithm)i) 
+                {
+                    case BUBBLE_SORT:
+                        bubble_sort(to_sort);
+                        break;
+                    case INSERTION_SORT:
+                        insertion_sort(to_sort);
+                        break;
+                    case HEAP_SORT:
+                        heap_sort(to_sort);
+                        break;
+                    case QUICK_SORT:
+                        q_sort(to_sort);
+                        break;
+                    case MERGE_SORT:
+                        merge_sort(to_sort);
+                        break;
+                    case SELECTION_SORT:
+                        selection_sort(to_sort);
+                        break;
+                    case SHELL_SORT:
+                        shell_sort(to_sort, gaps);
+                        break;
+                    case SHELL_SORT_HIBBARD:
+                        shell_sort(to_sort, gaps);
+                        break;
+                    case SHELL_SORT_PRATT:
+                        shell_sort(to_sort, gaps);
+                        break;
+                    default:
+                    break;
+                }
+                std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
+                std::cout << SortAlgorithmNames[(SortAlgorithm)i]<< " " << DataModeNames[(DataMode)j] << " " << data_size << " elements " << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() / 1000.0 << " ms" << std::endl;
+            }
+        }
+    }
     return 0;
 }
