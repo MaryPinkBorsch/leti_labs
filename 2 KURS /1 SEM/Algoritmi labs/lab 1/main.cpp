@@ -28,7 +28,7 @@ void check_sorting(std::vector<T> &unsorted, std::vector<T> &to_check)
     }
 }
 
-int tests() 
+int tests() //функция тестовых запусков
 {
     // проверка валидности
     std::vector<int> A = {58, 934, 1, 0, -54, 605, 19, 18, 25, 2005};
@@ -443,6 +443,8 @@ int tests()
     return 0;
 }
 
+//нормальная удобная обработка по разным входным данным
+
 enum SortAlgorithm : int
 {
     BUBBLE_SORT = 0,
@@ -487,7 +489,7 @@ int main(int argc, char *argv[])
     DataModeNames[RANDOMIZED] = "Randomized";
 
     static const size_t DATA_SIZE_MIN = 10000;
-    static const size_t DATA_SIZE_MAX = 1000000;
+    static const size_t DATA_SIZE_MAX = 150000;
     static const size_t DATA_SIZE_STEP = 10000;
 
     std::unordered_map<int, std::vector<int>> test_data;
