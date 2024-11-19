@@ -1,31 +1,35 @@
 import requests
 import webbrowser as wb  # импортирую модуль для работы с браузером
 
+class menuu:
+    # конструктор
+               
+        
+    def display_menu():
+        print("Меню:")
+        print("1. Поиск")
+        print("2. Просмотреть результаты поиска")
+        print("3. Показать результат по номеру")
+        print("4. Выход")
 
-def display_menu():
-    print("Меню:")
-    print("1. Поиск")
-    print("2. Просмотреть результаты поиска")
-    print("3. Показать результат по номеру")
-    print("4. Выход")
 
-
-def print_results(to_search, results):
-    # вывод строки и завпрашиваемого слова
-    print(f"Результаты поиска по '{to_search}':\n")
-    # "двойной" цикл по результатам (массив с результатами нумеруется с
-    # 1цы с помощью enumerate и по нему проходится for)
-    for i, result in enumerate(results, start=1):
-        # каждый элемент массива results это map/dictionary  и берем из него значение по ключу title
-        title = result["title"]
-        # вывод номера и одного из 10 результатов поиска
-        print(f"{i}. {title}")
+    def print_results(to_search, results):
+        # вывод строки и завпрашиваемого слова
+        print(f"Результаты поиска по '{to_search}':\n")
+        # "двойной" цикл по результатам (массив с результатами нумеруется с
+        # 1цы с помощью enumerate и по нему проходится for)
+        for i, result in enumerate(results, start=1):
+            # каждый элемент массива results это map/dictionary  и берем из него значение по ключу title
+            title = result["title"]
+            # вывод номера и одного из 10 результатов поиска
+            print(f"{i}. {title}")
 
 
 def main():
     results = None  # пустота
+    m = menuu
     while True:
-        display_menu()
+        m.display_menu()
         # считываем выбор
         choice = input("Введите ваш выбор (1-4): ")
 
@@ -56,7 +60,7 @@ def main():
                 # Проверка на наличие результата
                 if "query" in data and "search" in data["query"]:
                     results = data["query"]["search"]
-                    print_results(to_search, results)  # выводим результаты в консоль
+                    m.print_results(to_search, results)  # выводим результаты в консоль
                 else:
                     print("Ничего не найдено.")
             else:
@@ -64,7 +68,7 @@ def main():
 
         # вывод результатов запроса
         elif choice == "2":
-            print_results(to_search, results)
+            m.print_results(to_search, results)
         # открыть результат по номеру
         elif choice == "3":
             result_num = input("Номер результата: ")
