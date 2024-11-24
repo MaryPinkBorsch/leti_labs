@@ -218,5 +218,3 @@ void insertNode(BST_node *root, int vall)
     }
     return;
 }
-
-// хз надо ли делать балансировку, уточню потом
