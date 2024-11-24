@@ -32,7 +32,7 @@ int height(AVLNode *N)
 }
 
 // поиск (аналог БСТ)
-AVLNode *searchAVL(AVLNode *root, int to_search, AVLNode *&prev)
+AVLNode *AVLsearch(AVLNode *root, int to_search, AVLNode *&prev)
 {
     if (!root)
     {
@@ -105,16 +105,16 @@ int getBalance(AVLNode *N)
     return height(N->L) - height(N->R);
 }
 
-AVLNode *insert(AVLNode *node, int val)
+AVLNode *AVLinsert(AVLNode *node, int val)
 {
     // 1) обычная вставка в БСТ
     if (node == nullptr)
         return new AVLNode(val);
 
     if (val < node->val)
-        node->L = insert(node->L, val);
+        node->L = AVLinsert(node->L, val);
     else if (val > node->val)
-        node->R = insert(node->R, val);
+        node->R = AVLinsert(node->R, val);
     else // значения должны быть уникальны
     {
         std::cout << "НЕЛЬЗЯ вставить, уже есть такое значение в дереве!" << std::endl;
@@ -168,7 +168,7 @@ AVLNode *minValueAVLNode(AVLNode *node)
 }
 
 // удаление из АВЛ, удалаяет ноду со значением вал и возвращает корень  измененного поддерева!!!
-AVLNode *deleteAVLNode(AVLNode *root, int val)
+AVLNode *AVLdelete(AVLNode *root, int val)
 {
     // проверка на пустоту
     if (root == nullptr)
@@ -176,11 +176,11 @@ AVLNode *deleteAVLNode(AVLNode *root, int val)
 
     // если значение меньше значения корня, тогда удаляем из левого поддерева
     if (val < root->val)
-        root->L = deleteAVLNode(root->L, val);
+        root->L = AVLdelete(root->L, val);
 
     // если значение больше значения корня, тогда удаляем из правого поддерева
     else if (val > root->val)
-        root->R = deleteAVLNode(root->R, val);
+        root->R = AVLdelete(root->R, val);
 
     // если надо удалить текущий корень
     else
@@ -214,7 +214,7 @@ AVLNode *deleteAVLNode(AVLNode *root, int val)
             root->val = temp->val;
 
             // удаляем ребенка
-            root->R = deleteAVLNode(root->R, temp->val);
+            root->R = AVLdelete(root->R, temp->val);
         }
     }
 
@@ -253,4 +253,15 @@ AVLNode *deleteAVLNode(AVLNode *root, int val)
     }
 
     return root;
+}
+
+// проход по деверу ()
+void inOrder_print(AVLNode *root)
+{
+    if (root != nullptr)
+    {
+        std::cout << root->val << " ";
+        inOrder_print(root->L);
+        inOrder_print(root->R);
+    }
 }
