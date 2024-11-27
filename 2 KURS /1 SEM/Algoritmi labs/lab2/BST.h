@@ -20,10 +20,10 @@ struct BST_node
     BST_node(int x, BST_node *L, BST_node *R) : val(x), L(L),
                                                 R(R) {}
 };
-struct BST // структура бинарного дерева поиска
-{
-    BST_node *root = nullptr;
-};
+// struct BST // структура бинарного дерева поиска
+// {
+//     BST_node *root = nullptr;
+// };
 
 //(структура, балансировка, операции вставки/удаления/поиска).
 
