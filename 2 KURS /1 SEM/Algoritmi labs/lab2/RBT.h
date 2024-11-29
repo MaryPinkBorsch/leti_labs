@@ -30,18 +30,18 @@ enum COLOR
     BLACK
 };
 
-struct RBTnode
+struct RBT_node
 {
 
     int val;
     COLOR color;
 
-    RBTnode *L;      // левый ребнок
-    RBTnode *R;      // правый ребнок
-    RBTnode *parent; // родитель
+    RBT_node *L;      // левый ребнок
+    RBT_node *R;      // правый ребнок
+    RBT_node *parent; // родитель
 
     // конструктор
-    RBTnode(int val) : val(val)
+    RBT_node(int val) : val(val)
     {
         parent = L = R = nullptr;
 
@@ -50,7 +50,7 @@ struct RBTnode
     }
 
     // функция возвращает указатель на дядю
-    RBTnode *uncle()
+    RBT_node *uncle()
     {
         // если нет родителя то нет и дяди
         if (parent == nullptr or parent->parent == nullptr)
@@ -65,10 +65,16 @@ struct RBTnode
     }
 
     // проверка является ли нода левым ребенком
-    bool isOnLeft() { return this == parent->L; }
+    bool isOnLeft()
+    {
+        if (this->parent)
+            return this == parent->L;
+        else
+            return false;
+    }
 
     // возвращается указатель на брата
-    RBTnode *sibling()
+    RBT_node *sibling()
     {
         // если нет родителя
         if (parent == nullptr)
@@ -81,7 +87,7 @@ struct RBTnode
     }
 
     // сдвигает заданную ноду на нужное место и спускает текущую вниз (текущая становиться ребенком тмп)
-    void moveDown(RBTnode *tmp)
+    void moveDown(RBT_node *tmp)
     {
         if (parent != nullptr)
         {
@@ -106,13 +112,13 @@ struct RBTnode
 
 struct RBTree
 {
-    RBTnode *root;
+    RBT_node *root;
 
     // ЛЕВЫЙ ПОВОРОТ
-    void leftRotate(RBTnode *x)
+    void leftRotate(RBT_node *x)
     {
         // тмп запоминаем првого ребенка Х
-        RBTnode *tmp = x->R;
+        RBT_node *tmp = x->R;
 
         // обновляем корень, если Х был корнем
         if (x == root)
@@ -126,15 +132,15 @@ struct RBTree
         if (tmp->L != nullptr)
             tmp->L->parent = x;
 
-        // левым ребенком тмп становится  Х  ?????
+        // левым ребенком тмп становится  Х
         tmp->L = x;
     }
 
     // ПРАВЫЙ ПОВОРОТ
-    void rightRotate(RBTnode *x)
+    void rightRotate(RBT_node *x)
     {
         // запоминаем левого ребенка Х
-        RBTnode *tmp = x->L;
+        RBT_node *tmp = x->L;
 
         // обновляем корень если Х это корень
         if (x == root)
@@ -153,7 +159,7 @@ struct RBTree
     }
 
     // функция для обмена цветами
-    void swapColors(RBTnode *x1, RBTnode *x2)
+    void swapColors(RBT_node *x1, RBT_node *x2)
     {
         COLOR tmp;
         tmp = x1->color;
@@ -162,7 +168,7 @@ struct RBTree
     }
 
     // функция для обмена значениями
-    void swapValues(RBTnode *u, RBTnode *v)
+    void swapValues(RBT_node *u, RBT_node *v)
     {
         int tmp;
         tmp = u->val;
@@ -171,7 +177,7 @@ struct RBTree
     }
 
     // если возникла ошибка 2х идущих подряд КРАСНЫХ узлов
-    void fixRedRed(RBTnode *x)
+    void fixRedRed(RBT_node *x)
     {
         // если Х это корень, прочсто перекрасим его и выходим
         if (x == root)
@@ -181,7 +187,7 @@ struct RBTree
         }
 
         // инициализируем указатели на родителя деда и дядю
-        RBTnode *parent = x->parent, *grandparent = parent->parent, *uncle = x->uncle();
+        RBT_node *parent = x->parent, *grandparent = parent->parent, *uncle = x->uncle();
 
         // если родитель КРАСНЫЙ
         if (parent->color != BLACK)
@@ -235,9 +241,9 @@ struct RBTree
     }
 
     // найти узел без левого ребенка в поддереве Х
-    RBTnode *successor(RBTnode *x)
+    RBT_node *successor(RBT_node *x)
     {
-        RBTnode *tmp = x;
+        RBT_node *tmp = x;
 
         while (tmp->L != nullptr)
             tmp = tmp->L;
@@ -246,7 +252,7 @@ struct RBTree
     }
 
     // функция поиска узла, который сменит удаляемый узел Х
-    RBTnode *BSTreplace(RBTnode *x)
+    RBT_node *BSTreplace(RBT_node *x)
     {
         // если есть 2 ребенка, ищем самого левого в правом поддереве Х
         if (x->L != nullptr and x->R != nullptr)
@@ -264,13 +270,13 @@ struct RBTree
     }
 
     // УДАЛЕНИЕ ИЗ РБТ
-    void deleteNode(RBTnode *to_delete)
+    void RBTdelete(RBT_node *to_delete)
     {
-        RBTnode *u = BSTreplace(to_delete); // нода ,которая должна сменить удаляемый узел
+        RBT_node *u = BSTreplace(to_delete); // нода ,которая должна сменить удаляемый узел
 
         // если оба узла черные, выставляем флаг
         bool both_black = ((u == nullptr or u->color == BLACK) and (to_delete->color == BLACK));
-        RBTnode *parent = to_delete->parent;
+        RBT_node *parent = to_delete->parent;
         // удаление ЛИСТА
         if (u == nullptr)
         {
@@ -284,10 +290,7 @@ struct RBTree
             {
                 if (both_black)
                 {
-                    // u and to_delete both black
-                    // to_delete is leaf, fix double black at to_delete
-
-                    // ????? вызываем для удаляемой ноды
+                    // вызываем для удаляемой ноды
                     fixDoubleBlack(to_delete);
                 }
                 else
@@ -349,20 +352,19 @@ struct RBTree
             return;
         }
 
-        // ???????????? swap values with successor and recurse
         // если 2 РЕБЕНКА, то меняем их значения и рекурсивно удаляем u
         swapValues(u, to_delete);
-        deleteNode(u);
+        RBTdelete(u);
     }
 
     // поправка если не выполняется свойство РБТ про черную высоту
-    void fixDoubleBlack(RBTnode *x)
+    void fixDoubleBlack(RBT_node *x)
     {
         if (x == root)
             // если дошли до корня, выходим
             return;
 
-        RBTnode *sibling = x->sibling(), *parent = x->parent;
+        RBT_node *sibling = x->sibling(), *parent = x->parent;
         if (sibling == nullptr)
         {
             // если нет брата, идем выше и рекурсивно вызываем опять функцию
@@ -387,9 +389,9 @@ struct RBTree
                 }
                 fixDoubleBlack(x);
             }
-            else
+            else // есть черный брат
             {
-                // есть черный брат
+
                 if (sibling->hasRedChild())
                 {
                     // как минимум 1 красный ребенок есть
@@ -443,14 +445,14 @@ struct RBTree
     }
 
     // вывод поуровнево для Х
-    void levelOrder(RBTnode *x)
+    void levelOrder(RBT_node *x)
     {
         if (x == nullptr)
             return;
 
         // используем очередь
-        std::queue<RBTnode *> q;
-        RBTnode *curr;
+        std::queue<RBT_node *> q;
+        RBT_node *curr;
 
         q.push(x);
 
@@ -469,26 +471,16 @@ struct RBTree
         }
     }
 
-    // рекурсивный inorder вывод
-    void inorder(RBTnode *x)
-    {
-        if (x == nullptr)
-            return;
-        inorder(x->L);
-        std::cout << x->val << " ";
-        inorder(x->R);
-    }
-
     // конструктор
     RBTree() { root = nullptr; }
 
-    RBTnode *getRoot() { return root; }
+    RBT_node *getRoot() { return root; }
 
     // ПОИСК
     // возвращается найденный элемент
-    RBTnode *search(int n)
+    RBT_node *RBTsearch(int n)
     {
-        RBTnode *tmp = root;
+        RBT_node *tmp = root;
         while (tmp != nullptr)
         {
             if (n < tmp->val)
@@ -518,9 +510,9 @@ struct RBTree
     }
 
     // ВСТАВКА
-    void insert(int n)
+    void RBTinsert(int n)
     {
-        RBTnode *newNode = new RBTnode(n);
+        RBT_node *newNode = new RBT_node(n);
         if (root == nullptr)
         {
             // корень пуст
@@ -529,11 +521,12 @@ struct RBTree
         }
         else
         {
-            RBTnode *tmp = search(n);
+            RBT_node *tmp = RBTsearch(n);
             // поиск находит место для вставки + проверяет, есть ли такое значение в дереве
 
             if (tmp->val == n)
             {
+                std::cout << "ЗНАЧЕНИЕ УЖЕ ЕСТЬ ТАКОЕ!!!" << std::endl;
                 // если это значение уже есть, выходим
                 return;
             }
@@ -557,7 +550,7 @@ struct RBTree
         if (root == nullptr)
             return;
 
-        RBTnode *tmp = search(n), *u;
+        RBT_node *tmp = RBTsearch(n), *u;
 
         if (tmp->val != n)
         {
@@ -565,18 +558,7 @@ struct RBTree
             return;
         }
 
-        deleteNode(tmp);
-    }
-
-    // вывод inorder
-    void printInOrder()
-    {
-        std::cout << "Inorder вывод: " << std::endl;
-        if (root == nullptr)
-            std::cout << "ДЕРЕВО ПУСТОЕ" << std::endl;
-        else
-            inorder(root);
-        std::cout << std::endl;
+        RBTdelete(tmp);
     }
 
     // вывод дерева по уровням

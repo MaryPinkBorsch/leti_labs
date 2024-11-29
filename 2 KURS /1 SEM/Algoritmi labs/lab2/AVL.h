@@ -5,16 +5,16 @@
 // AVL tree
 // баланс, должен быть +1/-1/0 (иначе дерево разбалансированно)
 // высота, для  расчета баланча balance = Hleft - Hright
-struct AVLNode
+struct AVL_node
 {
 
     int val;
-    AVLNode *L; // левый ребенок
-    AVLNode *R; // праввый ребенок
+    AVL_node *L; // левый ребенок
+    AVL_node *R; // праввый ребенок
     int height;
 
     // конструктор
-    AVLNode(int k)
+    AVL_node(int k)
     {
         val = k;
         L = nullptr;
@@ -24,7 +24,7 @@ struct AVLNode
 };
 
 // функция для получения высоты
-int height(AVLNode *N)
+int height(AVL_node *N)
 {
     if (N == nullptr)
         return 0;
@@ -32,14 +32,14 @@ int height(AVLNode *N)
 }
 
 // поиск (аналог БСТ)
-AVLNode *AVLsearch(AVLNode *root, int to_search, AVLNode *&prev)
+AVL_node *AVLsearch(AVL_node *root, int to_search, AVL_node *&prev)
 {
     if (!root)
     {
         std::cout << "Пyстое дерево! " << std::endl;
         return nullptr;
     }
-    AVLNode *cur = root;
+    AVL_node *cur = root;
     prev = nullptr;
 
     while (1)
@@ -57,15 +57,18 @@ AVLNode *AVLsearch(AVLNode *root, int to_search, AVLNode *&prev)
             cur = cur->R;
         }
         else
+        {
+            std::cout << "ЗНАЧЕНИЕ НЕ НАЙДЕНО" << std::endl;
             return nullptr;
+        }
     }
 }
 
 // ПРАВЫЙ ПОВОРОТ для поддерева с корнем У
-AVLNode *RRotate(AVLNode *y)
+AVL_node *RRotate(AVL_node *y)
 {
-    AVLNode *x = y->L;  // левый ребенок У
-    AVLNode *T2 = x->R; // правый ребенок Х запоминаем
+    AVL_node *x = y->L;  // левый ребенок У
+    AVL_node *T2 = x->R; // правый ребенок Х запоминаем
 
     // поворот (У становится ПравРебенком Х, а Лребенком у  У становится  правое поддерево Х)
     x->R = y;
@@ -80,10 +83,10 @@ AVLNode *RRotate(AVLNode *y)
 }
 
 // ЛЕВЫЙ ПОВОРОТ для поддерева с корнем Х
-AVLNode *LRotate(AVLNode *x)
+AVL_node *LRotate(AVL_node *x)
 {
-    AVLNode *y = x->R;  // правый ребенок Х
-    AVLNode *T2 = y->L; // левый ребенок У, запоминаем
+    AVL_node *y = x->R;  // правый ребенок Х
+    AVL_node *T2 = y->L; // левый ребенок У, запоминаем
 
     // сам поворот
     y->L = x;  // Х становится левым ребенком У
@@ -98,18 +101,18 @@ AVLNode *LRotate(AVLNode *x)
 }
 
 // функция для получения баланса
-int getBalance(AVLNode *N)
+int getBalance(AVL_node *N)
 {
     if (N == nullptr)
         return 0;
     return height(N->L) - height(N->R);
 }
 
-AVLNode *AVLinsert(AVLNode *node, int val)
+AVL_node *AVLinsert(AVL_node *node, int val)
 {
     // 1) обычная вставка в БСТ
     if (node == nullptr)
-        return new AVLNode(val);
+        return new AVL_node(val);
 
     if (val < node->val)
         node->L = AVLinsert(node->L, val);
@@ -156,9 +159,9 @@ AVLNode *AVLinsert(AVLNode *node, int val)
 }
 
 // функция чтоб найти самый левый лист
-AVLNode *minValueAVLNode(AVLNode *node)
+AVL_node *minValueAVLNode(AVL_node *node)
 {
-    AVLNode *cur = node;
+    AVL_node *cur = node;
 
     // ищем
     while (cur->L != nullptr)
@@ -168,7 +171,7 @@ AVLNode *minValueAVLNode(AVLNode *node)
 }
 
 // удаление из АВЛ, удалаяет ноду со значением вал и возвращает корень  измененного поддерева!!!
-AVLNode *AVLdelete(AVLNode *root, int val)
+AVL_node *AVLdelete(AVL_node *root, int val)
 {
     // проверка на пустоту
     if (root == nullptr)
@@ -190,7 +193,7 @@ AVLNode *AVLdelete(AVLNode *root, int val)
         // СЛУЧАЙ а) у ноды 1 ребенок ИЛИ нет детей
         if ((root->L == nullptr) || (root->R == nullptr))
         {
-            AVLNode *temp = root->L ? root->L : root->R; // запоминаем ребенка который есть
+            AVL_node *temp = root->L ? root->L : root->R; // запоминаем ребенка который есть
 
             // а если детей нет:
             if (temp == nullptr)
@@ -207,7 +210,7 @@ AVLNode *AVLdelete(AVLNode *root, int val)
         {
             // СЛУЧАЙ б) если 2 ребенка:
 
-            AVLNode *temp = minValueAVLNode(root->R);
+            AVL_node *temp = minValueAVLNode(root->R);
             // нужен самый левый лист из правого поддерева текущего корня
 
             // этот лист встает на место корня
@@ -255,13 +258,3 @@ AVLNode *AVLdelete(AVLNode *root, int val)
     return root;
 }
 
-// проход по деверу ()
-void inOrder_print(AVLNode *root)
-{
-    if (root != nullptr)
-    {
-        std::cout << root->val << " ";
-        inOrder_print(root->L);
-        inOrder_print(root->R);
-    }
-}

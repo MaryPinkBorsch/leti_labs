@@ -13,7 +13,6 @@ struct BST_node
     int val = 0; // значение
     // BST_node * parent = nullptr; //родитель
 
-
     // конструкторы пусть тут бубд
     BST_node() : val(0), L(nullptr), R(nullptr) {}
     BST_node(int x) : val(x), L(nullptr), R(nullptr) {}
@@ -61,7 +60,7 @@ BST_node *BST_search2(int to_search, BST_node *root)
 }
 
 // это я писала для задачи на литкоде
-BST_node *search(BST_node *root, int to_search, BST_node *&prev)
+BST_node *BSTsearch(BST_node *root, int to_search, BST_node *&prev)
 {
     if (!root)
     {
@@ -86,12 +85,15 @@ BST_node *search(BST_node *root, int to_search, BST_node *&prev)
             cur = cur->R;
         }
         else
+        {
+            std::cout << "ЗНАЧЕНИЕ " << to_search << " НЕ НАЙДЕНО" << std::endl;
             return nullptr;
+        }
     }
 }
 
 // удаление из БСТ
-BST_node *deleteNode(BST_node *root, int to_search)
+BST_node *BSTdelete(BST_node *root, int to_search)
 {
     // to_search = значение ключа который надо будет удалить
 
@@ -101,7 +103,7 @@ BST_node *deleteNode(BST_node *root, int to_search)
     if (!root)
         return nullptr;
 
-    BST_node *to_delete = search(root, to_search, prev);
+    BST_node *to_delete = BSTsearch(root, to_search, prev);
 
     if (to_delete)
     {
@@ -178,10 +180,10 @@ BST_node *deleteNode(BST_node *root, int to_search)
 }
 
 // вставка в дерево БСТ
-void insertNode(BST_node *root, int vall)
+void BSTinsert(BST_node *root, int vall)
 {
     BST_node *tmp = nullptr;
-    BST_node *t = search(root, vall, tmp);
+    BST_node *t = BSTsearch(root, vall, tmp);
     if (t != nullptr)
     {
         std::cout << "Такое значение уже есть! Нельзя вставить!!!" << std::endl;
