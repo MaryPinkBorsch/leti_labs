@@ -1,5 +1,7 @@
 #pragma once
+
 #include <iostream>
+#include <queue>
 #include <algorithm>
 
 // RBT = красно черные деревья
@@ -22,217 +24,569 @@
 //      2.1 Узел является правым ребенком ---> выполнить LEFT ROTATION родительского узла
 //      2.2 Узел является левым ребенком ---> выполнить RIGHT ROTTATION на деде и перекрасить соответствующим образом
 
-struct RBT
+enum COLOR
+{
+    RED,
+    BLACK
+};
+
+struct RBTnode
 {
 
-    // RBT_node
-    struct RBT_node
+    int val;
+    COLOR color;
+
+    RBTnode *L;      // левый ребнок
+    RBTnode *R;      // правый ребнок
+    RBTnode *parent; // родитель
+
+    // конструктор
+    RBTnode(int val) : val(val)
     {
-        int val;          // значение
-        RBT_node *L;      // левый деть
-        RBT_node *R;      // правый деть
-        char colour;      // цвет (или Р или Б)
-        RBT_node *parent; // указатель на родителя
-        // конструктор
-        RBT_node(int val) : val(val), L(nullptr), R(nullptr), colour('R'), parent(nullptr) {}
-    };
+        parent = L = R = nullptr;
 
-    // корень РБТ
-    RBT_node *root;
-
-    bool LL_rot; // флаг для обычного левого поворота (ЛЛ ротейшн)
-    bool RR_rot; // флаг для обычного правого поворота (ПП ротейшн)
-    bool LR_rot; // флаг для поворта сначало ВЛЕВО потом ВПРАВО (ЛП ротейшн) (БОЛЬШОЙ ЛЕВЫЙ ПОВОРОТ)
-    bool RL_rot; // флаг для поворта сначало ВПРАВО потом ВЛЕВО (ПЛ ротейшн) (БОЛЬШОЙ ПРАВЫЙ ПОВОРОТ)
-
-    // ЛЕВЫЙ ПОВОРОТ
-    RBT_node *L_Rotation(RBT_node *node)
-    {
-        RBT_node *x = node->R; // праввый ребенок полученой ноды запоминается в Х
-        RBT_node *y = x->L;    //  левый ребенок Х
-        x->L = node;           // записываем нод в левое поддерево Х
-        node->R = y;           // бывший левый ребенок Х становится правым ребенком ноды
-        node->parent = x;      // переставляем указатель родителя ноды на Х
-        if (y != nullptr)
-            y->parent = node; // записываем что у  У родитель это нод (если сам У был)
-        return x;             // возвращаем новый корень текущего поддерева
+        // пусть по умолчанию будет красный
+        color = RED;
     }
 
-    // ПРАВЫЙ ПОВОРОТ
-    RBT_node *R_Rotation(RBT_node *node)
+    // функция возвращает указатель на дядю
+    RBTnode *uncle()
     {
-        RBT_node *x = node->L; // берем левого ребенка ноды и запишем его в Х
-        RBT_node *y = x->R;    // У это правый ребенок Х
-        x->R = node;           // правым ребенком Х становится нод
-        node->L = y;           // левым ребенком ноды становится У
-        node->parent = x;      // указатель родителя ноды ставим на Х
-        if (y != nullptr)
-            y->parent = node; // если У не пустой, ставим что его родитель это нода
-        return x;
+        // если нет родителя то нет и дяди
+        if (parent == nullptr or parent->parent == nullptr)
+            return nullptr;
+
+        if (parent->isOnLeft())
+            // дядя справа
+            return parent->parent->R;
+        else
+            // дядя слева
+            return parent->parent->L;
     }
 
-    // вставка РБТ узла
-    RBT_node *insert_node(RBT_node *root, int val)
+    // проверка является ли нода левым ребенком
+    bool isOnLeft() { return this == parent->L; }
+
+    // возвращается указатель на брата
+    RBTnode *sibling()
     {
-        bool flag = false; // специальный флаг чтоб следить за красными нодами (что у них дети только черные)
+        // если нет родителя
+        if (parent == nullptr)
+            return nullptr;
 
-        // если корень пуст
-        if (root == nullptr)
-            return new RBT_node(val);
+        if (isOnLeft())
+            return parent->R;
 
-        // если значение меньше значения корня
-        else if (val < root->val)
+        return parent->L;
+    }
+
+    // сдвигает заданную ноду на нужное место и спускает текущую вниз (текущая становиться ребенком тмп)
+    void moveDown(RBTnode *tmp)
+    {
+        if (parent != nullptr)
         {
-            root->L = insert_node(root->L, val);
-            root->L->parent = root;
-            if (root != this->root) // произошла смена корня ?
+            if (isOnLeft())
             {
-                // конфликт ---> 2 красных подряд
-                if (root->colour == 'R' && root->L->colour == 'R')
-                    flag = true;
-            }
-        }
-        else // если значение больше значения корня
-        {
-            root->R = insert_node(root->R, val);
-            root->R->parent = root;
-            if (root != this->root) // произошла смена корня ?
-            {
-                // конфликт ---> 2 красных подряд
-                if (root->colour == 'R' && root->R->colour == 'R')
-                    flag = true;
-            }
-        }
-
-        // Левый поворот
-        if (LL_rot)
-        {
-            root = L_Rotation(root);
-            root->colour = 'B'; // перекрас корня в черный!
-            root->L->colour = 'R';
-            LL_rot = false;
-        }
-        // правый поворот
-        else if (RR_rot)
-        {
-            root = R_Rotation(root);
-            root->colour = 'B'; // перекрас корня в черный
-            root->R->colour = 'R';
-            RR_rot = false;
-        }
-        // большой правый поворот
-        else if (RL_rot)
-        {
-            root->R = R_Rotation(root->R);
-            root->R->parent = root;
-            root = L_Rotation(root);
-            root->colour = 'B'; // перекрас корня в черный
-            root->L->colour = 'R';
-            RL_rot = false;
-        }
-        // большой левый поворот
-        else if (LR_rot)
-        {
-            root->L = L_Rotation(root->L);
-            root->L->parent = root;
-            root = R_Rotation(root);
-            root->colour = 'B'; // перекрас корня в черный
-            root->R->colour = 'R';
-            LR_rot = false;
-        }
-
-        // если 2 КРАСНЫХ нода подряд ---> надо это исправить
-        // конфликт корней типо
-        if (flag)
-        {
-            if (root->parent->R == root) // ???
-            {
-                if (root->parent->L == nullptr || root->parent->L->colour == 'B')
-                {
-                    if (root->L != nullptr && root->L->colour == 'R')
-                        RL_rot = true;
-                    else if (root->R != nullptr && root->R->colour == 'R')
-                        LL_rot = true;
-                }
-                else
-                {
-                    root->parent->L->colour = 'B';
-                    root->colour = 'B';
-                    if (root->parent != this->root)
-                        root->parent->colour = 'R';
-                }
+                parent->L = tmp;
             }
             else
             {
-                if (root->parent->R == nullptr || root->parent->R->colour == 'B')
+                parent->R = tmp;
+            }
+        }
+        tmp->parent = parent;
+        parent = tmp;
+    }
+
+    bool hasRedChild()
+    {
+        return (L != nullptr and L->color == RED) or (R != nullptr and R->color == RED);
+    }
+};
+
+struct RBTree
+{
+    RBTnode *root;
+
+    // ЛЕВЫЙ ПОВОРОТ
+    void leftRotate(RBTnode *x)
+    {
+        // тмп запоминаем првого ребенка Х
+        RBTnode *tmp = x->R;
+
+        // обновляем корень, если Х был корнем
+        if (x == root)
+            root = tmp;
+        x->moveDown(tmp); // Х спускается вниз
+
+        // правым ребенком Х становится левый ребенок тмп
+        x->R = tmp->L;
+
+        // левым ребенком тмп становится  Х (ставим указатель родительский указатель на Х)
+        if (tmp->L != nullptr)
+            tmp->L->parent = x;
+
+        // левым ребенком тмп становится  Х  ?????
+        tmp->L = x;
+    }
+
+    // ПРАВЫЙ ПОВОРОТ
+    void rightRotate(RBTnode *x)
+    {
+        // запоминаем левого ребенка Х
+        RBTnode *tmp = x->L;
+
+        // обновляем корень если Х это корень
+        if (x == root)
+            root = tmp;
+
+        x->moveDown(tmp); // Х становаится ребенком тмп (тмп выше чем Х)
+
+        // правывй ребенок тмп становится левым ребенком Х
+        x->L = tmp->R;
+        // если он не пуст, выставляем указатель на родителя
+        if (tmp->R != nullptr)
+            tmp->R->parent = x;
+
+        // Х становаится праввым ребенком тмп
+        tmp->R = x;
+    }
+
+    // функция для обмена цветами
+    void swapColors(RBTnode *x1, RBTnode *x2)
+    {
+        COLOR tmp;
+        tmp = x1->color;
+        x1->color = x2->color;
+        x2->color = tmp;
+    }
+
+    // функция для обмена значениями
+    void swapValues(RBTnode *u, RBTnode *v)
+    {
+        int tmp;
+        tmp = u->val;
+        u->val = v->val;
+        v->val = tmp;
+    }
+
+    // если возникла ошибка 2х идущих подряд КРАСНЫХ узлов
+    void fixRedRed(RBTnode *x)
+    {
+        // если Х это корень, прочсто перекрасим его и выходим
+        if (x == root)
+        {
+            x->color = BLACK;
+            return;
+        }
+
+        // инициализируем указатели на родителя деда и дядю
+        RBTnode *parent = x->parent, *grandparent = parent->parent, *uncle = x->uncle();
+
+        // если родитель КРАСНЫЙ
+        if (parent->color != BLACK)
+        {
+            // есть КРАСНЫЙ ДЯДЯ
+            if (uncle != nullptr && uncle->color == RED)
+            {
+                // перекрашиваем и рекурсивно идем на верх проверять дальше
+                parent->color = BLACK;
+                uncle->color = BLACK;
+                grandparent->color = RED;
+                fixRedRed(grandparent);
+            }
+            else
+            {
+                // используем повороты
+                if (parent->isOnLeft())
                 {
-                    if (root->L != nullptr && root->L->colour == 'R')
-                        RR_rot = true;
-                    else if (root->R != nullptr && root->R->colour == 'R')
-                        LR_rot = true;
+                    // Х слева как и родитель
+                    if (x->isOnLeft())
+                    {
+                        // меняем цвета родителя и деда
+                        swapColors(parent, grandparent);
+                    }
+                    else
+                    {
+                        leftRotate(parent); // ЛЕВЫЙ поворот
+                        swapColors(x, grandparent);
+                    }
+                    // делаем ПРАВЫЙ поворот
+                    rightRotate(grandparent);
                 }
                 else
                 {
-                    root->parent->R->colour = 'B';
-                    root->colour = 'B';
-                    if (root->parent != this->root)
-                        root->parent->colour = 'R';
+                    if (x->isOnLeft())
+                    {
+                        // делаем ПРАВЫЙ поворот
+                        rightRotate(parent);
+                        swapColors(x, grandparent);
+                    }
+                    else
+                    {
+                        swapColors(parent, grandparent);
+                    }
+
+                    // ЛЕВЫЙ поворот
+                    leftRotate(grandparent);
                 }
             }
-            flag = false;
-        }
-        return root;
-    }
-
-    // Helper function to perform Inorder Traversal
-    void inorderTraversal_node(RBT_node *node)
-    {
-        if (node != nullptr)
-        {
-            inorderTraversal_node(node->L);
-            std::cout << node->val << " ";
-            inorderTraversal_node(node->R);
         }
     }
 
-    // Helper function to print the tree
-    void print_node(RBT_node *root, int otstup)
+    // найти узел без левого ребенка в поддереве Х
+    RBTnode *successor(RBTnode *x)
     {
-        if (root != nullptr)
-        {
-            otstup += 10;
-            print_node(root->R, otstup);
-            std::cout << std::endl;
-            for (int i = 10; i < otstup; i++)
-                std::cout << " ";
-            std::cout << root->val << std::endl;
-            print_node(root->L, otstup);
-        }
+        RBTnode *tmp = x;
+
+        while (tmp->L != nullptr)
+            tmp = tmp->L;
+
+        return tmp;
     }
 
-    RBT() : root(nullptr), LL_rot(false), RR_rot(false), LR_rot(false), RL_rot(false) {}
-
-    // вставка в РБТ дерево
-    void RBTinsert(int val)
+    // функция поиска узла, который сменит удаляемый узел Х
+    RBTnode *BSTreplace(RBTnode *x)
     {
-        if (root == nullptr)
+        // если есть 2 ребенка, ищем самого левого в правом поддереве Х
+        if (x->L != nullptr and x->R != nullptr)
+            return successor(x->R);
+
+        // детей нет
+        if (x->L == nullptr and x->R == nullptr)
+            return nullptr;
+
+        // есть 1 деть
+        if (x->L != nullptr)
+            return x->L;
+        else
+            return x->R;
+    }
+
+    // УДАЛЕНИЕ ИЗ РБТ
+    void deleteNode(RBTnode *to_delete)
+    {
+        RBTnode *u = BSTreplace(to_delete); // нода ,которая должна сменить удаляемый узел
+
+        // если оба узла черные, выставляем флаг
+        bool both_black = ((u == nullptr or u->color == BLACK) and (to_delete->color == BLACK));
+        RBTnode *parent = to_delete->parent;
+        // удаление ЛИСТА
+        if (u == nullptr)
         {
-            root = new RBT_node(val);
-            root->colour = 'B';
+            // to_delete это лист
+            if (to_delete == root)
+            {
+                // to_delete это корень, зануляем корень
+                root = nullptr;
+            }
+            else
+            {
+                if (both_black)
+                {
+                    // u and to_delete both black
+                    // to_delete is leaf, fix double black at to_delete
+
+                    // ????? вызываем для удаляемой ноды
+                    fixDoubleBlack(to_delete);
+                }
+                else
+                {
+                    // один из нод красный
+                    if (to_delete->sibling() != nullptr)
+                        // если брат не пустой, делаем его красным
+                        to_delete->sibling()->color = RED;
+                }
+
+                // удаляем  ноду из дерева
+                if (to_delete->isOnLeft())
+                {
+                    parent->L = nullptr;
+                }
+                else
+                {
+                    parent->R = nullptr;
+                }
+            }
+            delete to_delete;
+            return;
+        }
+
+        if (to_delete->L == nullptr or to_delete->R == nullptr)
+        {
+            // у to_delete есть ОДИН РЕБЕНОК!
+            if (to_delete == root)
+            {
+                // u становится новым корнем
+                to_delete->val = u->val;
+                to_delete->L = to_delete->R = nullptr;
+                delete u;
+            }
+            else
+            {
+                // u встает на место удаляемой ноды
+                if (to_delete->isOnLeft())
+                {
+                    parent->L = u;
+                }
+                else
+                {
+                    parent->R = u;
+                }
+                delete to_delete;
+                u->parent = parent;
+                if (both_black)
+                {
+                    // вызываем функцию для поправки свойств РБТ
+                    fixDoubleBlack(u);
+                }
+                else
+                {
+                    // перекрашиваем u в черный, если или он или удаляемый нод красный
+                    u->color = BLACK;
+                }
+            }
+            return;
+        }
+
+        // ???????????? swap values with successor and recurse
+        // если 2 РЕБЕНКА, то меняем их значения и рекурсивно удаляем u
+        swapValues(u, to_delete);
+        deleteNode(u);
+    }
+
+    // поправка если не выполняется свойство РБТ про черную высоту
+    void fixDoubleBlack(RBTnode *x)
+    {
+        if (x == root)
+            // если дошли до корня, выходим
+            return;
+
+        RBTnode *sibling = x->sibling(), *parent = x->parent;
+        if (sibling == nullptr)
+        {
+            // если нет брата, идем выше и рекурсивно вызываем опять функцию
+            fixDoubleBlack(parent);
         }
         else
-            root = insert_node(root, val);
+        {
+            if (sibling->color == RED)
+            {
+                // есть красный брат
+                parent->color = RED;
+                sibling->color = BLACK;
+                if (sibling->isOnLeft())
+                {
+                    // делаем правый поворот
+                    rightRotate(parent);
+                }
+                else
+                {
+                    // делаем левый поворот
+                    leftRotate(parent);
+                }
+                fixDoubleBlack(x);
+            }
+            else
+            {
+                // есть черный брат
+                if (sibling->hasRedChild())
+                {
+                    // как минимум 1 красный ребенок есть
+                    if (sibling->L != nullptr and sibling->L->color == RED)
+                    {
+                        if (sibling->isOnLeft())
+                        {
+                            // перекрас + правый поворот
+                            sibling->L->color = sibling->color;
+                            sibling->color = parent->color;
+                            rightRotate(parent);
+                        }
+                        else
+                        {
+                            // перекрас + большой правый поворот
+                            sibling->L->color = parent->color;
+                            rightRotate(sibling);
+                            leftRotate(parent);
+                        }
+                    }
+                    else
+                    {
+                        if (sibling->isOnLeft())
+                        {
+                            // большой левый поворот
+                            sibling->R->color = parent->color;
+                            leftRotate(sibling);
+                            rightRotate(parent);
+                        }
+                        else
+                        {
+                            // левый поворот
+                            sibling->R->color = sibling->color;
+                            sibling->color = parent->color;
+                            leftRotate(parent);
+                        }
+                    }
+                    parent->color = BLACK;
+                }
+                else
+                {
+                    // 2 черных ребенка
+                    sibling->color = RED;
+                    if (parent->color == BLACK)
+                        fixDoubleBlack(parent);
+                    else
+                        parent->color = BLACK;
+                }
+            }
+        }
     }
 
-    // инордер прозход по дереву
-    void inorderTraversal()
+    // вывод поуровнево для Х
+    void levelOrder(RBTnode *x)
     {
-        inorderTraversal_node(root);
+        if (x == nullptr)
+            return;
+
+        // используем очередь
+        std::queue<RBTnode *> q;
+        RBTnode *curr;
+
+        q.push(x);
+
+        while (!q.empty())
+        {
+            curr = q.front();
+            q.pop();
+
+            std::cout << curr->val << " ";
+
+            // кладем детей в очередь
+            if (curr->L != nullptr)
+                q.push(curr->L);
+            if (curr->R != nullptr)
+                q.push(curr->R);
+        }
     }
 
-    // принт
-    void print()
+    // рекурсивный inorder вывод
+    void inorder(RBTnode *x)
     {
-        print_node(root, 0);
+        if (x == nullptr)
+            return;
+        inorder(x->L);
+        std::cout << x->val << " ";
+        inorder(x->R);
+    }
+
+    // конструктор
+    RBTree() { root = nullptr; }
+
+    RBTnode *getRoot() { return root; }
+
+    // ПОИСК
+    // возвращается найденный элемент
+    RBTnode *search(int n)
+    {
+        RBTnode *tmp = root;
+        while (tmp != nullptr)
+        {
+            if (n < tmp->val)
+            {
+                if (tmp->L == nullptr)
+                    break;
+                else
+                    tmp = tmp->L;
+            }
+            else if (n == tmp->val)
+            {
+                break;
+            }
+            else
+            {
+                if (tmp->R == nullptr)
+                    break;
+                else
+                    tmp = tmp->R;
+            }
+        }
+        if (tmp->val != n) // будет возвращен последний элемент (задействовано в вставке)
+        {
+            std::cout << "ЗНАЧЕНИЕ НЕ НАЙДЕНО!!!" << std::endl;
+        }
+        return tmp;
+    }
+
+    // ВСТАВКА
+    void insert(int n)
+    {
+        RBTnode *newNode = new RBTnode(n);
+        if (root == nullptr)
+        {
+            // корень пуст
+            newNode->color = BLACK;
+            root = newNode;
+        }
+        else
+        {
+            RBTnode *tmp = search(n);
+            // поиск находит место для вставки + проверяет, есть ли такое значение в дереве
+
+            if (tmp->val == n)
+            {
+                // если это значение уже есть, выходим
+                return;
+            }
+
+            // ставим родительский указатель
+            newNode->parent = tmp;
+
+            if (n < tmp->val)
+                tmp->L = newNode;
+            else
+                tmp->R = newNode;
+
+            // проверяем на наличие 2х КРАСНЫХузлов подряд и исправляем, если надо
+            fixRedRed(newNode);
+        }
+    }
+
+    // удаление по заданному значению
+    void delete_this_Value(int n)
+    {
+        if (root == nullptr)
+            return;
+
+        RBTnode *tmp = search(n), *u;
+
+        if (tmp->val != n)
+        {
+            std::cout << "НЕТУ ДАННОГО ЗНАЧЕНИЯ В ДЕРЕВЕ, само значение = " << n << std::endl;
+            return;
+        }
+
+        deleteNode(tmp);
+    }
+
+    // вывод inorder
+    void printInOrder()
+    {
+        std::cout << "Inorder вывод: " << std::endl;
+        if (root == nullptr)
+            std::cout << "ДЕРЕВО ПУСТОЕ" << std::endl;
+        else
+            inorder(root);
+        std::cout << std::endl;
+    }
+
+    // вывод дерева по уровням
+    void printLevelOrder()
+    {
+        std::cout << "Level order вывод: " << std::endl;
+        if (root == nullptr)
+            std::cout << "ДЕРЕВО ПУСТОЕ" << std::endl;
+        else
+            levelOrder(root);
+        std::cout << std::endl;
     }
 };
