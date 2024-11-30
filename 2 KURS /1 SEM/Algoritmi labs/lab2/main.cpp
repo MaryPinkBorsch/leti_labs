@@ -127,13 +127,14 @@ int main(int argc, char *argv[])
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // задание 2
+    const int MAX_ELEM = 10000;
     {
         cout << endl
              << " Задание 2" << endl;
         BST_node *root = new BST_node;
 
         vector<int> keys;
-        const int MAX_ELEM = 1000;
+        
         keys.resize(MAX_ELEM);
         for (int i = 0; i < MAX_ELEM; i++)
         {
@@ -157,7 +158,7 @@ int main(int argc, char *argv[])
         AVL_node *root = new AVL_node();
 
         vector<int> keys;
-        const int MAX_ELEM = 1000;
+       
         keys.resize(MAX_ELEM);
         for (int i = 1; i < MAX_ELEM; i++)
         {
@@ -180,7 +181,7 @@ int main(int argc, char *argv[])
         RBTree tree;
 
         vector<int> keys;
-        const int MAX_ELEM = 1000;
+        
         keys.resize(MAX_ELEM);
         for (int i = 0; i < MAX_ELEM; i++)
         {
