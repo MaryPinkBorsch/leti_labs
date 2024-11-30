@@ -86,7 +86,7 @@ BST_node *BSTsearch(BST_node *root, int to_search, BST_node *&prev)
         }
         else
         {
-            std::cout << "ЗНАЧЕНИЕ " << to_search << " НЕ НАЙДЕНО" << std::endl;
+            // std::cout << "ЗНАЧЕНИЕ " << to_search << " НЕ НАЙДЕНО" << std::endl;
             return nullptr;
         }
     }

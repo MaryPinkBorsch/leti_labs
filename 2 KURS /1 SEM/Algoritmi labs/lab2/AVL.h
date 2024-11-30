@@ -14,7 +14,7 @@ struct AVL_node
     int height;
 
     // конструктор
-    AVL_node(int k)
+    AVL_node(int k = 0)
     {
         val = k;
         L = nullptr;
@@ -58,7 +58,7 @@ AVL_node *AVLsearch(AVL_node *root, int to_search, AVL_node *&prev)
         }
         else
         {
-            std::cout << "ЗНАЧЕНИЕ НЕ НАЙДЕНО" << std::endl;
+            // std::cout << "ЗНАЧЕНИЕ НЕ НАЙДЕНО" << std::endl;
             return nullptr;
         }
     }

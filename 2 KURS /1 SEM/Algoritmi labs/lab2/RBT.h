@@ -444,33 +444,6 @@ struct RBTree
         }
     }
 
-    // вывод поуровнево для Х
-    void levelOrder(RBT_node *x)
-    {
-        if (x == nullptr)
-            return;
-
-        // используем очередь
-        std::queue<RBT_node *> q;
-        RBT_node *curr;
-
-        q.push(x);
-
-        while (!q.empty())
-        {
-            curr = q.front();
-            q.pop();
-
-            std::cout << curr->val << " ";
-
-            // кладем детей в очередь
-            if (curr->L != nullptr)
-                q.push(curr->L);
-            if (curr->R != nullptr)
-                q.push(curr->R);
-        }
-    }
-
     // конструктор
     RBTree() { root = nullptr; }
 
@@ -504,7 +477,7 @@ struct RBTree
         }
         if (tmp->val != n) // будет возвращен последний элемент (задействовано в вставке)
         {
-            std::cout << "ЗНАЧЕНИЕ НЕ НАЙДЕНО!!!" << std::endl;
+            // std::cout << "ЗНАЧЕНИЕ " << n << " НЕ НАЙДЕНО" << std::endl;
         }
         return tmp;
     }
@@ -559,16 +532,5 @@ struct RBTree
         }
 
         RBTdelete(tmp);
-    }
-
-    // вывод дерева по уровням
-    void printLevelOrder()
-    {
-        std::cout << "Level order вывод: " << std::endl;
-        if (root == nullptr)
-            std::cout << "ДЕРЕВО ПУСТОЕ" << std::endl;
-        else
-            levelOrder(root);
-        std::cout << std::endl;
     }
 };
