@@ -36,8 +36,42 @@ int main(int argc, char *argv[])
         root = AVLinsert(root, 3);
         root = AVLinsert(root, 4);
         root = AVLinsert(root, 5);
-        cout << endl;
+        cout << "Обход в глубину inOrder: " << endl;
         inOrder_print(root);
+        cout << endl;
+        cout << "Обход в глубину preOrder: " << endl;
+        preOrder_print(root);
+        cout << endl;
+        cout << "Обход в ширину levelOrder: " << endl;
+        levelOrder_print(root);
+        cout << endl
+             << endl;
+        root = AVLinsert(root, 22);
+        root = AVLinsert(root, 53);
+        root = AVLinsert(root, 14);
+        root = AVLinsert(root, 435);
+        cout << "Обход в глубину inOrder: " << endl;
+        inOrder_print(root);
+        cout << endl;
+        cout << "Обход в глубину preOrder: " << endl;
+        preOrder_print(root);
+        cout << endl;
+        cout << "Обход в ширину levelOrder: " << endl;
+        levelOrder_print(root);
+        cout << endl
+             << endl;
+        root = AVLinsert(root, 622);
+        root = AVLinsert(root, 513);
+        root = AVLinsert(root, 1564);
+        root = AVLinsert(root, 43);
+        cout << "Обход в глубину inOrder: " << endl;
+        inOrder_print(root);
+        cout << endl;
+        cout << "Обход в глубину preOrder: " << endl;
+        preOrder_print(root);
+        cout << endl;
+        cout << "Обход в ширину levelOrder: " << endl;
+        levelOrder_print(root);
         cout << endl;
     }
 
@@ -74,6 +108,46 @@ int main(int argc, char *argv[])
         BSTinsert(root, 100);
         BSTinsert(root, 30);
         BSTinsert(root, 1);
+        cout << "Обход в глубину inOrder: " << endl;
+        inOrder_print(root);
+        cout << endl;
+        cout << "Обход в глубину preOrder: " << endl;
+        preOrder_print(root);
+        cout << endl;
+        cout << "Обход в ширину levelOrder: " << endl;
+        levelOrder_print(root);
+        cout << endl
+             << endl;
+        BSTinsert(root, 125);
+        BSTinsert(root, 275);
+        BSTinsert(root, 1300);
+        BSTinsert(root, 38);
+        BSTinsert(root, 17);
+        cout << "Обход в глубину inOrder: " << endl;
+        inOrder_print(root);
+        cout << endl;
+        cout << "Обход в глубину preOrder: " << endl;
+        preOrder_print(root);
+        cout << endl;
+        cout << "Обход в ширину levelOrder: " << endl;
+        levelOrder_print(root);
+        cout << endl
+             << endl;
+        BSTinsert(root, 5);
+        BSTinsert(root, 8);
+        BSTinsert(root, 13);
+        BSTinsert(root, 33);
+        BSTinsert(root, 19);
+        cout << "Обход в глубину inOrder: " << endl;
+        inOrder_print(root);
+        cout << endl;
+        cout << "Обход в глубину preOrder: " << endl;
+        preOrder_print(root);
+        cout << endl;
+        cout << "Обход в ширину levelOrder: " << endl;
+        levelOrder_print(root);
+        cout << endl
+             << endl;
         inOrder_print(root);
         root = BSTdelete(root, 50);
         cout << endl;
@@ -101,6 +175,48 @@ int main(int argc, char *argv[])
         tree.RBTinsert(100);
         tree.RBTinsert(30);
         tree.RBTinsert(1);
+        cout << "Обход в глубину inOrder: " << endl;
+        inOrder_print(tree.root);
+        cout << endl;
+        cout << "Обход в глубину preOrder: " << endl;
+        preOrder_print(tree.root);
+        cout << endl;
+        cout << "Обход в ширину levelOrder: " << endl;
+        levelOrder_print(tree.root);
+        cout << endl
+             << endl;
+        tree.RBTinsert(5);
+        tree.RBTinsert(2);
+        tree.RBTinsert(7);
+        tree.RBTinsert(10);
+        tree.RBTinsert(37);
+        tree.RBTinsert(14);
+        cout << "Обход в глубину inOrder: " << endl;
+        inOrder_print(tree.root);
+        cout << endl;
+        cout << "Обход в глубину preOrder: " << endl;
+        preOrder_print(tree.root);
+        cout << endl;
+        cout << "Обход в ширину levelOrder: " << endl;
+        levelOrder_print(tree.root);
+        cout << endl
+             << endl;
+        tree.RBTinsert(465);
+        tree.RBTinsert(27);
+        tree.RBTinsert(72);
+        tree.RBTinsert(1087);
+        tree.RBTinsert(370);
+        tree.RBTinsert(145);
+        cout << "Обход в глубину inOrder: " << endl;
+        inOrder_print(tree.root);
+        cout << endl;
+        cout << "Обход в глубину preOrder: " << endl;
+        preOrder_print(tree.root);
+        cout << endl;
+        cout << "Обход в ширину levelOrder: " << endl;
+        levelOrder_print(tree.root);
+        cout << endl
+             << endl;
 
         inOrder_print(tree.root);
         cout << endl;
@@ -127,14 +243,14 @@ int main(int argc, char *argv[])
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // задание 2
-    const int MAX_ELEM = 10000;
+    const int MAX_ELEM = 100;
     {
         cout << endl
              << " Задание 2" << endl;
         BST_node *root = new BST_node;
 
         vector<int> keys;
-        
+
         keys.resize(MAX_ELEM);
         for (int i = 0; i < MAX_ELEM; i++)
         {
@@ -158,7 +274,7 @@ int main(int argc, char *argv[])
         AVL_node *root = new AVL_node();
 
         vector<int> keys;
-       
+
         keys.resize(MAX_ELEM);
         for (int i = 1; i < MAX_ELEM; i++)
         {
@@ -174,14 +290,14 @@ int main(int argc, char *argv[])
             }
         }
     }
-// задание 3 RBT
+    // задание 3 RBT
     {
         cout << endl
              << " Задание 3 - RBT" << endl;
         RBTree tree;
 
         vector<int> keys;
-        
+
         keys.resize(MAX_ELEM);
         for (int i = 0; i < MAX_ELEM; i++)
         {
