@@ -42,6 +42,7 @@
 // 4 - если нашли, запомнить индекс удаляемого ключа (ИД индекс дырки после удаления)
 // 5 - идти вниз до первой дырки либо до элемента, ключ которого хэшируется (с взятием модуля)
 // в индекс ИТ, который меньше или равен ИД -------> ИТ <= ИД
+// ИД = idx_dirka
 
 // 6.1 - если нашли дырку, выходим
 // 6.2 - если нашли такой элемент, то меняем его меставми с текущей дыркой и повторяем цикл п. 5
@@ -60,14 +61,26 @@ struct OA_hash_map
 
     Hasher hasher;
 
-    OA_hash_map()
+    OA_hash_map(int in_max_size)
     {
+        max_size = in_max_size;
         hasher = Hasher();
         storage.resize(max_size);
         occupied.resize(max_size);
     }
     // масштабирование
-    void my_rehash(int new_size);
+    void my_rehash(int new_size)
+    {
+        OA_hash_map nextMap(2*max_size);
+        for (int i = 0; i < max_size;++i) 
+        {
+            if (occupied[i])
+                nextMap.insert(storage[i].first, storage[i].second);
+        }
+        storage = nextMap.storage;
+        occupied = nextMap.occupied;
+        max_size *= 2;
+    }
 
     // ВСТАВКА
 
@@ -124,5 +137,52 @@ struct OA_hash_map
     }
 
     // УДАЛЕНИЕ
-    bool delete(K key);
+    bool remove(K key)
+    {
+        size_t cur_hash = hasher(key); // считаем хэш
+        int idx = cur_hash % storage.size();
+        int dirka_idx = -1; // индекс удаляемого элемента (дырки)
+        while (occupied[idx] == 1)
+        {
+            // если есть такое значение
+            if (storage[idx].first == key)
+            {
+                dirka_idx = idx;
+                break;
+            }
+            else
+            {
+                idx = (idx + 1) % storage.size();
+            }
+        }
+        if (dirka_idx == -1) // не найден элемент для удаления
+            return false;
+        occupied[dirka_idx] = false; // удаляем
+        idx = (idx + 1) % storage.size();
+
+        bool swapped = 1;
+        while (swapped)
+        {
+            swapped = 0;
+            // цикл пункта 5 (ходим от дырки к дырке и проверяем, не надо ли поднять на ее место какое-то значение)
+            while (occupied[idx] == 1)
+            {
+                cur_hash = hasher(storage[idx].first);   // считаем хэш
+                int cur_idx = cur_hash % storage.size(); // индекс для сравнения куда должен был попоасть элемент
+                // если cur_idx <= dirka_idx
+                // значит элемент надо поставить на место дырки_идкс
+                // TODO: из-за модуля при расчета следующего индекса (которые может обернуться) иф снизу должен быть усложнен
+                if (cur_idx <= dirka_idx)
+                {
+                    storage[dirka_idx] = storage[idx];
+                    occupied[dirka_idx] = true;
+                    occupied[idx] = false;
+                    dirka_idx = idx;
+                    swapped = 1;
+                }
+                idx = (idx + 1) % storage.size();
+            }
+        }
+        return true;
+    }
 };
