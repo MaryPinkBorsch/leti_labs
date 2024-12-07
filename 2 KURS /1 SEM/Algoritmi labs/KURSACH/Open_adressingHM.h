@@ -55,6 +55,7 @@ struct OA_hash_map
     int cur_size = 0; // количество занятых мест в storage
     int max_size = 1000;
     std::vector<std::pair<K, V>> storage; // массив хранящий пары ключ-значение
+    const double MAX_LOAD_FACTOR = 0.8;
 
     // массив показывает по индексу, занято ли это место в мапе (сторедже)
     std::vector<bool> occupied;
@@ -71,8 +72,8 @@ struct OA_hash_map
     // масштабирование
     void my_rehash(int new_size)
     {
-        OA_hash_map nextMap(2*max_size);
-        for (int i = 0; i < max_size;++i) 
+        OA_hash_map nextMap(2 * max_size);
+        for (int i = 0; i < max_size; ++i)
         {
             if (occupied[i])
                 nextMap.insert(storage[i].first, storage[i].second);
@@ -83,11 +84,10 @@ struct OA_hash_map
     }
 
     // ВСТАВКА
-
     bool insert(K key, V val)
     {
-        if (cur_size == storage.size())
-            return false; // потом рехэш
+        if (((double)cur_size)/storage.size() > MAX_LOAD_FACTOR)
+            my_rehash(cur_size); // потом рехэш
 
         size_t cur_hash = hasher(key); // считаем хэш
         int idx = cur_hash % storage.size();
@@ -157,9 +157,16 @@ struct OA_hash_map
         }
         if (dirka_idx == -1) // не найден элемент для удаления
             return false;
-        occupied[dirka_idx] = false; // удаляем
-        idx = (idx + 1) % storage.size();
 
+        bool mod_wrapped = false;    // флаг для отслеживания оборота модуля (типо было 999 а стало 0)
+        occupied[dirka_idx] = false; // удаляем
+        idx = (idx + 1);
+        if (idx == storage.size())
+        {
+            mod_wrapped = true;
+            idx = 0;
+        }
+        // флаг отслеживающий  обмен дырки и cur_idx
         bool swapped = 1;
         while (swapped)
         {
@@ -171,16 +178,28 @@ struct OA_hash_map
                 int cur_idx = cur_hash % storage.size(); // индекс для сравнения куда должен был попоасть элемент
                 // если cur_idx <= dirka_idx
                 // значит элемент надо поставить на место дырки_идкс
-                // TODO: из-за модуля при расчета следующего индекса (которые может обернуться) иф снизу должен быть усложнен
-                if (cur_idx <= dirka_idx)
+
+                // из-за модуля при расчета следующего индекса
+                //(которые может обернуться) иф снизу должен быть усложнен
+                // если модуль при поиске обернулся в ноль, то по флагу отслеживаем и берем условие строго больше
+                if ((!mod_wrapped && (cur_idx <= dirka_idx)) || (mod_wrapped && (cur_idx > dirka_idx)))
                 {
                     storage[dirka_idx] = storage[idx];
                     occupied[dirka_idx] = true;
                     occupied[idx] = false;
                     dirka_idx = idx;
                     swapped = 1;
+                    mod_wrapped = false;
                 }
-                idx = (idx + 1) % storage.size();
+                // отслеживание оборота индекса по модулю
+                //(если индекс достиг размера массива сторедж --> обнуляем его, как бы беря модуль)
+
+                idx = (idx + 1);
+                if (idx == storage.size())
+                {
+                    mod_wrapped = true;
+                    idx = 0;
+                }
             }
         }
         return true;

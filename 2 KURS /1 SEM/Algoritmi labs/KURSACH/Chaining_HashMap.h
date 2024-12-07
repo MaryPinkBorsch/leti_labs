@@ -47,9 +47,9 @@ public:
         if (buckets[bucket_idx] == nullptr)         // новый эелемент если список пустой
         {
             buckets[bucket_idx] = new Chaining_ListNode();
+            cur_size++;
             buckets[bucket_idx]->key = key;
             buckets[bucket_idx]->val = value;
-            cur_size++;
         }
         else
         { // проход по списку и попытка найти там элемент с нужным ключом
@@ -68,6 +68,7 @@ public:
             else
             { // создали новый элемент и делаем его новоой головой в списке котроый лежит в массиве
                 cur = new Chaining_ListNode();
+                cur_size++;
                 cur->key = key;
                 cur->val = value;
                 cur->next = buckets[bucket_idx]; // указывает на прошлую голову которая хранилась в массиве списков
@@ -87,13 +88,15 @@ public:
             while (cur != nullptr)
             {
                 nextMap.put(cur->key, cur->val);
+                cur = cur->next;
             }
         }
         buckets = nextMap.buckets;
         NUM_BUCKETS = NEW_NUM_BUCKETS;
+        cur_size = nextMap.cur_size;
     }
 
-    bool get(K key, V& val) // поиск по ключу
+    bool get(K key, V &val) // поиск по ключу
     {
         int bucket_idx = MyHash(key) % NUM_BUCKETS;
         Chaining_ListNode *cur = buckets[bucket_idx];
