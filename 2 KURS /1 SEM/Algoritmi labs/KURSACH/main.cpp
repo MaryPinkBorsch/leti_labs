@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
                     main_map[i] = i;
                 }
                 std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
-                std::cout << "main_map " << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() / 1000.0 << "ms" << std::endl;
+                std::cout << "main_map " << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() / 1000.0 << " ms" << std::endl;
             }
             {
                 std::chrono::steady_clock::time_point start_time = std::chrono::steady_clock::now();
@@ -143,7 +143,7 @@ int main(int argc, char *argv[])
                     map1.put(i, i);
                 }
                 std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
-                std::cout << "map1 chaining " << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() / 1000.0 << "ms" << std::endl;
+                std::cout << "map1 chaining " << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() / 1000.0 << " ms" << std::endl;
             }
             {
                 std::chrono::steady_clock::time_point start_time = std::chrono::steady_clock::now();
@@ -153,7 +153,7 @@ int main(int argc, char *argv[])
                     map2.insert(i, i);
                 }
                 std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
-                std::cout << "map2 OA " << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() / 1000.0 << "ms" << std::endl;
+                std::cout << "map2 OA " << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() / 1000.0 << " ms" << std::endl;
             }
             cout << endl
                  << "ПОИСК " << endl;
@@ -166,7 +166,7 @@ int main(int argc, char *argv[])
                     main_map.find(i);
                 }
                 std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
-                std::cout << "main_map " << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() / 1000.0 << "ms" << std::endl;
+                std::cout << "main_map " << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() / 1000.0 << " ms" << std::endl;
             }
             {
                 int res = -1;
@@ -177,7 +177,7 @@ int main(int argc, char *argv[])
                     map1.get(i, res);
                 }
                 std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
-                std::cout << "map1 chaining " << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() / 1000.0 << "ms" << std::endl;
+                std::cout << "map1 chaining " << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() / 1000.0 << " ms" << std::endl;
             }
             {
                 std::chrono::steady_clock::time_point start_time = std::chrono::steady_clock::now();
@@ -187,7 +187,7 @@ int main(int argc, char *argv[])
                     map2.find_and_get(i, i);
                 }
                 std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
-                std::cout << "map2 OA " << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() / 1000.0 << "ms" << std::endl;
+                std::cout << "map2 OA " << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() / 1000.0 << " ms" << std::endl;
             }
             cout << endl
                  << "УДАЛЕНИЕ " << endl;
@@ -200,7 +200,7 @@ int main(int argc, char *argv[])
                     main_map.erase(i);
                 }
                 std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
-                std::cout << "main_map " << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() / 1000.0 << "ms" << std::endl;
+                std::cout << "main_map " << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() / 1000.0 << " ms" << std::endl;
             }
             {
                 int res = -1;
@@ -211,7 +211,7 @@ int main(int argc, char *argv[])
                     map1.remove(i);
                 }
                 std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
-                std::cout << "map1 chaining " << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() / 1000.0 << "ms" << std::endl;
+                std::cout << "map1 chaining " << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() / 1000.0 << " ms" << std::endl;
             }
             {
                 std::chrono::steady_clock::time_point start_time = std::chrono::steady_clock::now();
@@ -221,7 +221,7 @@ int main(int argc, char *argv[])
                     map2.remove(i);
                 }
                 std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
-                std::cout << "map2 OA " << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() / 1000.0 << "ms" << std::endl;
+                std::cout << "map2 OA " << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() / 1000.0 << " ms" << std::endl;
             }
 
             NUM_ELEM += gap;
