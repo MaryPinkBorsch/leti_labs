@@ -17,8 +17,8 @@ def response(function_call):
     if function_call.message:
         if function_call.data == "yes":
                         
-            mess1 = "Стрейчинг для шеи:"
-            mess2 = "Стрейчинг от боли в спине:"
+            mess1 = "Стрейчинг для шеи 10 мин:"
+            mess2 = "Стрейчинг от боли в спине 10 мин:"
             mess3 = "Общая растяжка 5 мин:"
             mess4 = "Общая растяжка 10 мин:"
             mess5 = "Общая растяжка 15 мин:"
