@@ -55,7 +55,7 @@ struct OA_hash_map
     int cur_size = 0; // количество занятых мест в storage
     int max_size = 1000;
     std::vector<std::pair<K, V>> storage; // массив хранящий пары ключ-значение
-    const double MAX_LOAD_FACTOR = 0.8;
+    const double MAX_LOAD_FACTOR = 0.98;
 
     // массив показывает по индексу, занято ли это место в мапе (сторедже)
     std::vector<bool> occupied;
@@ -157,6 +157,8 @@ struct OA_hash_map
         }
         if (dirka_idx == -1) // не найден элемент для удаления
             return false;
+
+        cur_size--;
 
         bool mod_wrapped = false;    // флаг для отслеживания оборота модуля (типо было 999 а стало 0)
         occupied[dirka_idx] = false; // удаляем

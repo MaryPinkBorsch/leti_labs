@@ -227,6 +227,68 @@ int main(int argc, char *argv[])
             NUM_ELEM += gap;
         }
     }
+    // НОВЫЕ ЗАМЕРЫ
+    {
+        //  {
+        //      std::cout << "Новые замеры: зависимость времени вставки 100 К элементов от load Factor от 0 до 0,9 с шагом 0,01" << std::endl;
+        //      OA_hash_map<int, int, MyHash> map2(1000000); // макс размер 10000000, шаг 1000000 (0.01 лоад фактор) из которых замеряются 10000
+        //      for (int i = 0; i < 90; ++i)
+        //      {
+        //          // замеряем вставку 100 К элементов на лоад факторе i / 10.0
+        //          std::chrono::steady_clock::time_point start_time = std::chrono::steady_clock::now();
+        //          for (int j = 0; j < 10000; j++)
+        //          {
+        //              map2.insert(i * 100000 + j, i * 100000 + j);
+        //          }
+        //          std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
+        //          std::cout << "map2 OA вставка 100000 эл-в на " << (double)map2.cur_size / map2.max_size << " лоад факторе " << " " << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() / 1000 << " milliseconds" << std::endl;
+        //          // for (int j = 100000; j < 1000000; j++)
+        //          // {
+        //          //     map2.insert(i * 1000000 + j, i * 1000000 + j);
+        //          // }
+        //      }
+        //  }
+        // {
+        //     std::cout << endl
+        //               << "Новые замеры: зависимость времени поиска 100 К элементов от load Factor от 0 до 0,9 с шагом 0,01" << std::endl;
+        //     OA_hash_map<int, int, MyHash> map2(1000000); // макс размер 10000000, шаг 1000000 (0.01 лоад фактор) из которых замеряются 10000
+        //     for (int i = 0; i < 90; ++i)
+        //     {
+        //         for (int j = 0; j < 10000; j++)
+        //         {
+        //             map2.insert(i * 100000 + j, i * 100000 + j);
+        //         }
+        //         // замеряем поиск 100 К элементов на лоад факторе i / 10.0
+        //         std::chrono::steady_clock::time_point start_time = std::chrono::steady_clock::now();
+        //         for (int j = 0; j < 10000; j++)
+        //         {
+        //             int val;
+        //             map2.find_and_get(i * 100000 + j, val);
+        //         }
+        //         std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
+        //         std::cout << "map2 OA поиск 100000 эл-в на " << (double)map2.cur_size / map2.max_size << " лоад факторе " << " " << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() / 1000 << " milliseconds" << std::endl;
+        //     }
+        // }
+        {
+            std::cout << endl
+                      << "Новые замеры: зависимость времени удаления 100 К элементов от load Factor от 0 до 0,9 с шагом 0,01" << std::endl;
+            OA_hash_map<int, int, MyHash> map2(10000000); // макс размер 10000000, шаг 1000000 (0.01 лоад фактор) из которых замеряются 10000
+            for (int j = 0; j < 9000000; j++)
+            {
+                map2.insert(j*10, j*10);
+            }
+            for (int i = 90; i >= 0; --i)
+            {
+                std::chrono::steady_clock::time_point start_time = std::chrono::steady_clock::now();
+                for (int j = 0; j < 100000; j++)
+                {
+                    map2.remove(i * 1000000 + j*10);
+                }
+                std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
+                std::cout << "map2 OA удаление 100000 эл-в на " << (double)map2.cur_size / map2.max_size << " лоад факторе " << " " << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() / 1000 << " milliseconds" << std::endl;
+            }
+        }
+    }
 
     return 0;
 }
