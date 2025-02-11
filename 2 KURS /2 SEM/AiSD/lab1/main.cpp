@@ -78,10 +78,12 @@ int main(int argc, char *argv[])
             {
                 readfile(input_filename, input_data);
                 rle_compress_2_1(input_data, output_data);
+                writefile(output_filename, output_data);
             }
             break;
             case 2: // compress 
             {
+                readfile(input_filename, input_data);
                 rle_decompress_2_1(input_data, output_data);
                 writefile(output_filename, output_data);
             }
