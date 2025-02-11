@@ -16,9 +16,9 @@ void rle_compress_2_1(const std::vector<unsigned char> &input, std::vector<unsig
         if (input[i] == prev) // если символы повторяются
         {
             counter++;
-            if (counter == 256) // если превысили размер чара (1 байт)
+            if (counter == 255) // если превысили размер чара (1 байт)
             {
-                output.push_back(255); // выписать 255 с текущим символом и продолжить
+                output.push_back(254); // выписать 255 с текущим символом и продолжить
                 output.push_back(prev);
                 counter = 1;
             }
