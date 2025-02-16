@@ -8,3 +8,5 @@
 
 ./lab1 2 ./barbie\ grayscale.bmp.compressed ./barbie\ grayscale1.bmp 
 // это чтоб разжать
+
+// наше бмп 24 бита raw-format (несжатое)
