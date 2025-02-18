@@ -56,11 +56,18 @@ void rle_compress_2_2(const std::vector<unsigned char> &input, std::vector<unsig
     // Входные данные: 1 2 3 4 5 6 7 7 7 7 7 -> -6 "1 2 3 4 5 6" 5 "7"
     if (!input.size())
         return;
+
+    if (input.size() == 1)
+    {
+        output.push_back(1);
+        output.push_back(input[0]);
+        return;
+    }
     unsigned char prev = input[0];
     // int j = -1; // индекс с которого начинается последовательность НЕповторяющихся символов
     std::vector<unsigned char> no_repeat;
-    char counter = 1;  // повторяющиеся символы
-    char counter2 = 1; // неповторяющиеся символы
+    char counter = 0;  // повторяющиеся символы
+    char counter2 = 0; // неповторяющиеся символы
     int i = 0;
     bool repeated = false;
     // 1) идти по инпут
@@ -69,11 +76,32 @@ void rle_compress_2_2(const std::vector<unsigned char> &input, std::vector<unsig
     // 4) следить за выходом счетчика за пределы чар ?
     // 5) флаг на некповторяющиеся последовательности
 
+    if (prev == input[i + 1])
+    {
+        counter = 1;
+        prev = input[i];
+        repeated = true;
+        i++;
+    }
+    else
+    {
+        no_repeat.push_back(input[0]);
+        counter2 = 1;
+        prev = input[i];
+        i++;
+    }
+
     while (i < input.size())
     {
-        if (i != 0 && prev == input[i])
+        if (prev == input[i])
         {
-            if (repeated == false)
+            if (repeated == false && !no_repeat.empty() && no_repeat.back() == input[i])
+            {
+                counter2--;
+                no_repeat.pop_back();
+                
+            }
+            if (repeated == false && !no_repeat.empty())
             {
                 // выкинуть в аутпут то что есть
                 int tmp = 0;
@@ -97,14 +125,15 @@ void rle_compress_2_2(const std::vector<unsigned char> &input, std::vector<unsig
                 no_repeat.clear();
                 counter2 = 0;
             }
-            counter++;
-            repeated = true;
+
             if (counter == 127) // если превысили размер чара
             {
                 output.push_back(126); // выписать 126 с текущим символом и продолжить
                 output.push_back(prev);
                 counter = 1;
             }
+            counter++;
+            repeated = true;
         }
         else
         {
@@ -119,6 +148,36 @@ void rle_compress_2_2(const std::vector<unsigned char> &input, std::vector<unsig
             no_repeat.push_back(input[i]);
             counter2++;
         }
+        i++;
+    }
+    if (repeated)
+    {
+        output.push_back(counter);
+        output.push_back(prev);
+    }
+    else if (!no_repeat.empty())
+    {
+        // выкинуть в аутпут то что есть
+        int tmp = 0;
+        // если последовательность больше 127 исмволов выписываем кусками
+        while (no_repeat.size() - tmp >= 127)
+        {
+            output.push_back(-127);
+            for (int k = 0; k < 128; k++)
+            {
+                output.push_back(no_repeat[k + tmp]);
+            }
+            tmp += 127;
+        }
+        // выписываем все что осталось
+        int j = no_repeat.size() - tmp;
+        output.push_back(-1 * j);
+        for (int k = 0; k < j; k++)
+        {
+            output.push_back(no_repeat[k + tmp]);
+        }
+        no_repeat.clear();
+        counter2 = 0;
     }
 }
 void rle_decompress_2_2(const std::vector<unsigned char> &input, std::vector<unsigned char> &output)
