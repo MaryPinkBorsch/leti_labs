@@ -99,7 +99,6 @@ void rle_compress_2_2(const std::vector<unsigned char> &input, std::vector<unsig
             {
                 counter2--;
                 no_repeat.pop_back();
-                
             }
             if (repeated == false && !no_repeat.empty())
             {
@@ -202,3 +201,5 @@ void rle_decompress_2_2(const std::vector<unsigned char> &input, std::vector<uns
         }
     }
 }
+
+// 2.3 ////////////////////
