@@ -3,8 +3,10 @@
 #include <cstdlib>
 #include <filesystem>
 #include <fstream>
+#include <algorithm>
 
 #include "rle.h"
+#include "huffman.h"
 
 using namespace std;
 void print(const vector<unsigned char> &tmp)
@@ -86,8 +88,40 @@ void TestBMP2_gray()
     writefile(output_filename, output_data);
 }
 
+void TestHuffman()
+{
+    {
+        std::vector<char> input = {'b', 'a', 'n', 'a', 'n', 'a'};
+        std::vector<HuffmanCode> table;
+        HA_make_table(input, table);
+        HA_print_table(table);
+    }
+    cout << endl;
+    {
+        std::string str_input = "bananananananananananaaaaaaaaaaaaaaaaaaaaaaaaaaaaxyz";
+        std::vector<char> input;
+        input.insert(input.begin(), str_input.begin(), str_input.end());
+        std::vector<HuffmanCode> table;
+        HA_make_table(input, table);
+        HA_print_table(table);
+    }
+    cout << endl;
+    {
+        std::string str_input = "ilovepinklolkekcheburek";
+        std::vector<char> input;
+        input.insert(input.begin(), str_input.begin(), str_input.end());
+        std::vector<HuffmanCode> table;
+        HA_make_table(input, table);
+        HA_print_table(table);
+    }
+    cout << endl;
+}
+
 int main(int argc, char *argv[])
 {
+    TestHuffman();
+
+    return 0;
     cout << "2.1" << endl
          << endl;
     // 2.1

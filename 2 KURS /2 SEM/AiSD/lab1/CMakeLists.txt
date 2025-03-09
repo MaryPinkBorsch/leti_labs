@@ -1,3 +1,3 @@
 project(lab1)
 
-add_executable(lab1 main.cpp rle.cpp)
+add_executable(lab1 main.cpp rle.cpp huffman.cpp)
