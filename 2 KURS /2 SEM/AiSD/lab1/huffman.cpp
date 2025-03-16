@@ -89,12 +89,12 @@ void HA_make_table(const std::vector<char> &input, std::vector<HuffmanCode> &huf
             if (cur->L && (cur->L->symb.find(s) != std::string::npos))
             {
                 cur = cur->L;
-                tmp.code += '0'; // идем влево пишем 0 по алгоритму
+                tmp.add_bit_to_code(0); // идем влево пишем 0 по алгоритму
             }
             else if (cur->R)
             {
                 cur = cur->R;
-                tmp.code += '1'; // идем вправо пишем 1
+                tmp.add_bit_to_code(1); // идем вправо пишем 1
             }
         }
         tmp.value = s;
@@ -116,13 +116,41 @@ void HA_print_table(std::vector<HuffmanCode> &huffman_table)
 {
     std::sort(huffman_table.begin(), huffman_table.end(), [&](const HuffmanCode &l, const HuffmanCode &r)
               {
-            if (l.code.size() < r.code.size())
+            if (l.code < r.code)
                 return true;
-            if (l.code.size() == r.code.size() && l.value < r.value)
+            if (l.code == r.code && l.value < r.value)
                 return true;
             return false; });
     for (auto &it : huffman_table)
     {
-        cout << "Символ: " << it.value << " ---> " << it.code << endl;
+        cout << "Символ: " << it.value << " ---> " << it.code << " (" << it.bits_len << " битов)" << endl;
     }
 }
+
+void HuffmanCode::add_bit_to_code(int val)
+{
+    if (bits_len == 64)
+    {
+        std::cout << "Слишком длинный код!!! Abort!" << std::endl;
+        std::abort();
+    }
+    // если поставить 1
+    // на тмп сдвинуть влево 1 на индекс bit_len и сделать побитовое ИЛИ с текущей последовательностью битов
+
+    // если ноль
+    // на тмп сдвинуть влево 1 на индекс bit_len и сделать побитовое НЕ (отрицание) на маске,
+    // потом побитовое И маски с текущей последовательностью битов
+
+    if (val) // если надо добавить 1
+    {
+        code |= (1UL << bits_len); // типо 1 сдвинули на длину, сделали ИЛИ битовоес текущим кодом
+        bits_len++;
+    }
+    else
+    {
+        size_t tmp = (1UL << bits_len);
+        tmp = ~tmp; // побитовое отрицание
+        code &= tmp;
+        bits_len++;
+    }
+};
