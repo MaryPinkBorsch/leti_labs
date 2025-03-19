@@ -154,3 +154,50 @@ void HuffmanCode::add_bit_to_code(int val)
         bits_len++;
     }
 };
+
+// добавляет новый кусок кода в сторадж
+void Bitmap::add_code(const HuffmanCode &code_to_add)
+{
+    // смотрим сколько свободных ьитов в последнем заполненном элементе size_t из стораджа
+    int free_bits_in_last_size_t = 64 - num_bits % 64;
+
+    // если code_to_add влезает в текущий size_t из стораджа целиком
+    if (free_bits_in_last_size_t >= code_to_add.bits_len)
+    {
+        int last_size_t_idx = num_bits / 64; // индекс size_t в сторадже куда будем писать
+        size_t tmp = storage[last_size_t_idx];
+        size_t tmp1 = code_to_add.code;
+        tmp1 <<= num_bits % 64; // сдвигаем тмп1 на количество уже заполненных битов
+        // в текущем элементе size_t из стораджа
+        tmp |= tmp1;
+        storage[last_size_t_idx] = tmp;
+        num_bits += code_to_add.bits_len;
+    }
+    else // если код не влезает целиком в текущий size_t из стораджа
+    {
+        storage.resize(storage.size()+1);
+        int remaining_bits = code_to_add.bits_len - free_bits_in_last_size_t; // то что не влезло (кол-во в битах)
+
+        int last_size_t_idx = num_bits / 64; // индекс size_t в сторадже куда будем писать
+        size_t tmp = storage[last_size_t_idx];
+        size_t tmp1 = code_to_add.code;
+        tmp1 <<= num_bits % 64; // сдвигаем тмп1 на количество уже заполненных битов
+        // в текущем элементе size_t из стораджа
+        tmp |= tmp1;
+        storage[last_size_t_idx] = tmp;
+
+        // обрабатывает не влезшие биты
+        tmp1 = code_to_add.code;
+        tmp1 >>= free_bits_in_last_size_t; // "отрезаем" уже добавленные биты от code_to_add
+        last_size_t_idx++;
+        storage[last_size_t_idx] = tmp1;
+        num_bits += code_to_add.bits_len;
+    }
+}
+
+// добывает символ из стораджа по индексу = кол-во битов, с которых надо начинать считывать код
+// кодировка берется из таблицы Хаффмана, возвращает считанный символ symb и обновляет индекс
+//  увеличивая его на длину кода считанного символа
+void Bitmap::get_next_symbol(int &idx, std::vector<HuffmanCode> &huffman_table, char &symb)
+{
+}

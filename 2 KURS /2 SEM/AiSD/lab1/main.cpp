@@ -113,6 +113,25 @@ void TestHuffman()
         std::vector<HuffmanCode> table;
         HA_make_table(input, table);
         HA_print_table(table);
+
+        Bitmap tmp_bitmap;
+        tmp_bitmap.storage = {0};
+        std::unordered_map<char, HuffmanCode*> table_idx;
+        for (auto & it : table) 
+        {
+            table_idx[it.value] = &it;
+        }
+
+        tmp_bitmap.add_code(*table_idx['i']);
+        tmp_bitmap.add_code(*table_idx['l']);
+        tmp_bitmap.add_code(*table_idx['o']);
+        tmp_bitmap.add_code(*table_idx['v']);
+        tmp_bitmap.add_code(*table_idx['e']);
+        tmp_bitmap.add_code(*table_idx['p']);
+        tmp_bitmap.add_code(*table_idx['i']);
+        tmp_bitmap.add_code(*table_idx['n']);
+        tmp_bitmap.add_code(*table_idx['k']);
+        
     }
     cout << endl;
 }
