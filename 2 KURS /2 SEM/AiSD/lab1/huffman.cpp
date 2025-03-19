@@ -5,22 +5,8 @@
 
 using namespace std;
 
-struct HAT_node
-{
-    HAT_node *L = nullptr;      // левый ребенок
-    HAT_node *R = nullptr;      // правый ребенок
-    string symb;                // символьная последовательность
-    int freq = 0;               // значение частоы
-    HAT_node *parent = nullptr; // родитель
-
-    HAT_node() : freq(0), L(nullptr), R(nullptr), parent(nullptr) {}
-    HAT_node(char symbol, int x) : freq(x), L(nullptr), R(nullptr), parent(nullptr) { symb.push_back(symbol); }
-    HAT_node(char symbol, int x, HAT_node *L, HAT_node *R, HAT_node *par) : freq(x), L(L),
-                                                                            R(R), parent(par) { symb.push_back(symbol); }
-};
-
 // вспомогательный метод для создания таблицы хаффмана
-void HA_make_table(const std::vector<char> &input, std::vector<HuffmanCode> &huffman_table)
+void HA_make_table(const std::vector<char> &input, std::vector<HuffmanCode> &huffman_table, HAT_node *& out_root)
 {
     std::unordered_map<char, int> freq;
     if (input.empty())
@@ -100,6 +86,7 @@ void HA_make_table(const std::vector<char> &input, std::vector<HuffmanCode> &huf
         tmp.value = s;
         huffman_table.push_back(tmp);
     }
+    out_root = root;
 }
 
 // сжатие
@@ -175,7 +162,7 @@ void Bitmap::add_code(const HuffmanCode &code_to_add)
     }
     else // если код не влезает целиком в текущий size_t из стораджа
     {
-        storage.resize(storage.size()+1);
+        storage.resize(storage.size() + 1);
         int remaining_bits = code_to_add.bits_len - free_bits_in_last_size_t; // то что не влезло (кол-во в битах)
 
         int last_size_t_idx = num_bits / 64; // индекс size_t в сторадже куда будем писать
@@ -195,9 +182,31 @@ void Bitmap::add_code(const HuffmanCode &code_to_add)
     }
 }
 
+int Bitmap::get_bit(int idx)
+{
+    size_t mask = 1ULL << (idx % 64ULL);
+    size_t res = storage[idx / 64ULL];
+    res &= mask;
+    return res;
+}
+
 // добывает символ из стораджа по индексу = кол-во битов, с которых надо начинать считывать код
 // кодировка берется из таблицы Хаффмана, возвращает считанный символ symb и обновляет индекс
 //  увеличивая его на длину кода считанного символа
-void Bitmap::get_next_symbol(int &idx, std::vector<HuffmanCode> &huffman_table, char &symb)
+// idx = сколько битов уже считали т.е. (с какого бита надо начинать считывать следующий символ)
+void Bitmap::get_next_symbol(int &idx, std::vector<HuffmanCode> &huffman_table, HAT_node *&root, char &symb)
 {
+    HAT_node *cur = root;
+    if (!cur)
+        return;
+    while (cur->R || cur->L)
+    {
+        int tmp = get_bit(idx);
+        if (tmp)
+            cur = cur->R;
+        else
+            cur = cur->L;
+        ++idx;
+    }
+    symb = cur->symb[0];
 }

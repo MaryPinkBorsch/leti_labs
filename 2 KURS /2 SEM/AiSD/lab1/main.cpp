@@ -93,7 +93,8 @@ void TestHuffman()
     {
         std::vector<char> input = {'b', 'a', 'n', 'a', 'n', 'a'};
         std::vector<HuffmanCode> table;
-        HA_make_table(input, table);
+        HAT_node *root;
+        HA_make_table(input, table, root);
         HA_print_table(table);
     }
     cout << endl;
@@ -102,7 +103,8 @@ void TestHuffman()
         std::vector<char> input;
         input.insert(input.begin(), str_input.begin(), str_input.end());
         std::vector<HuffmanCode> table;
-        HA_make_table(input, table);
+        HAT_node *root;
+        HA_make_table(input, table, root);
         HA_print_table(table);
     }
     cout << endl;
@@ -111,7 +113,8 @@ void TestHuffman()
         std::vector<char> input;
         input.insert(input.begin(), str_input.begin(), str_input.end());
         std::vector<HuffmanCode> table;
-        HA_make_table(input, table);
+        HAT_node *root;
+        HA_make_table(input, table, root);
         HA_print_table(table);
 
         Bitmap tmp_bitmap;
@@ -131,7 +134,28 @@ void TestHuffman()
         tmp_bitmap.add_code(*table_idx['i']);
         tmp_bitmap.add_code(*table_idx['n']);
         tmp_bitmap.add_code(*table_idx['k']);
-        
+
+        int read_idx = 0;
+        char val = ' ';
+        std::string uncompressed = "";
+        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        uncompressed += val;
+        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        uncompressed += val;
+        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        uncompressed += val;
+        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        uncompressed += val;
+        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        uncompressed += val;
+        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        uncompressed += val;
+        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        uncompressed += val;
+        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        uncompressed += val;
+        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        uncompressed += val;
     }
     cout << endl;
 }
