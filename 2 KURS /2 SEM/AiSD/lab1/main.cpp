@@ -18,7 +18,8 @@ void print(const vector<unsigned char> &tmp)
     cout << endl;
 }
 
-void readfile(std::string input_filename, std::vector<unsigned char> &buffer)
+template <typename T>
+void readfile(std::string input_filename, std::vector<T> &buffer)
 {
     size_t input_file_size = std::filesystem::file_size(input_filename);
     std::ifstream input_file(input_filename, std::ios::binary);
@@ -26,7 +27,8 @@ void readfile(std::string input_filename, std::vector<unsigned char> &buffer)
     input_file.read((char *)buffer.data(), input_file_size);
 }
 
-void writefile(std::string output_filename, std::vector<unsigned char> &buffer)
+template <typename T>
+void writefile(std::string output_filename, std::vector<T> &buffer)
 {
     std::ofstream output_file(output_filename, std::ios::binary | std::ios::trunc);
     output_file.write((char *)buffer.data(), buffer.size());
@@ -40,6 +42,7 @@ void TestBMP_chb()
     std::vector<unsigned char> tmp_data;
     std::vector<unsigned char> output_data;
     readfile(input_filename, input_data);
+    cout << "ИЗначальный размер " << input_data.size() << " байт" << endl;
     rle_compress_2_1(input_data, tmp_data);
     cout << "Сжатие чб 2.1 размер: " << tmp_data.size() << endl;
     rle_decompress_2_1(tmp_data, output_data);
@@ -54,6 +57,7 @@ void TestBMP2_chb()
     std::vector<unsigned char> tmp_data;
     std::vector<unsigned char> output_data;
     readfile(input_filename, input_data);
+    cout << "ИЗначальный размер " << input_data.size() << " байт" << endl;
     rle_compress_2_2(input_data, tmp_data);
     cout << "Сжатие чб 2.2 размер: " << tmp_data.size() << endl;
     rle_decompress_2_2(tmp_data, output_data);
@@ -68,6 +72,7 @@ void TestBMP_gray()
     std::vector<unsigned char> tmp_data;
     std::vector<unsigned char> output_data;
     readfile(input_filename, input_data);
+    cout << "ИЗначальный размер " << input_data.size() << " байт" << endl;
     rle_compress_2_1(input_data, tmp_data);
     cout << "Сжатие gray 2.1 размер: " << tmp_data.size() << endl;
     rle_decompress_2_1(tmp_data, output_data);
@@ -82,9 +87,28 @@ void TestBMP2_gray()
     std::vector<unsigned char> tmp_data;
     std::vector<unsigned char> output_data;
     readfile(input_filename, input_data);
+    cout << "ИЗначальный размер " << input_data.size() << " байт" << endl;
     rle_compress_2_2(input_data, tmp_data);
     cout << "Сжатие gray 2.2 размер: " << tmp_data.size() << endl;
     rle_decompress_2_2(tmp_data, output_data);
+    writefile(output_filename, output_data);
+}
+
+void TestBMP_gray_HA()
+{
+    std::string input_filename = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie grayscale.bmp";
+    std::string output_filename = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie grayscale1_HA.bmp";
+    std::vector<char> input_data;
+    HA_bitmap tmp_data;
+    std::vector<HuffmanCode> huffman_table;
+    HAT_node *root;
+    std::vector<char> output_data;
+
+    readfile(input_filename, input_data);
+    cout << "ИЗначальный размер " << input_data.size() << " байт" << endl;
+    HA_compress(input_data, tmp_data, huffman_table, root);
+    cout << "Сжатие gray HUFFMAN размер: " << tmp_data.storage.size() * 8 << " байт" << endl;
+    HA_decompress(tmp_data, output_data, huffman_table, root);
     writefile(output_filename, output_data);
 }
 
@@ -119,8 +143,8 @@ void TestHuffman()
 
         HA_bitmap tmp_bitmap;
         tmp_bitmap.storage = {0};
-        std::unordered_map<char, HuffmanCode*> table_idx;
-        for (auto & it : table) 
+        std::unordered_map<char, HuffmanCode *> table_idx;
+        for (auto &it : table)
         {
             table_idx[it.value] = &it;
         }
@@ -144,48 +168,47 @@ void TestHuffman()
         tmp_bitmap.add_code(*table_idx['k']);
         tmp_bitmap.add_code(*table_idx['k']);
         tmp_bitmap.add_code(*table_idx['n']);
-        
 
         int read_idx = 0;
         char val = ' ';
         std::string uncompressed = "";
-        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
         uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
         uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
         uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
         uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
         uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
         uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
         uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
         uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
         uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
         uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
         uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
         uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
         uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
         uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
         uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
         uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
         uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
         uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx,table,root,val);
+        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
         uncompressed += val;
     }
     cout << endl;
@@ -194,7 +217,7 @@ void TestHuffman()
 int main(int argc, char *argv[])
 {
     TestHuffman();
-
+    TestBMP_gray_HA();
     return 0;
     cout << "2.1" << endl
          << endl;
