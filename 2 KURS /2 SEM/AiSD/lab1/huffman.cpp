@@ -6,7 +6,7 @@
 using namespace std;
 
 // вспомогательный метод для создания таблицы хаффмана
-void HA_make_table(const std::vector<char> &input, std::vector<HuffmanCode> &huffman_table, HAT_node *& out_root)
+void HA_make_table(const std::vector<char> &input, std::vector<HuffmanCode> &huffman_table, HAT_node *&out_root)
 {
     std::unordered_map<char, int> freq;
     if (input.empty())
@@ -143,7 +143,7 @@ void HuffmanCode::add_bit_to_code(int val)
 };
 
 // добавляет новый кусок кода в сторадж
-void Bitmap::add_code(const HuffmanCode &code_to_add)
+void HA_bitmap::add_code(const HuffmanCode &code_to_add)
 {
     // смотрим сколько свободных ьитов в последнем заполненном элементе size_t из стораджа
     int free_bits_in_last_size_t = 64 - num_bits % 64;
@@ -161,7 +161,6 @@ void Bitmap::add_code(const HuffmanCode &code_to_add)
         num_bits += code_to_add.bits_len;
         if (num_bits % 64ULL == 0)
             storage.push_back(0);
-
     }
     else // если код не влезает целиком в текущий size_t из стораджа
     {
@@ -185,7 +184,7 @@ void Bitmap::add_code(const HuffmanCode &code_to_add)
     }
 }
 
-size_t Bitmap::get_bit(size_t idx)
+size_t HA_bitmap::get_bit(size_t idx)
 {
     size_t mask = 1ULL << (idx % 64ULL);
     size_t res = storage[idx / 64ULL];
@@ -197,7 +196,7 @@ size_t Bitmap::get_bit(size_t idx)
 // кодировка берется из таблицы Хаффмана, возвращает считанный символ symb и обновляет индекс
 //  увеличивая его на длину кода считанного символа
 // idx = сколько битов уже считали т.е. (с какого бита надо начинать считывать следующий символ)
-void Bitmap::get_next_symbol(int &idx, std::vector<HuffmanCode> &huffman_table, HAT_node *&root, char &symb)
+void HA_bitmap::get_next_symbol(int &idx, std::vector<HuffmanCode> &huffman_table, HAT_node *&root, char &symb)
 {
     HAT_node *cur = root;
     if (!cur)
@@ -212,4 +211,38 @@ void Bitmap::get_next_symbol(int &idx, std::vector<HuffmanCode> &huffman_table, 
         ++idx;
     }
     symb = cur->symb[0];
+}
+
+// нужнен output = вектоор из size_t, куда мы будем писать коды закодированных символов по таблице
+// в 1м size_t может быть несколько кодов, в зависимости от длин кодов
+//(один код может разделиться на 2 size_t!!! проверка при чтении)
+void HA_compress(const std::vector<char> &input, HA_bitmap &output, std::vector<HuffmanCode> &huffman_table, HAT_node *&root)
+{
+
+    HA_make_table(input, huffman_table, root);
+    // HA_print_table(huffman_table);
+
+    output.storage = {0};
+    std::unordered_map<char, HuffmanCode *> table_idx;
+    // тут мапа хранит символ-индекс символа в таблице Хаффмана
+    for (auto &it : huffman_table)
+    {
+        table_idx[it.value] = &it;
+    }
+    for (int i = 0; i < input.size(); i++)
+    {
+        output.add_code(*table_idx[input[i]]);
+    }
+}
+
+// разжатие
+void HA_decompress(HA_bitmap &input, std::vector<char> &output, std::vector<HuffmanCode> &huffman_table, HAT_node *&root)
+{
+    int read_idx = 0;
+    char val = ' ';
+    while (read_idx < input.num_bits)
+    {
+        input.get_next_symbol(read_idx, huffman_table, root, val);
+        output.push_back(val);
+    }
 }

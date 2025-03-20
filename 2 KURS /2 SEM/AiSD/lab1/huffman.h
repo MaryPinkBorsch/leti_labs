@@ -9,7 +9,7 @@ struct HAT_node
 {
     HAT_node *L = nullptr;      // левый ребенок
     HAT_node *R = nullptr;      // правый ребенок
-    std::string symb;                // символьная последовательность
+    std::string symb;           // символьная последовательность
     int freq = 0;               // значение частоы
     HAT_node *parent = nullptr; // родитель
 
@@ -31,7 +31,7 @@ struct HuffmanCode
     void add_bit_to_code(int val);
 };
 
-struct Bitmap
+struct HA_bitmap
 {
     // сторадж содержит битовые данные в блоках по 64 (размер size_t в битах)
     std::vector<size_t> storage;
@@ -45,11 +45,11 @@ struct Bitmap
     // добывает символ из стораджа по индексу = кол-во битов, с которых надо начинать считывать код
     // кодировка берется из таблицы Хаффмана, возвращает считанный символ symb и обновляет индекс
     //  увеличивая его на длину кода считанного символа
-    void get_next_symbol(int &idx, std::vector<HuffmanCode> &huffman_table, HAT_node *& root, char &symb);
+    void get_next_symbol(int &idx, std::vector<HuffmanCode> &huffman_table, HAT_node *&root, char &symb);
 };
 
 // вспомогательный метод для создания таблицы хаффмана
-void HA_make_table(const std::vector<char> &input, std::vector<HuffmanCode> &huffman_table, HAT_node *& root);
+void HA_make_table(const std::vector<char> &input, std::vector<HuffmanCode> &huffman_table, HAT_node *&root);
 void HA_print_table(std::vector<HuffmanCode> &huffman_table);
 
 // сжатие
@@ -57,7 +57,7 @@ void HA_print_table(std::vector<HuffmanCode> &huffman_table);
 // нужнен output = вектоор из size_t, куда мы будем писать коды закодированных символов по таблице
 // в 1м size_t может быть несколько кодов, в зависимости от длин кодов
 //(один код может разделиться на 2 size_t!!! проверка при чтении)
-void HA_compress(const std::vector<char> &input, std::vector<char> &output, const std::vector<HuffmanCode> &huffman_table);
+void HA_compress(const std::vector<char> &input, HA_bitmap &output, std::vector<HuffmanCode> &huffman_table, HAT_node *&root);
 
 // разжатие
-void HA_decompress(const std::vector<char> &input, std::vector<char> &output, const std::vector<HuffmanCode> &huffman_table);
+void HA_decompress(HA_bitmap &input, std::vector<char> &output, std::vector<HuffmanCode> &huffman_table, HAT_node *&root);

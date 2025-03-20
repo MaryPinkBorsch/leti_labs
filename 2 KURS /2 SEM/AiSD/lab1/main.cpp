@@ -117,7 +117,7 @@ void TestHuffman()
         HA_make_table(input, table, root);
         HA_print_table(table);
 
-        Bitmap tmp_bitmap;
+        HA_bitmap tmp_bitmap;
         tmp_bitmap.storage = {0};
         std::unordered_map<char, HuffmanCode*> table_idx;
         for (auto & it : table) 
