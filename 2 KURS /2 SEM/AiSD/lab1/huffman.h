@@ -37,7 +37,7 @@ struct Bitmap
     std::vector<size_t> storage;
     int num_bits = 0; // кол-во хранимых бит в сторадже
 
-    int get_bit(int idx);
+    size_t get_bit(size_t idx);
 
     // добавляет новый кусок кода в сторадж
     void add_code(const HuffmanCode &code_to_add);

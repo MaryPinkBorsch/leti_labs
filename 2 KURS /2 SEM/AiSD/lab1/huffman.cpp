@@ -159,10 +159,13 @@ void Bitmap::add_code(const HuffmanCode &code_to_add)
         tmp |= tmp1;
         storage[last_size_t_idx] = tmp;
         num_bits += code_to_add.bits_len;
+        if (num_bits % 64ULL == 0)
+            storage.push_back(0);
+
     }
     else // если код не влезает целиком в текущий size_t из стораджа
     {
-        storage.resize(storage.size() + 1);
+        storage.push_back(0);
         int remaining_bits = code_to_add.bits_len - free_bits_in_last_size_t; // то что не влезло (кол-во в битах)
 
         int last_size_t_idx = num_bits / 64; // индекс size_t в сторадже куда будем писать
@@ -182,7 +185,7 @@ void Bitmap::add_code(const HuffmanCode &code_to_add)
     }
 }
 
-int Bitmap::get_bit(int idx)
+size_t Bitmap::get_bit(size_t idx)
 {
     size_t mask = 1ULL << (idx % 64ULL);
     size_t res = storage[idx / 64ULL];
@@ -201,7 +204,7 @@ void Bitmap::get_next_symbol(int &idx, std::vector<HuffmanCode> &huffman_table, 
         return;
     while (cur->R || cur->L)
     {
-        int tmp = get_bit(idx);
+        size_t tmp = get_bit(idx);
         if (tmp)
             cur = cur->R;
         else
