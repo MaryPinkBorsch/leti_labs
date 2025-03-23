@@ -10,6 +10,7 @@
 #include "lz77.h"
 #include "lz78.h"
 #include "bwt.h"
+#include "mtf.h"
 
 using namespace std;
 void print(const vector<unsigned char> &tmp)
@@ -395,10 +396,84 @@ void TestBWT()
     cout << endl;
 }
 
+void TestMTF()
+{
+    forward_list<char> alphabet;
+    for (char i = 32; i <= 126; i++)
+    {
+        //' ' to '~'
+        alphabet.push_front(i);
+    }
+
+    {
+        std::string str_input = "banana";
+        std::vector<char> input;
+        std::vector<char> output;
+        std::vector<int> tmp;
+
+        input.insert(input.begin(), str_input.begin(), str_input.end());
+        cout << "MTF исходная строка: ";
+        for (auto &it : input)
+            cout << it;
+
+        cout << endl
+             << "MTF размер до сжатия: " << input.size() << endl;
+        MTF_compress(input, tmp, alphabet);
+
+        cout << "MTF размер сжатого: " << tmp.size() * sizeof(int) << endl
+             << "MTF преобразование: ";
+        for (auto &it : tmp)
+            cout << it;
+
+        MTF_decompress(tmp, output, alphabet);
+        cout << endl;
+
+        cout << "MTF разжатая строка: ";
+        for (auto &it : output)
+            cout << it;
+
+        cout << endl
+             << "MTF размер после сжатия: " << output.size() << endl;
+    }
+
+    cout << endl;
+    {
+        std::string str_input = "abracadabra";
+        std::vector<char> input;
+        std::vector<char> output;
+        std::vector<int> tmp;
+
+        input.insert(input.begin(), str_input.begin(), str_input.end());
+        cout << "MTF исходная строка: ";
+        for (auto &it : input)
+            cout << it;
+
+        cout << endl
+             << "MTF размер до сжатия: " << input.size() << endl;
+        MTF_compress(input, tmp, alphabet);
+
+        cout << "MTF размер сжатого: " << tmp.size() * sizeof(int) << endl
+             << "MTF преобразование: ";
+        for (auto &it : tmp)
+            cout << it;
+
+        MTF_decompress(tmp, output, alphabet);
+        cout << endl;
+
+        cout << "MTF разжатая строка: ";
+        for (auto &it : output)
+            cout << it;
+
+        cout << endl
+             << "MTF размер после сжатия: " << output.size() << endl;
+    }
+}
+
 int main(int argc, char *argv[])
 {
-    TestBWT();
+    TestMTF();
     return 0;
+    TestBWT();
     TestLZ_77();
 
     TestLZ_78();

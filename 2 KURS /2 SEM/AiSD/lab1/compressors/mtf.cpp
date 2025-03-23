@@ -1,18 +1,17 @@
 #include "mtf.h"
 using namespace std;
 
-// Move-to-front encoding
-// Gives empty encoding if empty alphabet or empty source, or source contains a character not in the alphabet
-vector<int> MTF_encode(string source, forward_list<char> alphabet)
-{
-    vector<int> encoding;
+// Move-to-front output
+// Gives empty output if empty alphabet or empty input, or input contains a character not in the alphabet
 
+void MTF_compress(std::vector<char> &input, std::vector<int> &output, forward_list<char> alphabet)
+{
     // Parameter checking
     if (alphabet.begin() != alphabet.end())
     {
-        for (string::iterator c = source.begin(); c != source.end(); c++)
+        for (auto c = input.begin(); c != input.end(); c++)
         {
-            // Search the alphabet for the index of the letter in source
+            // Search the alphabet for the index of the letter in input
             int index = 0;
             bool found = false;
             forward_list<char>::iterator character = alphabet.begin();
@@ -37,7 +36,7 @@ vector<int> MTF_encode(string source, forward_list<char> alphabet)
                 if (!found)
                 {
                     // character was not in the alphabet provided, something went wrong
-                    return vector<int>();
+                    return;
                 }
 
                 // Move the element at index to the front of the list
@@ -45,21 +44,19 @@ vector<int> MTF_encode(string source, forward_list<char> alphabet)
                 alphabet.push_front(*c);
             }
 
-            // Add the index to the integer sequence encoding
-            encoding.push_back(index);
+            // Add the index to the integer sequence output
+            output.push_back(index);
         }
     }
-
-    return encoding;
 }
 
-string MTF_decode(vector<int> encoding, forward_list<char> alphabet)
+void MTF_decompress(std::vector<int> &input, std::vector<char> &output, forward_list<char> alphabet)
 {
     string source = "";
 
     if (alphabet.begin() != alphabet.end())
     {
-        for (vector<int>::iterator index = encoding.begin(); index != encoding.end(); index++)
+        for (vector<int>::iterator index = input.begin(); index != input.end(); index++)
         {
             if (*index != 0)
             {
@@ -80,5 +77,5 @@ string MTF_decode(vector<int> encoding, forward_list<char> alphabet)
         }
     }
 
-    return source;
+    output.insert(output.begin(), source.begin(), source.end());
 }
