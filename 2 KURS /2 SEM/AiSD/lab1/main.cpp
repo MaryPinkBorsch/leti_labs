@@ -7,6 +7,7 @@
 
 #include "rle.h"
 #include "huffman.h"
+#include "lz77.h"
 
 using namespace std;
 void print(const vector<unsigned char> &tmp)
@@ -213,12 +214,68 @@ void TestHuffman()
     }
     cout << endl;
 }
+void TestLZ_77()
+{
+    {
+        std::string str_input = "bananananananananananaaaaaaaaaaaaaaaaaaaaaaaaaaaaxyz";
+        std::vector<char> input;
+        std::vector<char> output;
+        std::vector<LZ77_Node> tmp;
+        input.insert(input.begin(), str_input.begin(), str_input.end());
+        cout << "lz77 исходная строка: ";
+        for (auto &it : input)
+            cout << it;
+
+        cout << endl
+             << "lz77 размер до сжатия: " << input.size() << endl;
+        LZ77_compress(input, tmp);
+        cout << "lz77 размер сжатого: " << tmp.size() * sizeof(LZ77_Node) << endl;
+        LZ77_decompress(tmp, output);
+
+        cout << "lz77 сжатая строка: ";
+        for (auto &it : output)
+            cout << it;
+
+        cout << endl
+             << "lz77 размер после сжатия: " << output.size() << endl;
+    }
+
+    cout << endl;
+
+    {
+        std::string str_input = "abacabacabadaca";
+        std::vector<char> input;
+        std::vector<char> output;
+        std::vector<LZ77_Node> tmp;
+        input.insert(input.begin(), str_input.begin(), str_input.end());
+        cout << "lz77 исходная строка: \t";
+        for (auto &it : input)
+            cout << it;
+
+        cout << endl
+             << "lz77 размер до сжатия: " << input.size() << endl;
+        LZ77_compress(input, tmp);
+        cout << "lz77 размер сжатого: " << tmp.size() * sizeof(LZ77_Node) << endl;
+        LZ77_decompress(tmp, output);
+
+        cout << "lz77 сжатая строка: \t";
+        for (auto &it : output)
+            cout << it;
+
+        cout << endl
+             << "lz77 размер после сжатия: " << output.size() << endl;
+    }
+
+    cout << endl;
+}
 
 int main(int argc, char *argv[])
 {
+    TestLZ_77();
+    return 0;
     TestHuffman();
     TestBMP_gray_HA();
-    return 0;
+
     cout << "2.1" << endl
          << endl;
     // 2.1
