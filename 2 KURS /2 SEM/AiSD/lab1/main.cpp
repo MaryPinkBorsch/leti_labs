@@ -8,6 +8,7 @@
 #include "rle.h"
 #include "huffman.h"
 #include "lz77.h"
+#include "lz78.h"
 
 using namespace std;
 void print(const vector<unsigned char> &tmp)
@@ -214,6 +215,62 @@ void TestHuffman()
     }
     cout << endl;
 }
+
+void TestLZ_78()
+{
+    {
+        std::string str_input = "bananananananananananaaaaaaaaaaaaaaaaaaaaaaaaaaaaxyz";
+        std::vector<char> input;
+        std::vector<char> output;
+        std::vector<LZ78_Node> tmp;
+        input.insert(input.begin(), str_input.begin(), str_input.end());
+        cout << "lz78 исходная строка: ";
+        for (auto &it : input)
+            cout << it;
+
+        cout << endl
+             << "lz78 размер до сжатия: " << input.size() << endl;
+        LZ78_compress(input, tmp);
+        cout << "lz78 размер сжатого: " << tmp.size() * sizeof(LZ78_Node) << endl;
+        LZ78_decompress(tmp, output);
+
+        cout << "lz78 сжатая строка: ";
+        for (auto &it : output)
+            cout << it;
+
+        cout << endl
+             << "lz78 размер после сжатия: " << output.size() << endl;
+    }
+
+    cout << endl;
+
+    {
+        std::string str_input = "abacabacabadaca";
+        std::vector<char> input;
+        std::vector<char> output;
+        std::vector<LZ78_Node> tmp;
+        input.insert(input.begin(), str_input.begin(), str_input.end());
+        cout << "lz78 исходная строка: \t";
+        for (auto &it : input)
+            cout << it;
+
+        cout << endl
+             << "lz78 размер до сжатия: " << input.size() << endl;
+        LZ78_compress(input, tmp);
+        cout << "lz78 размер сжатого: " << tmp.size() * sizeof(LZ78_Node) << endl;
+        LZ78_decompress(tmp, output);
+
+        cout << "lz78 сжатая строка: \t";
+        for (auto &it : output)
+            cout << it;
+
+        cout << endl
+             << "lz78 размер после сжатия: " << output.size() << endl;
+    }
+
+    cout << endl;
+}
+
 void TestLZ_77()
 {
     {
@@ -272,6 +329,8 @@ void TestLZ_77()
 int main(int argc, char *argv[])
 {
     TestLZ_77();
+
+    TestLZ_78();
     return 0;
     TestHuffman();
     TestBMP_gray_HA();
