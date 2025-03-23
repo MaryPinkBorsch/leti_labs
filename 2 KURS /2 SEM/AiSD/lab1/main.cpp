@@ -9,6 +9,7 @@
 #include "huffman.h"
 #include "lz77.h"
 #include "lz78.h"
+#include "bwt.h"
 
 using namespace std;
 void print(const vector<unsigned char> &tmp)
@@ -326,12 +327,82 @@ void TestLZ_77()
     cout << endl;
 }
 
+void TestBWT()
+{
+    {
+        std::string str_input = "banana";
+        std::vector<char> input;
+        std::vector<char> output;
+        std::vector<char> tmp;
+
+        input.insert(input.begin(), str_input.begin(), str_input.end());
+        cout << "BWT исходная строка: ";
+        for (auto &it : input)
+            cout << it;
+
+        cout << endl
+             << "BWT размер до сжатия: " << input.size() << endl;
+        BWT_compress(input, tmp);
+
+        cout << "BWT размер сжатого: " << tmp.size() << endl
+             << "bwt преобразование: ";
+        for (auto &it : tmp)
+            cout << it;
+
+        BWT_decompress(tmp, output);
+        cout << endl;
+
+        cout << "BWT разжатая строка: ";
+        for (auto &it : output)
+            cout << it;
+
+        cout << endl
+             << "BWT размер после сжатия: " << output.size() << endl;
+    }
+
+    cout << endl;
+    {
+        std::string str_input = "abracadabra";
+        std::vector<char> input;
+        std::vector<char> output;
+        std::vector<char> tmp;
+
+        input.insert(input.begin(), str_input.begin(), str_input.end());
+        cout << "BWT исходная строка: ";
+        for (auto &it : input)
+            cout << it;
+
+        cout << endl
+             << "BWT размер до сжатия: " << input.size() << endl;
+        BWT_compress(input, tmp);
+
+        cout << "BWT размер сжатого: " << tmp.size() << endl
+             << "bwt преобразование: ";
+        for (auto &it : tmp)
+            cout << it;
+
+        BWT_decompress(tmp, output);
+        cout << endl;
+
+        cout << "BWT разжатая строка: ";
+        for (auto &it : output)
+            cout << it;
+
+        cout << endl
+             << "BWT размер после сжатия: " << output.size() << endl;
+    }
+
+    cout << endl;
+}
+
 int main(int argc, char *argv[])
 {
+    TestBWT();
+    return 0;
     TestLZ_77();
 
     TestLZ_78();
-    return 0;
+
     TestHuffman();
     TestBMP_gray_HA();
 

@@ -1,5 +1,6 @@
 #include "lz78.h"
 using namespace std;
+
 // Функция для кодирования строки с использованием LZ78
 void LZ78_compress(const std::vector<char> &input, std::vector<LZ78_Node> &output)
 {
