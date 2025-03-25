@@ -472,6 +472,18 @@ void TestMTF()
 
 int main(int argc, char *argv[])
 {
+    LZ77_Node node_ololo;
+    node_ololo.length = 666;
+    node_ololo.offset = 777;
+    node_ololo.next = 'y';
+    std::deque<char> buffer;
+    serialize(buffer, node_ololo);
+    size_t offset = 0;
+    LZ77_Node node_omg;
+    deserialize(buffer, node_omg, offset);
+
+    return 0;
+
     // TestMTF();
 
     // TestBWT();

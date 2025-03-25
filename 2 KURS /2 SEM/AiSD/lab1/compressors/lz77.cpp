@@ -50,3 +50,18 @@ void LZ77_decompress(const std::vector<LZ77_Node>& encoded, std::vector<char> &o
         output.push_back(node.next); // добавляем следующий символ
     }
 }
+
+void serialize(std::deque<char> &buffer, const LZ77_Node &val) 
+{
+    serialize(buffer, val.offset);
+    serialize(buffer, val.length);
+    serialize(buffer, val.next);
+}
+
+void deserialize(const std::deque<char> &buffer, LZ77_Node &val, size_t& idx) 
+{
+    deserialize(buffer, val.offset, idx);
+    deserialize(buffer, val.length, idx);
+    deserialize(buffer, val.next, idx);
+}
+
