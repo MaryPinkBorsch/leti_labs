@@ -9,11 +9,10 @@ using namespace std;
 
 using namespace std;
 
-// This implementation assumes the $ as the special EOT character that does not appear in the source text.
+// используется маркерный символ $
 const char MARKER = '$';
 
-// Do a cyclic shift on the source text
-// For s[0..n-1] return the concatenation of s[i+1..n-1] and s[0..i] where i is the distance
+// функция для циклического сдвига
 string cyclic_shift(std::vector<char> &input, int distance)
 {
 	string source;
@@ -23,10 +22,9 @@ string cyclic_shift(std::vector<char> &input, int distance)
 
 void BWT_compress(std::vector<char> &input, std::vector<char> &output)
 {
-	// Append special EOT character
+	// надо добавить маркер в инпут
 	input.push_back(MARKER);
 
-	// Generate the n cyclic shifts and put them in a list
 	vector<string> shifts;
 
 	for (unsigned int i = 0; i < input.size(); i++)
@@ -36,10 +34,10 @@ void BWT_compress(std::vector<char> &input, std::vector<char> &output)
 		shifts.push_back(shift);
 	}
 
-	// Sort the list lexicographically
+	// сортируем сдвиги
 	sort(shifts.begin(), shifts.end());
 
-	// Return a string comprised of the last letter of each word in the sorted list
+	// добавляем последние буквы каждого сдвига в утпут (последний столбец матрицы)
 
 	for (vector<string>::iterator it = shifts.begin(); it != shifts.end(); it++)
 	{
@@ -61,14 +59,14 @@ void BWT_decompress(std::vector<char> &input, std::vector<char> &output)
 
 	int j;
 
-	// Put the encoded characters in tuples (c[i], i)
+	// создаем вектор пар
 	vector<pair<char, int>> coding_tuples;
 
 	for (unsigned int i = 0; i < input.size(); i++)
 	{
 		char coded_char = input.at(i);
 
-		// Find the index of the special end of text character
+		// ищем позицию маркера
 		if (coded_char == MARKER)
 		{
 			j = i;
@@ -77,14 +75,8 @@ void BWT_decompress(std::vector<char> &input, std::vector<char> &output)
 		coding_tuples.push_back(pair<char, int>(input.at(i), i));
 	}
 
-	// Sort the tuples by their character preserving order (stable)
-	/*
-	 * This is because the order in which we encountered the same character provides us
-	 * with a different index leading to a different cyclic shift and thus a different following character
-	 */
+	// сортируем
 	stable_sort(coding_tuples.begin(), coding_tuples.end(), comp_tuples);
-
-	// Follow the indicies to retrieve the letters in the source text
 
 	do
 	{
