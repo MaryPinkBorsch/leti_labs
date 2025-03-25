@@ -50,7 +50,7 @@ void rle_decompress_2_1(const std::vector<unsigned char> &input, std::vector<uns
 
 // Входные данные: 1 2 3 4 5 6 7 7 7 7 7 -> -6 "1 2 3 4 5 6" 5 "7" (в кавычках наши символы)
 
-void rle_compress_2_2(const std::vector<unsigned char> &input, std::vector<unsigned char> &output)
+void rle_compress(const std::vector<char> &input, std::vector<char> &output)
 {
     //     Пример:
     // Входные данные: 1 2 3 4 5 6 7 7 7 7 7 -> -6 "1 2 3 4 5 6" 5 "7"
@@ -63,9 +63,9 @@ void rle_compress_2_2(const std::vector<unsigned char> &input, std::vector<unsig
         output.push_back(input[0]);
         return;
     }
-    unsigned char prev = input[0];
+    char prev = input[0];
     // int j = -1; // индекс с которого начинается последовательность НЕповторяющихся символов
-    std::vector<unsigned char> no_repeat;
+    std::vector<char> no_repeat;
     char counter = 0;  // повторяющиеся символы
     char counter2 = 0; // неповторяющиеся символы
     int i = 0;
@@ -179,7 +179,7 @@ void rle_compress_2_2(const std::vector<unsigned char> &input, std::vector<unsig
         counter2 = 0;
     }
 }
-void rle_decompress_2_2(const std::vector<unsigned char> &input, std::vector<unsigned char> &output)
+void rle_decompress(const std::vector<char> &input, std::vector<char> &output)
 {
     int t = 0;
     while (t < input.size())

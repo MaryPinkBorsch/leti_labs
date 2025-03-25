@@ -3,13 +3,16 @@
 #include <vector>
 #include <cstring>
 
+// второе задание 2.2 - будет использоваться как основной вариант RLE для лабораторной
+// он позволяет кодировать кодировать как повторяющиеся символы так и последовательности неповторяющихся симоволов
+void rle_compress(const std::vector<char> &input, std::vector<char> &output);
+void rle_decompress(const std::vector<char> &input, std::vector<char> &output);
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// остальные варианты останутся на память
 // первое задание 2.1
 void rle_compress_2_1(const std::vector<unsigned char> &input, std::vector<unsigned char> &output);
 void rle_decompress_2_1(const std::vector<unsigned char> &input, std::vector<unsigned char> &output);
-
-// второе задание 2.2
-void rle_compress_2_2(const std::vector<unsigned char> &input, std::vector<unsigned char> &output);
-void rle_decompress_2_2(const std::vector<unsigned char> &input, std::vector<unsigned char> &output);
 
 // 2.3
 // параметр М в битах (1 символ = M/8 Байт = M бит) это сколько битов в одном символе

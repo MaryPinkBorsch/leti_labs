@@ -13,7 +13,8 @@
 #include "mtf.h"
 
 using namespace std;
-void print(const vector<unsigned char> &tmp)
+template <typename T>
+void print(const vector<T> &tmp)
 {
     for (int i = 0; i < tmp.size(); i++)
     {
@@ -57,14 +58,14 @@ void TestBMP2_chb()
 {
     std::string input_filename = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie monochrome.bmp";
     std::string output_filename = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie monochrome2_2.bmp";
-    std::vector<unsigned char> input_data;
-    std::vector<unsigned char> tmp_data;
-    std::vector<unsigned char> output_data;
+    std::vector<char> input_data;
+    std::vector<char> tmp_data;
+    std::vector<char> output_data;
     readfile(input_filename, input_data);
     cout << "ИЗначальный размер " << input_data.size() << " байт" << endl;
-    rle_compress_2_2(input_data, tmp_data);
+    rle_compress(input_data, tmp_data);
     cout << "Сжатие чб 2.2 размер: " << tmp_data.size() << endl;
-    rle_decompress_2_2(tmp_data, output_data);
+    rle_decompress(tmp_data, output_data);
     writefile(output_filename, output_data);
 }
 
@@ -87,14 +88,14 @@ void TestBMP2_gray()
 {
     std::string input_filename = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie grayscale.bmp";
     std::string output_filename = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie grayscale2_2.bmp";
-    std::vector<unsigned char> input_data;
-    std::vector<unsigned char> tmp_data;
-    std::vector<unsigned char> output_data;
+    std::vector<char> input_data;
+    std::vector<char> tmp_data;
+    std::vector<char> output_data;
     readfile(input_filename, input_data);
     cout << "ИЗначальный размер " << input_data.size() << " байт" << endl;
-    rle_compress_2_2(input_data, tmp_data);
+    rle_compress(input_data, tmp_data);
     cout << "Сжатие gray 2.2 размер: " << tmp_data.size() << endl;
-    rle_decompress_2_2(tmp_data, output_data);
+    rle_decompress(tmp_data, output_data);
     writefile(output_filename, output_data);
 }
 
@@ -471,70 +472,70 @@ void TestMTF()
 
 int main(int argc, char *argv[])
 {
-    TestMTF();
-    return 0;
-    TestBWT();
-    TestLZ_77();
+    // TestMTF();
 
-    TestLZ_78();
+    // TestBWT();
+    // TestLZ_77();
 
-    TestHuffman();
-    TestBMP_gray_HA();
+    // TestLZ_78();
 
-    cout << "2.1" << endl
-         << endl;
-    // 2.1
-    {
-        vector<unsigned char> tmp = {0xCF, 0xCF, 0xCF, 0xCF, 0xCF};
-        vector<unsigned char> tmp1;
-        vector<unsigned char> tmp2;
+    // TestHuffman();
+    // TestBMP_gray_HA();
 
-        rle_compress_2_1(tmp, tmp1);
-        cout << "исходная строка: ";
-        print(tmp);
-        cout << "сжатая строка: ";
-        print(tmp1);
+    // cout << "2.1" << endl
+    //      << endl;
+    // // 2.1
+    // {
+    //     vector<unsigned char> tmp = {0xCF, 0xCF, 0xCF, 0xCF, 0xCF};
+    //     vector<unsigned char> tmp1;
+    //     vector<unsigned char> tmp2;
 
-        rle_decompress_2_1(tmp1, tmp2);
+    //     rle_compress_2_1(tmp, tmp1);
+    //     cout << "исходная строка: ";
+    //     print(tmp);
+    //     cout << "сжатая строка: ";
+    //     print(tmp1);
 
-        cout << "разжатая строка: ";
-        print(tmp2);
-        cout << endl
-             << endl;
-    }
-    {
-        vector<unsigned char> tmp = {0xCF, 0xCC, 0xCF, 0xCF, 0xCF};
-        vector<unsigned char> tmp1;
-        vector<unsigned char> tmp2;
+    //     rle_decompress_2_1(tmp1, tmp2);
 
-        rle_compress_2_1(tmp, tmp1);
-        cout << "исходная строка: ";
-        print(tmp);
-        cout << "сжатая строка: ";
-        print(tmp1);
+    //     cout << "разжатая строка: ";
+    //     print(tmp2);
+    //     cout << endl
+    //          << endl;
+    // }
+    // {
+    //     vector<unsigned char> tmp = {0xCF, 0xCC, 0xCF, 0xCF, 0xCF};
+    //     vector<unsigned char> tmp1;
+    //     vector<unsigned char> tmp2;
 
-        rle_decompress_2_1(tmp1, tmp2);
+    //     rle_compress_2_1(tmp, tmp1);
+    //     cout << "исходная строка: ";
+    //     print(tmp);
+    //     cout << "сжатая строка: ";
+    //     print(tmp1);
 
-        cout << "разжатая строка: ";
-        print(tmp2);
-        cout << endl
-             << endl;
-    }
+    //     rle_decompress_2_1(tmp1, tmp2);
+
+    //     cout << "разжатая строка: ";
+    //     print(tmp2);
+    //     cout << endl
+    //          << endl;
+    // }
     cout << "2.2" << endl
          << endl;
     // 2.2
     {
-        vector<unsigned char> tmp = {0xCF, 0xCF, 0xCF, 0xCF, 0xCF};
-        vector<unsigned char> tmp1;
-        vector<unsigned char> tmp2;
+        vector<char> tmp = {(char)0xCF, (char)0xCF, (char)0xCF, (char)0xCF, (char)0xCF};
+        vector<char> tmp1;
+        vector<char> tmp2;
 
-        rle_compress_2_2(tmp, tmp1);
+        rle_compress(tmp, tmp1);
         cout << "исходная строка: ";
         print(tmp);
         cout << "сжатая строка: ";
         print(tmp1);
 
-        rle_decompress_2_2(tmp1, tmp2);
+        rle_decompress(tmp1, tmp2);
 
         cout << "разжатая строка: ";
         print(tmp2);
@@ -542,23 +543,24 @@ int main(int argc, char *argv[])
              << endl;
     }
     {
-        vector<unsigned char> tmp = {0xCF, 0xCC, 0xCF, 0xCF, 0xCF, 0xCA};
-        vector<unsigned char> tmp1;
-        vector<unsigned char> tmp2;
+        vector<char> tmp = {(char)0xCF, (char)0xCC, (char)0xCF, (char)0xCF, (char)0xCF, (char)0xCA};
+        vector<char> tmp1;
+        vector<char> tmp2;
 
-        rle_compress_2_2(tmp, tmp1);
+        rle_compress(tmp, tmp1);
         cout << "исходная строка: ";
         print(tmp);
         cout << "сжатая строка: ";
         print(tmp1);
 
-        rle_decompress_2_2(tmp1, tmp2);
+        rle_decompress(tmp1, tmp2);
 
         cout << "разжатая строка: ";
         print(tmp2);
         cout << endl
              << endl;
     }
+    return 0;
 
     // 2.3
     cout << "2.3" << endl;
