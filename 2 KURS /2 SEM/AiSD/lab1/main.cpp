@@ -476,12 +476,16 @@ int main(int argc, char *argv[])
     node_ololo.length = 666;
     node_ololo.offset = 777;
     node_ololo.next = 'y';
-    std::deque<char> buffer;
-    serialize(buffer, node_ololo);
-    size_t offset = 0;
     LZ77_Node node_omg;
-    deserialize(buffer, node_omg, offset);
-
+    node_omg.length = 1;
+    node_omg.offset = 2;
+    node_omg.next = '3';
+    std::vector<LZ77_Node> nodes_wtf = {node_ololo, node_omg};
+    std::deque<char> buffer;
+    serialize(buffer, nodes_wtf);
+    size_t offset = 0;
+    std::vector<LZ77_Node> nodes_tmp;
+    deserialize(buffer, nodes_tmp, offset);
     return 0;
 
     // TestMTF();

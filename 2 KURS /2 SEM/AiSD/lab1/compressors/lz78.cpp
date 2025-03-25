@@ -40,8 +40,20 @@ void LZ78_decompress(const std::vector<LZ78_Node> &encoded, std::vector<char> &o
 
     for (const auto &node : encoded)
     {
-        std::string word = dict[node.pos-1] + node.next;           // составляем слово
+        std::string word = dict[node.pos - 1] + node.next;     // составляем слово
         output.insert(output.end(), word.begin(), word.end()); // приписываем к ответу
-        dict.push_back(word);                                    // добавляем в словарь
+        dict.push_back(word);                                  // добавляем в словарь
     }
+}
+
+void serialize(std::deque<char> &buffer, const LZ78_Node &val)
+{
+    serialize(buffer, val.pos);
+    serialize(buffer, val.next);
+}
+
+void deserialize(const std::deque<char> &buffer, LZ78_Node &val, size_t &idx)
+{
+    deserialize(buffer, val.pos, idx);
+    deserialize(buffer, val.next, idx);
 }

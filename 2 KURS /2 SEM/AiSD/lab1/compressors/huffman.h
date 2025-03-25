@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <cstring>
 #include <string>
+#include "serialization.h"
 
 struct HAT_node
 {
@@ -31,6 +32,7 @@ struct HuffmanCode
     void add_bit_to_code(int val);
 };
 
+//структура куда записываются и хранятся коды хаффмана 
 struct HA_bitmap
 {
     // сторадж содержит битовые данные в блоках по 64 (размер size_t в битах)
@@ -61,3 +63,6 @@ void HA_compress(const std::vector<char> &input, HA_bitmap &output, std::vector<
 
 // разжатие
 void HA_decompress(HA_bitmap &input, std::vector<char> &output, std::vector<HuffmanCode> &huffman_table, HAT_node *&root);
+
+void serialize(std::deque<char> &buffer, const LZ78_Node &val);
+void deserialize(const std::deque<char> &buffer, LZ78_Node &val, size_t& idx);

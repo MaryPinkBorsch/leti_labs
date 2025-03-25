@@ -2,7 +2,9 @@
 
 #include <type_traits>
 #include <deque> // двустороння очередь
+#include <vector>
 #include <cstring>
+#include <forward_list>
 
 // простейшая сериализация \ десериализация
 // штука для записи (и считывания) разных структур в бинарный файл (чтоб они сохранились)
@@ -27,4 +29,47 @@ deserialize(const std::deque<char> &buffer, T &val, size_t &idx)
 {
     std::memcpy(&val, &(buffer[idx]), sizeof(T)); // записали память в val из буфера по индексу
     idx += sizeof(T);
+}
+
+// это для сериализации вектора на шаблоне (можно любой тип туда пихнуть)
+template <typename T>
+void serialize(std::deque<char> &buffer, const std::vector<T> &val)
+{
+    serialize(buffer, val.size()); // это мы записали в начале сколько элементов в векторе мы сериализовали
+    for (auto &it : val)
+        serialize(buffer, it);
+}
+
+template <typename T>
+void deserialize(const std::deque<char> &buffer, std::vector<T> &val, size_t &idx)
+{
+    size_t size = 0;
+    deserialize(buffer, size, idx); // теперь мы знаем сколько элементов надо считать в вектор из декуе
+    val.resize(size);
+    for (int i = 0; i < size; i++)
+        deserialize(buffer, val[i], idx);
+}
+
+// это для сериализации forward_list на шаблоне (можно любой тип туда пихнуть)
+template <typename T>
+void serialize(std::deque<char> &buffer, const std::forward_list<T> &val)
+{
+    serialize(buffer, val.size()); // это мы записали в начале сколько элементов в списке мы сериализовали
+    for (auto &it : val)
+        serialize(buffer, it);
+}
+
+template <typename T>
+void deserialize(const std::deque<char> &buffer, std::forward_list<T> &val, size_t &idx)
+{
+    size_t size = 0;
+    deserialize(buffer, size, idx); // теперь мы знаем сколько элементов надо считать в список из декуе
+
+    for (int i = 0; i < size; i++)
+    {
+        T tmp;
+        deserialize(buffer, tmp, idx);
+        val.push_front(tmp);
+    }
+    val.reverse();
 }
