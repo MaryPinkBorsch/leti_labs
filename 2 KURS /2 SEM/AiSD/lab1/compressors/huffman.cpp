@@ -89,6 +89,61 @@ void HA_make_table(const std::vector<char> &input, std::vector<HuffmanCode> &huf
     out_root = root;
 }
 
+void restore_symb_in_tree(HAT_node* cur)
+{
+    if (cur->L)
+        restore_symb_in_tree(cur->L);
+    if (cur->R)
+        restore_symb_in_tree(cur->L);
+    if (cur->symb.empty()) 
+    {
+        if (cur->L)
+            cur->symb += cur->L->symb;
+        if (cur->R)
+            cur->symb += cur->R->symb;
+    }
+}
+
+void HA_table_to_tree(std::vector<HuffmanCode> &huffman_table, HAT_node *&root) 
+{
+    // сначала сделаем дерево перебором всех кодов в таблице, с учетом того что 0 налево 1 направо. будем добавлять несуществующие ноды
+    root = new HAT_node();
+    for (auto & code : huffman_table) 
+    {
+        HAT_node* cur = root;
+        for (int bit_idx = 0; bit_idx < code.bits_len; ++bit_idx) 
+        {
+            size_t dir = get_bit_from_size_t(code.code, bit_idx);
+            HAT_node* next = nullptr;
+            if (dir) // right 
+            {
+                next = cur->R;
+                if (next == nullptr) 
+                {
+                    cur->R = new HAT_node();
+                    cur->R->parent = cur;
+                    next = cur->R;
+                }
+            } 
+            else 
+            {
+                next = cur->L;
+                if (next == nullptr) 
+                {
+                    cur->L = new HAT_node();
+                    cur->L->parent = cur;
+                    next = cur->L;
+                }
+            }
+            cur = next;
+        }
+        cur->symb = code.value;
+    }
+    // потом обходом вглудь восстановим поле symb в каждой ноде дерева
+    restore_symb_in_tree(root);
+}
+
+
 // сжатие
 void HA_compress(const std::vector<char> &input, std::vector<char> &output, const std::vector<HuffmanCode> &huffman_table)
 {
@@ -192,6 +247,13 @@ size_t HA_bitmap::get_bit(size_t idx)
     return res;
 }
 
+size_t get_bit_from_size_t(size_t val, size_t idx)
+{
+    size_t mask = 1ULL << (idx % 64ULL);
+    val &= mask;
+    return val;
+}
+
 // добывает символ из стораджа по индексу = кол-во битов, с которых надо начинать считывать код
 // кодировка берется из таблицы Хаффмана, возвращает считанный символ symb и обновляет индекс
 //  увеличивая его на длину кода считанного символа
@@ -216,9 +278,9 @@ void HA_bitmap::get_next_symbol(int &idx, std::vector<HuffmanCode> &huffman_tabl
 // нужнен output = вектоор из size_t, куда мы будем писать коды закодированных символов по таблице
 // в 1м size_t может быть несколько кодов, в зависимости от длин кодов
 //(один код может разделиться на 2 size_t!!! проверка при чтении)
-void HA_compress(const std::vector<char> &input, HA_bitmap &output, std::vector<HuffmanCode> &huffman_table, HAT_node *&root)
+void HA_compress(const std::vector<char> &input, HA_bitmap &output, std::vector<HuffmanCode> &huffman_table)
 {
-
+    HAT_node * root = nullptr;
     HA_make_table(input, huffman_table, root);
     // HA_print_table(huffman_table);
 
@@ -236,8 +298,11 @@ void HA_compress(const std::vector<char> &input, HA_bitmap &output, std::vector<
 }
 
 // разжатие
-void HA_decompress(HA_bitmap &input, std::vector<char> &output, std::vector<HuffmanCode> &huffman_table, HAT_node *&root)
+void HA_decompress(HA_bitmap &input, std::vector<char> &output, std::vector<HuffmanCode> &huffman_table)
 {
+    HAT_node * root = nullptr;
+    HA_table_to_tree(huffman_table, root);
+
     int read_idx = 0;
     char val = ' ';
     while (read_idx < input.num_bits)
@@ -245,4 +310,28 @@ void HA_decompress(HA_bitmap &input, std::vector<char> &output, std::vector<Huff
         input.get_next_symbol(read_idx, huffman_table, root, val);
         output.push_back(val);
     }
+}
+
+void serialize(std::vector<char> &buffer, const HA_bitmap &val)
+{
+    serialize(buffer, val.storage);
+    serialize(buffer, val.num_bits);
+}
+void deserialize(const std::vector<char> &buffer, HA_bitmap &val, size_t &idx)
+{
+    deserialize(buffer, val.storage, idx);
+    deserialize(buffer, val.num_bits, idx);
+}
+
+void serialize(std::vector<char> &buffer, const HuffmanCode &val)
+{
+    serialize(buffer, val.code);
+    serialize(buffer, val.bits_len);
+    serialize(buffer, val.value);
+}
+void deserialize(const std::vector<char> &buffer, HuffmanCode &val, size_t &idx)
+{
+    deserialize(buffer, val.code, idx);
+    deserialize(buffer, val.bits_len, idx);
+    deserialize(buffer, val.value, idx);
 }

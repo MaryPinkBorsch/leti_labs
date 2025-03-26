@@ -12,8 +12,9 @@ struct LZ77_Node
     char next;  // следующий символ
 };
 
-void serialize(std::deque<char> &buffer, const LZ77_Node &val);
-void deserialize(const std::deque<char> &buffer, LZ77_Node &val, size_t& idx);
+void serialize(std::vector<char> &buffer, const LZ77_Node &val);
+void deserialize(const std::vector<char> &buffer, LZ77_Node &val, size_t& idx);
 
-void LZ77_compress(const std::vector<char> &input, std::vector<LZ77_Node> &output);
-void LZ77_decompress(const std::vector<LZ77_Node> &encoded, std::vector<char> &output);
+void LZ77_compress(const std::vector<char> &input, std::vector<char> &output);
+void LZ77_decompress(const std::vector<char> &input, std::vector<char> &output);
+

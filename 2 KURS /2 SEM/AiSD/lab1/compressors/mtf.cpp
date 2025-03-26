@@ -1,10 +1,20 @@
 #include "mtf.h"
+#include "serialization.h"
+
+
 using namespace std;
 
 // !если символа нет в алфавите то вернется пустота
 
-void MTF_compress(std::vector<char> &input, std::vector<int> &output, forward_list<char> alphabet)
+//void MTF_compress(std::vector<char> &input, std::vector<int> &output, forward_list<char> alphabet)
+void MTF_compress(std::vector<char> &input, std::vector<char> &output)
 {
+    forward_list<char> alphabet;
+    for (char i = 32; i <= 126; i++)
+    {
+        //' ' to '~'
+        alphabet.push_front(i);
+    }
     // проверка алфавита
     if (alphabet.begin() != alphabet.end())
     {
@@ -44,22 +54,31 @@ void MTF_compress(std::vector<char> &input, std::vector<int> &output, forward_li
             }
 
             // добавить индекс в аутпут
-            output.push_back(index);
+            size_t last_size = output.size();
+            output.resize(output.size() + sizeof(int));
+            std::memcpy(&output[last_size], &index, sizeof(int));
         }
     }
 }
 
-void MTF_decompress(std::vector<int> &input, std::vector<char> &output, forward_list<char> alphabet)
+void MTF_decompress(std::vector<char> &input, std::vector<char> &output)
 {
     string source = "";
-
+    forward_list<char> alphabet;
+    for (char i = 32; i <= 126; i++)
+    {
+        //' ' to '~'
+        alphabet.push_front(i);
+    }
     if (alphabet.begin() != alphabet.end())
     {
-        for (vector<int>::iterator index = input.begin(); index != input.end(); index++)
+        for (int i = 0; i < input.size(); i += sizeof(int))
         {
-            if (*index != 0)
+            int index = 0;
+            std::memcpy(&index, &input[i], sizeof(int));
+            if (index != 0)
             {
-                forward_list<char>::iterator character = next(alphabet.begin(), (*index) - 1);
+                forward_list<char>::iterator character = next(alphabet.begin(), index - 1);
                 forward_list<char>::iterator next_character = next(character, 1);
 
                 // добавить символ с индексом в алфавите к исходному тексту

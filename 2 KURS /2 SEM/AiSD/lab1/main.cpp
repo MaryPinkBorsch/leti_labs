@@ -111,9 +111,9 @@ void TestBMP_gray_HA()
 
     readfile(input_filename, input_data);
     cout << "ИЗначальный размер " << input_data.size() << " байт" << endl;
-    HA_compress(input_data, tmp_data, huffman_table, root);
+    HA_compress(input_data, tmp_data, huffman_table);
     cout << "Сжатие gray HUFFMAN размер: " << tmp_data.storage.size() * 8 << " байт" << endl;
-    HA_decompress(tmp_data, output_data, huffman_table, root);
+    HA_decompress(tmp_data, output_data, huffman_table);
     writefile(output_filename, output_data);
 }
 
@@ -145,76 +145,18 @@ void TestHuffman()
         HAT_node *root;
         HA_make_table(input, table, root);
         HA_print_table(table);
-
-        HA_bitmap tmp_bitmap;
-        tmp_bitmap.storage = {0};
-        std::unordered_map<char, HuffmanCode *> table_idx;
-        for (auto &it : table)
-        {
-            table_idx[it.value] = &it;
-        }
-
-        tmp_bitmap.add_code(*table_idx['i']);
-        tmp_bitmap.add_code(*table_idx['l']);
-        tmp_bitmap.add_code(*table_idx['o']);
-        tmp_bitmap.add_code(*table_idx['v']);
-        tmp_bitmap.add_code(*table_idx['e']);
-        tmp_bitmap.add_code(*table_idx['p']);
-        tmp_bitmap.add_code(*table_idx['i']);
-        tmp_bitmap.add_code(*table_idx['n']);
-        tmp_bitmap.add_code(*table_idx['k']);
-        tmp_bitmap.add_code(*table_idx['i']);
-        tmp_bitmap.add_code(*table_idx['l']);
-        tmp_bitmap.add_code(*table_idx['o']);
-        tmp_bitmap.add_code(*table_idx['v']);
-        tmp_bitmap.add_code(*table_idx['e']);
-        tmp_bitmap.add_code(*table_idx['p']);
-        tmp_bitmap.add_code(*table_idx['i']);
-        tmp_bitmap.add_code(*table_idx['k']);
-        tmp_bitmap.add_code(*table_idx['k']);
-        tmp_bitmap.add_code(*table_idx['n']);
-
-        int read_idx = 0;
-        char val = ' ';
-        std::string uncompressed = "";
-        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
-        uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
-        uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
-        uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
-        uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
-        uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
-        uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
-        uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
-        uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
-        uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
-        uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
-        uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
-        uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
-        uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
-        uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
-        uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
-        uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
-        uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
-        uncompressed += val;
-        tmp_bitmap.get_next_symbol(read_idx, table, root, val);
-        uncompressed += val;
+    }
+    {
+        std::string input_str = "ilovepinkilovepinnkeeilovepinklolkekcheburek";
+        std::vector<char> input;
+        input.insert(input.end(), input_str.begin(), input_str.end());
+        HA_bitmap compressed;
+        std::vector<char> output;
+        std::vector<HuffmanCode> huffman_table;
+        HA_compress(input, compressed, huffman_table);
+        HA_decompress(compressed, output, huffman_table);
+        if (input != output)
+            abort();
     }
     cout << endl;
 }
@@ -225,7 +167,7 @@ void TestLZ_78()
         std::string str_input = "bananananananananananaaaaaaaaaaaaaaaaaaaaaaaaaaaaxyz";
         std::vector<char> input;
         std::vector<char> output;
-        std::vector<LZ78_Node> tmp;
+        std::vector<char> tmp;
         input.insert(input.begin(), str_input.begin(), str_input.end());
         cout << "lz78 исходная строка: ";
         for (auto &it : input)
@@ -251,7 +193,7 @@ void TestLZ_78()
         std::string str_input = "abacabacabadaca";
         std::vector<char> input;
         std::vector<char> output;
-        std::vector<LZ78_Node> tmp;
+        std::vector<char> tmp;
         input.insert(input.begin(), str_input.begin(), str_input.end());
         cout << "lz78 исходная строка: \t";
         for (auto &it : input)
@@ -280,7 +222,7 @@ void TestLZ_77()
         std::string str_input = "bananananananananananaaaaaaaaaaaaaaaaaaaaaaaaaaaaxyz";
         std::vector<char> input;
         std::vector<char> output;
-        std::vector<LZ77_Node> tmp;
+        std::vector<char> tmp;
         input.insert(input.begin(), str_input.begin(), str_input.end());
         cout << "lz77 исходная строка: ";
         for (auto &it : input)
@@ -306,7 +248,7 @@ void TestLZ_77()
         std::string str_input = "abacabacabadaca";
         std::vector<char> input;
         std::vector<char> output;
-        std::vector<LZ77_Node> tmp;
+        std::vector<char> tmp;
         input.insert(input.begin(), str_input.begin(), str_input.end());
         cout << "lz77 исходная строка: \t";
         for (auto &it : input)
@@ -399,18 +341,11 @@ void TestBWT()
 
 void TestMTF()
 {
-    forward_list<char> alphabet;
-    for (char i = 32; i <= 126; i++)
-    {
-        //' ' to '~'
-        alphabet.push_front(i);
-    }
-
     {
         std::string str_input = "banana";
         std::vector<char> input;
         std::vector<char> output;
-        std::vector<int> tmp;
+        std::vector<char> tmp;
 
         input.insert(input.begin(), str_input.begin(), str_input.end());
         cout << "MTF исходная строка: ";
@@ -419,14 +354,14 @@ void TestMTF()
 
         cout << endl
              << "MTF размер до сжатия: " << input.size() << endl;
-        MTF_compress(input, tmp, alphabet);
+        MTF_compress(input, tmp);
 
         cout << "MTF размер сжатого: " << tmp.size() * sizeof(int) << endl
              << "MTF преобразование: ";
         for (auto &it : tmp)
             cout << it;
 
-        MTF_decompress(tmp, output, alphabet);
+        MTF_decompress(tmp, output);
         cout << endl;
 
         cout << "MTF разжатая строка: ";
@@ -442,7 +377,7 @@ void TestMTF()
         std::string str_input = "abracadabra";
         std::vector<char> input;
         std::vector<char> output;
-        std::vector<int> tmp;
+        std::vector<char> tmp;
 
         input.insert(input.begin(), str_input.begin(), str_input.end());
         cout << "MTF исходная строка: ";
@@ -451,14 +386,14 @@ void TestMTF()
 
         cout << endl
              << "MTF размер до сжатия: " << input.size() << endl;
-        MTF_compress(input, tmp, alphabet);
+        MTF_compress(input, tmp);
 
         cout << "MTF размер сжатого: " << tmp.size() * sizeof(int) << endl
              << "MTF преобразование: ";
         for (auto &it : tmp)
             cout << it;
 
-        MTF_decompress(tmp, output, alphabet);
+        MTF_decompress(tmp, output);
         cout << endl;
 
         cout << "MTF разжатая строка: ";
@@ -472,6 +407,9 @@ void TestMTF()
 
 int main(int argc, char *argv[])
 {
+    TestHuffman();
+
+    return 0;
     LZ77_Node node_ololo;
     node_ololo.length = 666;
     node_ololo.offset = 777;
@@ -481,7 +419,7 @@ int main(int argc, char *argv[])
     node_omg.offset = 2;
     node_omg.next = '3';
     std::vector<LZ77_Node> nodes_wtf = {node_ololo, node_omg};
-    std::deque<char> buffer;
+    std::vector<char> buffer;
     serialize(buffer, nodes_wtf);
     size_t offset = 0;
     std::vector<LZ77_Node> nodes_tmp;

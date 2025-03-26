@@ -1,9 +1,13 @@
 #include "lz78.h"
+
+#include "serialization.h"
+
 using namespace std;
 
 // Функция для кодирования строки с использованием LZ78
-void LZ78_compress(const std::vector<char> &input, std::vector<LZ78_Node> &output)
+void LZ78_compress(const std::vector<char> &input, std::vector<char> &output)
 {
+    std::vector<LZ78_Node> tmp;
     std::string buffer = "";         // текущий префикс
     std::map<std::string, int> dict; // словарь
 
@@ -17,7 +21,7 @@ void LZ78_compress(const std::vector<char> &input, std::vector<LZ78_Node> &outpu
         else
         {
             // Добавляем пару в ответ
-            output.push_back({dict[buffer], input[i]});
+            tmp.push_back({dict[buffer], input[i]});
             // Добавляем слово в словарь
             dict[buffer + input[i]] = dict.size() + 1; // dict.size() + 1, так как индексация начинается с 1
             buffer = "";                               // сбрасываем буфер
@@ -29,14 +33,18 @@ void LZ78_compress(const std::vector<char> &input, std::vector<LZ78_Node> &outpu
     {
         char last_ch = buffer.back();              // берем последний символ буфера
         buffer.pop_back();                         // удаляем последний символ из буфера
-        output.push_back({dict[buffer], last_ch}); // добавляем пару в ответ
+        tmp.push_back({dict[buffer], last_ch}); // добавляем пару в ответ
     }
+    serialize(output, tmp);
 }
 
 // Функция для декодирования списка блоков
-void LZ78_decompress(const std::vector<LZ78_Node> &encoded, std::vector<char> &output)
+void LZ78_decompress(const std::vector<char> &input, std::vector<char> &output)
 {
     std::vector<std::string> dict(1, ""); // словарь, слово с номером 0 — пустая строка
+    std::vector<LZ78_Node> encoded;
+    size_t offset = 0;
+    deserialize(input, encoded, offset);
 
     for (const auto &node : encoded)
     {
@@ -46,13 +54,13 @@ void LZ78_decompress(const std::vector<LZ78_Node> &encoded, std::vector<char> &o
     }
 }
 
-void serialize(std::deque<char> &buffer, const LZ78_Node &val)
+void serialize(std::vector<char> &buffer, const LZ78_Node &val)
 {
     serialize(buffer, val.pos);
     serialize(buffer, val.next);
 }
 
-void deserialize(const std::deque<char> &buffer, LZ78_Node &val, size_t &idx)
+void deserialize(const std::vector<char> &buffer, LZ78_Node &val, size_t &idx)
 {
     deserialize(buffer, val.pos, idx);
     deserialize(buffer, val.next, idx);

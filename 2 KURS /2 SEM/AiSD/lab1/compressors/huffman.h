@@ -32,7 +32,7 @@ struct HuffmanCode
     void add_bit_to_code(int val);
 };
 
-//структура куда записываются и хранятся коды хаффмана 
+// структура куда записываются и хранятся коды хаффмана
 struct HA_bitmap
 {
     // сторадж содержит битовые данные в блоках по 64 (размер size_t в битах)
@@ -50,19 +50,24 @@ struct HA_bitmap
     void get_next_symbol(int &idx, std::vector<HuffmanCode> &huffman_table, HAT_node *&root, char &symb);
 };
 
+size_t get_bit_from_size_t(size_t val, size_t idx);
+
 // вспомогательный метод для создания таблицы хаффмана
 void HA_make_table(const std::vector<char> &input, std::vector<HuffmanCode> &huffman_table, HAT_node *&root);
 void HA_print_table(std::vector<HuffmanCode> &huffman_table);
+void HA_table_to_tree(std::vector<HuffmanCode> &huffman_table, HAT_node *&root);
 
 // сжатие
 
 // нужнен output = вектоор из size_t, куда мы будем писать коды закодированных символов по таблице
 // в 1м size_t может быть несколько кодов, в зависимости от длин кодов
 //(один код может разделиться на 2 size_t!!! проверка при чтении)
-void HA_compress(const std::vector<char> &input, HA_bitmap &output, std::vector<HuffmanCode> &huffman_table, HAT_node *&root);
-
+void HA_compress(const std::vector<char> &input, HA_bitmap &output, std::vector<HuffmanCode> &huffman_table);
 // разжатие
-void HA_decompress(HA_bitmap &input, std::vector<char> &output, std::vector<HuffmanCode> &huffman_table, HAT_node *&root);
+void HA_decompress(HA_bitmap &input, std::vector<char> &output, std::vector<HuffmanCode> &huffman_table);
 
-void serialize(std::deque<char> &buffer, const LZ78_Node &val);
-void deserialize(const std::deque<char> &buffer, LZ78_Node &val, size_t& idx);
+void serialize(std::vector<char> &buffer, const HA_bitmap &val);
+void deserialize(const std::vector<char> &buffer, HA_bitmap &val, size_t &idx);
+
+void serialize(std::vector<char> &buffer, const HuffmanCode &val);
+void deserialize(const std::vector<char> &buffer, HuffmanCode &val, size_t &idx);
