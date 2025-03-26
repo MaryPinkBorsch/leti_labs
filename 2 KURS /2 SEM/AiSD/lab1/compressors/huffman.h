@@ -62,9 +62,9 @@ void HA_table_to_tree(std::vector<HuffmanCode> &huffman_table, HAT_node *&root);
 // нужнен output = вектоор из size_t, куда мы будем писать коды закодированных символов по таблице
 // в 1м size_t может быть несколько кодов, в зависимости от длин кодов
 //(один код может разделиться на 2 size_t!!! проверка при чтении)
-void HA_compress(const std::vector<char> &input, HA_bitmap &output, std::vector<HuffmanCode> &huffman_table);
+void HA_compress(const std::vector<char> &input, std::vector<char> &output);
 // разжатие
-void HA_decompress(HA_bitmap &input, std::vector<char> &output, std::vector<HuffmanCode> &huffman_table);
+void HA_decompress(const std::vector<char> &input, std::vector<char> &output);
 
 void serialize(std::vector<char> &buffer, const HA_bitmap &val);
 void deserialize(const std::vector<char> &buffer, HA_bitmap &val, size_t &idx);

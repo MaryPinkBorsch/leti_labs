@@ -278,13 +278,15 @@ void HA_bitmap::get_next_symbol(int &idx, std::vector<HuffmanCode> &huffman_tabl
 // нужнен output = вектоор из size_t, куда мы будем писать коды закодированных символов по таблице
 // в 1м size_t может быть несколько кодов, в зависимости от длин кодов
 //(один код может разделиться на 2 size_t!!! проверка при чтении)
-void HA_compress(const std::vector<char> &input, HA_bitmap &output, std::vector<HuffmanCode> &huffman_table)
+void HA_compress(const std::vector<char> &input, std::vector<char> &output)
 {
+    std::vector<HuffmanCode> huffman_table;
     HAT_node * root = nullptr;
     HA_make_table(input, huffman_table, root);
     // HA_print_table(huffman_table);
 
-    output.storage = {0};
+    HA_bitmap tmp;
+    tmp.storage = {0};
     std::unordered_map<char, HuffmanCode *> table_idx;
     // тут мапа хранит символ-индекс символа в таблице Хаффмана
     for (auto &it : huffman_table)
@@ -293,21 +295,29 @@ void HA_compress(const std::vector<char> &input, HA_bitmap &output, std::vector<
     }
     for (int i = 0; i < input.size(); i++)
     {
-        output.add_code(*table_idx[input[i]]);
+        tmp.add_code(*table_idx[input[i]]);
     }
+    serialize(output, huffman_table);
+    serialize(output, tmp);
 }
 
 // разжатие
-void HA_decompress(HA_bitmap &input, std::vector<char> &output, std::vector<HuffmanCode> &huffman_table)
+void HA_decompress(const std::vector<char> &input, std::vector<char> &output)
 {
+    size_t offset = 0;
+    std::vector<HuffmanCode> huffman_table;
+    HA_bitmap tmp;    
+    deserialize(input, huffman_table, offset);
+    deserialize(input, tmp, offset);
+
     HAT_node * root = nullptr;
     HA_table_to_tree(huffman_table, root);
 
     int read_idx = 0;
     char val = ' ';
-    while (read_idx < input.num_bits)
+    while (read_idx < tmp.num_bits)
     {
-        input.get_next_symbol(read_idx, huffman_table, root, val);
+        tmp.get_next_symbol(read_idx, huffman_table, root, val);
         output.push_back(val);
     }
 }

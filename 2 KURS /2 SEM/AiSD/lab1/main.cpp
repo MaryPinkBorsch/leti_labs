@@ -104,16 +104,14 @@ void TestBMP_gray_HA()
     std::string input_filename = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie grayscale.bmp";
     std::string output_filename = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie grayscale1_HA.bmp";
     std::vector<char> input_data;
-    HA_bitmap tmp_data;
-    std::vector<HuffmanCode> huffman_table;
-    HAT_node *root;
+    std::vector<char> compressed;
     std::vector<char> output_data;
 
     readfile(input_filename, input_data);
     cout << "ИЗначальный размер " << input_data.size() << " байт" << endl;
-    HA_compress(input_data, tmp_data, huffman_table);
-    cout << "Сжатие gray HUFFMAN размер: " << tmp_data.storage.size() * 8 << " байт" << endl;
-    HA_decompress(tmp_data, output_data, huffman_table);
+    HA_compress(input_data, compressed);
+    cout << "Сжатие gray HUFFMAN размер: " << compressed.size() << " байт" << endl;
+    HA_decompress(compressed, output_data);
     writefile(output_filename, output_data);
 }
 
@@ -150,11 +148,10 @@ void TestHuffman()
         std::string input_str = "ilovepinkilovepinnkeeilovepinklolkekcheburek";
         std::vector<char> input;
         input.insert(input.end(), input_str.begin(), input_str.end());
-        HA_bitmap compressed;
+        std::vector<char> compressed;
         std::vector<char> output;
-        std::vector<HuffmanCode> huffman_table;
-        HA_compress(input, compressed, huffman_table);
-        HA_decompress(compressed, output, huffman_table);
+        HA_compress(input, compressed);
+        HA_decompress(compressed, output);
         if (input != output)
             abort();
     }
