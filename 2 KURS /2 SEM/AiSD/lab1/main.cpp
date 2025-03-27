@@ -286,7 +286,6 @@ void prob_estimate(string &s, unordered_map<char, double> &probs)
     }
 }
 
-
 void entropy(string &s, int code_len, double &entr)
 {
     unordered_map<char, double> probs;
@@ -311,29 +310,31 @@ void entropy(string &s, int code_len, double &entr)
 void LZ77_buff_test()
 {
     {
-        string s = "bananapinklolkek";
+        string s = "bananapinklolkekbananapinklolkekbananapinklolkekbananapinklolkekbananapinklolkekbananapinklolkekbananapinklolkekbananapinklolkekbananapinklolkekbananapinklolkekbananapinklolkekbananapinklolkekbananapinklolkekbananapinklolkekbananapinklolkekbananapinklolkek";
         vector<char> input_data;
         vector<char> res;
         input_data.insert(input_data.end(), s.begin(), s.end());
         LZ77_compress(input_data, res);
-        cout << "input size "<<input_data.size() << endl<< " compressed size "<<res.size()<< endl;
-        double k = (double)input_data.size() /res.size() ;
+        cout << "input size " << input_data.size() << endl
+             << " compressed size " << res.size() << endl;
+        double k = (double)input_data.size() / res.size();
         cout << "buff size = " << G_LZ77_WINDOW_SIZE << "   k = " << k << endl;
     }
-    
 }
 
 int main(int argc, char *argv[])
 {
+
+    std::string input_f = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie grayscale.bmp";
+    run_compressors(input_f);
+    cout<<"enwik test"<<endl;
+    input_f = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/enwik7.txt";
+    run_compressors(input_f);
+
+    return 0;
     LZ77_buff_test();
     return 0;
     entropy_test();
-
-    return 0;
-    std::string input_f = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie grayscale.bmp";
-    run_compressors(input_f);
-    input_f = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/enwik7.txt";
-    run_compressors(input_f);
 
     return 0;
 }

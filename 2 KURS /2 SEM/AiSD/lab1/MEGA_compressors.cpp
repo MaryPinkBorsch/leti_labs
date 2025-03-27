@@ -24,6 +24,7 @@ void HA_compressor(std::string input_filename, std::string compressed_filename)
     cout << "HA ИЗначальный размер " << input_data.size() << " байт" << endl;
     HA_compress(input_data, tmp_data);
     cout << "HA размер сжатого " << tmp_data.size() << " байт" << endl;
+    cout <<"k = "<< (double)input_data.size() / tmp_data.size();
     writefile(compressed_filename, tmp_data);
 }
 void HA_decompressor(std::string compressed_filename, std::string output_filename)
@@ -45,6 +46,7 @@ void RLE_compressor(std::string input_filename, std::string compressed_filename)
     cout << "RLE ИЗначальный размер " << input_data.size() << " байт" << endl;
     rle_compress(input_data, tmp_data);
     cout << "RLE размер сжатого " << tmp_data.size() << " байт" << endl;
+    cout <<"k = "<< (double)input_data.size() / tmp_data.size();
     writefile(compressed_filename, tmp_data);
 }
 void RLE_decompressor(std::string compressed_filename, std::string output_filename)
@@ -69,6 +71,7 @@ void BWT_RLE_compressor(std::string input_filename, std::string compressed_filen
     BWT_compress(input_data, tmp_data);
     rle_compress(tmp_data, tmp_data2);
     cout << "BWT_RLE размер сжатого " << tmp_data2.size() << " байт" << endl;
+    cout <<"k = "<< (double)input_data.size() / tmp_data2.size();
     writefile(compressed_filename, tmp_data2);
 }
 void BWT_RLE_decompressor(std::string compressed_filename, std::string output_filename)
@@ -98,6 +101,7 @@ void BWT_MTF_HA_compressor(std::string input_filename, std::string compressed_fi
     MTF_compress(tmp_data, tmp_data2);
     HA_compress(tmp_data2, tmp_data3);
     cout << "BWT_MTF_HA размер сжатого " << tmp_data3.size() << " байт" << endl;
+    cout <<"k = "<< (double)input_data.size() / tmp_data3.size();
     writefile(compressed_filename, tmp_data3);
 }
 void BWT_MTF_HA_decompressor(std::string compressed_filename, std::string output_filename)
@@ -131,6 +135,7 @@ void BWT_MTF_RLE_HA_compressor(std::string input_filename, std::string compresse
     rle_compress(tmp_data2, tmp_data3);
     HA_compress(tmp_data3, tmp_data4);
     cout << "BWT_MTF_RLE_HA размер сжатого " << tmp_data4.size() << " байт" << endl;
+    cout <<"k = "<< (double)input_data.size() / tmp_data4.size();
     writefile(compressed_filename, tmp_data4);
 }
 void BWT_MTF_RLE_HA_decompressor(std::string compressed_filename, std::string output_filename)
@@ -158,6 +163,7 @@ void LZ78_compressor(std::string input_filename, std::string compressed_filename
     cout << "LZ78 ИЗначальный размер " << input_data.size() << " байт" << endl;
     LZ78_compress(input_data, tmp_data);
     cout << "LZ78 размер сжатого " << tmp_data.size() << " байт" << endl;
+    cout <<"k = "<< (double)input_data.size() / tmp_data.size();
     writefile(compressed_filename, tmp_data);
 }
 void LZ78_decompressor(std::string compressed_filename, std::string output_filename)
@@ -183,6 +189,7 @@ void LZ78_HA_compressor(std::string input_filename, std::string compressed_filen
     LZ78_compress(input_data, tmp_data);
     HA_compress(tmp_data, tmp_data2);
     cout << "Lz78_HA размер сжатого " << tmp_data2.size() << " байт" << endl;
+    cout <<"k = "<< (double)input_data.size() / tmp_data2.size();
     writefile(compressed_filename, tmp_data2);
 }
 void LZ78_HA_decompressor(std::string compressed_filename, std::string output_filename)
@@ -208,6 +215,7 @@ void LZ77_compressor(std::string input_filename, std::string compressed_filename
     cout << "LZ77 ИЗначальный размер " << input_data.size() << " байт" << endl;
     LZ77_compress(input_data, tmp_data);
     cout << "LZ77 размер сжатого " << tmp_data.size() << " байт" << endl;
+    cout <<"k = "<< (double)input_data.size() / tmp_data.size();
     writefile(compressed_filename, tmp_data);
 }
 void LZ77_decompressor(std::string compressed_filename, std::string output_filename)
@@ -233,6 +241,7 @@ void LZ77_HA_compressor(std::string input_filename, std::string compressed_filen
     LZ77_compress(input_data, tmp_data);
     HA_compress(tmp_data, tmp_data2);
     cout << "Lz77_HA размер сжатого " << tmp_data2.size() << " байт" << endl;
+    cout <<"k = "<< (double)input_data.size() / tmp_data2.size();
     writefile(compressed_filename, tmp_data2);
 }
 void LZ77_HA_decompressor(std::string compressed_filename, std::string output_filename)
@@ -258,6 +267,7 @@ void BWT_compressor(std::string input_filename, std::string compressed_filename)
     cout << "BWT ИЗначальный размер " << input_data.size() << " байт" << endl;
     BWT_compress(input_data, tmp_data);
     cout << "BWT размер сжатого " << tmp_data.size() << " байт" << endl;
+    cout <<"k = "<< (double)input_data.size() / tmp_data.size();
     writefile(compressed_filename, tmp_data);
 }
 void BWT_decompressor(std::string compressed_filename, std::string output_filename)
