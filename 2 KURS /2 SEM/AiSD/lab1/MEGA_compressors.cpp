@@ -245,5 +245,26 @@ void LZ77_HA_decompressor(std::string compressed_filename, std::string output_fi
     HA_decompress(input_data, tmp_data);
     LZ77_decompress(tmp_data, output_data);
     writefile(output_filename, output_data);
-    cout << "Lz77_HA после Сжатие gray  размер: " << output_data.size() << endl;
+    // cout << "Lz77_HA после Сжатие gray  размер: " << output_data.size() << endl;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
+void BWT_compressor(std::string input_filename, std::string compressed_filename)
+{
+    std::vector<char> input_data;
+    std::vector<char> tmp_data;
+    readfile(input_filename, input_data);
+    cout << "BWT ИЗначальный размер " << input_data.size() << " байт" << endl;
+    BWT_compress(input_data, tmp_data);
+    cout << "BWT размер сжатого " << tmp_data.size() << " байт" << endl;
+    writefile(compressed_filename, tmp_data);
+}
+void BWT_decompressor(std::string compressed_filename, std::string output_filename)
+{
+    std::vector<char> tmp_data;
+    std::vector<char> output_data;
+    readfile(compressed_filename, tmp_data);
+    BWT_decompress(tmp_data, output_data);
+    writefile(output_filename, output_data);
 }

@@ -20,7 +20,7 @@ string cyclic_shift(std::vector<char> &input, int distance)
 	return source.substr(distance, string::npos) + source.substr(0, distance);
 }
 
-void BWT_compress(std::vector<char> &input, std::vector<char> &output)
+void BWT_compress_block(std::vector<char> &input, std::vector<char> &output)
 {
 	// надо добавить маркер в инпут
 	input.push_back(MARKER);
@@ -50,15 +50,14 @@ bool comp_tuples(pair<char, int> a, pair<char, int> b)
 	return (a.first < b.first);
 }
 
-void BWT_decompress(std::vector<char> &input, std::vector<char> &output)
+void BWT_decompress_block(std::vector<char> &input, std::vector<char> &output)
 {
 	if (input.empty())
 	{
 		return;
 	}
 
-	int j;
-
+	int j = 0;
 	// создаем вектор пар
 	vector<pair<char, int>> coding_tuples;
 
@@ -71,16 +70,44 @@ void BWT_decompress(std::vector<char> &input, std::vector<char> &output)
 		{
 			j = i;
 		}
-
 		coding_tuples.push_back(pair<char, int>(input.at(i), i));
 	}
 
 	// сортируем
 	stable_sort(coding_tuples.begin(), coding_tuples.end(), comp_tuples);
-
 	do
 	{
 		output.push_back(coding_tuples.at(j).first);
 		j = coding_tuples.at(j).second;
 	} while (coding_tuples.at(j).first != MARKER);
+}
+
+int G_BWT_BLOCK_SIZE = 64;
+
+void BWT_compress(std::vector<char> &input, std::vector<char> &output) 
+{
+	for (int i = 0; i < input.size(); i += G_BWT_BLOCK_SIZE) 
+	{
+		std::vector<char> block;
+		std::vector<char> compressed_block;
+
+		std::vector<char>::iterator last_item = (i + G_BWT_BLOCK_SIZE < input.size()) ? (input.begin() + i + G_BWT_BLOCK_SIZE) : input.end();
+		block.insert(block.begin(), input.begin() + i, last_item);
+		BWT_compress_block(block, compressed_block);
+		output.insert(output.end(), compressed_block.begin(), compressed_block.end());
+	}
+}
+
+void BWT_decompress(std::vector<char> &input, std::vector<char> &output) 
+{
+	for (int i = 0; i < input.size(); i += G_BWT_BLOCK_SIZE + 1) // +1 for $ marker
+	{
+		std::vector<char> block;
+		std::vector<char> decompressed_block;
+
+		std::vector<char>::iterator last_item = (i + G_BWT_BLOCK_SIZE + 1 < input.size()) ? (input.begin() + i + G_BWT_BLOCK_SIZE + 1) : input.end();
+		block.insert(block.begin(), input.begin() + i, last_item);
+		BWT_decompress_block(block, decompressed_block);
+		output.insert(output.end(), decompressed_block.begin(), decompressed_block.end());
+	}
 }

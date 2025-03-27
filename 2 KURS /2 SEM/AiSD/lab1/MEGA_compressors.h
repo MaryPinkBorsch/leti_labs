@@ -61,3 +61,7 @@ void LZ77_decompressor(std::string compressed_filename, std::string output_filen
 // ЛЗ 77 + Хаффман
 void LZ77_HA_compressor(std::string input_filename, std::string compressed_filename);
 void LZ77_HA_decompressor(std::string compressed_filename, std::string output_filename);
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+void BWT_compressor(std::string input_filename, std::string compressed_filename);
+void BWT_decompressor(std::string compressed_filename, std::string output_filename);

@@ -182,6 +182,7 @@ void rle_compress(const std::vector<char> &input, std::vector<char> &output)
 void rle_decompress(const std::vector<char> &input, std::vector<char> &output)
 {
     int t = 0;
+    output.reserve(input.size());
     while (t < input.size())
     {
         char count = input[t];
