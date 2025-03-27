@@ -7,19 +7,24 @@
 #include "bwt.h"
 #include "mtf.h"
 
-void readfile(std::string input_filename, std::vector<char> &buffer)
-{
-    size_t input_file_size = std::filesystem::file_size(input_filename);
-    std::ifstream input_file(input_filename, std::ios::binary);
-    buffer.resize(input_file_size);
-    input_file.read((char *)buffer.data(), input_file_size);
-}
+// void readfile(std::string input_filename, std::vector<char> &buffer)
+// {
+//     size_t input_file_size = std::filesystem::file_size(input_filename);
+//     std::ifstream input_file(input_filename, std::ios::binary);
+//     buffer.resize(input_file_size);
+//     input_file.read((char *)buffer.data(), input_file_size);
+// }
 
-void writefile(std::string output_filename, std::vector<char> &buffer)
-{
-    std::ofstream output_file(output_filename, std::ios::binary | std::ios::trunc);
-    output_file.write((char *)buffer.data(), buffer.size());
-}
+// void writefile(std::string output_filename, std::vector<char> &buffer)
+// {
+//     std::ofstream output_file(output_filename, std::ios::binary | std::ios::trunc);
+//     output_file.write((char *)buffer.data(), buffer.size());
+// }
+void readfile(std::string input_filename, std::vector<char> &buffer);
+
+
+void writefile(std::string output_filename, std::vector<char> &buffer);
+
 
 // Хаффман
 void HA_compressor(std::string input_filename, std::string compressed_filename);

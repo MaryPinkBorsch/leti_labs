@@ -1,6 +1,20 @@
 
 #include "MEGA_compressors.h"
 using namespace std;
+
+void readfile(std::string input_filename, std::vector<char> &buffer)
+{
+    size_t input_file_size = std::filesystem::file_size(input_filename);
+    std::ifstream input_file(input_filename, std::ios::binary);
+    buffer.resize(input_file_size);
+    input_file.read((char *)buffer.data(), input_file_size);
+}
+
+void writefile(std::string output_filename, std::vector<char> &buffer)
+{
+    std::ofstream output_file(output_filename, std::ios::binary | std::ios::trunc);
+    output_file.write((char *)buffer.data(), buffer.size());
+}
 // Хафман
 void HA_compressor(std::string input_filename, std::string compressed_filename)
 {
@@ -61,11 +75,10 @@ void BWT_RLE_decompressor(std::string compressed_filename, std::string output_fi
 {
     std::vector<char> input_data;
     std::vector<char> tmp_data;
-    std::vector<char> tmp_data2;
     std::vector<char> output_data;
 
     readfile(compressed_filename, input_data);
-    rle_decompress(tmp_data2, tmp_data);
+    rle_decompress(input_data, tmp_data);
     BWT_decompress(tmp_data, output_data);
     writefile(output_filename, output_data);
 }
@@ -180,7 +193,7 @@ void LZ78_HA_decompressor(std::string compressed_filename, std::string output_fi
     std::vector<char> output_data;
 
     readfile(compressed_filename, input_data);
-    HA_decompress(tmp_data2, tmp_data);
+    HA_decompress(input_data, tmp_data);
     LZ78_decompress(tmp_data, output_data);
     writefile(output_filename, output_data);
     // cout << "Lz78_HA после Сжатие gray  размер: " << output_data.size() << endl;
@@ -226,11 +239,10 @@ void LZ77_HA_decompressor(std::string compressed_filename, std::string output_fi
 {
     std::vector<char> input_data;
     std::vector<char> tmp_data;
-    std::vector<char> tmp_data2;
     std::vector<char> output_data;
 
     readfile(compressed_filename, input_data);
-    HA_decompress(tmp_data2, tmp_data);
+    HA_decompress(input_data, tmp_data);
     LZ77_decompress(tmp_data, output_data);
     writefile(output_filename, output_data);
     cout << "Lz77_HA после Сжатие gray  размер: " << output_data.size() << endl;
