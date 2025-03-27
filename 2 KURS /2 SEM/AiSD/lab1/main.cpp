@@ -311,51 +311,16 @@ void entropy(string &s, int code_len, double &entr)
 void LZ77_buff_test()
 {
     {
-        string s = "bananapinklol";
+        string s = "bananapinklolkek";
         vector<char> input_data;
         vector<char> res;
         input_data.insert(input_data.end(), s.begin(), s.end());
         LZ77_compress(input_data, res);
-        cout << "in size "<<input_data.size() << " res size "<<res.size()<< endl;
-        double k = res.size()/input_data.size() ;
-        cout << "buff size = " << input_data.size() << "   k = " << k << endl;
+        cout << "input size "<<input_data.size() << endl<< " compressed size "<<res.size()<< endl;
+        double k = (double)input_data.size() /res.size() ;
+        cout << "buff size = " << G_LZ77_WINDOW_SIZE << "   k = " << k << endl;
     }
-    // {
-    //     string s = "bababa";
-    //     vector<char> input_data;
-    //     vector<char> res;
-    //     input_data.insert(input_data.end(), s.begin(), s.end());
-    //     LZ77_compress(input_data, res);
-    //     double k = input_data.size() / res.size();
-    //     cout << "buff size = " << input_data.size() << "   k = " << k << endl;
-    // }
-    // {
-    //     string s = "babababababababababababa";
-    //     vector<char> input_data;
-    //     vector<char> res;
-    //     input_data.insert(input_data.end(), s.begin(), s.end());
-    //     LZ77_compress(input_data, res);
-    //     double k = input_data.size() / res.size();
-    //     cout << "buff size = " << input_data.size() << "   k = " << k << endl;
-    // }
-    // {
-    //     string s = "babababababababababababababababababababababababababababababababababababababababababababababababababababababababababababa";
-    //     vector<char> input_data;
-    //     vector<char> res;
-    //     input_data.insert(input_data.end(), s.begin(), s.end());
-    //     LZ77_compress(input_data, res);
-    //     double k = input_data.size() / res.size();
-    //     cout << "buff size = " << input_data.size() << "   k = " << k << endl;
-    // }
-    // {
-    //     string s = "babababababababababababababababababababababababababababababababababababababababababababababababababababababababababababa";
-    //     vector<char> input_data;
-    //     vector<char> res;
-    //     input_data.insert(input_data.end(), s.begin(), s.end());
-    //     LZ77_compress(input_data, res);
-    //     double k = input_data.size() / res.size();
-    //     cout << "buff size = " << input_data.size() << "   k = " << k << endl;
-    // }
+    
 }
 
 int main(int argc, char *argv[])
