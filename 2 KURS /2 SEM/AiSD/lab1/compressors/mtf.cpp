@@ -9,6 +9,9 @@ using namespace std;
 void MTF_compress(std::vector<char> &input, std::vector<char> &output)
 {
     forward_list<char> alphabet;
+    // alphabet.push_front('\r');
+    // alphabet.push_front('\n');
+    // alphabet.push_front('\251');
     for (int i = 0; i <= 255; i++)
     {
         alphabet.push_front((char)i);
@@ -16,7 +19,7 @@ void MTF_compress(std::vector<char> &input, std::vector<char> &output)
     for (auto c = input.begin(); c != input.end(); c++)
     {
         // ищем в алфавите индекс символа из инпута
-        int index = 0;
+        unsigned char index = 0;
         bool found = false;
         forward_list<char>::iterator character = alphabet.begin();
         forward_list<char>::iterator next_character = next(alphabet.begin(), 1);
@@ -40,7 +43,8 @@ void MTF_compress(std::vector<char> &input, std::vector<char> &output)
             if (!found)
             {
                 // символа нет в алфавите, ошибка!!
-                return;
+                std::cerr << "Symbol not found " << *c << std::endl;
+                std::abort();
             }
 
             // переместить элемент с индексом в начало списка
@@ -49,9 +53,7 @@ void MTF_compress(std::vector<char> &input, std::vector<char> &output)
         }
 
         // добавить индекс в аутпут
-        size_t last_size = output.size();
-        output.resize(output.size() + sizeof(int));
-        std::memcpy(&output[last_size], &index, sizeof(int));
+        output.push_back(index);
     }
 }
 
@@ -60,16 +62,20 @@ void MTF_decompress(std::vector<char> &input, std::vector<char> &output)
     string source = "";
     source.reserve(input.size());
     forward_list<char> alphabet;
+    // alphabet.push_front('\r');
+    // alphabet.push_front('\n');
+    // alphabet.push_front('\251');
     for (int i = 0; i <= 255; i++)
     {
         alphabet.push_front((char)i);
     }
     if (alphabet.begin() != alphabet.end())
     {
-        for (int i = 0; i < input.size(); i += sizeof(int))
+        const int input_size = input.size();
+        for (int i = 0; i < input_size; i ++)
         {
-            int index = 0;
-            std::memcpy(&index, &input[i], sizeof(int));
+            unsigned char index = 0;
+            index = input[i];
             if (index != 0)
             {
                 forward_list<char>::iterator character = next(alphabet.begin(), index - 1);
