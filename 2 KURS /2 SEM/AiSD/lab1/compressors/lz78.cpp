@@ -31,8 +31,8 @@ void LZ78_compress(const std::vector<char> &input, std::vector<char> &output)
     // Если буфер не пуст, добавляем его в словарь
     if (!buffer.empty())
     {
-        char last_ch = buffer.back();              // берем последний символ буфера
-        buffer.pop_back();                         // удаляем последний символ из буфера
+        char last_ch = buffer.back();           // берем последний символ буфера
+        buffer.pop_back();                      // удаляем последний символ из буфера
         tmp.push_back({dict[buffer], last_ch}); // добавляем пару в ответ
     }
     serialize(output, tmp);
@@ -48,7 +48,8 @@ void LZ78_decompress(const std::vector<char> &input, std::vector<char> &output)
 
     for (const auto &node : encoded)
     {
-        std::string word = dict[node.pos - 1] + node.next;     // составляем слово
+        size_t idx = node.pos ? node.pos - 1 : 0;
+        std::string word = dict[idx] + node.next; // составляем слово
         output.insert(output.end(), word.begin(), word.end()); // приписываем к ответу
         dict.push_back(word);                                  // добавляем в словарь
     }

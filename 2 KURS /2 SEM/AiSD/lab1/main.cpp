@@ -12,6 +12,7 @@
 #include "bwt.h"
 #include "mtf.h"
 
+#include "MEGA_compressors.h"
 using namespace std;
 template <typename T>
 void print(const vector<T> &tmp)
@@ -23,35 +24,19 @@ void print(const vector<T> &tmp)
     cout << endl;
 }
 
-template <typename T>
-void readfile(std::string input_filename, std::vector<T> &buffer)
-{
-    size_t input_file_size = std::filesystem::file_size(input_filename);
-    std::ifstream input_file(input_filename, std::ios::binary);
-    buffer.resize(input_file_size);
-    input_file.read((char *)buffer.data(), input_file_size);
-}
-
-template <typename T>
-void writefile(std::string output_filename, std::vector<T> &buffer)
-{
-    std::ofstream output_file(output_filename, std::ios::binary | std::ios::trunc);
-    output_file.write((char *)buffer.data(), buffer.size());
-}
-
 void TestBMP_chb()
 {
-    std::string input_filename = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie monochrome.bmp";
-    std::string output_filename = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie monochrome1.bmp";
-    std::vector<unsigned char> input_data;
-    std::vector<unsigned char> tmp_data;
-    std::vector<unsigned char> output_data;
-    readfile(input_filename, input_data);
-    cout << "ИЗначальный размер " << input_data.size() << " байт" << endl;
-    rle_compress_2_1(input_data, tmp_data);
-    cout << "Сжатие чб 2.1 размер: " << tmp_data.size() << endl;
-    rle_decompress_2_1(tmp_data, output_data);
-    writefile(output_filename, output_data);
+    // std::string input_filename = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie monochrome.bmp";
+    // std::string output_filename = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie monochrome1.bmp";
+    // std::vector<unsigned char> input_data;
+    // std::vector<unsigned char> tmp_data;
+    // std::vector<unsigned char> output_data;
+    // readfile(input_filename, input_data);
+    // cout << "ИЗначальный размер " << input_data.size() << " байт" << endl;
+    // rle_compress_2_1(input_data, tmp_data);
+    // cout << "Сжатие чб 2.1 размер: " << tmp_data.size() << endl;
+    // rle_decompress_2_1(tmp_data, output_data);
+    // writefile(output_filename, output_data);
 }
 
 void TestBMP2_chb()
@@ -71,17 +56,17 @@ void TestBMP2_chb()
 
 void TestBMP_gray()
 {
-    std::string input_filename = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie grayscale.bmp";
-    std::string output_filename = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie grayscale1.bmp";
-    std::vector<unsigned char> input_data;
-    std::vector<unsigned char> tmp_data;
-    std::vector<unsigned char> output_data;
-    readfile(input_filename, input_data);
-    cout << "ИЗначальный размер " << input_data.size() << " байт" << endl;
-    rle_compress_2_1(input_data, tmp_data);
-    cout << "Сжатие gray 2.1 размер: " << tmp_data.size() << endl;
-    rle_decompress_2_1(tmp_data, output_data);
-    writefile(output_filename, output_data);
+    // std::string input_filename = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie grayscale.bmp";
+    // std::string output_filename = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie grayscale1.bmp";
+    // std::vector< char> input_data;
+    // std::vector< char> tmp_data;
+    // std::vector< char> output_data;
+    // readfile(input_filename, input_data);
+    // cout << "ИЗначальный размер " << input_data.size() << " байт" << endl;
+    // rle_compress_2_1(input_data, tmp_data);
+    // cout << "Сжатие gray 2.1 размер: " << tmp_data.size() << endl;
+    // rle_decompress_2_1(tmp_data, output_data);
+    // writefile(output_filename, output_data);
 }
 
 void TestBMP2_gray()
@@ -173,7 +158,7 @@ void TestLZ_78()
         cout << endl
              << "lz78 размер до сжатия: " << input.size() << endl;
         LZ78_compress(input, tmp);
-        cout << "lz78 размер сжатого: " << tmp.size() * sizeof(LZ78_Node) << endl;
+        cout << "lz78 размер сжатого: " << tmp.size() << endl;
         LZ78_decompress(tmp, output);
 
         cout << "lz78 сжатая строка: ";
@@ -199,7 +184,7 @@ void TestLZ_78()
         cout << endl
              << "lz78 размер до сжатия: " << input.size() << endl;
         LZ78_compress(input, tmp);
-        cout << "lz78 размер сжатого: " << tmp.size() * sizeof(LZ78_Node) << endl;
+        cout << "lz78 размер сжатого: " << tmp.size() << endl;
         LZ78_decompress(tmp, output);
 
         cout << "lz78 сжатая строка: \t";
@@ -402,8 +387,37 @@ void TestMTF()
     }
 }
 
+// первый тест матрешка
+void TestBMP_gray_Lz78_HA()
+{
+    std::string input_filename = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie grayscale.bmp";
+    std::string output_filename = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie grayscaleLZ78_HA.bmp";
+    std::vector<char> input_data;
+    std::vector<char> tmp_data;
+    std::vector<char> tmp_data2;
+    std::vector<char> output_data;
+    readfile(input_filename, input_data);
+    cout << "Lz78_HA ИЗначальный размер " << input_data.size() << " байт" << endl;
+    LZ78_compress(input_data, tmp_data);
+    HA_compress(tmp_data, tmp_data2);
+    cout << "Lz78_HA размер сжатого " << tmp_data2.size() << " байт" << endl;
+
+    HA_decompress(tmp_data2, tmp_data);
+    LZ78_decompress(tmp_data, output_data);
+    writefile(output_filename, output_data);
+    cout << "Lz78_HA после Сжатие gray  размер: " << output_data.size() << endl;
+
+    if (input_data.size() != output_data.size())
+    {
+        cout << "ОШИБКА TestBMP_gray_Lz78_HA!!!!" << endl;
+    }
+}
+
 int main(int argc, char *argv[])
 {
+    TestLZ_78();
+    TestBMP_gray_Lz78_HA();
+    return 0;
     TestHuffman();
 
     return 0;
@@ -559,34 +573,34 @@ int main(int argc, char *argv[])
     TestBMP_gray();
     TestBMP2_gray();
     return 0;
-    if (argc == 4)
-    {
-        int mode = std::atoi(argv[1]); // 1 == compress, 2 == decompress
-        std::string input_filename = argv[2];
-        std::string output_filename = argv[3];
-        size_t input_file_size = std::filesystem::file_size(input_filename);
+    // if (argc == 4)
+    // {
+    //     int mode = std::atoi(argv[1]); // 1 == compress, 2 == decompress
+    //     std::string input_filename = argv[2];
+    //     std::string output_filename = argv[3];
+    //     size_t input_file_size = std::filesystem::file_size(input_filename);
 
-        std::vector<unsigned char> input_data;
-        std::vector<unsigned char> output_data;
+    //     std::vector<unsigned char> input_data;
+    //     std::vector<unsigned char> output_data;
 
-        switch (mode)
-        {
-        case 1: // compress
-        {
-            readfile(input_filename, input_data);
-            rle_compress_2_1(input_data, output_data);
-            writefile(output_filename, output_data);
-        }
-        break;
-        case 2: // compress
-        {
-            readfile(input_filename, input_data);
-            rle_decompress_2_1(input_data, output_data);
-            writefile(output_filename, output_data);
-        }
-        break;
-        }
-    }
+    //     switch (mode)
+    //     {
+    //     case 1: // compress
+    //     {
+    //         readfile(input_filename, input_data);
+    //         rle_compress_2_1(input_data, output_data);
+    //         writefile(output_filename, output_data);
+    //     }
+    //     break;
+    //     case 2: // compress
+    //     {
+    //         readfile(input_filename, input_data);
+    //         rle_decompress_2_1(input_data, output_data);
+    //         writefile(output_filename, output_data);
+    //     }
+    //     break;
+    //     }
+    // }
 
     return 0;
 }
