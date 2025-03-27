@@ -324,12 +324,41 @@ void LZ77_buff_test()
 
 int main(int argc, char *argv[])
 {
-
+    cout << endl
+         << endl
+         << "IMAGE test" << endl;
     std::string input_f = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie grayscale.bmp";
+    // run_compressors(input_f);
+
+    cout << endl
+         << endl
+         << "IMAGE monochrom test" << endl;
+    input_f = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie monochrome.bmp";
+    // run_compressors(input_f);
+
+    cout << endl
+         << endl
+         << "IMAGE color test" << endl;
+    input_f = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie color.bmp";
     run_compressors(input_f);
-    cout<<"enwik test"<<endl;
+
+    cout << endl
+         << endl
+         << "ENWIK test" << endl;
     input_f = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/enwik7.txt";
     run_compressors(input_f);
+
+    cout << endl
+         << endl
+         << "TEXT RUS test" << endl;
+    input_f = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/voina_i_mir.txt";
+    // run_compressors(input_f);
+
+    cout << endl
+         << endl
+         << "EXE FILE test" << endl;
+    input_f = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/HEROES2W.EXE";
+    // run_compressors(input_f);
 
     return 0;
     LZ77_buff_test();
