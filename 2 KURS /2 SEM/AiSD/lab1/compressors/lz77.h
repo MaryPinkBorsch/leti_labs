@@ -12,6 +12,8 @@ struct LZ77_Node
     char next;  // следующий символ
 };
 
+extern int G_LZ77_WINDOW_SIZE;
+
 void serialize(std::vector<char> &buffer, const LZ77_Node &val);
 void deserialize(const std::vector<char> &buffer, LZ77_Node &val, size_t& idx);
 

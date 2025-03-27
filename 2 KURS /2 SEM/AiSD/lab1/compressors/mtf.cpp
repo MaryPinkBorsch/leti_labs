@@ -9,7 +9,7 @@ using namespace std;
 void MTF_compress(std::vector<char> &input, std::vector<char> &output)
 {
     forward_list<char> alphabet;
-    for (int i = 32; i <= 126; i++)
+    for (int i = 0; i <= 255; i++)
     {
         alphabet.push_front((char)i);
     }
@@ -60,7 +60,7 @@ void MTF_decompress(std::vector<char> &input, std::vector<char> &output)
     string source = "";
     source.reserve(input.size());
     forward_list<char> alphabet;
-    for (int i = 32; i <= 126; i++)
+    for (int i = 0; i <= 255; i++)
     {
         alphabet.push_front((char)i);
     }
@@ -68,8 +68,6 @@ void MTF_decompress(std::vector<char> &input, std::vector<char> &output)
     {
         for (int i = 0; i < input.size(); i += sizeof(int))
         {
-            if (!(i % 16*1024))
-                std::cout << "MTF_decompress i: " << i << std::endl;
             int index = 0;
             std::memcpy(&index, &input[i], sizeof(int));
             if (index != 0)

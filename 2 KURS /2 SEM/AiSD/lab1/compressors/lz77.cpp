@@ -2,15 +2,16 @@
 
 using namespace std;
 
+int G_LZ77_WINDOW_SIZE = 256;
+
 // Функция для поиска совпадений в буфере
 std::pair<int, int> findMatching(const std::vector<char> &buffer, int pos)
 {
     int maxLength = 0;
     int offset = 0;
 
-    static const int LZ77_WINDOW_SIZE = 256;
     // Ищем максимальное совпадение в окне pos - 4096 -> pos
-    int window_start  = pos <= LZ77_WINDOW_SIZE ? 0 : pos - LZ77_WINDOW_SIZE;
+    int window_start  = pos <= G_LZ77_WINDOW_SIZE ? 0 : pos - G_LZ77_WINDOW_SIZE;
     for (int i = window_start; i < pos; ++i)
     {
         int currentLength = 0;

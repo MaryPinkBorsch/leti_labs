@@ -4,7 +4,7 @@
 #include <filesystem>
 #include <fstream>
 #include <algorithm>
-
+#include "test_entropy.h"
 #include "rle.h"
 #include "huffman.h"
 #include "lz77.h"
@@ -237,12 +237,138 @@ int run_compressors(std::string filename)
     }
     return 0;
 }
+
+////////////////////////////////////
+void entropy_test()
+{
+    std::vector<char> input_data;
+    std::vector<char> tmp_data;
+    readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/enwik7.txt", input_data);
+    // string s = "";
+    // input_data.insert(input_data.end(), s.begin(), s.end());
+    cout << "BWT ИЗначальный размер " << input_data.size() << " байт" << endl;
+    BWT_compress(input_data, tmp_data);
+
+    string tmp;
+    for (auto &it : tmp_data)
+        tmp.push_back(it);
+    unordered_map<char, double> probs;
+    prob_estimate(tmp, probs);
+
+    for (auto &it : probs)
+    {
+        cout << "Symbol " << it.first << " probability =  " << it.second << endl;
+    }
+    double HH;
+    entropy(tmp, 1, HH);
+    cout << "ENTROPY = " << HH << "  block size = " << G_BWT_BLOCK_SIZE << endl;
+
+    cout << "BWT размер сжатого " << tmp_data.size() << " байт" << endl;
+    writefile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/enwik7_test.txt", tmp_data);
+}
+
+void prob_estimate(string &s, unordered_map<char, double> &probs)
+{
+    if (!probs.empty())
+        probs.clear();
+    int len = s.size();
+    if (len == 0)
+        return;
+    unordered_map<char, double> map;
+    for (int i = 0; i < len; i++)
+    {
+        map[s[i]]++;
+    }
+    for (auto &it : map)
+    {
+        double tmp = it.second / len;
+        probs[it.first] = tmp;
+    }
+}
+
+
+void entropy(string &s, int code_len, double &entr)
+{
+    unordered_map<char, double> probs;
+    prob_estimate(s, probs);
+    if (probs.empty())
+    {
+        cout << "ПУстые вероятности!" << endl;
+        return;
+    }
+    double H;
+    for (auto &it : probs)
+    {
+        H += (code_len * it.second * log2(it.second));
+        // cout << H << endl;
+    }
+    H *= -1;
+    cout << "res H = " << H << endl;
+    entr = H;
+    // return H;
+}
+
+void LZ77_buff_test()
+{
+    {
+        string s = "bananapinklol";
+        vector<char> input_data;
+        vector<char> res;
+        input_data.insert(input_data.end(), s.begin(), s.end());
+        LZ77_compress(input_data, res);
+        cout << "in size "<<input_data.size() << " res size "<<res.size()<< endl;
+        double k = res.size()/input_data.size() ;
+        cout << "buff size = " << input_data.size() << "   k = " << k << endl;
+    }
+    // {
+    //     string s = "bababa";
+    //     vector<char> input_data;
+    //     vector<char> res;
+    //     input_data.insert(input_data.end(), s.begin(), s.end());
+    //     LZ77_compress(input_data, res);
+    //     double k = input_data.size() / res.size();
+    //     cout << "buff size = " << input_data.size() << "   k = " << k << endl;
+    // }
+    // {
+    //     string s = "babababababababababababa";
+    //     vector<char> input_data;
+    //     vector<char> res;
+    //     input_data.insert(input_data.end(), s.begin(), s.end());
+    //     LZ77_compress(input_data, res);
+    //     double k = input_data.size() / res.size();
+    //     cout << "buff size = " << input_data.size() << "   k = " << k << endl;
+    // }
+    // {
+    //     string s = "babababababababababababababababababababababababababababababababababababababababababababababababababababababababababababa";
+    //     vector<char> input_data;
+    //     vector<char> res;
+    //     input_data.insert(input_data.end(), s.begin(), s.end());
+    //     LZ77_compress(input_data, res);
+    //     double k = input_data.size() / res.size();
+    //     cout << "buff size = " << input_data.size() << "   k = " << k << endl;
+    // }
+    // {
+    //     string s = "babababababababababababababababababababababababababababababababababababababababababababababababababababababababababababa";
+    //     vector<char> input_data;
+    //     vector<char> res;
+    //     input_data.insert(input_data.end(), s.begin(), s.end());
+    //     LZ77_compress(input_data, res);
+    //     double k = input_data.size() / res.size();
+    //     cout << "buff size = " << input_data.size() << "   k = " << k << endl;
+    // }
+}
+
 int main(int argc, char *argv[])
 {
+    LZ77_buff_test();
+    return 0;
+    entropy_test();
+
+    return 0;
     std::string input_f = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie grayscale.bmp";
     run_compressors(input_f);
     input_f = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/enwik7.txt";
     run_compressors(input_f);
 
     return 0;
-};
+}

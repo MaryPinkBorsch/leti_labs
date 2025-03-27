@@ -108,7 +108,7 @@ void rle_compress(const std::vector<char> &input, std::vector<char> &output)
                 while (no_repeat.size() - tmp >= 127)
                 {
                     output.push_back(-127);
-                    for (int k = 0; k < 128; k++)
+                    for (int k = 0; k < 127; k++)
                     {
                         output.push_back(no_repeat[k + tmp]);
                     }
@@ -162,7 +162,7 @@ void rle_compress(const std::vector<char> &input, std::vector<char> &output)
         while (no_repeat.size() - tmp >= 127)
         {
             output.push_back(-127);
-            for (int k = 0; k < 128; k++)
+            for (int k = 0; k < 127; k++)
             {
                 output.push_back(no_repeat[k + tmp]);
             }
