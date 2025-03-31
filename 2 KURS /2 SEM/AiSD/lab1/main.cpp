@@ -126,7 +126,7 @@ int run_compressors(std::string filename)
 {
     // BWT
     {
-        if (filename.find(".txt") != std::string::npos)
+        // if (filename.find(".txt") != std::string::npos)
         {
             std::string input_f = filename;
             std::string output_f = filename + ".BWT.processed";
@@ -199,7 +199,6 @@ int run_compressors(std::string filename)
 
     // BWT + RLE
     {
-        if (filename.find(".txt") != std::string::npos)
         {
             std::string input_f = filename;
             std::string output_f = filename + ".BWT_RLE.processed";
@@ -212,7 +211,6 @@ int run_compressors(std::string filename)
 
     // BWT + MTF + HA
     {
-        if (filename.find(".txt") != std::string::npos)
         {
             std::string input_f = filename;
             std::string output_f = filename + ".BWT_MTF_HA.processed";
@@ -225,7 +223,6 @@ int run_compressors(std::string filename)
 
     // BWT + MTF+ RLE + HA
     {
-        if (filename.find(".txt") != std::string::npos)
         {
             std::string input_f = filename;
             std::string output_f = filename + ".BWT_MTF_RLE_HA.processed";
@@ -324,11 +321,13 @@ void LZ77_buff_test()
 
 int main(int argc, char *argv[])
 {
+
+    ////////////////////////////////////////////////////////
     cout << endl
          << endl
-         << "IMAGE test" << endl;
+         << "IMAGE grayscale test" << endl;
     std::string input_f = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie grayscale.bmp";
-    // run_compressors(input_f);
+    run_compressors(input_f);
 
     cout << endl
          << endl

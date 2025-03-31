@@ -1,88 +1,101 @@
 #include "bwt.h"
-using namespace std;
+
+#include "serialization.h"
 
 #include <algorithm>
-#include <string>
+#include <vector>
 #include <iterator>
 #include <iostream>
 #include <bits/stdc++.h>
 
 using namespace std;
 
-// используется маркерный символ $
-const char MARKER = '$';
-
-// функция для циклического сдвига
-string cyclic_shift(std::vector<char> &input, int distance)
-{
-	string source;
-	source.insert(source.begin(), input.begin(), input.end());
-	return source.substr(distance, string::npos) + source.substr(0, distance);
-}
-
-void BWT_compress_block(std::vector<char> &input, std::vector<char> &output)
-{
-	// надо добавить маркер в инпут
-	input.push_back(MARKER);
-
-	vector<string> shifts;
-
-	for (unsigned int i = 0; i < input.size(); i++)
-	{
-		string shift = cyclic_shift(input, i);
-
-		shifts.push_back(shift);
-	}
-
-	// сортируем сдвиги
-	sort(shifts.begin(), shifts.end());
-
-	// добавляем последние буквы каждого сдвига в утпут (последний столбец матрицы)
-
-	for (vector<string>::iterator it = shifts.begin(); it != shifts.end(); it++)
-	{
-		output.push_back(it->at(it->length() - 1));
-	}
-}
-
-bool comp_tuples(pair<char, int> a, pair<char, int> b)
-{
-	return (a.first < b.first);
-}
-
-void BWT_decompress_block(std::vector<char> &input, std::vector<char> &output)
-{
-	if (input.empty())
-	{
-		return;
-	}
-
-	int j = 0;
-	// создаем вектор пар
-	vector<pair<char, int>> coding_tuples;
-
-	for (unsigned int i = 0; i < input.size(); i++)
-	{
-		char coded_char = input.at(i);
-
-		// ищем позицию маркера
-		if (coded_char == MARKER)
-		{
-			j = i;
-		}
-		coding_tuples.push_back(pair<char, int>(input.at(i), i));
-	}
-
-	// сортируем
-	stable_sort(coding_tuples.begin(), coding_tuples.end(), comp_tuples);
-	do
-	{
-		output.push_back(coding_tuples.at(j).first);
-		j = coding_tuples.at(j).second;
-	} while (coding_tuples.at(j).first != MARKER);
-}
-
 int G_BWT_BLOCK_SIZE = 64;
+
+std::pair<std::vector<char>, std::vector<int>> transform_chunk(const std::vector<char>& chunk) {
+    size_t len = chunk.size();
+    std::vector<std::string> rotations(len);
+    
+    // Создаем все ротации
+    for (size_t i = 0; i < len; ++i) {
+        rotations[i] = std::string(chunk.begin() + i, chunk.end()) + std::string(chunk.begin(), chunk.begin() + i);
+    }
+
+    // Сортируем ротации
+    std::sort(rotations.begin(), rotations.end());
+
+    // Получаем индекс оригинальной строки и закодированный блок
+    int original_index = std::find(rotations.begin(), rotations.end(), std::string(chunk.begin(), chunk.end())) - rotations.begin();
+    std::vector<char> encoded_chunk(len);
+    
+    for (size_t i = 0; i < len; ++i) {
+        encoded_chunk[i] = rotations[i].back(); // Последний символ каждой ротации
+    }
+
+    return {encoded_chunk, {original_index}};
+}
+
+std::vector<char> reverse_transform_chunk(int original_index, const std::vector<char>& encoded_chunk) {
+    size_t len = encoded_chunk.size();
+    
+    // Создаем таблицу пар (символ, индекс)
+    std::vector<std::pair<char, int>> table(len);
+    
+    for (int idx = 0; idx < len; ++idx) {
+        table[idx] = {encoded_chunk[idx], idx};
+    }
+    
+    // Сортируем таблицу по символам
+    std::sort(table.begin(), table.end());
+
+    std::vector<char> result(len);
+    
+    int current_row = original_index;
+    
+    for (size_t i = 0; i < len; ++i) {
+        result[i] = table[current_row].first;
+        current_row = table[current_row].second;
+    }
+    
+    return result;
+}
+
+std::pair<std::vector<char>, std::vector<int>> bwt(const std::vector<char>& data, size_t chunk_size = G_BWT_BLOCK_SIZE) {
+    std::vector<char> transformed_data;
+    std::vector<int> indices;
+
+    for (size_t start = 0; start < data.size(); start += chunk_size) {
+        size_t end = std::min(start + chunk_size, data.size());
+        std::vector<char> chunk(data.begin() + start, data.begin() + end);
+        
+        auto [encoded_chunk, index] = transform_chunk(chunk); // Получаем индекс и закодированный блок
+        transformed_data.insert(transformed_data.end(), encoded_chunk.begin(), encoded_chunk.end());
+        indices.push_back(index[0]); // Сохраняем индекс
+    }
+    
+    return {transformed_data, indices};
+}
+
+std::vector<char> bwt_decode(const std::vector<char>& encoded_data, const std::vector<int>& indices, size_t chunk_size) {
+    std::vector<char> restored_data;
+
+    size_t position = 0;
+    
+    for (size_t indd = 0; position < encoded_data.size(); ++indd) {
+        size_t end = position + chunk_size;
+        if (end > encoded_data.size()) end = encoded_data.size();
+        
+        std::vector<char> chunk(encoded_data.begin() + position, encoded_data.begin() + end);
+        int original_index = indices[indd]; // Получаем индекс исходной строки
+        
+        auto restored_chunk = reverse_transform_chunk(original_index, chunk);
+        restored_data.insert(restored_data.end(), restored_chunk.begin(), restored_chunk.end());
+        
+        position += chunk_size;
+    }
+    
+    return restored_data;
+}
 
 void BWT_compress(std::vector<char> &input, std::vector<char> &output) 
 {
@@ -93,21 +106,22 @@ void BWT_compress(std::vector<char> &input, std::vector<char> &output)
 
 		std::vector<char>::iterator last_item = (i + G_BWT_BLOCK_SIZE < input.size()) ? (input.begin() + i + G_BWT_BLOCK_SIZE) : input.end();
 		block.insert(block.begin(), input.begin() + i, last_item);
-		BWT_compress_block(block, compressed_block);
-		output.insert(output.end(), compressed_block.begin(), compressed_block.end());
+		auto tmp = bwt(block, G_BWT_BLOCK_SIZE);
+		serialize(output, tmp.first);
+		serialize(output, tmp.second);
 	}
 }
 
 void BWT_decompress(std::vector<char> &input, std::vector<char> &output) 
 {
-	for (int i = 0; i < input.size(); i += G_BWT_BLOCK_SIZE + 1) // +1 for $ marker
+	size_t offset = 0;
+	while(offset < input.size()) 
 	{
-		std::vector<char> block;
-		std::vector<char> decompressed_block;
-
-		std::vector<char>::iterator last_item = (i + G_BWT_BLOCK_SIZE + 1 < input.size()) ? (input.begin() + i + G_BWT_BLOCK_SIZE + 1) : input.end();
-		block.insert(block.begin(), input.begin() + i, last_item);
-		BWT_decompress_block(block, decompressed_block);
+		std::vector<char> compressed_block;
+		std::vector<int> indicies;
+		deserialize(input, compressed_block, offset);
+		deserialize(input, indicies, offset);
+		std::vector<char> decompressed_block = bwt_decode(compressed_block, indicies, G_BWT_BLOCK_SIZE);
 		output.insert(output.end(), decompressed_block.begin(), decompressed_block.end());
 	}
 }
