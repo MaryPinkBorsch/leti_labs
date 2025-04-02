@@ -97,8 +97,7 @@ void BWT_MTF_HA_compressor(std::string input_filename, std::string compressed_fi
 
     readfile(input_filename, input_data);
     cout << "BWT_MTF_HA ИЗначальный размер " << input_data.size() << " байт" << endl;
-    BWT_compress(input_data, tmp_data);
-    MTF_compress(tmp_data, tmp_data2);
+    BWT_MTF_compress(input_data, tmp_data);
     HA_compress(tmp_data2, tmp_data3);
     cout << "BWT_MTF_HA размер сжатого " << tmp_data3.size() << " байт" << endl;
     cout <<"k = "<< (double)input_data.size() / tmp_data3.size();
@@ -113,8 +112,7 @@ void BWT_MTF_HA_decompressor(std::string compressed_filename, std::string output
 
     readfile(compressed_filename, input_data);
     HA_decompress(input_data, tmp_data);
-    MTF_decompress(tmp_data, tmp_data2);
-    BWT_decompress(tmp_data2, output_data);
+    BWT_MTF_decompress(tmp_data2, output_data);
     writefile(output_filename, output_data);
 }
 
@@ -130,8 +128,7 @@ void BWT_MTF_RLE_HA_compressor(std::string input_filename, std::string compresse
 
     readfile(input_filename, input_data);
     cout << "BWT_MTF_RLE_HA ИЗначальный размер " << input_data.size() << " байт" << endl;
-    BWT_compress(input_data, tmp_data);
-    MTF_compress(tmp_data, tmp_data2);
+    BWT_MTF_compress(input_data, tmp_data);
     rle_compress(tmp_data2, tmp_data3);
     HA_compress(tmp_data3, tmp_data4);
     cout << "BWT_MTF_RLE_HA размер сжатого " << tmp_data4.size() << " байт" << endl;
@@ -149,8 +146,7 @@ void BWT_MTF_RLE_HA_decompressor(std::string compressed_filename, std::string ou
     readfile(compressed_filename, input_data);
     HA_decompress(input_data, tmp_data);
     rle_decompress(tmp_data, tmp_data2);
-    MTF_decompress(tmp_data2, tmp_data3);
-    BWT_decompress(tmp_data3, output_data);
+    BWT_MTF_decompress(tmp_data3, output_data);
     writefile(output_filename, output_data);
 }
 

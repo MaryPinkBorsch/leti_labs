@@ -9,9 +9,6 @@ using namespace std;
 void MTF_compress(std::vector<char> &input, std::vector<char> &output)
 {
     forward_list<char> alphabet;
-    // alphabet.push_front('\r');
-    // alphabet.push_front('\n');
-    // alphabet.push_front('\251');
     for (int i = 0; i <= 255; i++)
     {
         alphabet.push_front((char)i);
@@ -62,9 +59,6 @@ void MTF_decompress(std::vector<char> &input, std::vector<char> &output)
     string source = "";
     source.reserve(input.size());
     forward_list<char> alphabet;
-    // alphabet.push_front('\r');
-    // alphabet.push_front('\n');
-    // alphabet.push_front('\251');
     for (int i = 0; i <= 255; i++)
     {
         alphabet.push_front((char)i);

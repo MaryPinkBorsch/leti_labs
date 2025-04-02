@@ -347,21 +347,20 @@ int main(int argc, char *argv[])
         std::vector<char> output;
         std::vector<char> tmp;
 
-        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie monochrome.bmp",input);
+        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie grayscale.bmp",input);
 
         cout << "BWT размер до сжатия: " << input.size() << endl;
-        BWT_compress_debug(input, tmp);
+        BWT_MTF_compress(input, tmp);
 
         cout << "BWT размер сжатого: " << tmp.size() << endl;
 
-        BWT_decompress(tmp, output);
+        BWT_MTF_decompress(tmp, output);
 
         cout << endl
                 << "BWT размер после сжатия: " << output.size() << endl;
 
-        writefile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie monochrome BWT test.bmp",output);
+        writefile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie grayscaleBWTtest.bmp",output);
     }
-    return 0;
 
     ////////////////////////////////////////////////////////
     cout << endl
