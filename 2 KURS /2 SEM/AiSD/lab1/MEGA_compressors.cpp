@@ -91,14 +91,13 @@ void BWT_MTF_HA_compressor(std::string input_filename, std::string compressed_fi
 {
     std::vector<char> input_data;
     std::vector<char> tmp_data;
-    std::vector<char> tmp_data2;
     std::vector<char> tmp_data3;
     std::vector<char> output_data;
 
     readfile(input_filename, input_data);
     cout << "BWT_MTF_HA ИЗначальный размер " << input_data.size() << " байт" << endl;
     BWT_MTF_compress(input_data, tmp_data);
-    HA_compress(tmp_data2, tmp_data3);
+    HA_compress(tmp_data, tmp_data3);
     cout << "BWT_MTF_HA размер сжатого " << tmp_data3.size() << " байт" << endl;
     cout <<"k = "<< (double)input_data.size() / tmp_data3.size();
     writefile(compressed_filename, tmp_data3);
@@ -107,12 +106,11 @@ void BWT_MTF_HA_decompressor(std::string compressed_filename, std::string output
 {
     std::vector<char> input_data;
     std::vector<char> tmp_data;
-    std::vector<char> tmp_data2;
     std::vector<char> output_data;
 
     readfile(compressed_filename, input_data);
     HA_decompress(input_data, tmp_data);
-    BWT_MTF_decompress(tmp_data2, output_data);
+    BWT_MTF_decompress(tmp_data, output_data);
     writefile(output_filename, output_data);
 }
 
@@ -121,7 +119,6 @@ void BWT_MTF_RLE_HA_compressor(std::string input_filename, std::string compresse
 {
     std::vector<char> input_data;
     std::vector<char> tmp_data;
-    std::vector<char> tmp_data2;
     std::vector<char> tmp_data3;
     std::vector<char> tmp_data4;
     std::vector<char> output_data;
@@ -129,7 +126,7 @@ void BWT_MTF_RLE_HA_compressor(std::string input_filename, std::string compresse
     readfile(input_filename, input_data);
     cout << "BWT_MTF_RLE_HA ИЗначальный размер " << input_data.size() << " байт" << endl;
     BWT_MTF_compress(input_data, tmp_data);
-    rle_compress(tmp_data2, tmp_data3);
+    rle_compress(tmp_data, tmp_data3);
     HA_compress(tmp_data3, tmp_data4);
     cout << "BWT_MTF_RLE_HA размер сжатого " << tmp_data4.size() << " байт" << endl;
     cout <<"k = "<< (double)input_data.size() / tmp_data4.size();
@@ -140,13 +137,12 @@ void BWT_MTF_RLE_HA_decompressor(std::string compressed_filename, std::string ou
     std::vector<char> input_data;
     std::vector<char> tmp_data;
     std::vector<char> tmp_data2;
-    std::vector<char> tmp_data3;
     std::vector<char> output_data;
 
     readfile(compressed_filename, input_data);
     HA_decompress(input_data, tmp_data);
     rle_decompress(tmp_data, tmp_data2);
-    BWT_MTF_decompress(tmp_data3, output_data);
+    BWT_MTF_decompress(tmp_data2, output_data);
     writefile(output_filename, output_data);
 }
 

@@ -131,10 +131,10 @@ int run_compressors(std::string filename, bool f_bmp)
             std::string input_f = filename;
             std::string output_f = filename + ".BWT.processed";
             std::string compressed_f = filename + ".BWT.compressed";
-            BWT_compressor(input_f, compressed_f);
-            BWT_decompressor(compressed_f, output_f);
             if (f_bmp)
                 output_f += ".bmp";
+            BWT_compressor(input_f, compressed_f);
+            BWT_decompressor(compressed_f, output_f);
 
             cout << endl;
         }
@@ -145,10 +145,11 @@ int run_compressors(std::string filename, bool f_bmp)
         std::string input_f = filename;
         std::string output_f = filename + ".HA.processed";
         std::string compressed_f = filename + ".HA.compressed";
-        HA_compressor(input_f, compressed_f);
-        HA_decompressor(compressed_f, output_f);
         if (f_bmp)
             output_f += ".bmp";
+        HA_compressor(input_f, compressed_f);
+        HA_decompressor(compressed_f, output_f);
+
         cout << endl;
     }
 
@@ -157,10 +158,11 @@ int run_compressors(std::string filename, bool f_bmp)
         std::string input_f = filename;
         std::string output_f = filename + ".RLE.processed";
         std::string compressed_f = filename + ".RLE.compressed";
-        RLE_compressor(input_f, compressed_f);
-        RLE_decompressor(compressed_f, output_f);
         if (f_bmp)
             output_f += ".bmp";
+        RLE_compressor(input_f, compressed_f);
+        RLE_decompressor(compressed_f, output_f);
+
         cout << endl;
     }
 
@@ -169,10 +171,11 @@ int run_compressors(std::string filename, bool f_bmp)
         std::string input_f = filename;
         std::string output_f = filename + ".LZ78.processed";
         std::string compressed_f = filename + ".LZ78.compressed";
-        LZ78_compressor(input_f, compressed_f);
-        LZ78_decompressor(compressed_f, output_f);
         if (f_bmp)
             output_f += ".bmp";
+        LZ78_compressor(input_f, compressed_f);
+        LZ78_decompressor(compressed_f, output_f);
+
         cout << endl;
     }
 
@@ -181,10 +184,11 @@ int run_compressors(std::string filename, bool f_bmp)
         std::string input_f = filename;
         std::string output_f = filename + ".LZ78_HA.processed";
         std::string compressed_f = filename + ".LZ78_HA.compressed";
-        LZ78_HA_compressor(input_f, compressed_f);
-        LZ78_HA_decompressor(compressed_f, output_f);
         if (f_bmp)
             output_f += ".bmp";
+        LZ78_HA_compressor(input_f, compressed_f);
+        LZ78_HA_decompressor(compressed_f, output_f);
+
         cout << endl;
     }
 
@@ -193,10 +197,11 @@ int run_compressors(std::string filename, bool f_bmp)
         std::string input_f = filename;
         std::string output_f = filename + ".LZ77.processed";
         std::string compressed_f = filename + ".LZ77.compressed";
-        LZ77_compressor(input_f, compressed_f);
-        LZ77_decompressor(compressed_f, output_f);
         if (f_bmp)
             output_f += ".bmp";
+        LZ77_compressor(input_f, compressed_f);
+        LZ77_decompressor(compressed_f, output_f);
+
         cout << endl;
     }
 
@@ -205,10 +210,11 @@ int run_compressors(std::string filename, bool f_bmp)
         std::string input_f = filename;
         std::string output_f = filename + ".LZ77_HA.processed";
         std::string compressed_f = filename + ".LZ77_HA.compressed";
-        LZ77_HA_compressor(input_f, compressed_f);
-        LZ77_HA_decompressor(compressed_f, output_f);
         if (f_bmp)
             output_f += ".bmp";
+        LZ77_HA_compressor(input_f, compressed_f);
+        LZ77_HA_decompressor(compressed_f, output_f);
+
         cout << endl;
     }
 
@@ -218,10 +224,11 @@ int run_compressors(std::string filename, bool f_bmp)
             std::string input_f = filename;
             std::string output_f = filename + ".BWT_RLE.processed";
             std::string compressed_f = filename + ".BWT_RLE.compressed";
-            BWT_RLE_compressor(input_f, compressed_f);
-            BWT_RLE_decompressor(compressed_f, output_f);
             if (f_bmp)
                 output_f += ".bmp";
+            BWT_RLE_compressor(input_f, compressed_f);
+            BWT_RLE_decompressor(compressed_f, output_f);
+
             cout << endl;
         }
     }
@@ -232,10 +239,11 @@ int run_compressors(std::string filename, bool f_bmp)
             std::string input_f = filename;
             std::string output_f = filename + ".BWT_MTF_HA.processed";
             std::string compressed_f = filename + ".BWT_MTF_HA.compressed";
-            BWT_MTF_HA_compressor(input_f, compressed_f);
-            BWT_MTF_HA_decompressor(compressed_f, output_f);
             if (f_bmp)
                 output_f += ".bmp";
+            BWT_MTF_HA_compressor(input_f, compressed_f);
+            BWT_MTF_HA_decompressor(compressed_f, output_f);
+
             cout << endl;
         }
     }
@@ -246,10 +254,11 @@ int run_compressors(std::string filename, bool f_bmp)
             std::string input_f = filename;
             std::string output_f = filename + ".BWT_MTF_RLE_HA.processed";
             std::string compressed_f = filename + ".BWT_MTF_RLE_HA.compressed";
-            BWT_MTF_RLE_HA_compressor(input_f, compressed_f);
-            BWT_MTF_RLE_HA_decompressor(compressed_f, output_f);
             if (f_bmp)
                 output_f += ".bmp";
+            BWT_MTF_RLE_HA_compressor(input_f, compressed_f);
+            BWT_MTF_RLE_HA_decompressor(compressed_f, output_f);
+             
             cout << endl;
         }
     }
@@ -342,25 +351,25 @@ void LZ77_buff_test()
 
 int main(int argc, char *argv[])
 {
-    {
-        std::vector<char> input;
-        std::vector<char> output;
-        std::vector<char> tmp;
+    // {
+    //     std::vector<char> input;
+    //     std::vector<char> output;
+    //     std::vector<char> tmp;
 
-        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie grayscale.bmp",input);
+    //     readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie grayscale.bmp",input);
 
-        cout << "BWT размер до сжатия: " << input.size() << endl;
-        BWT_MTF_compress(input, tmp);
+    //     cout << "BWT размер до сжатия: " << input.size() << endl;
+    //     BWT_MTF_compress(input, tmp);
 
-        cout << "BWT размер сжатого: " << tmp.size() << endl;
+    //     cout << "BWT размер сжатого: " << tmp.size() << endl;
 
-        BWT_MTF_decompress(tmp, output);
+    //     BWT_MTF_decompress(tmp, output);
 
-        cout << endl
-                << "BWT размер после сжатия: " << output.size() << endl;
+    //     cout << endl
+    //             << "BWT размер после сжатия: " << output.size() << endl;
 
-        writefile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie grayscaleBWTtest.bmp",output);
-    }
+    //     writefile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie grayscaleBWTtest.bmp",output);
+    // }
 
     ////////////////////////////////////////////////////////
     cout << endl
@@ -373,7 +382,7 @@ int main(int argc, char *argv[])
          << endl
          << "IMAGE monochrom test" << endl;
     input_f = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/barbie monochrome.bmp";
-    // run_compressors(input_f,1);
+    run_compressors(input_f, 1);
 
     cout << endl
          << endl
@@ -391,13 +400,13 @@ int main(int argc, char *argv[])
          << endl
          << "TEXT RUS test" << endl;
     input_f = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/voina_i_mir.txt";
-    // run_compressors(input_f,0);
+    run_compressors(input_f, 0);
 
     cout << endl
          << endl
          << "EXE FILE test" << endl;
     input_f = "/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab1/build/HEROES2W.EXE";
-    // run_compressors(input_f,0);
+    run_compressors(input_f, 0);
 
     return 0;
     LZ77_buff_test();
