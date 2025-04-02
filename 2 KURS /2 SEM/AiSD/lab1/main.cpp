@@ -124,21 +124,21 @@ void TestMTF()
 
 int run_compressors(std::string filename, bool f_bmp)
 {
-    // BWT
-    {
-        // if (filename.find(".txt") != std::string::npos)
-        {
-            std::string input_f = filename;
-            std::string output_f = filename + ".BWT.processed";
-            std::string compressed_f = filename + ".BWT.compressed";
-            if (f_bmp)
-                output_f += ".bmp";
-            BWT_compressor(input_f, compressed_f);
-            BWT_decompressor(compressed_f, output_f);
+    // // BWT
+    // {
+    //     // if (filename.find(".txt") != std::string::npos)
+    //     {
+    //         std::string input_f = filename;
+    //         std::string output_f = filename + ".BWT.processed";
+    //         std::string compressed_f = filename + ".BWT.compressed";
+    //         if (f_bmp)
+    //             output_f += ".bmp";
+    //         BWT_compressor(input_f, compressed_f);
+    //         BWT_decompressor(compressed_f, output_f);
 
-            cout << endl;
-        }
-    }
+    //         cout << endl;
+    //     }
+    // }
 
     // HA
     {
