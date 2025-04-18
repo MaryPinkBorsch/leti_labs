@@ -1,33 +1,8 @@
 #pragma once
+#include <vector>
+#include <algorithm>
 
-// переход из РГБ в УСбСр
-class RGB
-{
-public:
-    unsigned char R;
-    unsigned char G;
-    unsigned char B;
+void RGB2YCBCR(unsigned char rgb[3], double ycbcr[3]);
+void YCBCR2RGB(double ycbcr[3], unsigned char rgb[3]);
 
-    RGB(unsigned char r, unsigned char g, unsigned char b);
-    bool Equals(RGB rgb);
-};
-
-class YCbCr
-{
-public:
-    float Y;
-    float Cb;
-    float Cr;
-
-    YCbCr(float y, float cb, float cr);
-
-    bool Equals(YCbCr ycbcr);
-};
-
-static YCbCr RGBToYCbCr(RGB rgb);
-
-static float Min(float a, float b);
-
-static float Max(float a, float b);
-
-static RGB YCbCrToRGB(YCbCr ycbcr);
+void RGB_to_YCBRCR_vector(const std::vector<unsigned char> &input, std::vector<double> &output);
