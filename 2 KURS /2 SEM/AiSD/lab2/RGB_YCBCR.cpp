@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void RGB2YCBCR(unsigned char rgb[3], unsigned char ycbcr[3])
+void RGB2YCBCR(unsigned char rgb[3], double ycbcr[3])
 {
     float fr = (float)rgb[0] / 255;
     float fg = (float)rgb[1] / 255;
@@ -17,7 +17,7 @@ void RGB2YCBCR(unsigned char rgb[3], unsigned char ycbcr[3])
     ycbcr[2] = Cr;
 }
 
-void YCBCR2RGB(unsigned char ycbcr[3], unsigned char rgb[3])
+void YCBCR2RGB(double ycbcr[3], unsigned char rgb[3])
 {
     double r = std::max(0.0, std::min(1.0, (double)(ycbcr[0] + 0.0000 * ycbcr[1] + 1.4022 * ycbcr[2])));
     double g = std::max(0.0, std::min(1.0, (double)(ycbcr[0] - 0.3456 * ycbcr[1] - 0.7145 * ycbcr[2])));
@@ -25,4 +25,23 @@ void YCBCR2RGB(unsigned char ycbcr[3], unsigned char rgb[3])
     rgb[0] = (unsigned char)(r * 255);
     rgb[1] = (unsigned char)(g * 255);
     rgb[2] = (unsigned char)(b * 255);
+}
+
+void RGB_to_YCBRCR_vector(std::vector<unsigned char> &input, std::vector<double> &output)
+{
+    output.resize(input.size());
+    for (int i = 0; i < input.size(); i += 3)
+    {
+        // ссылка на Итый элемент приводится к ссылке на массив из 3х чаров
+        RGB2YCBCR(reinterpret_cast<unsigned char (&)[3]>(input[i]), reinterpret_cast<double (&)[3]>(output[i]));
+    }
+}
+void YCBRCR_to_RGB_vector(std::vector<double> &input, std::vector<unsigned char> &output)
+{
+    output.resize(input.size());
+    for (int i = 0; i < input.size(); i += 3)
+    {
+        // ссылка на Итый элемент приводится к ссылке на массив из 3х чаров
+        YCBCR2RGB(reinterpret_cast<double (&)[3]>(input[i]), reinterpret_cast<unsigned char (&)[3]>(output[i]));
+    }
 }
