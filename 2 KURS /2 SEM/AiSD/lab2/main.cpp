@@ -1,4 +1,5 @@
 #include "PicoPng.h"
+#include "downsampling.h"
 #include "serialization.h"
 #include "RGB_YCBCR.h"
 
@@ -27,6 +28,15 @@ void writefile(std::string output_filename, std::vector<unsigned char> &buffer)
 
 int main(int argc, char *argv[])
 {
+    std::vector<double> p = {9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0};
+    unsigned long w = 4;
+    unsigned long h = 4;
+    std::vector<std::vector<Pixel>> res;
+    vector_2matrix(w, h, res, p);
+    downsampling(w, h, res, 2);
+
+    return 0;
+
     std::vector<unsigned char> input_data;
     std::vector<unsigned char> pixel_data;
     std::vector<double> pixel_data_ycbcr;
@@ -36,7 +46,6 @@ int main(int argc, char *argv[])
     decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
     // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
     // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
-
 
     RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
     return 0;

@@ -4,13 +4,13 @@ using namespace std;
 
 void RGB2YCBCR(unsigned char rgb[3], double ycbcr[3])
 {
-    float fr = (float)rgb[0] / 255;
-    float fg = (float)rgb[1] / 255;
-    float fb = (float)rgb[2] / 255;
+    float fr = (double)rgb[0] / 255;
+    float fg = (double)rgb[1] / 255;
+    float fb = (double)rgb[2] / 255;
 
-    float Y = (float)(0.2989 * fr + 0.5866 * fg + 0.1145 * fb);
-    float Cb = (float)(-0.1687 * fr - 0.3313 * fg + 0.5000 * fb);
-    float Cr = (float)(0.5000 * fr - 0.4184 * fg - 0.0816 * fb);
+    float Y = (double)(0.2989 * fr + 0.5866 * fg + 0.1145 * fb);
+    float Cb = (double)(-0.1687 * fr - 0.3313 * fg + 0.5000 * fb);
+    float Cr = (double)(0.5000 * fr - 0.4184 * fg - 0.0816 * fb);
 
     ycbcr[0] = Y;
     ycbcr[1] = Cb;
