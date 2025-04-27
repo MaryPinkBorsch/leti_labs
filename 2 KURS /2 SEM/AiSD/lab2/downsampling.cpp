@@ -69,45 +69,127 @@ void blocking(unsigned long &image_width, unsigned long &image_height, std::vect
 {
     int h = 0;
     int w = 0;
+    int i = 0;
+    int j = 0;
     if (image_height % N != 0)
-        h = round(image_height / N); // округляем последнюю строку и зануляем ее
+        h = round(image_height / N); // округляем последнюю строку и потом зануляем ее
     else
         h = image_height;
     if (image_width % N != 0)
-        w = round(image_width / N); // округляем последний столбуц и зануляем его
+        w = round(image_width / N); // округляем последний столбуц и потом зануляем его
     else
         w = image_width;
     blocks.resize(h);
-    int t = 0;
-    for (int i = 0; i < h; i++)
+    // int t = 0;
+    // for (int i = 0; i < h; i++)
+    // {
+    //     int hh = i % N;
+    //     if (i && i % N == 0)
+    //         t++;
+    //     for (int j = 0; j < w; j++)
+    //     {
+    //         int ww = j % N;
+    //         if (j && j % N == 0)
+    //             t++;
+
+    //         if (t >= blocks.size() || t >= h * w)
+    //             return;
+    //         // по заданию надо заполнить пустыми пикселями если четко на блок не делится
+    //         if (j > data[i].size() || i > data.size())
+    //         {
+    //             blocks[t].matrix_data[hh][ww] = Pixel();
+    //         }
+    //         else
+    //         {
+    //             blocks[t].matrix_data.resize(N);
+    //             blocks[t].matrix_data[hh].resize(N);
+
+    //             blocks[t].matrix_data[hh][ww] = data[i][j];
+    //         }
+    //     }
+    //     if (t)
+    //         t -= (w % N) - 1;
+
+    //     if (t < 0)
+    //         t = 0;
+    // }
+
+    int t = 0; // счеткик по блокам
+    // пытаюсь сделвть блочнную обработку (ПЫТАЮСЬ)
+    // 1 вайл = 1 блок
+    while (i < image_height)
     {
-        int hh = i % N;
-        if (t && i % N != 0)
-            t -= (w % N) - 1;
-
-        if (t < 0)
-            t = 0;
-
-        for (int j = 0; j < w; j++)
+        if (t > (h / N * w / N) -1)
+            break;
+        int hh = 0; // указатель бегать внутри блока
+        blocks[t].matrix_data.resize(N);
+        for (int k = i; k < i + N; k++)
         {
-            int ww = j % N;
-            if (j && j % N == 0)
-                t++;
-
-            if (t >= blocks.size() || t >= h * w)
-                return;
-            // по заданию надо заполнить пустыми пикселями если четко на блок не делится
-            if (j > data[i].size() || i > data.size())
+            if (hh > N)
             {
-                blocks[t].matrix_data[hh][ww] = Pixel();
+                hh = 0;
             }
-            else
+            int ww = 0;
+            for (int n = j; n < j + N; n++)
             {
-                blocks[t].matrix_data.resize(N);
-                blocks[t].matrix_data[hh].resize(N);
-
-                blocks[t].matrix_data[hh][ww] = data[i][j];
+                if (n >= image_width)
+                {
+                    // // заполнить оставшееся нулями
+                    // while (n < w)
+                    // {
+                    //     blocks[t].matrix_data[hh][n] = Pixel();
+                    //     n++;
+                    // }
+                }
+                else
+                {
+                    blocks[t].matrix_data[hh].push_back(data[k][n]);
+                    // blocks[t].matrix_data[hh][ww] = data[k][n];}
+                    ww++;
+                }
             }
+            // if (i == image_height)
+            // {
+            //     // заполнить оставшееся нулями
+            //     while (i < h)
+            //     {
+            //         blocks[t].matrix_data[i][ww] = Pixel();
+            //         i++;
+            //     }
+            // }
+            if (j == image_width)
+            {
+                // // заполнить оставшееся нулями
+                // // заполнить оставшееся нулями
+                // while (j < w)
+                // {
+                //     blocks[t].matrix_data[hh][j] = Pixel();
+                //     j++;
+                // }
+
+                j = 0;
+            }
+
+            hh++;
         }
+        t++;
+        if (t == w / N)
+            i += N;
+        j += N;
     }
+
+    // while (i < h)
+    // {
+    //     while (j < w)
+    //     {
+    //         if (j % N - 1 == 0)
+    //         {
+    //             j = 0;
+    //             i++;
+    //         }
+
+    //         j++;
+    //     }
+    //     i++;
+    // }
 }
