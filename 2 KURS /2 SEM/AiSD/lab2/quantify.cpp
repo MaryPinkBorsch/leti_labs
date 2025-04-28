@@ -4,7 +4,7 @@ using namespace std;
 void table(std::vector<std::vector<int>> &q_table)
 {
 
-    q_table.resize(8); 
+    q_table.resize(8);
 
     q_table[0] = {16, 11, 10, 16, 124, 140, 151, 161};
     q_table[1] = {12, 12, 14, 19, 126, 158, 160, 155};
@@ -16,7 +16,41 @@ void table(std::vector<std::vector<int>> &q_table)
     q_table[7] = {72, 92, 95, 98, 112, 100, 103, 199};
 }
 
-void quantify()
+// q_lvl = уровень качества от 0 до 100
+void quantify(Matrix &matrix, int q_lvl)
 {
+    std::vector<std::vector<int>> q_table;
+    table(q_table);
+
+    for (int i = 0; i < matrix.data.size(); i++)
+    {
+        for (int j = 0; j < matrix.data[i].size(); j++)
+        {
+
+            double s = 0;
+            if (q_lvl < 50)
+            {
+                s = 5000 / q_lvl;
+            }
+            else
+            {
+                s = 200 - 2 * q_lvl;
+            }
+            double k = round((q_table[i][j] * s + 50) / 100);
+
+            matrix.data[i][j] = floor(matrix.data[i][j] / k) * k;
+        }
+    }
 }
-void dequantify() { ; }
+
+void quantify_vec(std::vector<Matrix> &matrixes, int q_lvl)
+{
+    for (int i = 0; i < matrixes.size(); i++)
+        quantify(matrixes[i], q_lvl);
+}
+
+void dequantify()
+{
+    std::vector<std::vector<int>> q_table;
+    table(q_table);
+}

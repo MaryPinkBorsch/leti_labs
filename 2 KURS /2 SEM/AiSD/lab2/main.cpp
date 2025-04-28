@@ -42,8 +42,12 @@ int main(int argc, char *argv[])
     unsigned long h = 16;
     std::vector<std::vector<Pixel>> res;
     vector_2matrix(w, h, res, p);
+
+    // !!!! надо сделать обработку если там нечетко делится на блоки Н!!!!
     // downsampling(w, h, res, 8);
     // redownsampling(w, h, res, 2); // рабоатет
+
+
     std::vector<Block> res_block;
     blocking(w, h, res, 8, res_block);
     std::vector<Block> dct_block;

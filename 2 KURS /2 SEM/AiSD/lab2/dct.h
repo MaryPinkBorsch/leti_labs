@@ -13,14 +13,6 @@ extern double pi;
 extern const int len;
 extern double c;
 
-// bool input(double arr[][len]);
-// void output(double arr[][len]);
-
-struct Matrix
-{
-    std::vector<std::vector<double>> data;
-};
-
 void DCT(Block input, Block &output);
 double FDCT(int u, int v, bool flag, Block input);
 void DCT_of_blocks(std::vector<Block> input, std::vector<Block> &output);
