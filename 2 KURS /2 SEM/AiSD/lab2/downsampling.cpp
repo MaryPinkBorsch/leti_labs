@@ -70,7 +70,7 @@ void redownsampling(unsigned long &image_width, unsigned long &image_height, std
 }
 
 // эта функция урезает каналы СБ и Ср на столбац и строках, кратных Н
-//  урезаные значения выставляются в -1 и далее не обрабатываются !!!
+//  урезаные значения выставляются в 0 и далее не обрабатываются !!!
 //(TODO потом проверить что оно так работает)
 //  и еще проверить оно с блоками или с пикселями должно работать?
 void downsampling(unsigned long &image_width, unsigned long &image_height, std::vector<std::vector<Pixel>> &data, int H)
@@ -89,8 +89,8 @@ void downsampling(unsigned long &image_width, unsigned long &image_height, std::
         {
             if ((i % H) - 1 == 0 && (j % H) - 1 == 0 && j && i)
             {
-                data[i][j].Cb = -1;
-                data[i][j].Cr = -1;
+                data[i][j].Cb = 0;
+                data[i][j].Cr = 0;
             }
         }
     }
@@ -116,7 +116,7 @@ void blocking(unsigned long &image_width, unsigned long &image_height, std::vect
         w = round(image_width / N); // округляем последний столбуц и потом зануляем его
     else
         w = image_width;
-    blocks.resize(h);
+    blocks.resize(w * h / (N * N));
     // int t = 0;
     // for (int i = 0; i < h; i++)
     // {

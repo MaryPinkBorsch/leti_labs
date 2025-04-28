@@ -30,19 +30,30 @@ void writefile(std::string output_filename, std::vector<unsigned char> &buffer)
 int main(int argc, char *argv[])
 {
     // std::vector<double> p = {9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0};
-    std::vector<double> p = {0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10, 11, 11, 11, 12, 12, 12, 13, 13, 13, 14, 14, 14, 15, 15, 15};
-
-    unsigned long w = 4;
-    unsigned long h = 4;
+    // std::vector<double> p = {0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10, 11, 11, 11, 12, 12, 12, 13, 13, 13, 14, 14, 14, 15, 15, 15};
+    std::vector<double> p = {};
+    for (int i = 0; i < 256; i++)
+    {
+        p.push_back(i);
+        p.push_back(i);
+        p.push_back(i);
+    }
+    unsigned long w = 16;
+    unsigned long h = 16;
     std::vector<std::vector<Pixel>> res;
     vector_2matrix(w, h, res, p);
-    downsampling(w, h, res, 2);
+    // downsampling(w, h, res, 8);
     // redownsampling(w, h, res, 2); // рабоатет
     std::vector<Block> res_block;
-    blocking(w, h, res, 2, res_block);
+    blocking(w, h, res, 8, res_block);
     std::vector<Block> dct_block;
-    DCT_of_blocks(res_block, dct_block);
-
+    DCT_of_blocks(res_block, dct_block); // тут преобразовываются Сб и Ср каналы
+    // надо ли преобразовывать У????
+    std::vector<Matrix> Y_matrixes;
+    std::vector<Matrix> Cb_matrixes;
+    std::vector<Matrix> Cr_matrixes;
+    // перед квантованием я все 3 канала для каждого блока переведу в раздельные матрицы
+    blocks_to_matrixes(dct_block, Y_matrixes, Cb_matrixes, Cr_matrixes);
     return 0;
 
     std::vector<unsigned char> input_data;

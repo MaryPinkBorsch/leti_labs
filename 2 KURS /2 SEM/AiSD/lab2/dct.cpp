@@ -1,6 +1,9 @@
 #include "dct.h"
 
 using namespace std;
+double pi;
+const int len = 8;
+double c = 1 / sqrt(2);
 
 // сюда получается передаются блок 8х8 на обраотку ДКТ
 // в итоге вернутся блоки  8х8 где на позиции [0][0] будет стоять DC коэффициент
@@ -23,6 +26,7 @@ void DCT(Block input, Block &output)
             // F[j][k] = FDCT(j, k);
             output.matrix_data[j][k].Cb = FDCT(j, k, 0, input);
             output.matrix_data[j][k].Cr = FDCT(j, k, 1, input);
+            output.matrix_data[j][k].Y = input.matrix_data[j][k].Y;
             // cur.matrix_data[j][k] = FDCT(j, k);
         }
     }
@@ -63,4 +67,37 @@ void DCT_of_blocks(std::vector<Block> input, std::vector<Block> &output)
     output.resize(input.size());
     for (int i = 0; i < input.size(); i++)
         DCT(input[i], output[i]);
+}
+
+// по идее надо разбить одну структуру блок на три матрицы где значения только 1го канала из 3х
+void block_to_3_matrix(Block input, std::vector<std::vector<double>> &Y_matrix, std::vector<std::vector<double>> &Cb_matrix, std::vector<std::vector<double>> &Cr_matrix)
+{
+    Y_matrix.resize(8);
+    Cb_matrix.resize(8);
+    Cr_matrix.resize(8);
+    for (int i = 0; i < 8; i++)
+    {
+        Y_matrix[i].resize(8);
+        Cb_matrix[i].resize(8);
+        Cr_matrix[i].resize(8);
+    }
+
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            Y_matrix[i][j] = input.matrix_data[i][j].Y;
+            Cb_matrix[i][j] = input.matrix_data[i][j].Cb;
+            Cr_matrix[i][j] = input.matrix_data[i][j].Cr;
+        }
+    }
+}
+
+void blocks_to_matrixes(std::vector<Block> input, std::vector<Matrix> &Y_matrix, std::vector<Matrix> &Cb_matrix, std::vector<Matrix> &Cr_matrix)
+{
+    Y_matrix.resize(input.size());
+    Cb_matrix.resize(input.size());
+    Cr_matrix.resize(input.size());
+    for (int i = 0; i < input.size(); i++)
+        block_to_3_matrix(input[i], Y_matrix[i].data, Cb_matrix[i].data, Cr_matrix[i].data);
 }
