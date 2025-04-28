@@ -1,7 +1,7 @@
 #include "dct.h"
 
 using namespace std;
-double pi;
+double pi = 3.141592654;
 const int len = 8;
 double c = 1 / sqrt(2);
 

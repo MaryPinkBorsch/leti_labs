@@ -1,11 +1,17 @@
+#pragma once
+
 #include <iostream>
 #include <fstream>
 #include <math.h>
 #include "downsampling.h"
 
-// double pi;
-// const int len = 8;
-// double c = 1 / sqrt(2);
+// extern double pi;
+// extern const int len = 8;
+// extern double c = 1 / sqrt(2);
+
+extern double pi;
+extern const int len;
+extern double c;
 
 // bool input(double arr[][len]);
 // void output(double arr[][len]);
