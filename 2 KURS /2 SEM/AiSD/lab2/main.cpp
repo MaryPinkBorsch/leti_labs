@@ -2,6 +2,7 @@
 #include "downsampling.h"
 #include "serialization.h"
 #include "RGB_YCBCR.h"
+#include "dct.h"
 
 #include <iostream>
 #include <stdio.h>
@@ -39,6 +40,9 @@ int main(int argc, char *argv[])
     // redownsampling(w, h, res, 2); // рабоатет
     std::vector<Block> res_block;
     blocking(w, h, res, 2, res_block);
+    std::vector<Block> dct_block;
+    DCT_of_blocks(res_block, dct_block);
+
     return 0;
 
     std::vector<unsigned char> input_data;

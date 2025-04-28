@@ -10,6 +10,12 @@ using namespace std;
 // f - input
 void DCT(Block input, Block &output)
 {
+    output.matrix_data.resize(len);
+    for (int i = 0; i < len; i++)
+    {
+        output.matrix_data[i].resize(len);
+    }
+
     for (int j = 0; j < len; ++j)
     {
         for (int k = 0; k < len; ++k)
@@ -52,6 +58,9 @@ double FDCT(int u, int v, bool flag, Block input)
 // на вход массив блоков, на выход тоже
 void DCT_of_blocks(std::vector<Block> input, std::vector<Block> &output)
 {
+    if (!input.size())
+        abort;
+    output.resize(input.size());
     for (int i = 0; i < input.size(); i++)
         DCT(input[i], output[i]);
 }

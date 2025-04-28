@@ -14,4 +14,4 @@ double c = 1 / sqrt(2);
 // void output(double arr[][len]);
 void DCT(Block input, Block &output);
 double FDCT(int u, int v, bool flag, Block input);
-void DCT_of_blocks();
+void DCT_of_blocks(std::vector<Block> input, std::vector<Block> &output);
