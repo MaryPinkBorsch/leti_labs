@@ -30,6 +30,8 @@ void vector_2matrix(unsigned long &image_width, unsigned long &image_height, std
 // нужно проверить что и ширина и высота кратны Н (иначе нормально не засемплить)
 
 // !!! надо семплить ТОЛЬКО СБ и СР каналы!!!!
+
+// вот это обраьный семплинг а нужен прямой на обзеку
 void downsampling(unsigned long &image_width, unsigned long &image_height, std::vector<std::vector<Pixel>> &data, int H)
 {
     if (image_height % H != 0 || image_width % H != 0)
@@ -119,7 +121,7 @@ void blocking(unsigned long &image_width, unsigned long &image_height, std::vect
     // 1 вайл = 1 блок
     while (i < image_height)
     {
-        if (t > (h / N * w / N) -1)
+        if (t > (h / N * w / N) - 1)
             break;
         int hh = 0; // указатель бегать внутри блока
         blocks[t].matrix_data.resize(N);
@@ -157,7 +159,7 @@ void blocking(unsigned long &image_width, unsigned long &image_height, std::vect
             //         i++;
             //     }
             // }
-            if (j == image_width)
+            if (j >= image_width)
             {
                 // // заполнить оставшееся нулями
                 // // заполнить оставшееся нулями
@@ -176,6 +178,9 @@ void blocking(unsigned long &image_width, unsigned long &image_height, std::vect
         if (t == w / N)
             i += N;
         j += N;
+
+        if (j >= image_width)
+            j = 0;
     }
 
     // while (i < h)

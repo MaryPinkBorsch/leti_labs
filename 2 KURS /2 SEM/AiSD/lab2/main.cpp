@@ -28,14 +28,16 @@ void writefile(std::string output_filename, std::vector<unsigned char> &buffer)
 
 int main(int argc, char *argv[])
 {
-    std::vector<double> p = {9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0};
+    // std::vector<double> p = {9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0};
+    std::vector<double> p = {0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10, 11, 11, 11, 12, 12, 12, 13, 13, 13, 14, 14, 14, 15, 15, 15};
+
     unsigned long w = 4;
     unsigned long h = 4;
     std::vector<std::vector<Pixel>> res;
     vector_2matrix(w, h, res, p);
     // downsampling(w, h, res, 2); //он вроде работает
     std::vector<Block> res_block;
-    blocking(w, h, res, 2, res_block);
+    blocking(w, h, res, 2, res_block); // 2й блок res blockss ПРОБЛЕМЫ ПРИ БЛОКИНГЕ !!!! [2][0] !!
     return 0;
 
     std::vector<unsigned char> input_data;
