@@ -54,3 +54,12 @@ void dequantify()
     std::vector<std::vector<int>> q_table;
     table(q_table);
 }
+
+// функция чтоб получить все ДС коэффициенты (позиция [0][0] в каждой матрице цветовгого канала)
+void get_DC(std::vector<Matrix> &matrixes, std::vector<double> &DCs)
+{
+    for (int i = 0; i < matrixes.size(); i++)
+    {
+        DCs.push_back(matrixes[i].data[0][0]);
+    }
+}
