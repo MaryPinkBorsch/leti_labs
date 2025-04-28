@@ -30,6 +30,7 @@ void vector_2matrix(unsigned long &image_width, unsigned long &image_height, std
 
 // дата это наш матрица пикселей, Н это то во сколько надо сжать наше изображение
 // нужно проверить что и ширина и высота кратны Н (иначе нормально не засемплить)
+void redownsampling(unsigned long &image_width, unsigned long &image_height, std::vector<std::vector<Pixel>> &data, int H);
 void downsampling(unsigned long &image_width, unsigned long &image_height, std::vector<std::vector<Pixel>> &data, int H);
 
 void blocking(unsigned long &image_width, unsigned long &image_height, std::vector<std::vector<Pixel>> &data, int N, std::vector<Block> &blocks);

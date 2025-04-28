@@ -35,9 +35,10 @@ int main(int argc, char *argv[])
     unsigned long h = 4;
     std::vector<std::vector<Pixel>> res;
     vector_2matrix(w, h, res, p);
-    // downsampling(w, h, res, 2); //он вроде работает
+    downsampling(w, h, res, 2);
+    redownsampling(w, h, res, 2);
     std::vector<Block> res_block;
-    blocking(w, h, res, 2, res_block); // 2й блок res blockss ПРОБЛЕМЫ ПРИ БЛОКИНГЕ !!!! [2][0] !!
+    blocking(w, h, res, 2, res_block);  
     return 0;
 
     std::vector<unsigned char> input_data;

@@ -32,7 +32,7 @@ void vector_2matrix(unsigned long &image_width, unsigned long &image_height, std
 // !!! надо семплить ТОЛЬКО СБ и СР каналы!!!!
 
 // вот это обраьный семплинг а нужен прямой на обзеку
-void downsampling(unsigned long &image_width, unsigned long &image_height, std::vector<std::vector<Pixel>> &data, int H)
+void redownsampling(unsigned long &image_width, unsigned long &image_height, std::vector<std::vector<Pixel>> &data, int H)
 {
     if (image_height % H != 0 || image_width % H != 0)
     {
@@ -52,8 +52,11 @@ void downsampling(unsigned long &image_width, unsigned long &image_height, std::
             {
                 if (n >= image_width)
                     abort();
-                data[k][n].Cb = data[i][j].Cb;
-                data[k][n].Cr = data[i][j].Cr;
+                if ((k % H) - 1 == 0 && (n % H) - 1 == 0 && n && k) // как режем так и восстанавливаем
+                {
+                    data[k][n].Cb = data[i][j].Cb;
+                    data[k][n].Cr = data[i][j].Cr;
+                }
             }
         }
 
@@ -66,6 +69,33 @@ void downsampling(unsigned long &image_width, unsigned long &image_height, std::
     }
 }
 
+// эта функция урезает каналы СБ и Ср на столбац и строках, кратных Н
+//  урезаные значения выставляются в -1 и далее не обрабатываются !!!
+//(TODO потом проверить что оно так работает)
+//  и еще проверить оно с блоками или с пикселями должно работать?
+void downsampling(unsigned long &image_width, unsigned long &image_height, std::vector<std::vector<Pixel>> &data, int H)
+{
+    if (image_height % H != 0 || image_width % H != 0)
+    {
+        cout << "НЕТ возможности сделать даунсемлинг с данным коэффициентом Н, попробуйте другой" << endl;
+        return;
+    }
+
+    // int i = 0; // бегать по высоте
+    // int j = 0; // бегать по ширине
+    for (int i = 0; i < image_height; i++)
+    {
+        for (int j = 0; j < image_width; ++j)
+        {
+            if ((i % H) - 1 == 0 && (j % H) - 1 == 0 && j && i)
+            {
+                data[i][j].Cb = -1;
+                data[i][j].Cr = -1;
+            }
+        }
+    }
+}
+
 // сюда же пихну обработку по блокам (размер NxN)
 void blocking(unsigned long &image_width, unsigned long &image_height, std::vector<std::vector<Pixel>> &data, int N, std::vector<Block> &blocks)
 {
@@ -73,6 +103,11 @@ void blocking(unsigned long &image_width, unsigned long &image_height, std::vect
     int w = 0;
     int i = 0;
     int j = 0;
+    if (N <= 0)
+    {
+        cout << "error" << endl;
+        return;
+    }
     if (image_height % N != 0)
         h = round(image_height / N); // округляем последнюю строку и потом зануляем ее
     else
