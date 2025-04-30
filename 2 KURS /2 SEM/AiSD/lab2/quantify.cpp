@@ -38,7 +38,7 @@ void quantify(Matrix &matrix, int q_lvl)
             }
             double k = round((q_table[i][j] * s + 50) / 100);
 
-            matrix.data[i][j] = floor(matrix.data[i][j] / k) * k;
+            matrix.data[i][j] = floor(matrix.data[i][j] / k);
         }
     }
 }
@@ -49,10 +49,36 @@ void quantify_vec(std::vector<Matrix> &matrixes, int q_lvl)
         quantify(matrixes[i], q_lvl);
 }
 
-void dequantify()
+void dequantify(Matrix &matrix, int q_lvl)
 {
     std::vector<std::vector<int>> q_table;
     table(q_table);
+
+    for (int i = 0; i < matrix.data.size(); i++)
+    {
+        for (int j = 0; j < matrix.data[i].size(); j++)
+        {
+
+            double s = 0;
+            if (q_lvl < 50)
+            {
+                s = 5000 / q_lvl;
+            }
+            else
+            {
+                s = 200 - 2 * q_lvl;
+            }
+            double k = round((q_table[i][j] * s + 50) / 100);
+
+            matrix.data[i][j] = floor(matrix.data[i][j] * k);
+        }
+    }
+}
+
+void dequantify_vec(std::vector<Matrix> &matrixes, int q_lvl)
+{
+    for (int i = 0; i < matrixes.size(); i++)
+        dequantify(matrixes[i], q_lvl);
 }
 
 // функция чтоб получить все ДС коэффициенты (позиция [0][0] в каждой матрице цветовгого канала)

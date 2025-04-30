@@ -31,6 +31,16 @@ void writefile(std::string output_filename, std::vector<unsigned char> &buffer)
 
 int main(int argc, char *argv[])
 {
+    int t = 0;
+    int num = 8;
+    while (num)
+    {
+        t = num % 2;
+        num = num / 2;
+
+        std::cout << t << " ";
+    }
+    return 0;
 
     // ТЕСТЫ
 
