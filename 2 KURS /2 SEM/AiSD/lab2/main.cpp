@@ -4,6 +4,7 @@
 #include "RGB_YCBCR.h"
 #include "dct.h"
 #include "quantify.h"
+#include "diff_coding.h"
 
 #include <iostream>
 #include <stdio.h>
@@ -54,7 +55,7 @@ int main(int argc, char *argv[])
         std::vector<Block> res_block;
         blocking(w, h, res, 8, res_block);
         std::vector<Block> dct_block;
-        DCT_of_blocks(res_block, dct_block); // тут преобразовываются Сб и Ср каналы
+        DCT_of_blocks(res_block, dct_block); //
         // надо ли преобразовывать У????
         std::vector<Matrix> Y_matrixes;
         std::vector<Matrix> Cb_matrixes;
@@ -62,17 +63,23 @@ int main(int argc, char *argv[])
         // перед квантованием я все 3 канала для каждого блока переведу в раздельные матрицы
         blocks_to_matrixes(dct_block, Y_matrixes, Cb_matrixes, Cr_matrixes);
         // квантую с коэфиицентом качестваы
-        quantify_vec(Y_matrixes, 100);
-        quantify_vec(Cb_matrixes, 100);
-        quantify_vec(Cr_matrixes, 100);
+        quantify_vec(Y_matrixes, 99);
+        quantify_vec(Cb_matrixes, 99);
+        quantify_vec(Cr_matrixes, 99);
 
         // подготовка к разностному кодированию
         std::vector<double> Y_dc;
         std::vector<double> Cb_dc;
         std::vector<double> Cr_dc;
         get_DC(Y_matrixes, Y_dc);
-        get_DC(Y_matrixes, Cb_dc);
-        get_DC(Y_matrixes, Cr_dc);
+        get_DC(Cb_matrixes, Cb_dc);
+        get_DC(Cr_matrixes, Cr_dc);
+        // кодирую
+        diff_code(Y_dc);
+        // diff_code(Cb_dc);
+        // diff_code(Cr_dc);
+
+        diff_decode(Y_dc);
     }
 
     return 0;

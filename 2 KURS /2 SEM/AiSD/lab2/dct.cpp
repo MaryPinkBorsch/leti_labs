@@ -26,7 +26,7 @@ void DCT(Block input, Block &output)
             // F[j][k] = FDCT(j, k);
             output.matrix_data[j][k].Cb = FDCT(j, k, 0, input);
             output.matrix_data[j][k].Cr = FDCT(j, k, 1, input);
-            output.matrix_data[j][k].Y = input.matrix_data[j][k].Y;
+            output.matrix_data[j][k].Y = FDCT(j, k, 2, input);
             // cur.matrix_data[j][k] = FDCT(j, k);
         }
     }
@@ -41,6 +41,7 @@ double FDCT(int u, int v, bool flag, Block input)
     int tmp;
     // flag == 0 ---> Cb
     // flag == 1 ---> Cr
+    // flag == 2 ---> Y
 
     for (int j = 0; j < len; ++j)
     {
@@ -49,10 +50,13 @@ double FDCT(int u, int v, bool flag, Block input)
         {
             // sum += f[j][k] * cos(((tmp + 1) * u * pi) / 16) * cos(((k << 1 + 1) * v * pi) / 16);
             double t = 0;
-            if (flag)
+            if (flag == 1)
                 t = input.matrix_data[j][k].Cr;
-            else
+            else if (flag == 0)
                 t = input.matrix_data[j][k].Cb;
+            else if (flag == 2)
+                t = input.matrix_data[j][k].Y;
+
             sum += t * cos(((tmp + 1) * u * pi) / 16) * cos(((k << 1 + 1) * v * pi) / 16);
         }
     }
