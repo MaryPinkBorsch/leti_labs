@@ -15,3 +15,4 @@ void dequantify(Matrix &matrix, int q_lvl);
 void quantify(Matrix &matrix, int q_lvl);
 void quantify_vec(std::vector<Matrix> &matrixes, int q_lvl);
 void get_DC(std::vector<Matrix> &matrixes, std::vector<double> &DCs);
+void get_AC(std::vector<Matrix> &matrixes, std::vector<double> &ACs);

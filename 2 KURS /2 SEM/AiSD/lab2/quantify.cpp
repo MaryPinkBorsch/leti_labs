@@ -89,3 +89,14 @@ void get_DC(std::vector<Matrix> &matrixes, std::vector<double> &DCs)
         DCs.push_back(matrixes[i].data[0][0]);
     }
 }
+
+// функция чтоб получить все АС коэффициенты ( все позиции кроме позиция [0][0] в каждой матрице цветовгого канала)
+void get_AC(std::vector<Matrix> &matrixes, std::vector<double> &ACs)
+{
+    for (int i = 0; i < matrixes.size(); i++)
+    {
+        for (int j = 0; j < matrixes[i].data.size(); j++)
+            for (int k = 1; k < matrixes[i].data[j].size(); k++) // не берем позицию 0 0 т.к это ДС коэффициент
+                ACs.push_back(matrixes[i].data[j][k]);
+    }
+}

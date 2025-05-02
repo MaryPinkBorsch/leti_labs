@@ -31,16 +31,31 @@ void writefile(std::string output_filename, std::vector<unsigned char> &buffer)
 
 int main(int argc, char *argv[])
 {
-    int t = 0;
-    int num = 8;
-    while (num)
-    {
-        t = num % 2;
-        num = num / 2;
+    // {
+    //     int t = 0;
+    //     int num = 51;
+    //     while (num)
+    //     {
+    //         t = num % 2;
+    //         num = num / 2;
 
-        std::cout << t << " ";
-    }
-    return 0;
+    //         std::cout << t << " ";
+    //     }
+    //     cout << endl;
+
+    //     vector<int> arr = {1, 1, 0, 0, 1, 1};
+    //     double tmp = 0;
+    //     int p = arr.size() - 1; // счетчик степени
+    //     for (int j = 0; j < arr.size(); j++)
+    //     {
+    //         if (arr[j])
+    //             tmp += pow(2, p);
+
+    //         p--;
+    //     }
+    //     cout << tmp << endl;
+    // }
+    // return 0;
 
     // ТЕСТЫ
 
@@ -60,13 +75,14 @@ int main(int argc, char *argv[])
 
         // !!!! надо сделать обработку если там нечетко делится на блоки Н!!!!
         // downsampling(w, h, res, 8);
+
         // redownsampling(w, h, res, 2); // рабоатет
 
         std::vector<Block> res_block;
         blocking(w, h, res, 8, res_block);
         std::vector<Block> dct_block;
         DCT_of_blocks(res_block, dct_block); //
-        // надо ли преобразовывать У????
+        //
         std::vector<Matrix> Y_matrixes;
         std::vector<Matrix> Cb_matrixes;
         std::vector<Matrix> Cr_matrixes;
@@ -77,19 +93,39 @@ int main(int argc, char *argv[])
         quantify_vec(Cb_matrixes, 99);
         quantify_vec(Cr_matrixes, 99);
 
-        // подготовка к разностному кодированию
+        // подготовка к разностному кодированию DC
         std::vector<double> Y_dc;
         std::vector<double> Cb_dc;
         std::vector<double> Cr_dc;
         get_DC(Y_matrixes, Y_dc);
         get_DC(Cb_matrixes, Cb_dc);
         get_DC(Cr_matrixes, Cr_dc);
-        // кодирую
+        // кодирую DC
         diff_code(Y_dc);
-        // diff_code(Cb_dc);
-        // diff_code(Cr_dc);
+        diff_code(Cb_dc);
+        diff_code(Cr_dc);
 
-        diff_decode(Y_dc);
+        std::vector<double> Y_ac;
+        std::vector<double> Cb_ac;
+        std::vector<double> Cr_ac;
+        get_AC(Y_matrixes, Y_ac);
+        get_AC(Cb_matrixes, Cb_ac);
+        get_AC(Cr_matrixes, Cr_ac);
+
+        // кодирую AC и ДС переменным кодированием
+        std::vector<var_pair> Y_dc_var;
+        std::vector<var_pair> Cb_dc_var;
+        std::vector<var_pair> Cr_dc_var;
+        var_code(Y_dc, Y_dc_var);
+        var_code(Cb_dc, Cb_dc_var);
+        var_code(Cr_dc, Cr_dc_var);
+
+        std::vector<var_pair> Y_ac_var;
+        std::vector<var_pair> Cb_ac_var;
+        std::vector<var_pair> Cr_ac_var;
+        var_code(Y_ac, Y_ac_var);
+        var_code(Cb_ac, Cb_ac_var);
+        var_code(Cr_ac, Cr_ac_var);
     }
 
     return 0;
