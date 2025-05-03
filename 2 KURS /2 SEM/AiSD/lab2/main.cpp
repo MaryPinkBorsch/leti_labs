@@ -121,21 +121,32 @@ int main(int argc, char *argv[])
             get_AC(Cr_matrixes, Cr_ac);
 
             // RLE AC
+            std::vector<double> Y_ac_rle;
+            std::vector<double> Cb_ac_rle;
+            std::vector<double> Cr_ac_rle;
+
+            rle_AC(Y_ac, Y_ac_rle);
+            rle_AC(Cb_ac, Cb_ac_rle);
+            rle_AC(Cr_ac, Cr_ac_rle);
 
             // кодирую AC и ДС переменным кодированием
             std::vector<var_pair> Y_dc_var;
             std::vector<var_pair> Cb_dc_var;
             std::vector<var_pair> Cr_dc_var;
-            var_code(Y_dc, Y_dc_var);
-            var_code(Cb_dc, Cb_dc_var);
-            var_code(Cr_dc, Cr_dc_var);
+            var_code(Y_dc, Y_dc_var, 0);
+            var_code(Cb_dc, Cb_dc_var, 0);
+            var_code(Cr_dc, Cr_dc_var, 0);
 
             std::vector<var_pair> Y_ac_var;
             std::vector<var_pair> Cb_ac_var;
             std::vector<var_pair> Cr_ac_var;
-            var_code(Y_ac, Y_ac_var);
-            var_code(Cb_ac, Cb_ac_var);
-            var_code(Cr_ac, Cr_ac_var);
+            var_code(Y_ac_rle, Y_ac_var, 1);
+            var_code(Cb_ac_rle, Cb_ac_var, 1);
+            var_code(Cr_ac_rle, Cr_ac_var, 1);
+            std::vector<double> tmp;
+            // var_decode(Cr_ac_var, tmp, 1); // ОНО РАБОТАЕТ!!!
+            // if (tmp != Cr_ac_rle)
+            //     cout << "ERROE" << endl;
         }
 
         return 0;
