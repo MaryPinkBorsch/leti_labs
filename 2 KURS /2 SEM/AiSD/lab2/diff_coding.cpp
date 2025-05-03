@@ -30,6 +30,13 @@ void var_code(std::vector<double> &input, std::vector<var_pair> &output)
     {
         int t = 0;
         int num = input[i]; // надо ОБРАБЛТКУ ОТРИЦАТЕЛЬНЫХ ичсел
+        if (num < 0)
+        {
+            output[i].positive = false;
+            num *= -1;
+        }
+        else
+            output[i].positive = true;
         while (num)
         {
             t = num % 2;
@@ -54,6 +61,8 @@ void var_decode(std::vector<var_pair> &input, std::vector<double> &output)
                 tmp += pow(2, p);
             p--;
         }
+        if (input[i].positive == false)
+            tmp *= -1;
         output[i] = tmp;
     }
 }

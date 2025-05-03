@@ -5,6 +5,7 @@
 #include "dct.h"
 #include "quantify.h"
 #include "diff_coding.h"
+#include "rle.h"
 
 #include <iostream>
 #include <stdio.h>
@@ -58,88 +59,98 @@ int main(int argc, char *argv[])
     // return 0;
 
     // ТЕСТЫ
+    {
 
-    { // std::vector<double> p = {9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0};
-        // std::vector<double> p = {0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10, 11, 11, 11, 12, 12, 12, 13, 13, 13, 14, 14, 14, 15, 15, 15};
-        std::vector<double> p = {};
-        for (int i = 0; i < 256; i++)
+        //     DCT_of_blocks(res_block, dct_block); // ПРИНМАЕТ ТОЛЬКО 8на8 БЛОКИ!
+        //     rev_DCT_of_blocks(dct_block, rev);   //!!! ОН ОЧЕНЬ ПОЛОХО ПЕРЕВОДИТ ОТТУДА ОБРАТНО
+        //     // типо погрешность есть, но что-то она большая слишком
+
         {
-            p.push_back(i);
-            p.push_back(i);
-            p.push_back(i);
+            // std::vector<double> p = {9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0, 9, 1, 1, 9, 0, 0};
+            // std::vector<double> p = {0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10, 11, 11, 11, 12, 12, 12, 13, 13, 13, 14, 14, 14, 15, 15, 15};
+            std::vector<double> p = {};
+            for (int i = 0; i < 256; i++)
+            {
+                p.push_back(i);
+                p.push_back(i);
+                p.push_back(i);
+            }
+            unsigned long w = 16;
+            unsigned long h = 16;
+            std::vector<std::vector<Pixel>> res;
+            vector_2matrix(w, h, res, p);
+
+            // !!!! надо сделать обработку если там нечетко делится на блоки Н!!!!
+
+            // downsampling(w, h, res, 8);
+
+            // redownsampling(w, h, res, 2); // рабоатет
+
+            std::vector<Block> res_block;
+            blocking(w, h, res, 8, res_block);
+            std::vector<Block> dct_block;
+            DCT_of_blocks(res_block, dct_block); //
+            //
+            std::vector<Matrix> Y_matrixes;
+            std::vector<Matrix> Cb_matrixes;
+            std::vector<Matrix> Cr_matrixes;
+            // перед квантованием я все 3 канала для каждого блока переведу в раздельные матрицы
+            blocks_to_matrixes(dct_block, Y_matrixes, Cb_matrixes, Cr_matrixes);
+            // квантую с коэфиицентом качестваы
+            quantify_vec(Y_matrixes, 99);
+            quantify_vec(Cb_matrixes, 99);
+            quantify_vec(Cr_matrixes, 99);
+
+            // подготовка к разностному кодированию DC
+            std::vector<double> Y_dc;
+            std::vector<double> Cb_dc;
+            std::vector<double> Cr_dc;
+            get_DC(Y_matrixes, Y_dc);
+            get_DC(Cb_matrixes, Cb_dc);
+            get_DC(Cr_matrixes, Cr_dc);
+            // кодирую DC
+            diff_code(Y_dc);
+            diff_code(Cb_dc);
+            diff_code(Cr_dc);
+
+            std::vector<double> Y_ac;
+            std::vector<double> Cb_ac;
+            std::vector<double> Cr_ac;
+            get_AC(Y_matrixes, Y_ac);
+            get_AC(Cb_matrixes, Cb_ac);
+            get_AC(Cr_matrixes, Cr_ac);
+
+            // RLE AC
+
+            // кодирую AC и ДС переменным кодированием
+            std::vector<var_pair> Y_dc_var;
+            std::vector<var_pair> Cb_dc_var;
+            std::vector<var_pair> Cr_dc_var;
+            var_code(Y_dc, Y_dc_var);
+            var_code(Cb_dc, Cb_dc_var);
+            var_code(Cr_dc, Cr_dc_var);
+
+            std::vector<var_pair> Y_ac_var;
+            std::vector<var_pair> Cb_ac_var;
+            std::vector<var_pair> Cr_ac_var;
+            var_code(Y_ac, Y_ac_var);
+            var_code(Cb_ac, Cb_ac_var);
+            var_code(Cr_ac, Cr_ac_var);
         }
-        unsigned long w = 16;
-        unsigned long h = 16;
-        std::vector<std::vector<Pixel>> res;
-        vector_2matrix(w, h, res, p);
 
-        // !!!! надо сделать обработку если там нечетко делится на блоки Н!!!!
-        // downsampling(w, h, res, 8);
+        return 0;
 
-        // redownsampling(w, h, res, 2); // рабоатет
+        std::vector<unsigned char> input_data;
+        std::vector<unsigned char> pixel_data;
+        std::vector<double> pixel_data_ycbcr;
+        unsigned long image_width = 0;
+        unsigned long image_height = 0;
+        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
+        decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
+        // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
+        // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
 
-        std::vector<Block> res_block;
-        blocking(w, h, res, 8, res_block);
-        std::vector<Block> dct_block;
-        DCT_of_blocks(res_block, dct_block); //
-        //
-        std::vector<Matrix> Y_matrixes;
-        std::vector<Matrix> Cb_matrixes;
-        std::vector<Matrix> Cr_matrixes;
-        // перед квантованием я все 3 канала для каждого блока переведу в раздельные матрицы
-        blocks_to_matrixes(dct_block, Y_matrixes, Cb_matrixes, Cr_matrixes);
-        // квантую с коэфиицентом качестваы
-        quantify_vec(Y_matrixes, 99);
-        quantify_vec(Cb_matrixes, 99);
-        quantify_vec(Cr_matrixes, 99);
-
-        // подготовка к разностному кодированию DC
-        std::vector<double> Y_dc;
-        std::vector<double> Cb_dc;
-        std::vector<double> Cr_dc;
-        get_DC(Y_matrixes, Y_dc);
-        get_DC(Cb_matrixes, Cb_dc);
-        get_DC(Cr_matrixes, Cr_dc);
-        // кодирую DC
-        diff_code(Y_dc);
-        diff_code(Cb_dc);
-        diff_code(Cr_dc);
-
-        std::vector<double> Y_ac;
-        std::vector<double> Cb_ac;
-        std::vector<double> Cr_ac;
-        get_AC(Y_matrixes, Y_ac);
-        get_AC(Cb_matrixes, Cb_ac);
-        get_AC(Cr_matrixes, Cr_ac);
-
-        // кодирую AC и ДС переменным кодированием
-        std::vector<var_pair> Y_dc_var;
-        std::vector<var_pair> Cb_dc_var;
-        std::vector<var_pair> Cr_dc_var;
-        var_code(Y_dc, Y_dc_var);
-        var_code(Cb_dc, Cb_dc_var);
-        var_code(Cr_dc, Cr_dc_var);
-
-        std::vector<var_pair> Y_ac_var;
-        std::vector<var_pair> Cb_ac_var;
-        std::vector<var_pair> Cr_ac_var;
-        var_code(Y_ac, Y_ac_var);
-        var_code(Cb_ac, Cb_ac_var);
-        var_code(Cr_ac, Cr_ac_var);
+        RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
+        return 0;
     }
-
-    return 0;
-
-    std::vector<unsigned char> input_data;
-    std::vector<unsigned char> pixel_data;
-    std::vector<double> pixel_data_ycbcr;
-    unsigned long image_width = 0;
-    unsigned long image_height = 0;
-    readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
-    decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
-    // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
-    // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
-
-    RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
-    return 0;
 }

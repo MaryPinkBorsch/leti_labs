@@ -23,11 +23,9 @@ void DCT(Block input, Block &output)
     {
         for (int k = 0; k < len; ++k)
         {
-            // F[j][k] = FDCT(j, k);
             output.matrix_data[j][k].Cb = FDCT(j, k, 0, input);
             output.matrix_data[j][k].Cr = FDCT(j, k, 1, input);
             output.matrix_data[j][k].Y = FDCT(j, k, 2, input);
-            // cur.matrix_data[j][k] = FDCT(j, k);
         }
     }
 }
@@ -63,6 +61,58 @@ double FDCT(int u, int v, bool flag, Block input)
     return dct_const * sum;
 }
 
+// обратный ДКТ
+double rev_FDCT(int u, int v, bool flag, Block input)
+{
+    double Cu = (u == 0) ? c : 1.0;
+    double Cv = (v == 0) ? c : 1.0;
+    double dct_const = (Cu * Cv) / 4;
+    double sum = 0.0;
+    int tmp;
+    // flag == 0 ---> Cb
+    // flag == 1 ---> Cr
+    // flag == 2 ---> Y
+
+    for (int j = 0; j < len; ++j)
+    {
+        tmp = j << 1;
+        for (int k = 0; k < len; ++k)
+        {
+            // sum += f[j][k] * cos(((tmp + 1) * u * pi) / 16) * cos(((k << 1 + 1) * v * pi) / 16);
+            double t = 0;
+            if (flag == 1)
+                t = input.matrix_data[j][k].Cr;
+            else if (flag == 0)
+                t = input.matrix_data[j][k].Cb;
+            else if (flag == 2)
+                t = input.matrix_data[j][k].Y;
+
+            // ВООБЩЕ НЕ УВЕРЕНА В этой строчке, но кажется по формуле должно быть так:
+            sum += t * cos(((k + 1) * u * pi) / 16) * cos(((tmp << 1 + 1) * v * pi) / 16);
+        }
+    }
+    return dct_const * sum;
+}
+
+void rev_DCT(Block input, Block &output)
+{
+    output.matrix_data.resize(len);
+    for (int i = 0; i < len; i++)
+    {
+        output.matrix_data[i].resize(len);
+    }
+
+    for (int j = 0; j < len; ++j)
+    {
+        for (int k = 0; k < len; ++k)
+        {
+            output.matrix_data[j][k].Cb = rev_FDCT(j, k, 0, input);
+            output.matrix_data[j][k].Cr = rev_FDCT(j, k, 1, input);
+            output.matrix_data[j][k].Y = rev_FDCT(j, k, 2, input);
+        }
+    }
+}
+
 // на вход массив блоков, на выход тоже
 void DCT_of_blocks(std::vector<Block> input, std::vector<Block> &output)
 {
@@ -71,6 +121,16 @@ void DCT_of_blocks(std::vector<Block> input, std::vector<Block> &output)
     output.resize(input.size());
     for (int i = 0; i < input.size(); i++)
         DCT(input[i], output[i]);
+}
+
+// на вход массив блоков, на выход тоже
+void rev_DCT_of_blocks(std::vector<Block> input, std::vector<Block> &output)
+{
+    if (!input.size())
+        abort;
+    output.resize(input.size());
+    for (int i = 0; i < input.size(); i++)
+        rev_DCT(input[i], output[i]);
 }
 
 // по идее надо разбить одну структуру блок на три матрицы где значения только 1го канала из 3х

@@ -3,8 +3,9 @@
 #include "downsampling.h"
 struct var_pair
 {
-    int num = 0;          // число битов
-    std::vector<int> arr; // само число в бинарной форме
+    int num = 0;           // число битов
+    std::vector<int> arr;  // само число в бинарной форме
+    bool positive = false; // костыль для определения знака
 };
 
 // разностное кодирование
