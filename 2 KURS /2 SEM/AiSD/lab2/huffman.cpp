@@ -1500,3 +1500,16 @@ void huff_decode(huff_pair &input, var_pair &output, bool flag, bool y_flag)
         }
     }
 }
+
+void huff_code_vec(std::vector<var_pair> &input, std::vector<huff_pair> &output, bool flag, bool y_flag)
+{
+    output.resize(input.size());
+    for (int i = 0; i < input.size(); i++)
+        huff_code(input[i], output[i], flag, y_flag);
+}
+void huff_decode_vec(std::vector<huff_pair> &input, std::vector<var_pair> &output, bool flag, bool y_flag)
+{
+    output.resize(input.size());
+    for (int i = 0; i < input.size(); i++)
+        huff_decode(input[i], output[i], flag, y_flag);
+}

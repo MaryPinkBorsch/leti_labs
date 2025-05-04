@@ -33,3 +33,6 @@ struct huff_pair
 void table(std::vector<DC_table> &Y_table, std::vector<DC_table> &Cromatic_table, std::vector<AC_table> &y_tabl, std::vector<AC_table> &croma_tabl);
 void huff_code(var_pair &input, huff_pair &output, bool flag, bool y_flag);
 void huff_decode(huff_pair &input, var_pair &output, bool flag, bool y_flag);
+
+void huff_code_vec(std::vector<var_pair> &input, std::vector<huff_pair> &output, bool flag, bool y_flag);
+void huff_decode_vec(std::vector<huff_pair> &input, std::vector<var_pair> &output, bool flag, bool y_flag);
