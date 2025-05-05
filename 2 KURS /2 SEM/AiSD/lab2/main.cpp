@@ -6,6 +6,7 @@
 #include "quantify.h"
 #include "diff_coding.h"
 #include "rle.h"
+#include "lodepng.h"
 
 #include <iostream>
 #include <stdio.h>
@@ -97,9 +98,9 @@ int main(int argc, char *argv[])
             // перед квантованием я все 3 канала для каждого блока переведу в раздельные матрицы
             blocks_to_matrixes(dct_block, Y_matrixes, Cb_matrixes, Cr_matrixes);
             // квантую с коэфиицентом качестваы
-            quantify_vec(Y_matrixes, 99);
-            quantify_vec(Cb_matrixes, 99);
-            quantify_vec(Cr_matrixes, 99);
+            quantify_vec(Y_matrixes, 99,1);
+            quantify_vec(Cb_matrixes, 99,0);
+            quantify_vec(Cr_matrixes, 99,0);
 
             // подготовка к разностному кодированию DC
             std::vector<double> Y_dc;
@@ -149,7 +150,7 @@ int main(int argc, char *argv[])
             //     cout << "ERROE" << endl;
         }
 
-        return 0;
+        //return 0;
 
         std::vector<unsigned char> input_data;
         std::vector<unsigned char> pixel_data;
@@ -160,6 +161,9 @@ int main(int argc, char *argv[])
         decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
         // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
         // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
+
+        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna2.png", pixel_data.data(), image_width, image_height);
+
 
         RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
         return 0;
