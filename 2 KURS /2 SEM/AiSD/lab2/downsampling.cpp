@@ -26,6 +26,29 @@ void vector_2matrix(unsigned long &image_width, unsigned long &image_height, std
     }
 }
 
+void matrix2vector(unsigned long &image_width, unsigned long &image_height, std::vector<double> &out_data, std::vector<std::vector<Pixel>> &in_data)
+{
+    if (in_data.empty())
+        return;
+
+    int counter = 0; // счетчик чтоб бежать по инпуту и записывать цвет каналы по пикселям
+     
+    for (int i = 0; i < image_height; i++)
+    {
+        for (int j = 0; j < image_width; j++)
+        {
+            if (counter >= in_data.size())
+            {
+                cout << "ОШИБКА" << endl;
+                return;
+            }
+            out_data.push_back(in_data[i][j].Y);
+            out_data.push_back(in_data[i][j].Cb);
+            out_data.push_back(in_data[i][j].Cr);
+        }
+    }
+}
+
 // дата это наш матрица пикселей, Н это то во сколько надо сжать наше изображение
 // нужно проверить что и ширина и высота кратны Н (иначе нормально не засемплить)
 
@@ -89,8 +112,9 @@ void downsampling(unsigned long &image_width, unsigned long &image_height, std::
         {
             if ((i % H) - 1 == 0 && (j % H) - 1 == 0 && j && i)
             {
+                // data[i][j].Y = 0;
                 data[i][j].Cb = 0;
-                data[i][j].Cr = 0;
+                data[i][j].Cr =0;
             }
         }
     }

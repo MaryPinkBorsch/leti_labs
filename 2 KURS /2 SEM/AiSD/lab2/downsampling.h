@@ -31,7 +31,7 @@ struct Matrix
 //  как и приходящий после преобразования УсБсР
 
 void vector_2matrix(unsigned long &image_width, unsigned long &image_height, std::vector<std::vector<Pixel>> &out_data, std::vector<double> in_data);
-
+void matrix2vector(unsigned long &image_width, unsigned long &image_height, std::vector<double> &out_data, std::vector<std::vector<Pixel>> &in_data);
 // дата это наш матрица пикселей, Н это то во сколько надо сжать наше изображение
 // нужно проверить что и ширина и высота кратны Н (иначе нормально не засемплить)
 void redownsampling(unsigned long &image_width, unsigned long &image_height, std::vector<std::vector<Pixel>> &data, int H);
