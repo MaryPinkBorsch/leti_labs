@@ -1,9 +1,9 @@
 #include "quantify.h"
 using namespace std;
 
-void table(std::vector<std::vector<int>> &q_table)
+void table(std::vector<std::vector<int>> &q_table, std::vector<std::vector<int>> &chroma_q_table)
 {
-
+    // таблица для У
     q_table.resize(8);
 
     q_table[0] = {16, 11, 10, 16, 124, 140, 151, 161};
@@ -14,13 +14,28 @@ void table(std::vector<std::vector<int>> &q_table)
     q_table[5] = {24, 35, 55, 64, 181, 104, 113, 192};
     q_table[6] = {49, 64, 78, 87, 103, 121, 120, 101};
     q_table[7] = {72, 92, 95, 98, 112, 100, 103, 199};
+
+    // для Сб и Ср
+    chroma_q_table = {
+        {17, 18, 24, 47, 99, 99, 99, 99},
+        {18, 21, 26, 66, 99, 99, 99, 99},
+        {24, 26, 56, 99, 99, 99, 99, 99},
+        {47, 66, 99, 99, 99, 99, 99, 99},
+        {99, 99, 99, 99, 99, 99, 99, 99},
+        {99, 99, 99, 99, 99, 99, 99, 99},
+        {99, 99, 99, 99, 99, 99, 99, 99},
+        {99, 99, 99, 99, 99, 99, 99, 99}};
 }
 
 // q_lvl = уровень качества от 0 до 100
-void quantify(Matrix &matrix, int q_lvl)
+void quantify(Matrix &matrix, int q_lvl, bool flag_Y)
 {
+
+    // bool flag_Y = 0 ----> Cr Cb
+    // bool flag_Y = 1 ----> Y
     std::vector<std::vector<int>> q_table;
-    table(q_table);
+    std::vector<std::vector<int>> chroma_q_table;
+    table(q_table, chroma_q_table);
 
     for (int i = 0; i < matrix.data.size(); i++)
     {
@@ -28,6 +43,7 @@ void quantify(Matrix &matrix, int q_lvl)
         {
 
             double s = 0;
+            double k = 0;
             if (q_lvl < 50)
             {
                 s = 5000 / q_lvl;
@@ -36,23 +52,29 @@ void quantify(Matrix &matrix, int q_lvl)
             {
                 s = 200 - 2 * q_lvl;
             }
-            double k = round((q_table[i][j] * s + 50) / 100);
+            if (flag_Y)
+                k = round((q_table[i][j] * s + 50) / 100);
+            else
+                k = round((chroma_q_table[i][j] * s + 50) / 100);
 
             matrix.data[i][j] = floor(matrix.data[i][j] / k);
         }
     }
 }
 
-void quantify_vec(std::vector<Matrix> &matrixes, int q_lvl)
+void quantify_vec(std::vector<Matrix> &matrixes, int q_lvl, bool flag_Y)
 {
     for (int i = 0; i < matrixes.size(); i++)
-        quantify(matrixes[i], q_lvl);
+        quantify(matrixes[i], q_lvl, flag_Y);
 }
 
-void dequantify(Matrix &matrix, int q_lvl)
+void dequantify(Matrix &matrix, int q_lvl, bool flag_Y)
 {
+    // bool flag_Y = 0 ----> Cr Cb
+    // bool flag_Y = 1 ----> Y
     std::vector<std::vector<int>> q_table;
-    table(q_table);
+    std::vector<std::vector<int>> chroma_q_table;
+    table(q_table, chroma_q_table);
 
     for (int i = 0; i < matrix.data.size(); i++)
     {
@@ -60,6 +82,7 @@ void dequantify(Matrix &matrix, int q_lvl)
         {
 
             double s = 0;
+            double k = 0;
             if (q_lvl < 50)
             {
                 s = 5000 / q_lvl;
@@ -68,17 +91,20 @@ void dequantify(Matrix &matrix, int q_lvl)
             {
                 s = 200 - 2 * q_lvl;
             }
-            double k = round((q_table[i][j] * s + 50) / 100);
+            if (flag_Y)
+                k = round((q_table[i][j] * s + 50) / 100);
+            else
+                k = round((chroma_q_table[i][j] * s + 50) / 100);
 
             matrix.data[i][j] = floor(matrix.data[i][j] * k);
         }
     }
 }
 
-void dequantify_vec(std::vector<Matrix> &matrixes, int q_lvl)
+void dequantify_vec(std::vector<Matrix> &matrixes, int q_lvl, bool flag_Y)
 {
     for (int i = 0; i < matrixes.size(); i++)
-        dequantify(matrixes[i], q_lvl);
+        dequantify(matrixes[i], q_lvl, flag_Y);
 }
 
 // функция чтоб получить все ДС коэффициенты (позиция [0][0] в каждой матрице цветовгого канала)
