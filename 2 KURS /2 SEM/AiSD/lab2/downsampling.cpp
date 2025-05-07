@@ -32,7 +32,7 @@ void matrix2vector(unsigned long &image_width, unsigned long &image_height, std:
         return;
 
     int counter = 0; // счетчик чтоб бежать по инпуту и записывать цвет каналы по пикселям
-     
+
     for (int i = 0; i < image_height; i++)
     {
         for (int j = 0; j < image_width; j++)
@@ -96,7 +96,7 @@ void redownsampling(unsigned long &image_width, unsigned long &image_height, std
 //  урезаные значения выставляются в 0 и далее не обрабатываются !!!
 //(TODO потом проверить что оно так работает)
 //  и еще проверить оно с блоками или с пикселями должно работать?
-void downsampling(unsigned long &image_width, unsigned long &image_height, std::vector<std::vector<Pixel>> &data, int H)
+void downsampling2(unsigned long &image_width, unsigned long &image_height, std::vector<std::vector<Pixel>> &data, int H)
 {
     if (image_height % H != 0 || image_width % H != 0)
     {
@@ -110,150 +110,179 @@ void downsampling(unsigned long &image_width, unsigned long &image_height, std::
     {
         for (int j = 0; j < image_width; ++j)
         {
-            if ((i % H) - 1 == 0 && (j % H) - 1 == 0 && j && i)
+            if ((i % H) == 0 && (j % H) == 0 && j && i)
             {
                 // data[i][j].Y = 0;
                 data[i][j].Cb = 0;
-                data[i][j].Cr =0;
+                data[i][j].Cr = 0;
             }
         }
     }
 }
 
+void downsampling(unsigned long &image_width, unsigned long &image_height, std::vector<std::vector<Pixel>> &data, unsigned long H)
+{
+    if (image_height % H != 0 || image_width % H != 0)
+    {
+        std::cout << "НЕТ возможности сделать даунсемлинг с данным коэффициентом Н, попробуйте другой" << std::endl;
+        return;
+    }
+
+    unsigned long new_width = image_width / H;
+    unsigned long new_height = image_height / H;
+
+    std::vector<std::vector<Pixel>> data_downsampled(new_height, std::vector<Pixel>(new_width));
+
+    for (unsigned long i = 0; i < new_height; ++i)
+    {
+        for (unsigned long j = 0; j < new_width; ++j)
+        {
+            data_downsampled[i][j] = data[i * H][j * H]; // Копируем каждый H-й пиксель
+        }
+    }
+
+    // Заменяем старые данные новыми
+    data = data_downsampled;
+    image_width = new_width;
+    image_height = new_height;
+}
+
+void upsampling_bilinear(unsigned long &image_width, unsigned long &image_height, std::vector<std::vector<Pixel>> &data, double H)
+{
+    unsigned long new_width = static_cast<unsigned long>(image_width * H);
+    unsigned long new_height = static_cast<unsigned long>(image_height * H);
+
+    std::vector<std::vector<Pixel>> data_upsampled(new_height, std::vector<Pixel>(new_width));
+
+    for (unsigned long i = 0; i < new_height; ++i)
+    {
+        for (unsigned long j = 0; j < new_width; ++j)
+        {
+            double x = static_cast<double>(j) / H;
+            double y = static_cast<double>(i) / H;
+
+            int x1 = static_cast<int>(x);
+            int y1 = static_cast<int>(y);
+
+            int x2 = std::min(x1 + 1, static_cast<int>(image_width) - 1);  // Ensure within bounds
+            int y2 = std::min(y1 + 1, static_cast<int>(image_height) - 1); // Ensure within bounds
+
+            double dx = x - x1;
+            double dy = y - y1;
+
+            // Интерполируем каждый цветовой компонент (Y, Cb, Cr)
+            double Y1 = (1 - dx) * data[y1][x1].Y + dx * data[y1][x2].Y;
+            double Y2 = (1 - dx) * data[y2][x1].Y + dx * data[y2][x2].Y;
+            data_upsampled[i][j].Y = (1 - dy) * Y1 + dy * Y2;
+
+            double Cb1 = (1 - dx) * data[y1][x1].Cb + dx * data[y1][x2].Cb;
+            double Cb2 = (1 - dx) * data[y2][x1].Cb + dx * data[y2][x2].Cb;
+            data_upsampled[i][j].Cb = (1 - dy) * Cb1 + dy * Cb2;
+
+            double Cr1 = (1 - dx) * data[y1][x1].Cr + dx * data[y1][x2].Cr;
+            double Cr2 = (1 - dx) * data[y2][x1].Cr + dx * data[y2][x2].Cr;
+            data_upsampled[i][j].Cr = (1 - dy) * Cr1 + dy * Cr2;
+        }
+    }
+
+    // Заменяем старые данные новыми
+    data = data_upsampled;
+    image_width = new_width;
+    image_height = new_height;
+}
+
 // сюда же пихну обработку по блокам (размер NxN)
 void blocking(unsigned long &image_width, unsigned long &image_height, std::vector<std::vector<Pixel>> &data, int N, std::vector<Block> &blocks)
 {
-    int h = 0;
-    int w = 0;
-    int i = 0;
-    int j = 0;
+    size_t blocks_width = image_width / N +  ((image_width / N) ? 0 : 1);
+    size_t blocks_height = image_height / N +  ((image_height / N) ? 0 : 1);
+    blocks.resize(blocks_height*blocks_width);
+    for (auto & block : blocks) 
+    {
+        block.matrix_data.resize(N);
+        for (auto & row : block.matrix_data) 
+        {
+            row.resize(N);
+        }
+    }
+
+    for (size_t y = 0; y < image_height; ++y) 
+    {
+        for (size_t x = 0; x < image_height; ++x) 
+        {
+            size_t blocks_y = y / N;
+            size_t blocks_x = x / N;
+            size_t blocks_idx = blocks_y*blocks_width + blocks_x;
+            blocks[blocks_idx].matrix_data[y % N][x % N] = data[y][x];
+        }
+    }
+}
+
+void deblocking(unsigned long &image_width, unsigned long &image_height, std::vector<std::vector<Pixel>> &data, int N, std::vector<Block> &blocks)
+{
     if (N <= 0)
     {
-        cout << "error" << endl;
+        std::cout << "Ошибка: N должно быть положительным числом." << std::endl;
         return;
     }
-    if (image_height % N != 0)
-        h = round(image_height / N); // округляем последнюю строку и потом зануляем ее
-    else
-        h = image_height;
-    if (image_width % N != 0)
-        w = round(image_width / N); // округляем последний столбуц и потом зануляем его
-    else
-        w = image_width;
-    blocks.resize(w * h / (N * N));
-    // int t = 0;
-    // for (int i = 0; i < h; i++)
-    // {
-    //     int hh = i % N;
-    //     if (i && i % N == 0)
-    //         t++;
-    //     for (int j = 0; j < w; j++)
-    //     {
-    //         int ww = j % N;
-    //         if (j && j % N == 0)
-    //             t++;
 
-    //         if (t >= blocks.size() || t >= h * w)
-    //             return;
-    //         // по заданию надо заполнить пустыми пикселями если четко на блок не делится
-    //         if (j > data[i].size() || i > data.size())
-    //         {
-    //             blocks[t].matrix_data[hh][ww] = Pixel();
-    //         }
-    //         else
-    //         {
-    //             blocks[t].matrix_data.resize(N);
-    //             blocks[t].matrix_data[hh].resize(N);
-
-    //             blocks[t].matrix_data[hh][ww] = data[i][j];
-    //         }
-    //     }
-    //     if (t)
-    //         t -= (w % N) - 1;
-
-    //     if (t < 0)
-    //         t = 0;
-    // }
-
-    int t = 0; // счеткик по блокам
-    // пытаюсь сделвть блочнную обработку (ПЫТАЮСЬ)
-    // 1 вайл = 1 блок
-    while (i < image_height)
+    if (blocks.empty())
     {
-        if (t > (h / N * w / N) - 1)
-            break;
-        int hh = 0; // указатель бегать внутри блока
-        blocks[t].matrix_data.resize(N);
-        for (int k = i; k < i + N; k++)
-        {
-            if (hh > N)
-            {
-                hh = 0;
-            }
-            int ww = 0;
-            for (int n = j; n < j + N; n++)
-            {
-                if (n >= image_width)
-                {
-                    // // заполнить оставшееся нулями
-                    // while (n < w)
-                    // {
-                    //     blocks[t].matrix_data[hh][n] = Pixel();
-                    //     n++;
-                    // }
-                }
-                else
-                {
-                    blocks[t].matrix_data[hh].push_back(data[k][n]);
-                    // blocks[t].matrix_data[hh][ww] = data[k][n];}
-                    ww++;
-                }
-            }
-            // if (i == image_height)
-            // {
-            //     // заполнить оставшееся нулями
-            //     while (i < h)
-            //     {
-            //         blocks[t].matrix_data[i][ww] = Pixel();
-            //         i++;
-            //     }
-            // }
-            if (j >= image_width)
-            {
-                // // заполнить оставшееся нулями
-                // // заполнить оставшееся нулями
-                // while (j < w)
-                // {
-                //     blocks[t].matrix_data[hh][j] = Pixel();
-                //     j++;
-                // }
-
-                j = 0;
-            }
-
-            hh++;
-        }
-        t++;
-        if (t == w / N)
-            i += N;
-        j += N;
-
-        if (j >= image_width)
-            j = 0;
+        std::cout << "Ошибка: Вектор блоков пуст." << std::endl;
+        return;
     }
 
-    // while (i < h)
-    // {
-    //     while (j < w)
-    //     {
-    //         if (j % N - 1 == 0)
-    //         {
-    //             j = 0;
-    //             i++;
-    //         }
+    // Вычисляем размеры исходного изображения (до блокировки).  Важно, чтобы image_width и image_height были корректными
+    unsigned long original_width = 0;
+    unsigned long original_height = 0;
+    if (image_width > 0)
+        original_width = image_width / N * N;
+    if (image_height > 0)
+        original_height = image_height / N * N;
 
-    //         j++;
-    //     }
-    //     i++;
-    // }
+    if (original_width == 0 || original_height == 0)
+    {
+        std::cout << "Ошибка: image_width или image_height равны 0 или N больше размеров изображения." << std::endl;
+        return;
+    }
+
+    // Создаем вектор для хранения восстановленного изображения.
+    data.resize(original_height);
+    for (size_t i = 0; i < original_height; ++i)
+    {
+        data[i].resize(original_width);
+    }
+
+    int block_index = 0;
+    for (unsigned long i = 0; i < original_height; i += N)
+    {
+        for (unsigned long j = 0; j < original_width; j += N)
+        {
+            // Проверяем, не вышли ли за пределы вектора блоков.  Важно, чтобы количество блоков соответствовало размерам.
+            if (block_index >= blocks.size())
+            {
+                std::cout << "Ошибка: Недостаточно блоков для восстановления изображения." << std::endl;
+                return;
+            }
+
+            // Копируем данные из блока в изображение.
+            for (int row_in_block = 0; row_in_block < N; ++row_in_block)
+            {
+                for (int col_in_block = 0; col_in_block < N; ++col_in_block)
+                {
+                    data[i + row_in_block][j + col_in_block] = blocks[block_index].matrix_data[row_in_block][col_in_block];
+                }
+            }
+            block_index++;
+        }
+    }
+
+    // Обновляем размеры изображения
+    image_width = original_width;
+    image_height = original_height;
+
+    if (block_index != blocks.size())
+    {
+        std::cout << "Предупреждение: Количество блоков больше, чем необходимо для восстановления изображения." << std::endl;
+    }
 }
