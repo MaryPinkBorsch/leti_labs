@@ -214,5 +214,55 @@ int main(int argc, char *argv[])
         YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
         lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna4.png", output_data.data(), w, h);
     }
+    {
+        std::vector<unsigned char> input_data;
+        std::vector<unsigned char> pixel_data;
+        std::vector<unsigned char> output_data;
+        std::vector<double> pixel_data_ycbcr;
+        unsigned long image_width = 0;
+        unsigned long image_height = 0;
+        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
+        decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
+        // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
+        // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
+        RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
+
+        unsigned long w = image_width;
+        unsigned long h = image_height;
+        std::vector<std::vector<Pixel>> pixel_arr;
+        vector_2matrix(w, h, pixel_arr, pixel_data_ycbcr);
+
+        std::vector<Block> res_block;
+        blocking(w, h, pixel_arr, 8, res_block);
+
+        std::vector<Block> dct_block;
+        std::vector<Block> rev_dct_block;
+        DCT_of_blocks(res_block, dct_block); //
+        // //
+        // std::vector<Matrix> Y_matrixes;
+        // std::vector<Matrix> Cb_matrixes;
+        // std::vector<Matrix> Cr_matrixes;
+        // // перед квантованием я все 3 канала для каждого блока переведу в раздельные матрицы
+        // blocks_to_matrixes(dct_block, Y_matrixes, Cb_matrixes, Cr_matrixes);
+        // // квантую с коэфиицентом качестваы
+        // quantify_vec(Y_matrixes, 99, 1);
+        // quantify_vec(Cb_matrixes, 99, 0);
+        // quantify_vec(Cr_matrixes, 99, 0);
+        
+        rev_DCT_of_blocks(dct_block, rev_dct_block);
+
+        unsigned long w2 = image_width;
+        unsigned long h2 = image_height;
+        std::vector<std::vector<Pixel>> pixel_arr2;
+        deblocking(w2, h2, pixel_arr2, 8, rev_dct_block);
+
+        // if (pixel_arr2[0][0].Y != pixel_arr[0][0].Y || pixel_arr2[0][0].Cb != pixel_arr[0][0].Cb || pixel_arr2[0][0].Cr != pixel_arr[0][0].Cr)
+        //     abort();
+
+        std::vector<double> pixel_data_ycbcr2;
+        matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
+        YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
+        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna5.png", output_data.data(), w, h);
+    }
     return 0;
 }
