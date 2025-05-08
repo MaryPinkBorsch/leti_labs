@@ -3,7 +3,7 @@
 using namespace std;
 double pi = 3.141592654;
 const int len = 8;
-double c = 1 / sqrt(2);
+double c = 1.0 / sqrt(2.0);
 
 // сюда получается передаются блок 8х8 на обраотку ДКТ
 // в итоге вернутся блоки  8х8 где на позиции [0][0] будет стоять DC коэффициент
@@ -11,90 +11,88 @@ double c = 1 / sqrt(2);
 
 // F - output
 // f - input
-void DCT(Block input, Block &output)
+void DCT(Block & input, Block &output)
 {
     output.matrix_data.resize(len);
-    for (int i = 0; i < len; i++)
+    for (int y = 0; y < len; y++)
     {
-        output.matrix_data[i].resize(len);
+        output.matrix_data[y].resize(len);
     }
 
-    for (int j = 0; j < len; ++j)
+    for (int u = 0; u < len; ++u)
     {
-        for (int k = 0; k < len; ++k)
+        for (int v = 0; v < len; ++v)
         {
-            output.matrix_data[j][k].Cb = FDCT(j, k, 0, input);
-            output.matrix_data[j][k].Cr = FDCT(j, k, 1, input);
-            output.matrix_data[j][k].Y = FDCT(j, k, 2, input);
+            output.matrix_data[v][u].Cb = FDCT(u, v, 0, input);
+            output.matrix_data[v][u].Cr = FDCT(u, v, 1, input);
+            output.matrix_data[v][u].Y = FDCT(u, v, 2, input);
         }
     }
 }
 
-double FDCT(int u, int v, bool flag, Block input)
+double FDCT(int u, int v, bool flag, Block & input)
 {
     double Cu = (u == 0) ? c : 1.0;
     double Cv = (v == 0) ? c : 1.0;
-    double dct_const = (Cu * Cv) / 4;
     double sum = 0.0;
-    int tmp;
+
     // flag == 0 ---> Cb
     // flag == 1 ---> Cr
     // flag == 2 ---> Y
 
-    for (int j = 0; j < len; ++j)
+    for (int x = 0; x < len; ++x)
     {
-        tmp = j << 1;
-        for (int k = 0; k < len; ++k)
+        for (int y = 0; y < len; ++y)
         {
-            // sum += f[j][k] * cos(((tmp + 1) * u * pi) / 16) * cos(((k << 1 + 1) * v * pi) / 16);
+            // sum += f[y][x] * cos(((tmp + 1) * u * pi) / 16) * cos(((y << 1 + 1) * v * pi) / 16);
             double t = 0;
-            if (flag == 1)
-                t = input.matrix_data[j][k].Cr;
-            else if (flag == 0)
-                t = input.matrix_data[j][k].Cb;
+            if (flag == 0)
+                t = input.matrix_data[y][x].Cb;
+            else if (flag == 1)
+                t = input.matrix_data[y][x].Cr;
             else if (flag == 2)
-                t = input.matrix_data[j][k].Y;
+                t = input.matrix_data[y][x].Y;
 
-            sum += t * cos(((tmp + 1) * u * pi) / 16) * cos(((k << 1 + 1) * v * pi) / 16);
+            sum += t * cos(((2.0 * x + 1.0) * u * pi) / 16.0) * cos(((y * 2.0 + 1.0) * v * pi) / 16.0);
         }
     }
-    return dct_const * sum;
+    return 0.25 * Cu * Cv * sum;
 }
 
 // обратный ДКТ
-double rev_FDCT(int u, int v, bool flag, Block input)
+double rev_FDCT(int y, int x, bool flag, Block & input)
 {
-    double Cu = (u == 0) ? c : 1.0;
-    double Cv = (v == 0) ? c : 1.0;
-    double dct_const = (Cu * Cv) / 4;
+    double Cu = (y == 0) ? c : 1.0;
+    double Cv = (x == 0) ? c : 1.0;
     double sum = 0.0;
     int tmp;
     // flag == 0 ---> Cb
     // flag == 1 ---> Cr
     // flag == 2 ---> Y
 
-    for (int j = 0; j < len; ++j)
+    for (int u = 0; u < len; ++u)
     {
-        tmp = j << 1;
-        for (int k = 0; k < len; ++k)
+        for (int v = 0; v < len; ++v)
         {
-            // sum += f[j][k] * cos(((tmp + 1) * u * pi) / 16) * cos(((k << 1 + 1) * v * pi) / 16);
+            // sum += f[v][u] * cos(((tmp + 1) * u * pi) / 16) * cos(((v << 1 + 1) * v * pi) / 16);
             double t = 0;
-            if (flag == 1)
-                t = input.matrix_data[j][k].Cr;
-            else if (flag == 0)
-                t = input.matrix_data[j][k].Cb;
+            if (flag == 0)
+                t = input.matrix_data[v][u].Cb;
+            else if (flag == 1)
+                t = input.matrix_data[v][u].Cr;
             else if (flag == 2)
-                t = input.matrix_data[j][k].Y;
+                t = input.matrix_data[v][u].Y;
 
             // ВООБЩЕ НЕ УВЕРЕНА В этой строчке, но кажется по формуле должно быть так:
-            sum += t * cos(((k + 1) * u * pi) / 16) * cos(((tmp << 1 + 1) * v * pi) / 16);
+            sum += Cu * Cv * t * cos(((2.0 * x + 1.0) * u * pi) / 16.0) * cos(((2.0 * y + 1.0) * v * pi) / 16.0);
+
+            // sum += t * cos(((v + 1) * u * pi) / 16) * cos(((tmp << 1 + 1) * v * pi) / 16);
         }
     }
-    return dct_const * sum;
+    return 0.25 * sum;
 }
 
-void rev_DCT(Block input, Block &output)
+void rev_DCT(Block & input, Block &output)
 {
     output.matrix_data.resize(len);
     for (int i = 0; i < len; i++)
@@ -165,3 +163,8 @@ void blocks_to_matrixes(std::vector<Block> input, std::vector<Matrix> &Y_matrix,
     for (int i = 0; i < input.size(); i++)
         block_to_3_matrix(input[i], Y_matrix[i].data, Cb_matrix[i].data, Cr_matrix[i].data);
 }
+
+
+
+////////////////////////////////////////////////////////////////
+

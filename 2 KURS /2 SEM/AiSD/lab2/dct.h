@@ -13,12 +13,12 @@ extern double pi;
 extern const int len;
 extern double c;
 
-void DCT(Block input, Block &output);
-double FDCT(int u, int v, bool flag, Block input);
+void DCT(Block & input, Block &output);
+double FDCT(int u, int v, bool flag, Block  & input);
 void DCT_of_blocks(std::vector<Block> input, std::vector<Block> &output);
 
-void rev_DCT(Block input, Block &output);
-double rev_FDCT(int u, int v, bool flag, Block input);
+void rev_DCT(Block & input, Block &output);
+double rev_FDCT(int u, int v, bool flag, Block & input);
 void rev_DCT_of_blocks(std::vector<Block> input, std::vector<Block> &output);
 
 void block_to_3_matrix(Block input, std::vector<std::vector<double>> &Y_matrix, std::vector<std::vector<double>> &Cb_matrix, std::vector<std::vector<double>> &Cr_matrix);
