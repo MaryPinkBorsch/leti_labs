@@ -30,7 +30,7 @@ void DCT(Block & input, Block &output)
     }
 }
 
-double FDCT(int u, int v, bool flag, Block & input)
+double FDCT(int u, int v, int flag, Block & input)
 {
     double Cu = (u == 0) ? c : 1.0;
     double Cv = (v == 0) ? c : 1.0;
@@ -60,7 +60,7 @@ double FDCT(int u, int v, bool flag, Block & input)
 }
 
 // обратный ДКТ
-double rev_FDCT(int y, int x, bool flag, Block & input)
+double rev_FDCT(int y, int x, int flag, Block & input)
 {
     double Cu = (y == 0) ? c : 1.0;
     double Cv = (x == 0) ? c : 1.0;
