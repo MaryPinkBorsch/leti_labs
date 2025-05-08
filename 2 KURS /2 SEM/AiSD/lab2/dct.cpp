@@ -11,7 +11,7 @@ double c = 1.0 / sqrt(2.0);
 
 // F - output
 // f - input
-void DCT(Block & input, Block &output)
+void DCT(Block &input, Block &output)
 {
     output.matrix_data.resize(len);
     for (int y = 0; y < len; y++)
@@ -30,7 +30,7 @@ void DCT(Block & input, Block &output)
     }
 }
 
-double FDCT(int u, int v, int flag, Block & input)
+double FDCT(int u, int v, int flag, Block &input)
 {
     double Cu = (u == 0) ? c : 1.0;
     double Cv = (v == 0) ? c : 1.0;
@@ -60,7 +60,7 @@ double FDCT(int u, int v, int flag, Block & input)
 }
 
 // обратный ДКТ
-double rev_FDCT(int y, int x, int flag, Block & input)
+double rev_FDCT(int y, int x, int flag, Block &input)
 {
     double Cu = (y == 0) ? c : 1.0;
     double Cv = (x == 0) ? c : 1.0;
@@ -92,7 +92,7 @@ double rev_FDCT(int y, int x, int flag, Block & input)
     return 0.25 * sum;
 }
 
-void rev_DCT(Block & input, Block &output)
+void rev_DCT(Block &input, Block &output)
 {
     output.matrix_data.resize(len);
     for (int i = 0; i < len; i++)
@@ -164,7 +164,33 @@ void blocks_to_matrixes(std::vector<Block> input, std::vector<Matrix> &Y_matrix,
         block_to_3_matrix(input[i], Y_matrix[i].data, Cb_matrix[i].data, Cr_matrix[i].data);
 }
 
-
-
 ////////////////////////////////////////////////////////////////
 
+// 3 матрицы в один блок
+void matrix_to_block(Block &output, std::vector<std::vector<double>> &Y_matrix, std::vector<std::vector<double>> &Cb_matrix, std::vector<std::vector<double>> &Cr_matrix)
+{
+    output.matrix_data.resize(8);
+
+    for (int i = 0; i < 8; i++)
+    {
+        output.matrix_data[i].resize(8);
+    }
+
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            output.matrix_data[i][j].Y = Y_matrix[i][j];
+            output.matrix_data[i][j].Cb = Cb_matrix[i][j];
+            output.matrix_data[i][j].Cr = Cr_matrix[i][j];
+        }
+    }
+}
+
+void matrixes_to_block(std::vector<Block> &output, std::vector<Matrix> &Y_matrix, std::vector<Matrix> &Cb_matrix, std::vector<Matrix> &Cr_matrix)
+{
+    output.resize(Cb_matrix.size());
+
+    for (int i = 0; i < output.size(); i++)
+        matrix_to_block(output[i], Y_matrix[i].data, Cb_matrix[i].data, Cr_matrix[i].data);
+}

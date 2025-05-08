@@ -116,13 +116,62 @@ void get_DC(std::vector<Matrix> &matrixes, std::vector<double> &DCs)
     }
 }
 
+void put_DC(std::vector<Matrix> &matrixes, std::vector<double> &DCs)
+{
+    matrixes.resize(DCs.size());
+    for (auto &m : matrixes)
+        for (int i = 0; i < 8; i++)
+        {
+            m.data.resize(8);
+            for (int j = 0; j < 8; j++)
+            {
+                m.data[i].resize(8);
+            }
+        }
+    for (int i = 0; i < DCs.size(); i++)
+    {
+        matrixes[i].data[0][0] = DCs[i];
+    }
+}
+
 // функция чтоб получить все АС коэффициенты ( все позиции кроме позиция [0][0] в каждой матрице цветовгого канала)
 void get_AC(std::vector<Matrix> &matrixes, std::vector<double> &ACs)
 {
+    matrixes.resize(ACs.size() / 63);
+    for (auto &m : matrixes)
+        for (int i = 0; i < 8; i++)
+        {
+            m.data.resize(8);
+            for (int j = 0; j < 8; j++)
+            {
+                m.data[i].resize(8);
+            }
+        }
     for (int i = 0; i < matrixes.size(); i++)
     {
         for (int j = 0; j < matrixes[i].data.size(); j++)
-            for (int k = 1; k < matrixes[i].data[j].size(); k++) // не берем позицию 0 0 т.к это ДС коэффициент
+            for (int k = 0; k < matrixes[i].data[j].size(); k++) // не берем позицию 0 0 т.к это ДС коэффициент
+            {
+                if (j == 0 && k == 0)
+                    continue;
                 ACs.push_back(matrixes[i].data[j][k]);
+            }
+    }
+}
+
+void put_AC(std::vector<Matrix> &matrixes, std::vector<double> &ACs)
+{
+
+    for (int i = 0; i < ACs.size(); i++)
+    {
+        int matrix_idx = i / 63;
+        int offset = i % 63;
+
+        if (offset == 0)
+        {
+            matrixes.push_back({});
+        }
+        offset++;
+        matrixes[matrix_idx].data[offset / 8][offset % 8] = ACs[i];
     }
 }

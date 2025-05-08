@@ -19,3 +19,6 @@ void get_DC(std::vector<Matrix> &matrixes, std::vector<double> &DCs);
 void get_AC(std::vector<Matrix> &matrixes, std::vector<double> &ACs);
 
 void table(std::vector<std::vector<int>> &q_table, std::vector<std::vector<int>> &chroma_q_table);
+
+void put_AC(std::vector<Matrix> &matrixes, std::vector<double> &ACs);
+void put_DC(std::vector<Matrix> &matrixes, std::vector<double> &DCs);
