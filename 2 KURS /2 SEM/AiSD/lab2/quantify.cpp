@@ -46,7 +46,10 @@ void quantify(Matrix &matrix, int q_lvl, bool flag_Y)
             double k = 0;
             if (q_lvl < 50)
             {
-                s = 5000 / q_lvl;
+                if (q_lvl == 0)
+                    s = 5000;
+                else
+                    s = 5000 / q_lvl;
             }
             else
             {
@@ -85,7 +88,10 @@ void dequantify(Matrix &matrix, int q_lvl, bool flag_Y)
             double k = 0;
             if (q_lvl < 50)
             {
-                s = 5000 / q_lvl;
+                if (q_lvl == 0)
+                    s = 5000;
+                else
+                    s = 5000 / q_lvl;
             }
             else
             {
@@ -96,7 +102,7 @@ void dequantify(Matrix &matrix, int q_lvl, bool flag_Y)
             else
                 k = round((chroma_q_table[i][j] * s + 50) / 100);
 
-            matrix.data[i][j] = floor(matrix.data[i][j] * k);
+            matrix.data[i][j] = floor(matrix.data[i][j] / k) * k;
         }
     }
 }

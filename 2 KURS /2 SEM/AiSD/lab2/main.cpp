@@ -30,6 +30,650 @@ void writefile(std::string output_filename, std::vector<unsigned char> &buffer)
     std::ofstream output_file(output_filename, std::ios::binary | std::ios::trunc);
     output_file.write((char *)buffer.data(), buffer.size());
 }
+
+void q_test()
+{
+    {
+        std::vector<unsigned char> input_data;
+        std::vector<unsigned char> pixel_data;
+        std::vector<unsigned char> output_data;
+        std::vector<double> pixel_data_ycbcr;
+        unsigned long image_width = 0;
+        unsigned long image_height = 0;
+        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
+        decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
+        // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
+        // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
+        RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
+
+        unsigned long w = image_width;
+        unsigned long h = image_height;
+        std::vector<std::vector<Pixel>> pixel_arr;
+        vector_2matrix(w, h, pixel_arr, pixel_data_ycbcr);
+
+        std::vector<Block> res_block;
+        blocking(w, h, pixel_arr, 8, res_block);
+
+        std::vector<Block> dct_block;
+        std::vector<Block> rev_dct_block;
+        DCT_of_blocks(res_block, dct_block);
+        // //
+        std::vector<Matrix> Y_matrixes;
+        std::vector<Matrix> Cb_matrixes;
+        std::vector<Matrix> Cr_matrixes;
+        // // перед квантованием я все 3 канала для каждого блока переведу в раздельные матрицы
+        blocks_to_matrixes(dct_block, Y_matrixes, Cb_matrixes, Cr_matrixes);
+        // квантую с коэфиицентом качестваы
+        quantify_vec(Y_matrixes, 100, 1);
+        quantify_vec(Cb_matrixes, 100, 0);
+        quantify_vec(Cr_matrixes, 100, 0);
+
+        // обраьное квантование
+        std::vector<Matrix> Y_matrixes2;
+        std::vector<Matrix> Cb_matrixes2;
+        std::vector<Matrix> Cr_matrixes2;
+        dequantify_vec(Y_matrixes, 100, 1);
+        dequantify_vec(Cb_matrixes, 100, 0);
+        dequantify_vec(Cr_matrixes, 100, 0);
+        //
+        std::vector<Block> dct_block3;
+        matrixes_to_block(dct_block3, Y_matrixes, Cb_matrixes, Cr_matrixes);
+
+        rev_DCT_of_blocks(dct_block3, rev_dct_block);
+
+        unsigned long w2 = image_width;
+        unsigned long h2 = image_height;
+        std::vector<std::vector<Pixel>> pixel_arr2;
+        deblocking(w2, h2, pixel_arr2, 8, rev_dct_block);
+
+        std::vector<double> pixel_data_ycbcr2;
+        matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
+        YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
+        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_q1.png", output_data.data(), w, h);
+    }
+    {
+        std::vector<unsigned char> input_data;
+        std::vector<unsigned char> pixel_data;
+        std::vector<unsigned char> output_data;
+        std::vector<double> pixel_data_ycbcr;
+        unsigned long image_width = 0;
+        unsigned long image_height = 0;
+        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_black.png", input_data);
+        decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
+        // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
+        // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
+        RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
+
+        unsigned long w = image_width;
+        unsigned long h = image_height;
+        std::vector<std::vector<Pixel>> pixel_arr;
+        vector_2matrix(w, h, pixel_arr, pixel_data_ycbcr);
+
+        std::vector<Block> res_block;
+        blocking(w, h, pixel_arr, 8, res_block);
+
+        std::vector<Block> dct_block;
+        std::vector<Block> rev_dct_block;
+        DCT_of_blocks(res_block, dct_block);
+        // //
+        std::vector<Matrix> Y_matrixes;
+        std::vector<Matrix> Cb_matrixes;
+        std::vector<Matrix> Cr_matrixes;
+        // // перед квантованием я все 3 канала для каждого блока переведу в раздельные матрицы
+        blocks_to_matrixes(dct_block, Y_matrixes, Cb_matrixes, Cr_matrixes);
+        // квантую с коэфиицентом качестваы
+        quantify_vec(Y_matrixes, 100, 1);
+        quantify_vec(Cb_matrixes, 100, 0);
+        quantify_vec(Cr_matrixes, 100, 0);
+
+        // обраьное квантование
+        std::vector<Matrix> Y_matrixes2;
+        std::vector<Matrix> Cb_matrixes2;
+        std::vector<Matrix> Cr_matrixes2;
+        dequantify_vec(Y_matrixes, 100, 1);
+        dequantify_vec(Cb_matrixes, 100, 0);
+        dequantify_vec(Cr_matrixes, 100, 0);
+        //
+        std::vector<Block> dct_block3;
+        matrixes_to_block(dct_block3, Y_matrixes, Cb_matrixes, Cr_matrixes);
+
+        rev_DCT_of_blocks(dct_block3, rev_dct_block);
+
+        unsigned long w2 = image_width;
+        unsigned long h2 = image_height;
+        std::vector<std::vector<Pixel>> pixel_arr2;
+        deblocking(w2, h2, pixel_arr2, 8, rev_dct_block);
+
+        std::vector<double> pixel_data_ycbcr2;
+        matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
+        YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
+        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_black_q1.png", output_data.data(), w, h);
+    }
+    {
+        std::vector<unsigned char> input_data;
+        std::vector<unsigned char> pixel_data;
+        std::vector<unsigned char> output_data;
+        std::vector<double> pixel_data_ycbcr;
+        unsigned long image_width = 0;
+        unsigned long image_height = 0;
+        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/test_image.png", input_data);
+        decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
+        // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
+        // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
+        RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
+
+        unsigned long w = image_width;
+        unsigned long h = image_height;
+        std::vector<std::vector<Pixel>> pixel_arr;
+        vector_2matrix(w, h, pixel_arr, pixel_data_ycbcr);
+
+        std::vector<Block> res_block;
+        blocking(w, h, pixel_arr, 8, res_block);
+
+        std::vector<Block> dct_block;
+        std::vector<Block> rev_dct_block;
+        DCT_of_blocks(res_block, dct_block);
+        // //
+        std::vector<Matrix> Y_matrixes;
+        std::vector<Matrix> Cb_matrixes;
+        std::vector<Matrix> Cr_matrixes;
+        // // перед квантованием я все 3 канала для каждого блока переведу в раздельные матрицы
+        blocks_to_matrixes(dct_block, Y_matrixes, Cb_matrixes, Cr_matrixes);
+        // квантую с коэфиицентом качестваы
+        quantify_vec(Y_matrixes, 100, 1);
+        quantify_vec(Cb_matrixes, 100, 0);
+        quantify_vec(Cr_matrixes, 100, 0);
+
+        // обраьное квантование
+        std::vector<Matrix> Y_matrixes2;
+        std::vector<Matrix> Cb_matrixes2;
+        std::vector<Matrix> Cr_matrixes2;
+        dequantify_vec(Y_matrixes, 100, 1);
+        dequantify_vec(Cb_matrixes, 100, 0);
+        dequantify_vec(Cr_matrixes, 100, 0);
+        //
+        std::vector<Block> dct_block3;
+        matrixes_to_block(dct_block3, Y_matrixes, Cb_matrixes, Cr_matrixes);
+
+        rev_DCT_of_blocks(dct_block3, rev_dct_block);
+
+        unsigned long w2 = image_width;
+        unsigned long h2 = image_height;
+        std::vector<std::vector<Pixel>> pixel_arr2;
+        deblocking(w2, h2, pixel_arr2, 8, rev_dct_block);
+
+        std::vector<double> pixel_data_ycbcr2;
+        matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
+        YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
+        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/test_image_q1.png", output_data.data(), w, h);
+    }
+    {
+        std::vector<unsigned char> input_data;
+        std::vector<unsigned char> pixel_data;
+        std::vector<unsigned char> output_data;
+        std::vector<double> pixel_data_ycbcr;
+        unsigned long image_width = 0;
+        unsigned long image_height = 0;
+        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/test_image_gray.png", input_data);
+        decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
+        // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
+        // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
+        RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
+
+        unsigned long w = image_width;
+        unsigned long h = image_height;
+        std::vector<std::vector<Pixel>> pixel_arr;
+        vector_2matrix(w, h, pixel_arr, pixel_data_ycbcr);
+
+        std::vector<Block> res_block;
+        blocking(w, h, pixel_arr, 8, res_block);
+
+        std::vector<Block> dct_block;
+        std::vector<Block> rev_dct_block;
+        DCT_of_blocks(res_block, dct_block);
+        // //
+        std::vector<Matrix> Y_matrixes;
+        std::vector<Matrix> Cb_matrixes;
+        std::vector<Matrix> Cr_matrixes;
+        // // перед квантованием я все 3 канала для каждого блока переведу в раздельные матрицы
+        blocks_to_matrixes(dct_block, Y_matrixes, Cb_matrixes, Cr_matrixes);
+        // квантую с коэфиицентом качестваы
+        quantify_vec(Y_matrixes, 100, 1);
+        quantify_vec(Cb_matrixes, 100, 0);
+        quantify_vec(Cr_matrixes, 100, 0);
+
+        // обраьное квантование
+        std::vector<Matrix> Y_matrixes2;
+        std::vector<Matrix> Cb_matrixes2;
+        std::vector<Matrix> Cr_matrixes2;
+        dequantify_vec(Y_matrixes, 100, 1);
+        dequantify_vec(Cb_matrixes, 100, 0);
+        dequantify_vec(Cr_matrixes, 100, 0);
+        //
+        std::vector<Block> dct_block3;
+        matrixes_to_block(dct_block3, Y_matrixes, Cb_matrixes, Cr_matrixes);
+
+        rev_DCT_of_blocks(dct_block3, rev_dct_block);
+
+        unsigned long w2 = image_width;
+        unsigned long h2 = image_height;
+        std::vector<std::vector<Pixel>> pixel_arr2;
+        deblocking(w2, h2, pixel_arr2, 8, rev_dct_block);
+
+        std::vector<double> pixel_data_ycbcr2;
+        matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
+        YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
+        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/test_image_gray_q1.png", output_data.data(), w, h);
+    }
+    {
+        std::vector<unsigned char> input_data;
+        std::vector<unsigned char> pixel_data;
+        std::vector<unsigned char> output_data;
+        std::vector<double> pixel_data_ycbcr;
+        unsigned long image_width = 0;
+        unsigned long image_height = 0;
+        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/test_image_black.png", input_data);
+        decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
+        // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
+        // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
+        RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
+
+        unsigned long w = image_width;
+        unsigned long h = image_height;
+        std::vector<std::vector<Pixel>> pixel_arr;
+        vector_2matrix(w, h, pixel_arr, pixel_data_ycbcr);
+
+        std::vector<Block> res_block;
+        blocking(w, h, pixel_arr, 8, res_block);
+
+        std::vector<Block> dct_block;
+        std::vector<Block> rev_dct_block;
+        DCT_of_blocks(res_block, dct_block);
+        // //
+        std::vector<Matrix> Y_matrixes;
+        std::vector<Matrix> Cb_matrixes;
+        std::vector<Matrix> Cr_matrixes;
+        // // перед квантованием я все 3 канала для каждого блока переведу в раздельные матрицы
+        blocks_to_matrixes(dct_block, Y_matrixes, Cb_matrixes, Cr_matrixes);
+        // квантую с коэфиицентом качестваы
+        quantify_vec(Y_matrixes, 100, 1);
+        quantify_vec(Cb_matrixes, 100, 0);
+        quantify_vec(Cr_matrixes, 100, 0);
+
+        // обраьное квантование
+        std::vector<Matrix> Y_matrixes2;
+        std::vector<Matrix> Cb_matrixes2;
+        std::vector<Matrix> Cr_matrixes2;
+        dequantify_vec(Y_matrixes, 100, 1);
+        dequantify_vec(Cb_matrixes, 100, 0);
+        dequantify_vec(Cr_matrixes, 100, 0);
+        //
+        std::vector<Block> dct_block3;
+        matrixes_to_block(dct_block3, Y_matrixes, Cb_matrixes, Cr_matrixes);
+
+        rev_DCT_of_blocks(dct_block3, rev_dct_block);
+
+        unsigned long w2 = image_width;
+        unsigned long h2 = image_height;
+        std::vector<std::vector<Pixel>> pixel_arr2;
+        deblocking(w2, h2, pixel_arr2, 8, rev_dct_block);
+
+        std::vector<double> pixel_data_ycbcr2;
+        matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
+        YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
+        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/test_image_black_q1.png", output_data.data(), w, h);
+    }
+    {
+        std::vector<unsigned char> input_data;
+        std::vector<unsigned char> pixel_data;
+        std::vector<unsigned char> output_data;
+        std::vector<double> pixel_data_ycbcr;
+        unsigned long image_width = 0;
+        unsigned long image_height = 0;
+        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
+        decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
+        // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
+        // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
+        RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
+
+        unsigned long w = image_width;
+        unsigned long h = image_height;
+        std::vector<std::vector<Pixel>> pixel_arr;
+        vector_2matrix(w, h, pixel_arr, pixel_data_ycbcr);
+
+        std::vector<Block> res_block;
+        blocking(w, h, pixel_arr, 8, res_block);
+
+        std::vector<Block> dct_block;
+        std::vector<Block> rev_dct_block;
+        DCT_of_blocks(res_block, dct_block);
+        // //
+        std::vector<Matrix> Y_matrixes;
+        std::vector<Matrix> Cb_matrixes;
+        std::vector<Matrix> Cr_matrixes;
+        // // перед квантованием я все 3 канала для каждого блока переведу в раздельные матрицы
+        blocks_to_matrixes(dct_block, Y_matrixes, Cb_matrixes, Cr_matrixes);
+        // квантую с коэфиицентом качестваы
+        quantify_vec(Y_matrixes, 80, 1);
+        quantify_vec(Cb_matrixes, 80, 0);
+        quantify_vec(Cr_matrixes, 80, 0);
+
+        // обраьное квантование
+        std::vector<Matrix> Y_matrixes2;
+        std::vector<Matrix> Cb_matrixes2;
+        std::vector<Matrix> Cr_matrixes2;
+        dequantify_vec(Y_matrixes, 80, 1);
+        dequantify_vec(Cb_matrixes, 80, 0);
+        dequantify_vec(Cr_matrixes, 80, 0);
+        //
+        std::vector<Block> dct_block3;
+        matrixes_to_block(dct_block3, Y_matrixes, Cb_matrixes, Cr_matrixes);
+
+        rev_DCT_of_blocks(dct_block3, rev_dct_block);
+
+        unsigned long w2 = image_width;
+        unsigned long h2 = image_height;
+        std::vector<std::vector<Pixel>> pixel_arr2;
+        deblocking(w2, h2, pixel_arr2, 8, rev_dct_block);
+
+        std::vector<double> pixel_data_ycbcr2;
+        matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
+        YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
+        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_q2.png", output_data.data(), w, h);
+    }
+    {
+        std::vector<unsigned char> input_data;
+        std::vector<unsigned char> pixel_data;
+        std::vector<unsigned char> output_data;
+        std::vector<double> pixel_data_ycbcr;
+        unsigned long image_width = 0;
+        unsigned long image_height = 0;
+        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
+        decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
+        // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
+        // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
+        RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
+
+        unsigned long w = image_width;
+        unsigned long h = image_height;
+        std::vector<std::vector<Pixel>> pixel_arr;
+        vector_2matrix(w, h, pixel_arr, pixel_data_ycbcr);
+
+        std::vector<Block> res_block;
+        blocking(w, h, pixel_arr, 8, res_block);
+
+        std::vector<Block> dct_block;
+        std::vector<Block> rev_dct_block;
+        DCT_of_blocks(res_block, dct_block);
+        // //
+        std::vector<Matrix> Y_matrixes;
+        std::vector<Matrix> Cb_matrixes;
+        std::vector<Matrix> Cr_matrixes;
+        // // перед квантованием я все 3 канала для каждого блока переведу в раздельные матрицы
+        blocks_to_matrixes(dct_block, Y_matrixes, Cb_matrixes, Cr_matrixes);
+        // квантую с коэфиицентом качестваы
+        quantify_vec(Y_matrixes, 60, 1);
+        quantify_vec(Cb_matrixes, 60, 0);
+        quantify_vec(Cr_matrixes, 60, 0);
+
+        // обраьное квантование
+        std::vector<Matrix> Y_matrixes2;
+        std::vector<Matrix> Cb_matrixes2;
+        std::vector<Matrix> Cr_matrixes2;
+        dequantify_vec(Y_matrixes, 60, 1);
+        dequantify_vec(Cb_matrixes, 60, 0);
+        dequantify_vec(Cr_matrixes, 60, 0);
+        //
+        std::vector<Block> dct_block3;
+        matrixes_to_block(dct_block3, Y_matrixes, Cb_matrixes, Cr_matrixes);
+
+        rev_DCT_of_blocks(dct_block3, rev_dct_block);
+
+        unsigned long w2 = image_width;
+        unsigned long h2 = image_height;
+        std::vector<std::vector<Pixel>> pixel_arr2;
+        deblocking(w2, h2, pixel_arr2, 8, rev_dct_block);
+
+        std::vector<double> pixel_data_ycbcr2;
+        matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
+        YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
+        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_q3.png", output_data.data(), w, h);
+    }
+    {
+        std::vector<unsigned char> input_data;
+        std::vector<unsigned char> pixel_data;
+        std::vector<unsigned char> output_data;
+        std::vector<double> pixel_data_ycbcr;
+        unsigned long image_width = 0;
+        unsigned long image_height = 0;
+        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
+        decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
+        // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
+        // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
+        RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
+
+        unsigned long w = image_width;
+        unsigned long h = image_height;
+        std::vector<std::vector<Pixel>> pixel_arr;
+        vector_2matrix(w, h, pixel_arr, pixel_data_ycbcr);
+
+        std::vector<Block> res_block;
+        blocking(w, h, pixel_arr, 8, res_block);
+
+        std::vector<Block> dct_block;
+        std::vector<Block> rev_dct_block;
+        DCT_of_blocks(res_block, dct_block);
+        // //
+        std::vector<Matrix> Y_matrixes;
+        std::vector<Matrix> Cb_matrixes;
+        std::vector<Matrix> Cr_matrixes;
+        // // перед квантованием я все 3 канала для каждого блока переведу в раздельные матрицы
+        blocks_to_matrixes(dct_block, Y_matrixes, Cb_matrixes, Cr_matrixes);
+        // квантую с коэфиицентом качестваы
+        quantify_vec(Y_matrixes, 40, 1);
+        quantify_vec(Cb_matrixes, 40, 0);
+        quantify_vec(Cr_matrixes, 40, 0);
+
+        // обраьное квантование
+        std::vector<Matrix> Y_matrixes2;
+        std::vector<Matrix> Cb_matrixes2;
+        std::vector<Matrix> Cr_matrixes2;
+        dequantify_vec(Y_matrixes, 40, 1);
+        dequantify_vec(Cb_matrixes, 40, 0);
+        dequantify_vec(Cr_matrixes, 40, 0);
+        //
+        std::vector<Block> dct_block3;
+        matrixes_to_block(dct_block3, Y_matrixes, Cb_matrixes, Cr_matrixes);
+
+        rev_DCT_of_blocks(dct_block3, rev_dct_block);
+
+        unsigned long w2 = image_width;
+        unsigned long h2 = image_height;
+        std::vector<std::vector<Pixel>> pixel_arr2;
+        deblocking(w2, h2, pixel_arr2, 8, rev_dct_block);
+
+        std::vector<double> pixel_data_ycbcr2;
+        matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
+        YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
+        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_q4.png", output_data.data(), w, h);
+    }
+    {
+        std::vector<unsigned char> input_data;
+        std::vector<unsigned char> pixel_data;
+        std::vector<unsigned char> output_data;
+        std::vector<double> pixel_data_ycbcr;
+        unsigned long image_width = 0;
+        unsigned long image_height = 0;
+        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
+        decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
+        // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
+        // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
+        RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
+
+        unsigned long w = image_width;
+        unsigned long h = image_height;
+        std::vector<std::vector<Pixel>> pixel_arr;
+        vector_2matrix(w, h, pixel_arr, pixel_data_ycbcr);
+
+        std::vector<Block> res_block;
+        blocking(w, h, pixel_arr, 8, res_block);
+
+        std::vector<Block> dct_block;
+        std::vector<Block> rev_dct_block;
+        DCT_of_blocks(res_block, dct_block);
+        // //
+        std::vector<Matrix> Y_matrixes;
+        std::vector<Matrix> Cb_matrixes;
+        std::vector<Matrix> Cr_matrixes;
+        // // перед квантованием я все 3 канала для каждого блока переведу в раздельные матрицы
+        blocks_to_matrixes(dct_block, Y_matrixes, Cb_matrixes, Cr_matrixes);
+        // квантую с коэфиицентом качестваы
+        quantify_vec(Y_matrixes, 20, 1);
+        quantify_vec(Cb_matrixes, 20, 0);
+        quantify_vec(Cr_matrixes, 20, 0);
+
+        // обраьное квантование
+        std::vector<Matrix> Y_matrixes2;
+        std::vector<Matrix> Cb_matrixes2;
+        std::vector<Matrix> Cr_matrixes2;
+        dequantify_vec(Y_matrixes, 20, 1);
+        dequantify_vec(Cb_matrixes, 20, 0);
+        dequantify_vec(Cr_matrixes, 20, 0);
+        //
+        std::vector<Block> dct_block3;
+        matrixes_to_block(dct_block3, Y_matrixes, Cb_matrixes, Cr_matrixes);
+
+        rev_DCT_of_blocks(dct_block3, rev_dct_block);
+
+        unsigned long w2 = image_width;
+        unsigned long h2 = image_height;
+        std::vector<std::vector<Pixel>> pixel_arr2;
+        deblocking(w2, h2, pixel_arr2, 8, rev_dct_block);
+
+        std::vector<double> pixel_data_ycbcr2;
+        matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
+        YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
+        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_q5.png", output_data.data(), w, h);
+    }
+    {
+        std::vector<unsigned char> input_data;
+        std::vector<unsigned char> pixel_data;
+        std::vector<unsigned char> output_data;
+        std::vector<double> pixel_data_ycbcr;
+        unsigned long image_width = 0;
+        unsigned long image_height = 0;
+        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
+        decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
+        // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
+        // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
+        RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
+
+        unsigned long w = image_width;
+        unsigned long h = image_height;
+        std::vector<std::vector<Pixel>> pixel_arr;
+        vector_2matrix(w, h, pixel_arr, pixel_data_ycbcr);
+
+        std::vector<Block> res_block;
+        blocking(w, h, pixel_arr, 8, res_block);
+
+        std::vector<Block> dct_block;
+        std::vector<Block> rev_dct_block;
+        DCT_of_blocks(res_block, dct_block);
+        // //
+        std::vector<Matrix> Y_matrixes;
+        std::vector<Matrix> Cb_matrixes;
+        std::vector<Matrix> Cr_matrixes;
+        // // перед квантованием я все 3 канала для каждого блока переведу в раздельные матрицы
+        blocks_to_matrixes(dct_block, Y_matrixes, Cb_matrixes, Cr_matrixes);
+        // квантую с коэфиицентом качестваы
+        quantify_vec(Y_matrixes, 0, 1);
+        quantify_vec(Cb_matrixes, 0, 0);
+        quantify_vec(Cr_matrixes, 0, 0);
+
+        // обраьное квантование
+        std::vector<Matrix> Y_matrixes2;
+        std::vector<Matrix> Cb_matrixes2;
+        std::vector<Matrix> Cr_matrixes2;
+        dequantify_vec(Y_matrixes, 0, 1);
+        dequantify_vec(Cb_matrixes, 0, 0);
+        dequantify_vec(Cr_matrixes, 0, 0);
+        //
+        std::vector<Block> dct_block3;
+        matrixes_to_block(dct_block3, Y_matrixes, Cb_matrixes, Cr_matrixes);
+
+        rev_DCT_of_blocks(dct_block3, rev_dct_block);
+
+        unsigned long w2 = image_width;
+        unsigned long h2 = image_height;
+        std::vector<std::vector<Pixel>> pixel_arr2;
+        deblocking(w2, h2, pixel_arr2, 8, rev_dct_block);
+
+        std::vector<double> pixel_data_ycbcr2;
+        matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
+        YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
+        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_q6.png", output_data.data(), w, h);
+    }
+    /////////////////////
+    {
+        std::vector<unsigned char> input_data;
+        std::vector<unsigned char> pixel_data;
+        std::vector<unsigned char> output_data;
+        std::vector<double> pixel_data_ycbcr;
+        unsigned long image_width = 0;
+        unsigned long image_height = 0;
+        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_gray.png", input_data);
+        decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
+        // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
+        // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
+        RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
+
+        unsigned long w = image_width;
+        unsigned long h = image_height;
+        std::vector<std::vector<Pixel>> pixel_arr;
+        vector_2matrix(w, h, pixel_arr, pixel_data_ycbcr);
+
+        std::vector<Block> res_block;
+        blocking(w, h, pixel_arr, 8, res_block);
+
+        std::vector<Block> dct_block;
+        std::vector<Block> rev_dct_block;
+        DCT_of_blocks(res_block, dct_block);
+        // //
+        std::vector<Matrix> Y_matrixes;
+        std::vector<Matrix> Cb_matrixes;
+        std::vector<Matrix> Cr_matrixes;
+        // // перед квантованием я все 3 канала для каждого блока переведу в раздельные матрицы
+        blocks_to_matrixes(dct_block, Y_matrixes, Cb_matrixes, Cr_matrixes);
+        // квантую с коэфиицентом качестваы
+        quantify_vec(Y_matrixes, 100, 1);
+        quantify_vec(Cb_matrixes, 100, 0);
+        quantify_vec(Cr_matrixes, 100, 0);
+
+        // обраьное квантование
+        std::vector<Matrix> Y_matrixes2;
+        std::vector<Matrix> Cb_matrixes2;
+        std::vector<Matrix> Cr_matrixes2;
+        dequantify_vec(Y_matrixes, 100, 1);
+        dequantify_vec(Cb_matrixes, 100, 0);
+        dequantify_vec(Cr_matrixes, 100, 0);
+        //
+        std::vector<Block> dct_block3;
+        matrixes_to_block(dct_block3, Y_matrixes, Cb_matrixes, Cr_matrixes);
+
+        rev_DCT_of_blocks(dct_block3, rev_dct_block);
+
+        unsigned long w2 = image_width;
+        unsigned long h2 = image_height;
+        std::vector<std::vector<Pixel>> pixel_arr2;
+        deblocking(w2, h2, pixel_arr2, 8, rev_dct_block);
+
+        std::vector<double> pixel_data_ycbcr2;
+        matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
+        YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
+        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_gray_q1.png", output_data.data(), w, h);
+    }
+}
+
 void Test()
 {
     {
@@ -119,384 +763,356 @@ void Test()
 
 int main(int argc, char *argv[])
 {
+
+    q_test();
+
+    ////////////////////////////  TESTS!!!!!!!!!!!!!!!!!     ////////////////////////////////////////////////////////////////
     // {
-    //     int t = 0;
-    //     int num = 51;
-    //     while (num)
-    //     {
-    //         t = num % 2;
-    //         num = num / 2;
+    //     std::vector<unsigned char> input_data;
+    //     std::vector<unsigned char> pixel_data;
+    //     std::vector<unsigned char> output_data;
+    //     std::vector<double> pixel_data_ycbcr;
+    //     std::vector<double> pixel_data_ycbcr2;
+    //     unsigned long image_width = 0;
+    //     unsigned long image_height = 0;
+    //     readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
+    //     decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
+    //     // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
+    //     // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
+    //     RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
+    //     unsigned long w = image_width;
+    //     unsigned long h = image_height;
+    //     std::vector<std::vector<Pixel>> pixel_arr;
+    //     vector_2matrix(w, h, pixel_arr, pixel_data_ycbcr);
+    //     downsampling(w, h, pixel_arr, 2);
 
-    //         std::cout << t << " ";
-    //     }
-    //     cout << endl;
+    //     upsampling_bilinear(w, h, pixel_arr, 2);
+    //     matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr);
 
-    //     vector<int> arr = {1, 1, 0, 0, 1, 1};
-    //     double tmp = 0;
-    //     int p = arr.size() - 1; // счетчик степени
-    //     for (int j = 0; j < arr.size(); j++)
-    //     {
-    //         if (arr[j])
-    //             tmp += pow(2, p);
+    //     // std::vector<Block> res_block;
+    //     // blocking(w, h, res, 8, res_block);
 
-    //         p--;
-    //     }
-    //     cout << tmp << endl;
+    //     YCBRCR_to_RGB_vector(pixel_data_ycbcr, output_data);
+    //     lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna3.png", output_data.data(), image_width, image_height);
     // }
-    // return 0;
+    // {
+    //     std::vector<unsigned char> input_data;
+    //     std::vector<unsigned char> pixel_data;
+    //     std::vector<unsigned char> output_data;
+    //     std::vector<double> pixel_data_ycbcr;
+    //     unsigned long image_width = 0;
+    //     unsigned long image_height = 0;
+    //     readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
+    //     decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
+    //     // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
+    //     // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
+    //     RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
 
-    // ТЕСТЫ
+    //     unsigned long w = image_width;
+    //     unsigned long h = image_height;
+    //     std::vector<std::vector<Pixel>> pixel_arr;
+    //     vector_2matrix(w, h, pixel_arr, pixel_data_ycbcr);
 
-    //     DCT_of_blocks(res_block, dct_block); // ПРИНМАЕТ ТОЛЬКО 8на8 БЛОКИ!
-    //     rev_DCT_of_blocks(dct_block, rev);   //!!! ОН ОЧЕНЬ ПОЛОХО ПЕРЕВОДИТ ОТТУДА ОБРАТНО
-    //     // типо погрешность есть, но что-то она большая слишком
+    //     std::vector<Block> res_block;
+    //     blocking(w, h, pixel_arr, 8, res_block);
+    //     unsigned long w2 = image_width;
+    //     unsigned long h2 = image_height;
+    //     std::vector<std::vector<Pixel>> pixel_arr2;
+    //     deblocking(w2, h2, pixel_arr2, 8, res_block);
 
-    // return 0;
+    //     if (pixel_arr2[0][0].Y != pixel_arr[0][0].Y || pixel_arr2[0][0].Cb != pixel_arr[0][0].Cb || pixel_arr2[0][0].Cr != pixel_arr[0][0].Cr)
+    //         abort();
 
-    {
-        std::vector<unsigned char> input_data;
-        std::vector<unsigned char> pixel_data;
-        std::vector<unsigned char> output_data;
-        std::vector<double> pixel_data_ycbcr;
-        std::vector<double> pixel_data_ycbcr2;
-        unsigned long image_width = 0;
-        unsigned long image_height = 0;
-        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
-        decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
-        // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
-        // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
-        RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
-        unsigned long w = image_width;
-        unsigned long h = image_height;
-        std::vector<std::vector<Pixel>> pixel_arr;
-        vector_2matrix(w, h, pixel_arr, pixel_data_ycbcr);
-        downsampling(w, h, pixel_arr, 2);
+    //     std::vector<double> pixel_data_ycbcr2;
+    //     matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
+    //     YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
+    //     lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna4.png", output_data.data(), w, h);
+    // }
+    // {
+    //     std::vector<unsigned char> input_data;
+    //     std::vector<unsigned char> pixel_data;
+    //     std::vector<unsigned char> output_data;
+    //     std::vector<double> pixel_data_ycbcr;
+    //     unsigned long image_width = 0;
+    //     unsigned long image_height = 0;
+    //     readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
+    //     decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
+    //     // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
+    //     // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
+    //     RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
 
-        upsampling_bilinear(w, h, pixel_arr, 2);
-        matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr);
+    //     unsigned long w = image_width;
+    //     unsigned long h = image_height;
+    //     std::vector<std::vector<Pixel>> pixel_arr;
+    //     vector_2matrix(w, h, pixel_arr, pixel_data_ycbcr);
 
-        // std::vector<Block> res_block;
-        // blocking(w, h, res, 8, res_block);
+    //     std::vector<Block> res_block;
+    //     blocking(w, h, pixel_arr, 8, res_block);
 
-        YCBRCR_to_RGB_vector(pixel_data_ycbcr, output_data);
-        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna3.png", output_data.data(), image_width, image_height);
-    }
-    {
-        std::vector<unsigned char> input_data;
-        std::vector<unsigned char> pixel_data;
-        std::vector<unsigned char> output_data;
-        std::vector<double> pixel_data_ycbcr;
-        unsigned long image_width = 0;
-        unsigned long image_height = 0;
-        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
-        decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
-        // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
-        // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
-        RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
+    //     std::vector<Block> dct_block;
+    //     std::vector<Block> rev_dct_block;
+    //     DCT_of_blocks(res_block, dct_block); //
+    //     // //
+    //     // std::vector<Matrix> Y_matrixes;
+    //     // std::vector<Matrix> Cb_matrixes;
+    //     // std::vector<Matrix> Cr_matrixes;
+    //     // // перед квантованием я все 3 канала для каждого блока переведу в раздельные матрицы
+    //     // blocks_to_matrixes(dct_block, Y_matrixes, Cb_matrixes, Cr_matrixes);
+    //     // // квантую с коэфиицентом качестваы
+    //     // quantify_vec(Y_matrixes, 99, 1);
+    //     // quantify_vec(Cb_matrixes, 99, 0);
+    //     // quantify_vec(Cr_matrixes, 99, 0);
 
-        unsigned long w = image_width;
-        unsigned long h = image_height;
-        std::vector<std::vector<Pixel>> pixel_arr;
-        vector_2matrix(w, h, pixel_arr, pixel_data_ycbcr);
+    //     rev_DCT_of_blocks(dct_block, rev_dct_block);
 
-        std::vector<Block> res_block;
-        blocking(w, h, pixel_arr, 8, res_block);
-        unsigned long w2 = image_width;
-        unsigned long h2 = image_height;
-        std::vector<std::vector<Pixel>> pixel_arr2;
-        deblocking(w2, h2, pixel_arr2, 8, res_block);
+    //     unsigned long w2 = image_width;
+    //     unsigned long h2 = image_height;
+    //     std::vector<std::vector<Pixel>> pixel_arr2;
+    //     deblocking(w2, h2, pixel_arr2, 8, rev_dct_block);
 
-        if (pixel_arr2[0][0].Y != pixel_arr[0][0].Y || pixel_arr2[0][0].Cb != pixel_arr[0][0].Cb || pixel_arr2[0][0].Cr != pixel_arr[0][0].Cr)
-            abort();
+    //     // if (pixel_arr2[0][0].Y != pixel_arr[0][0].Y || pixel_arr2[0][0].Cb != pixel_arr[0][0].Cb || pixel_arr2[0][0].Cr != pixel_arr[0][0].Cr)
+    //     //     abort();
 
-        std::vector<double> pixel_data_ycbcr2;
-        matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
-        YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
-        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna4.png", output_data.data(), w, h);
-    }
-    {
-        std::vector<unsigned char> input_data;
-        std::vector<unsigned char> pixel_data;
-        std::vector<unsigned char> output_data;
-        std::vector<double> pixel_data_ycbcr;
-        unsigned long image_width = 0;
-        unsigned long image_height = 0;
-        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
-        decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
-        // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
-        // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
-        RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
+    //     std::vector<double> pixel_data_ycbcr2;
+    //     matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
+    //     YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
+    //     lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna5.png", output_data.data(), w, h);
+    // }
+    // {
+    //     std::vector<unsigned char> input_data;
+    //     std::vector<unsigned char> pixel_data;
+    //     std::vector<unsigned char> output_data;
+    //     std::vector<double> pixel_data_ycbcr;
+    //     unsigned long image_width = 0;
+    //     unsigned long image_height = 0;
+    //     readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_gray.png", input_data);
+    //     decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
+    //     // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
+    //     // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
+    //     RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
 
-        unsigned long w = image_width;
-        unsigned long h = image_height;
-        std::vector<std::vector<Pixel>> pixel_arr;
-        vector_2matrix(w, h, pixel_arr, pixel_data_ycbcr);
+    //     unsigned long w = image_width;
+    //     unsigned long h = image_height;
+    //     std::vector<std::vector<Pixel>> pixel_arr;
+    //     vector_2matrix(w, h, pixel_arr, pixel_data_ycbcr);
 
-        std::vector<Block> res_block;
-        blocking(w, h, pixel_arr, 8, res_block);
+    //     std::vector<Block> res_block;
+    //     blocking(w, h, pixel_arr, 8, res_block);
 
-        std::vector<Block> dct_block;
-        std::vector<Block> rev_dct_block;
-        DCT_of_blocks(res_block, dct_block); //
-        // //
-        // std::vector<Matrix> Y_matrixes;
-        // std::vector<Matrix> Cb_matrixes;
-        // std::vector<Matrix> Cr_matrixes;
-        // // перед квантованием я все 3 канала для каждого блока переведу в раздельные матрицы
-        // blocks_to_matrixes(dct_block, Y_matrixes, Cb_matrixes, Cr_matrixes);
-        // // квантую с коэфиицентом качестваы
-        // quantify_vec(Y_matrixes, 99, 1);
-        // quantify_vec(Cb_matrixes, 99, 0);
-        // quantify_vec(Cr_matrixes, 99, 0);
+    //     unsigned long w2 = image_width;
+    //     unsigned long h2 = image_height;
+    //     std::vector<std::vector<Pixel>> pixel_arr2;
+    //     deblocking(w2, h2, pixel_arr2, 8, res_block);
 
-        rev_DCT_of_blocks(dct_block, rev_dct_block);
+    //     // if (pixel_arr2[0][0].Y != pixel_arr[0][0].Y || pixel_arr2[0][0].Cb != pixel_arr[0][0].Cb || pixel_arr2[0][0].Cr != pixel_arr[0][0].Cr)
+    //     //     abort();
 
-        unsigned long w2 = image_width;
-        unsigned long h2 = image_height;
-        std::vector<std::vector<Pixel>> pixel_arr2;
-        deblocking(w2, h2, pixel_arr2, 8, rev_dct_block);
+    //     std::vector<double> pixel_data_ycbcr2;
+    //     matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
+    //     YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
+    //     lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna6.png", output_data.data(), w, h);
+    // }
 
-        // if (pixel_arr2[0][0].Y != pixel_arr[0][0].Y || pixel_arr2[0][0].Cb != pixel_arr[0][0].Cb || pixel_arr2[0][0].Cr != pixel_arr[0][0].Cr)
-        //     abort();
+    // {
+    //     std::vector<unsigned char> input_data;
+    //     std::vector<unsigned char> pixel_data;
+    //     std::vector<unsigned char> output_data;
+    //     std::vector<double> pixel_data_ycbcr;
+    //     unsigned long image_width = 0;
+    //     unsigned long image_height = 0;
+    //     readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
+    //     decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
+    //     // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
+    //     // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
+    //     RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
 
-        std::vector<double> pixel_data_ycbcr2;
-        matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
-        YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
-        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna5.png", output_data.data(), w, h);
-    }
-    {
-        std::vector<unsigned char> input_data;
-        std::vector<unsigned char> pixel_data;
-        std::vector<unsigned char> output_data;
-        std::vector<double> pixel_data_ycbcr;
-        unsigned long image_width = 0;
-        unsigned long image_height = 0;
-        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_gray.png", input_data);
-        decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
-        // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
-        // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
-        RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
+    //     unsigned long w = image_width;
+    //     unsigned long h = image_height;
+    //     std::vector<std::vector<Pixel>> pixel_arr;
+    //     vector_2matrix(w, h, pixel_arr, pixel_data_ycbcr);
 
-        unsigned long w = image_width;
-        unsigned long h = image_height;
-        std::vector<std::vector<Pixel>> pixel_arr;
-        vector_2matrix(w, h, pixel_arr, pixel_data_ycbcr);
+    //     std::vector<Block> res_block;
+    //     blocking(w, h, pixel_arr, 8, res_block);
 
-        std::vector<Block> res_block;
-        blocking(w, h, pixel_arr, 8, res_block);
+    //     std::vector<Block> dct_block;
+    //     std::vector<Block> rev_dct_block;
+    //     DCT_of_blocks(res_block, dct_block);
+    //     // //
+    //     std::vector<Matrix> Y_matrixes;
+    //     std::vector<Matrix> Cb_matrixes;
+    //     std::vector<Matrix> Cr_matrixes;
+    //     // // перед квантованием я все 3 канала для каждого блока переведу в раздельные матрицы
+    //     blocks_to_matrixes(dct_block, Y_matrixes, Cb_matrixes, Cr_matrixes);
+    //     // квантую с коэфиицентом качестваы
+    //     quantify_vec(Y_matrixes, 20, 1);
+    //     quantify_vec(Cb_matrixes, 20, 0);
+    //     quantify_vec(Cr_matrixes, 20, 0);
 
-        unsigned long w2 = image_width;
-        unsigned long h2 = image_height;
-        std::vector<std::vector<Pixel>> pixel_arr2;
-        deblocking(w2, h2, pixel_arr2, 8, res_block);
+    //     // обраьное квантование
+    //     std::vector<Matrix> Y_matrixes2;
+    //     std::vector<Matrix> Cb_matrixes2;
+    //     std::vector<Matrix> Cr_matrixes2;
+    //     dequantify_vec(Y_matrixes, 20, 1);
+    //     dequantify_vec(Cb_matrixes, 20, 0);
+    //     dequantify_vec(Cr_matrixes, 20, 0);
+    //     //
+    //     std::vector<Block> dct_block3;
+    //     matrixes_to_block(dct_block3, Y_matrixes, Cb_matrixes, Cr_matrixes);
 
-        // if (pixel_arr2[0][0].Y != pixel_arr[0][0].Y || pixel_arr2[0][0].Cb != pixel_arr[0][0].Cb || pixel_arr2[0][0].Cr != pixel_arr[0][0].Cr)
-        //     abort();
+    //     rev_DCT_of_blocks(dct_block3, rev_dct_block);
 
-        std::vector<double> pixel_data_ycbcr2;
-        matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
-        YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
-        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna6.png", output_data.data(), w, h);
-    }
+    //     unsigned long w2 = image_width;
+    //     unsigned long h2 = image_height;
+    //     std::vector<std::vector<Pixel>> pixel_arr2;
+    //     deblocking(w2, h2, pixel_arr2, 8, rev_dct_block);
 
-    {
-        std::vector<unsigned char> input_data;
-        std::vector<unsigned char> pixel_data;
-        std::vector<unsigned char> output_data;
-        std::vector<double> pixel_data_ycbcr;
-        unsigned long image_width = 0;
-        unsigned long image_height = 0;
-        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
-        decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
-        // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
-        // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
-        RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
+    //     std::vector<double> pixel_data_ycbcr2;
+    //     matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
+    //     YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
+    //     lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna8.png", output_data.data(), w, h);
+    // }
 
-        unsigned long w = image_width;
-        unsigned long h = image_height;
-        std::vector<std::vector<Pixel>> pixel_arr;
-        vector_2matrix(w, h, pixel_arr, pixel_data_ycbcr);
+    // // почти фулл тест
+    // {
+    //     std::vector<unsigned char> input_data;
+    //     std::vector<unsigned char> pixel_data;
+    //     std::vector<unsigned char> output_data;
+    //     std::vector<double> pixel_data_ycbcr;
+    //     unsigned long image_width = 0;
+    //     unsigned long image_height = 0;
+    //     readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
+    //     decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
+    //     // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
+    //     // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
+    //     RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
 
-        std::vector<Block> res_block;
-        blocking(w, h, pixel_arr, 8, res_block);
+    //     unsigned long w = image_width;
+    //     unsigned long h = image_height;
+    //     std::vector<std::vector<Pixel>> pixel_arr;
+    //     vector_2matrix(w, h, pixel_arr, pixel_data_ycbcr);
 
-        std::vector<Block> dct_block;
-        std::vector<Block> rev_dct_block;
-        DCT_of_blocks(res_block, dct_block);
-        // //
-        std::vector<Matrix> Y_matrixes;
-        std::vector<Matrix> Cb_matrixes;
-        std::vector<Matrix> Cr_matrixes;
-        // // перед квантованием я все 3 канала для каждого блока переведу в раздельные матрицы
-        blocks_to_matrixes(dct_block, Y_matrixes, Cb_matrixes, Cr_matrixes);
-        // квантую с коэфиицентом качестваы
-        quantify_vec(Y_matrixes, 100, 1);
-        quantify_vec(Cb_matrixes, 100, 0);
-        quantify_vec(Cr_matrixes, 100, 0);
+    //     std::vector<Block> res_block;
+    //     blocking(w, h, pixel_arr, 8, res_block);
 
-        // обраьное квантование
-        std::vector<Matrix> Y_matrixes2;
-        std::vector<Matrix> Cb_matrixes2;
-        std::vector<Matrix> Cr_matrixes2;
-        dequantify_vec(Y_matrixes, 100, 1);
-        dequantify_vec(Cb_matrixes, 100, 0);
-        dequantify_vec(Cr_matrixes, 100, 0);
-        //
-        std::vector<Block> dct_block3;
-        matrixes_to_block(dct_block3, Y_matrixes, Cb_matrixes, Cr_matrixes);
+    //     std::vector<Block> dct_block;
+    //     std::vector<Block> rev_dct_block;
+    //     DCT_of_blocks(res_block, dct_block);
+    //     // //
+    //     std::vector<Matrix> Y_matrixes;
+    //     std::vector<Matrix> Cb_matrixes;
+    //     std::vector<Matrix> Cr_matrixes;
+    //     // // перед квантованием я все 3 канала для каждого блока переведу в раздельные матрицы
+    //     blocks_to_matrixes(dct_block, Y_matrixes, Cb_matrixes, Cr_matrixes);
+    //     // квантую с коэфиицентом качестваы
+    //     quantify_vec(Y_matrixes, 20, 1);
+    //     quantify_vec(Cb_matrixes, 20, 0);
+    //     quantify_vec(Cr_matrixes, 20, 0);
+    //     //
 
-        rev_DCT_of_blocks(dct_block3, rev_dct_block);
+    //     std::vector<double> Y_dc;
+    //     std::vector<double> Cb_dc;
+    //     std::vector<double> Cr_dc;
+    //     get_DC(Y_matrixes, Y_dc);
+    //     get_DC(Cb_matrixes, Cb_dc);
+    //     get_DC(Cr_matrixes, Cr_dc);
+    //     // кодирую DC
+    //     diff_code(Y_dc);
+    //     diff_code(Cb_dc);
+    //     diff_code(Cr_dc);
 
-        unsigned long w2 = image_width;
-        unsigned long h2 = image_height;
-        std::vector<std::vector<Pixel>> pixel_arr2;
-        deblocking(w2, h2, pixel_arr2, 8, rev_dct_block);
+    //     std::vector<double> Y_ac;
+    //     std::vector<double> Cb_ac;
+    //     std::vector<double> Cr_ac;
+    //     get_AC(Y_matrixes, Y_ac);
+    //     get_AC(Cb_matrixes, Cb_ac);
+    //     get_AC(Cr_matrixes, Cr_ac);
 
-        std::vector<double> pixel_data_ycbcr2;
-        matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
-        YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
-        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna8.png", output_data.data(), w, h);
-    }
-    {
-        std::vector<unsigned char> input_data;
-        std::vector<unsigned char> pixel_data;
-        std::vector<unsigned char> output_data;
-        std::vector<double> pixel_data_ycbcr;
-        unsigned long image_width = 0;
-        unsigned long image_height = 0;
-        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
-        decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
-        // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
-        // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
-        RGB_to_YCBRCR_vector(pixel_data, pixel_data_ycbcr);
+    //     // RLE AC
+    //     std::vector<double> Y_ac_rle;
+    //     std::vector<double> Cb_ac_rle;
+    //     std::vector<double> Cr_ac_rle;
 
-        unsigned long w = image_width;
-        unsigned long h = image_height;
-        std::vector<std::vector<Pixel>> pixel_arr;
-        vector_2matrix(w, h, pixel_arr, pixel_data_ycbcr);
+    //     rle_AC(Y_ac, Y_ac_rle);
+    //     rle_AC(Cb_ac, Cb_ac_rle);
+    //     rle_AC(Cr_ac, Cr_ac_rle);
 
-        std::vector<Block> res_block;
-        blocking(w, h, pixel_arr, 8, res_block);
+    //     // кодирую AC и ДС переменным кодированием
+    //     std::vector<var_pair> Y_dc_var;
+    //     std::vector<var_pair> Cb_dc_var;
+    //     std::vector<var_pair> Cr_dc_var;
+    //     var_code(Y_dc, Y_dc_var, 0);
+    //     var_code(Cb_dc, Cb_dc_var, 0);
+    //     var_code(Cr_dc, Cr_dc_var, 0);
 
-        std::vector<Block> dct_block;
-        std::vector<Block> rev_dct_block;
-        DCT_of_blocks(res_block, dct_block);
-        // //
-        std::vector<Matrix> Y_matrixes;
-        std::vector<Matrix> Cb_matrixes;
-        std::vector<Matrix> Cr_matrixes;
-        // // перед квантованием я все 3 канала для каждого блока переведу в раздельные матрицы
-        blocks_to_matrixes(dct_block, Y_matrixes, Cb_matrixes, Cr_matrixes);
-        // квантую с коэфиицентом качестваы
-        quantify_vec(Y_matrixes, 100, 1);
-        quantify_vec(Cb_matrixes, 100, 0);
-        quantify_vec(Cr_matrixes, 100, 0);
-        //
+    //     std::vector<var_pair> Y_ac_var;
+    //     std::vector<var_pair> Cb_ac_var;
+    //     std::vector<var_pair> Cr_ac_var;
+    //     var_code(Y_ac_rle, Y_ac_var, 1);
+    //     var_code(Cb_ac_rle, Cb_ac_var, 1);
+    //     var_code(Cr_ac_rle, Cr_ac_var, 1);
 
-        std::vector<double> Y_dc;
-        std::vector<double> Cb_dc;
-        std::vector<double> Cr_dc;
-        get_DC(Y_matrixes, Y_dc);
-        get_DC(Cb_matrixes, Cb_dc);
-        get_DC(Cr_matrixes, Cr_dc);
-        // кодирую DC
-        diff_code(Y_dc);
-        diff_code(Cb_dc);
-        diff_code(Cr_dc);
+    //     //
+    //     std::vector<double> Y_ac_var2;
+    //     std::vector<double> Cb_ac_var2;
+    //     std::vector<double> Cr_ac_var2;
+    //     var_decode(Y_ac_var, Y_ac_var2, 1);
+    //     var_decode(Cb_ac_var, Cb_ac_var2, 1);
+    //     var_decode(Cr_ac_var, Cr_ac_var2, 1);
 
-        std::vector<double> Y_ac;
-        std::vector<double> Cb_ac;
-        std::vector<double> Cr_ac;
-        get_AC(Y_matrixes, Y_ac);
-        get_AC(Cb_matrixes, Cb_ac);
-        get_AC(Cr_matrixes, Cr_ac);
+    //     std::vector<double> Y_dc_var2;
+    //     std::vector<double> Cb_dc_var2;
+    //     std::vector<double> Cr_dc_var2;
+    //     var_decode(Y_dc_var, Y_dc_var2, 0);
+    //     var_decode(Cb_dc_var, Cb_dc_var2, 0);
+    //     var_decode(Cr_dc_var, Cr_dc_var2, 0);
 
-        // RLE AC
-        std::vector<double> Y_ac_rle;
-        std::vector<double> Cb_ac_rle;
-        std::vector<double> Cr_ac_rle;
+    //     std::vector<double> Y_ac_rle2;
+    //     std::vector<double> Cb_ac_rle2;
+    //     std::vector<double> Cr_ac_rle2;
 
-        rle_AC(Y_ac, Y_ac_rle);
-        rle_AC(Cb_ac, Cb_ac_rle);
-        rle_AC(Cr_ac, Cr_ac_rle);
+    //     rev_rle_AC(Y_ac_var2, Y_ac_rle2);
+    //     rle_AC(Cb_ac_var2, Cb_ac_rle2);
+    //     rle_AC(Cr_ac_var2, Cr_ac_rle2);
 
-        // кодирую AC и ДС переменным кодированием
-        std::vector<var_pair> Y_dc_var;
-        std::vector<var_pair> Cb_dc_var;
-        std::vector<var_pair> Cr_dc_var;
-        var_code(Y_dc, Y_dc_var, 0);
-        var_code(Cb_dc, Cb_dc_var, 0);
-        var_code(Cr_dc, Cr_dc_var, 0);
+    //     diff_decode(Y_dc_var2);
+    //     diff_decode(Cb_dc_var2);
+    //     diff_decode(Cr_dc_var2);
 
-        std::vector<var_pair> Y_ac_var;
-        std::vector<var_pair> Cb_ac_var;
-        std::vector<var_pair> Cr_ac_var;
-        var_code(Y_ac_rle, Y_ac_var, 1);
-        var_code(Cb_ac_rle, Cb_ac_var, 1);
-        var_code(Cr_ac_rle, Cr_ac_var, 1);
+    //     std::vector<Matrix> Y_matrixes3;
+    //     std::vector<Matrix> Cb_matrixes3;
+    //     std::vector<Matrix> Cr_matrixes3;
+    //     put_DC(Y_matrixes3, Y_dc_var2);
+    //     put_DC(Cb_matrixes3, Cb_dc_var2);
+    //     put_DC(Cr_matrixes3, Cr_dc_var2);
 
-        //
-        std::vector<double> Y_ac_var2;
-        std::vector<double> Cb_ac_var2;
-        std::vector<double> Cr_ac_var2;
-        var_decode(Y_ac_var, Y_ac_var2, 1);
-        var_decode(Cb_ac_var, Cb_ac_var2, 1);
-        var_decode(Cr_ac_var, Cr_ac_var2, 1);
+    //     put_AC(Y_matrixes3, Y_ac_rle2);
+    //     put_AC(Cb_matrixes3, Cb_ac_rle2);
+    //     put_AC(Cr_matrixes3, Cr_ac_rle2);
 
-        std::vector<double> Y_dc_var2;
-        std::vector<double> Cb_dc_var2;
-        std::vector<double> Cr_dc_var2;
-        var_decode(Y_dc_var, Y_dc_var2, 0);
-        var_decode(Cb_dc_var, Cb_dc_var2, 0);
-        var_decode(Cr_dc_var, Cr_dc_var2, 0);
+    //     // обраьное квантование
+    //     // std::vector<Matrix> Y_matrixes2;
+    //     // std::vector<Matrix> Cb_matrixes2;
+    //     // std::vector<Matrix> Cr_matrixes2;
+    //     dequantify_vec(Y_matrixes3, 20, 1);
+    //     dequantify_vec(Cb_matrixes3, 20, 0);
+    //     dequantify_vec(Cr_matrixes3, 20, 0);
+    //     //
 
-        std::vector<double> Y_ac_rle2;
-        std::vector<double> Cb_ac_rle2;
-        std::vector<double> Cr_ac_rle2;
+    //     //
+    //     std::vector<Block> dct_block3;
+    //     matrixes_to_block(dct_block3, Y_matrixes3, Cb_matrixes3, Cr_matrixes3);
 
-        rev_rle_AC(Y_ac_var2, Y_ac_rle2);
-        rle_AC(Cb_ac_var2, Cb_ac_rle2);
-        rle_AC(Cr_ac_var2, Cr_ac_rle2);
+    //     rev_DCT_of_blocks(dct_block3, rev_dct_block);
 
-        diff_decode(Y_dc_var2);
-        diff_decode(Cb_dc_var2);
-        diff_decode(Cr_dc_var2);
+    //     unsigned long w2 = image_width;
+    //     unsigned long h2 = image_height;
+    //     std::vector<std::vector<Pixel>> pixel_arr2;
+    //     deblocking(w2, h2, pixel_arr2, 8, rev_dct_block);
 
-        std::vector<Matrix> Y_matrixes3;
-        std::vector<Matrix> Cb_matrixes3;
-        std::vector<Matrix> Cr_matrixes3;
-        put_DC(Y_matrixes3, Y_dc_var2);
-        put_DC(Cb_matrixes3, Cb_dc_var2);
-        put_DC(Cr_matrixes3, Cr_dc_var2);
-
-        put_AC(Y_matrixes3, Y_ac_rle2);
-        put_AC(Cb_matrixes3, Cb_ac_rle2);
-        put_AC(Cr_matrixes3, Cr_ac_rle2);
-
-        // обраьное квантование
-        // std::vector<Matrix> Y_matrixes2;
-        // std::vector<Matrix> Cb_matrixes2;
-        // std::vector<Matrix> Cr_matrixes2;
-        dequantify_vec(Y_matrixes3, 100, 1);
-        dequantify_vec(Cb_matrixes3, 100, 0);
-        dequantify_vec(Cr_matrixes3, 100, 0);
-        //
-
-        //
-        std::vector<Block> dct_block3;
-        matrixes_to_block(dct_block3, Y_matrixes3, Cb_matrixes3, Cr_matrixes3);
-
-        rev_DCT_of_blocks(dct_block3, rev_dct_block);
-
-        unsigned long w2 = image_width;
-        unsigned long h2 = image_height;
-        std::vector<std::vector<Pixel>> pixel_arr2;
-        deblocking(w2, h2, pixel_arr2, 8, rev_dct_block);
-
-        std::vector<double> pixel_data_ycbcr2;
-        matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
-        YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
-        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna9.png", output_data.data(), w, h);
-    }
+    //     std::vector<double> pixel_data_ycbcr2;
+    //     matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
+    //     YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
+    //     lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna9.png", output_data.data(), w, h);
+    // }
     return 0;
 }
