@@ -22,3 +22,8 @@ void table(std::vector<std::vector<int>> &q_table, std::vector<std::vector<int>>
 
 void put_AC(std::vector<Matrix> &matrixes, std::vector<double> &ACs);
 void put_DC(std::vector<Matrix> &matrixes, std::vector<double> &DCs);
+
+void dequantify2(Matrix &matrix, int q_lvl, bool flag_Y);
+void dequantize_block(Matrix &matrix, int quality_level, bool flag_Y);
+
+void quantize_block(Matrix &matrix, int quality_level, bool flag_Y);

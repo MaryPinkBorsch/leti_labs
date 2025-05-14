@@ -47,20 +47,21 @@ void quantify(Matrix &matrix, int q_lvl, bool flag_Y)
             if (q_lvl < 50)
             {
                 if (q_lvl == 0)
-                    s = 5000;
+                    s = 5000.0;
                 else
-                    s = 5000 / q_lvl;
+                    s = 5000.0 / q_lvl;
             }
             else
             {
-                s = 200 - 2 * q_lvl;
+                s = 200.0 - 2.0 * q_lvl;
             }
             if (flag_Y)
-                k = round((q_table[i][j] * s + 50) / 100);
+                k = ((q_table[i][j] * s + 50.0) / 100.0);
             else
-                k = round((chroma_q_table[i][j] * s + 50) / 100);
+                k = ((chroma_q_table[i][j] * s + 50.0) / 100.0);
 
-            matrix.data[i][j] = floor(matrix.data[i][j] / k);
+            matrix.data[i][j] = round(matrix.data[i][j] / k * 100000.0) / 100000.0;
+//            matrix.data[i][j] = round(matrix.data[i][j] / k);
         }
     }
 }
@@ -89,20 +90,45 @@ void dequantify(Matrix &matrix, int q_lvl, bool flag_Y)
             if (q_lvl < 50)
             {
                 if (q_lvl == 0)
-                    s = 5000;
+                    s = 5000.0;
                 else
-                    s = 5000 / q_lvl;
+                    s = 5000.0 / q_lvl;
             }
             else
             {
-                s = 200 - 2 * q_lvl;
+                s = 200.0 - 2 * q_lvl;
             }
             if (flag_Y)
-                k = round((q_table[i][j] * s + 50) / 100);
+                k = ((q_table[i][j] * s + 50.0) / 100.0);
             else
-                k = round((chroma_q_table[i][j] * s + 50) / 100);
+                k = ((chroma_q_table[i][j] * s + 50.0) / 100.0);
 
-            matrix.data[i][j] = floor(matrix.data[i][j] / k) * k;
+            matrix.data[i][j] = (matrix.data[i][j]) * k;
+        }
+    }
+}
+
+void dequantify2(Matrix &matrix, int q_lvl, bool flag_Y)
+{
+    // bool flag_Y = 0 ----> Cr Cb
+    // bool flag_Y = 1 ----> Y
+    std::vector<std::vector<int>> q_table;
+    std::vector<std::vector<int>> chroma_q_table;
+    table(q_table, chroma_q_table);
+
+    for (int i = 0; i < matrix.data.size(); i++)
+    {
+        for (int j = 0; j < matrix.data[i].size(); j++)
+        {
+
+            double k = 0;
+
+            if (flag_Y)
+                k = (q_table[i][j]);
+            else
+                k = (chroma_q_table[i][j]);
+
+            matrix.data[i][j] = (matrix.data[i][j]) * k;
         }
     }
 }
@@ -179,5 +205,122 @@ void put_AC(std::vector<Matrix> &matrixes, std::vector<double> &ACs)
         }
         offset++;
         matrixes[matrix_idx].data[offset / 8][offset % 8] = ACs[i];
+    }
+}
+
+///////////////////
+
+void quantize_block(Matrix &matrix, int quality_level, bool flag_Y)
+{
+    // bool flag_Y = 0 ----> Cr Cb
+    // bool flag_Y = 1 ----> Y
+    std::vector<std::vector<int>> q_table;
+    std::vector<std::vector<int>> chroma_q_table;
+    table(q_table, chroma_q_table);
+    // Проверка размеров матрицы (предполагаем, что размеры q_table и
+    // chroma_q_table совпадают с matrix.data)
+    if (matrix.data.size() != q_table.size() ||
+        (matrix.data.size() > 0 && matrix.data[0].size() != q_table[0].size()))
+    {
+        std::cerr << "Ошибка: Несовместимые размеры матрицы и таблицы квантования."
+                  << std::endl;
+        return; // Или выбросить исключение
+    }
+
+    // Вычисление масштабного коэффициента (s)
+    double s;
+    if (quality_level < 50)
+    {
+        s = (quality_level == 0) ? 5000.0 : 5000.0 / quality_level;
+    }
+    else
+    {
+        s = 200.0 - 2.0 * quality_level;
+    }
+
+    for (size_t i = 0; i < matrix.data.size(); ++i)
+    {
+        for (size_t j = 0; j < matrix.data[i].size(); ++j)
+        {
+            double k; // Значение квантования для текущего элемента
+            if (flag_Y)
+            {
+                k = ((q_table[i][j] * s + 50) / 100.0);
+            }
+            else
+            {
+                k = ((chroma_q_table[i][j] * s + 50) / 100.0);
+            }
+
+            // Проверка деления на ноль
+            if (k == 0.0)
+            {
+                std::cerr << "Ошибка: Попытка деления на ноль. Измените таблицы "
+                             "квантования."
+                          << std::endl;
+                return; // Или присвоить k минимальное допустимое значение (например, 1)
+            }
+
+            matrix.data[i][j] =
+                matrix.data[i][j] / k; // Квантование (деление на k)
+        }
+    }
+}
+
+void dequantize_block(Matrix &matrix, int quality_level, bool flag_Y)
+{
+
+    // bool flag_Y = 0 ----> Cr Cb
+    // bool flag_Y = 1 ----> Y
+    std::vector<std::vector<int>> q_table;
+    std::vector<std::vector<int>> chroma_q_table;
+    table(q_table, chroma_q_table);
+    // Проверка размеров матрицы (предполагаем, что размеры q_table и
+    // chroma_q_table совпадают с matrix.data)
+    if (matrix.data.size() != q_table.size() ||
+        (matrix.data.size() > 0 && matrix.data[0].size() != q_table[0].size()))
+    {
+        std::cerr << "Ошибка: Несовместимые размеры матрицы и таблицы деквантования."
+                  << std::endl;
+        return; // Или выбросить исключение
+    }
+
+    // Вычисление масштабного коэффициента (s)
+    double s;
+    if (quality_level < 50)
+    {
+        s = (quality_level == 0) ? 5000.0 : 5000.0 / quality_level;
+    }
+    else
+    {
+        s = 200.0 - 2.0 * quality_level;
+    }
+
+    for (size_t i = 0; i < matrix.data.size(); ++i)
+    {
+        for (size_t j = 0; j < matrix.data[i].size(); ++j)
+        {
+            double k; // Значение деквантования для текущего элемента
+            if (flag_Y)
+            {
+                k = ((q_table[i][j] * s + 50) / 100.0);
+            }
+            else
+            {
+                k = ((chroma_q_table[i][j] * s + 50) / 100.0);
+            }
+
+            // Проверка деления на ноль
+            if (k == 0.0)
+            {
+                std::cerr << "Ошибка: k равно нулю при деквантовании" << std::endl;
+                return; // Или присвоить k минимальное допустимое значение (например, 1)
+            }
+            matrix.data[i][j] =
+                matrix.data[i][j] * k; // Деквантование (умножение на k)
+
+            // Ограничение значений (предполагаем, что допустимый диапазон 0-255)
+            matrix.data[i][j] = std::min(255.0, std::max(0.0, matrix.data[i][j]));
+        }
     }
 }
