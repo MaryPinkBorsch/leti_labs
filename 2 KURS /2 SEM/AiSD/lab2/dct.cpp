@@ -112,7 +112,7 @@ void rev_DCT(Block &input, Block &output)
 }
 
 // на вход массив блоков, на выход тоже
-void DCT_of_blocks(std::vector<Block> input, std::vector<Block> &output)
+void DCT_of_blocks(std::vector<Block> &input, std::vector<Block> &output)
 {
     if (!input.size())
         abort;
@@ -122,7 +122,7 @@ void DCT_of_blocks(std::vector<Block> input, std::vector<Block> &output)
 }
 
 // на вход массив блоков, на выход тоже
-void rev_DCT_of_blocks(std::vector<Block> input, std::vector<Block> &output)
+void rev_DCT_of_blocks(std::vector<Block> & input, std::vector<Block> &output)
 {
     if (!input.size())
         abort;
@@ -132,7 +132,7 @@ void rev_DCT_of_blocks(std::vector<Block> input, std::vector<Block> &output)
 }
 
 // по идее надо разбить одну структуру блок на три матрицы где значения только 1го канала из 3х
-void block_to_3_matrix(Block input, std::vector<std::vector<double>> &Y_matrix, std::vector<std::vector<double>> &Cb_matrix, std::vector<std::vector<double>> &Cr_matrix)
+void block_to_3_matrix(Block &input, std::vector<std::vector<double>> &Y_matrix, std::vector<std::vector<double>> &Cb_matrix, std::vector<std::vector<double>> &Cr_matrix)
 {
     Y_matrix.resize(8);
     Cb_matrix.resize(8);
@@ -155,7 +155,7 @@ void block_to_3_matrix(Block input, std::vector<std::vector<double>> &Y_matrix, 
     }
 }
 
-void blocks_to_matrixes(std::vector<Block> input, std::vector<Matrix> &Y_matrix, std::vector<Matrix> &Cb_matrix, std::vector<Matrix> &Cr_matrix)
+void blocks_to_matrixes(std::vector<Block> & input, std::vector<Matrix> &Y_matrix, std::vector<Matrix> &Cb_matrix, std::vector<Matrix> &Cr_matrix)
 {
     Y_matrix.resize(input.size());
     Cb_matrix.resize(input.size());

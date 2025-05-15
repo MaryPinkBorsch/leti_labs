@@ -42,26 +42,31 @@ void quantify(Matrix &matrix, int q_lvl, bool flag_Y)
         for (int j = 0; j < matrix.data[i].size(); j++)
         {
 
-            double s = 0;
             double k = 0;
-            if (q_lvl < 50)
-            {
-                if (q_lvl == 0)
-                    s = 5000.0;
-                else
-                    s = 5000.0 / q_lvl;
-            }
-            else
-            {
-                s = 200.0 - 2.0 * q_lvl;
-            }
-            if (flag_Y)
-                k = ((q_table[i][j] * s + 50.0) / 100.0);
-            else
-                k = ((chroma_q_table[i][j] * s + 50.0) / 100.0);
+            // double s = 0;
+            // if (q_lvl < 50)
+            // {
+            //     if (q_lvl == 0)
+            //         s = 5000.0;
+            //     else
+            //         s = 5000.0 / q_lvl;
+            // }
+            // else
+            // {
+            //     s = 200.0 - 2.0 * q_lvl;
+            // }
+            // if (flag_Y)
+            //     k = ((q_table[i][j] * s + 50.0) / 100.0);
+            // else
+            //     k = ((chroma_q_table[i][j] * s + 50.0) / 100.0);
 
-            matrix.data[i][j] = round(matrix.data[i][j] / k * 100000.0) / 100000.0;
-//            matrix.data[i][j] = round(matrix.data[i][j] / k);
+            if (flag_Y)
+                k = (q_table[i][j]);
+            else
+                k = (chroma_q_table[i][j]);
+
+            //matrix.data[i][j] = round(matrix.data[i][j] / k * 100000.0) / 100000.0;
+            matrix.data[i][j] = round(matrix.data[i][j] / k);
         }
     }
 }
@@ -85,25 +90,34 @@ void dequantify(Matrix &matrix, int q_lvl, bool flag_Y)
         for (int j = 0; j < matrix.data[i].size(); j++)
         {
 
-            double s = 0;
+            // double s = 0;
+            // double k = 0;
+            // if (q_lvl < 50)
+            // {
+            //     if (q_lvl == 0)
+            //         s = 5000.0;
+            //     else
+            //         s = 5000.0 / q_lvl;
+            // }
+            // else
+            // {
+            //     s = 200.0 - 2 * q_lvl;
+            // }
+            // if (flag_Y)
+            //     k = ((q_table[i][j] * s + 50.0) / 100.0);
+            // else
+            //     k = ((chroma_q_table[i][j] * s + 50.0) / 100.0);
+
+            // matrix.data[i][j] = (matrix.data[i][j]) * k;
+
             double k = 0;
-            if (q_lvl < 50)
-            {
-                if (q_lvl == 0)
-                    s = 5000.0;
-                else
-                    s = 5000.0 / q_lvl;
-            }
-            else
-            {
-                s = 200.0 - 2 * q_lvl;
-            }
             if (flag_Y)
-                k = ((q_table[i][j] * s + 50.0) / 100.0);
+                k = (q_table[i][j]);
             else
-                k = ((chroma_q_table[i][j] * s + 50.0) / 100.0);
+                k = (chroma_q_table[i][j]);
 
             matrix.data[i][j] = (matrix.data[i][j]) * k;
+
         }
     }
 }

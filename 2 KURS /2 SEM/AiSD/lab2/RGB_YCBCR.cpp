@@ -1,16 +1,18 @@
 #include "RGB_YCBCR.h"
 
+#include "math.h"
+
 using namespace std;
 
 void RGB2YCBCR(unsigned char rgb[3], double ycbcr[3])
 {
-    float fr = (double)rgb[0] / 255;
-    float fg = (double)rgb[1] / 255;
-    float fb = (double)rgb[2] / 255;
+    double fr = (double)rgb[0];
+    double fg = (double)rgb[1];
+    double fb = (double)rgb[2];
 
-    float Y = (double)(0.2989 * fr + 0.5866 * fg + 0.1145 * fb);
-    float Cb = (double)(-0.1687 * fr - 0.3313 * fg + 0.5000 * fb);
-    float Cr = (double)(0.5000 * fr - 0.4184 * fg - 0.0816 * fb);
+    double Y = 0.2989 * fr + 0.5866 * fg + 0.1145 * fb;
+    double Cb = 128.0 - 0.1687 * fr - 0.3313 * fg + 0.5000 * fb;
+    double Cr = 128.0 + 0.5000 * fr - 0.4184 * fg - 0.0816 * fb;
 
     ycbcr[0] = Y;
     ycbcr[1] = Cb;
@@ -19,12 +21,12 @@ void RGB2YCBCR(unsigned char rgb[3], double ycbcr[3])
 
 void YCBCR2RGB(double ycbcr[3], unsigned char rgb[3])
 {
-    double r = std::max(0.0, std::min(1.0, (double)(ycbcr[0] + 0.0000 * ycbcr[1] + 1.4022 * ycbcr[2])));
-    double g = std::max(0.0, std::min(1.0, (double)(ycbcr[0] - 0.3456 * ycbcr[1] - 0.7145 * ycbcr[2])));
-    double b = std::max(0.0, std::min(1.0, (double)(ycbcr[0] + 1.7710 * ycbcr[1] + 0.0000 * ycbcr[2])));
-    rgb[0] = (unsigned char)(r * 255);
-    rgb[1] = (unsigned char)(g * 255);
-    rgb[2] = (unsigned char)(b * 255);
+    double r = ycbcr[0] + 1.4022 * (ycbcr[2] - 128.0);
+    double g = ycbcr[0] - 0.3456 * (ycbcr[1] - 128.0) - 0.7145 * (ycbcr[2] - 128.0);
+    double b = ycbcr[0] + 1.7710 * (ycbcr[1] - 128.0);
+    rgb[0] = (unsigned char)(round(r));
+    rgb[1] = (unsigned char)(round(g));
+    rgb[2] = (unsigned char)(round(b));
 }
 
 void RGB_to_YCBRCR_vector(std::vector<unsigned char> &input, std::vector<double> &output)
