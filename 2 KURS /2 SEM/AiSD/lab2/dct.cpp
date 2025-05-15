@@ -62,8 +62,7 @@ double FDCT(int u, int v, int flag, Block &input)
 // обратный ДКТ
 double rev_FDCT(int y, int x, int flag, Block &input)
 {
-    double Cu = (y == 0) ? c : 1.0;
-    double Cv = (x == 0) ? c : 1.0;
+
     double sum = 0.0;
     int tmp;
     // flag == 0 ---> Cb
@@ -74,6 +73,8 @@ double rev_FDCT(int y, int x, int flag, Block &input)
     {
         for (int v = 0; v < len; ++v)
         {
+            double Cu = (u == 0) ? c : 1.0;
+            double Cv = (v == 0) ? c : 1.0;
             // sum += f[v][u] * cos(((tmp + 1) * u * pi) / 16) * cos(((v << 1 + 1) * v * pi) / 16);
             double t = 0;
             if (flag == 0)
@@ -122,7 +123,7 @@ void DCT_of_blocks(std::vector<Block> &input, std::vector<Block> &output)
 }
 
 // на вход массив блоков, на выход тоже
-void rev_DCT_of_blocks(std::vector<Block> & input, std::vector<Block> &output)
+void rev_DCT_of_blocks(std::vector<Block> &input, std::vector<Block> &output)
 {
     if (!input.size())
         abort;
@@ -155,7 +156,7 @@ void block_to_3_matrix(Block &input, std::vector<std::vector<double>> &Y_matrix,
     }
 }
 
-void blocks_to_matrixes(std::vector<Block> & input, std::vector<Matrix> &Y_matrix, std::vector<Matrix> &Cb_matrix, std::vector<Matrix> &Cr_matrix)
+void blocks_to_matrixes(std::vector<Block> &input, std::vector<Matrix> &Y_matrix, std::vector<Matrix> &Cb_matrix, std::vector<Matrix> &Cr_matrix)
 {
     Y_matrix.resize(input.size());
     Cb_matrix.resize(input.size());

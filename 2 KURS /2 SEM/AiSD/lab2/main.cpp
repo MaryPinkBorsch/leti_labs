@@ -1185,13 +1185,101 @@ void test_11()
     }
 }
 
+void test33()
+{
+
+    {
+        vector<double> p = {0, 35, -88, 5.3};
+        vector<double> p1 = p;
+
+        diff_code(p1);
+        diff_decode(p1);
+
+        if (p1 != p)
+            cout << " ERR 5 // diff code" << endl;
+    }
+
+    { // DC test
+        std::vector<double> input = {1, -2, 3};
+        std::vector<var_pair> output;
+        var_code(input, output, 0);
+        vector<double> p = {};
+        var_decode(output, p, 0);
+
+        if (input != p)
+            cout << " ERR 6 //var DC code" << endl;
+    }
+    { // AC test
+        std::vector<double> input = {1, 2, 3, -5};
+        std::vector<var_pair> output;
+        var_code(input, output, 1);
+        vector<double> p = {};
+        var_decode(output, p, 1);
+
+        if (input != p)
+            cout << " ERR 7 //var AC code" << endl;
+    }
+
+    { // AC test 2
+        std::vector<double> input = {1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, -5};
+        std::vector<var_pair> output;
+        std::vector<double> rle = {};
+        std::vector<double> res = {};
+
+        rle_AC(input, rle);
+        var_code(rle, output, 1);
+        vector<double> p = {};
+        var_decode(output, p, 1);
+        rev_rle_AC(p, res);
+
+        if (input != res)
+            cout << " ERR 8 //var AC code+RLE" << endl;
+    }
+    {
+        std::vector<double> p = {};
+        for (int i = 0; i < 256; i++)
+        {
+            p.push_back(i);
+            p.push_back(i);
+            p.push_back(i);
+        }
+        unsigned long w = 16;
+        unsigned long h = 16;
+        std::vector<std::vector<Pixel>> res;
+        vector_2matrix(w, h, res, p);
+
+        // !!!! надо сделать обработку если там нечетко делится на блоки Н!!!!
+
+        // downsampling(w, h, res, 8);
+
+        // redownsampling(w, h, res, 2); // рабоатет
+
+        std::vector<Block> res_block;
+        blocking(w, h, res, 8, res_block);
+        std::vector<Block> dct_block;
+        DCT_of_blocks(res_block, dct_block); //
+        //
+        std::vector<Matrix> Y_matrixes;
+        std::vector<Matrix> Cb_matrixes;
+        std::vector<Matrix> Cr_matrixes;
+        std::vector<Block> dct_block1;
+        // перед квантованием я все 3 канала для каждого блока переведу в раздельные матрицы
+        blocks_to_matrixes(dct_block, Y_matrixes, Cb_matrixes, Cr_matrixes);
+        matrixes_to_block(dct_block1, Y_matrixes, Cb_matrixes, Cr_matrixes);
+
+        if (dct_block[0].matrix_data[0][0].Y != dct_block1[0].matrix_data[0][0].Y)
+            cout << " ERR 9 // matr" << endl;
+    }
+}
+
 int main(int argc, char *argv[])
 {
 
-//    test1();
+    test1();
     test_11();
-//    test_22();
-//    test2();
+    // test33();
+    // test_22();
+    // test2();
 
     return 0;
 }
