@@ -65,7 +65,7 @@ void quantify(Matrix &matrix, int q_lvl, bool flag_Y)
             else
                 k = (chroma_q_table[i][j]);
 
-            //matrix.data[i][j] = round(matrix.data[i][j] / k * 100000.0) / 100000.0;
+            // matrix.data[i][j] = round(matrix.data[i][j] / k * 100000.0) / 100000.0;
             matrix.data[i][j] = round(matrix.data[i][j] / k);
         }
     }
@@ -117,7 +117,6 @@ void dequantify(Matrix &matrix, int q_lvl, bool flag_Y)
                 k = (chroma_q_table[i][j]);
 
             matrix.data[i][j] = (matrix.data[i][j]) * k;
-
         }
     }
 }
