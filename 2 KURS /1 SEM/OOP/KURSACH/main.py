@@ -24,6 +24,11 @@ mess7 = "Пилатес на руки 7 мин:"
 mess8 = "Пилатес на ноги 5 мин:"
 mess9 = "Пилатес на пресс 6 мин:"
 mess10 = "Пилатес на ягодицы 7 мин:"
+mess11 = "Пилатес на руки (версия с песиком) 5 мин:"
+mess12 = "Растяжка против ПМС 15 мин:"
+mess13 = "Пилатес на ноги 10 мин:"
+mess14 = "Pump it Up! 75 мин:"
+
 
 @botTimeWeb.message_handler(commands=['start'])
 def start(message):
@@ -64,6 +69,20 @@ def func(message):
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton("Вперед!", url="https://www.youtube.com/watch?v=BnSxAiSd7lA&ab_channel=BaileyBrown"))
         botTimeWeb.send_message(message.chat.id, mess10, reply_markup=markup)
+        
+        markup = types.InlineKeyboardMarkup()
+        markup.add(types.InlineKeyboardButton("Вперед!", url="https://www.youtube.com/watch?v=rA52LE82L90"))
+        botTimeWeb.send_message(message.chat.id, mess11, reply_markup=markup)
+        
+        markup = types.InlineKeyboardMarkup()
+        markup.add(types.InlineKeyboardButton("Вперед!", url="https://www.youtube.com/watch?v=tUJiGmCG5Yc"))
+        botTimeWeb.send_message(message.chat.id, mess13, reply_markup=markup)
+        
+        markup = types.InlineKeyboardMarkup()
+        markup.add(types.InlineKeyboardButton("Вперед!", url="https://www.youtube.com/watch?v=EtuEmHfCKi4&t=702s"))
+        botTimeWeb.send_message(message.chat.id, mess14, reply_markup=markup)
+ 
+ 
  
     
     elif (message.text == "Растяжка" or message.text == "растяжка"):
@@ -85,6 +104,10 @@ def func(message):
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton("Вперед!", url="https://www.youtube.com/watch?v=yqeirBfn2j4&ab_channel=MadyMorrison"))
         botTimeWeb.send_message(message.chat.id, mess5, reply_markup=markup)
+        
+        markup = types.InlineKeyboardMarkup()
+        markup.add(types.InlineKeyboardButton("Вперед!", url="https://www.youtube.com/watch?v=2X78NWuRfJU"))
+        botTimeWeb.send_message(message.chat.id, mess12, reply_markup=markup)
  
     
     elif (message.text == "Вернуться в главное меню"):
