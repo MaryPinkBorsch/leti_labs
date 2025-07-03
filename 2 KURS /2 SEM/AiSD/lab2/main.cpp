@@ -39,7 +39,7 @@ void test_compr()
     std::vector<double> pixel_data_ycbcr;
     unsigned long image_width = 0;
     unsigned long image_height = 0;
-    readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
+    readfile("./Lenna.png", input_data);
     decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
     // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
     // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
@@ -171,7 +171,7 @@ void test_compr()
     std::vector<double> pixel_data_ycbcr2;
     matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
     YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
-    lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_c1.png", output_data.data(), w, h);
+    lodepng_encode24_file("./Lenna_c1.png", output_data.data(), w, h);
 }
 
 void test1()
@@ -182,7 +182,7 @@ void test1()
     std::vector<double> pixel_data_ycbcr;
     unsigned long image_width = 0;
     unsigned long image_height = 0;
-    readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
+    readfile("./Lenna.png", input_data);
     decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
     // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
     // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
@@ -314,7 +314,7 @@ void test1()
     std::vector<double> pixel_data_ycbcr2;
     matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
     YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
-    lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna9.png", output_data.data(), w, h);
+    lodepng_encode24_file("./Lenna9.png", output_data.data(), w, h);
 }
 
 void test2()
@@ -325,7 +325,7 @@ void test2()
     std::vector<double> pixel_data_ycbcr;
     unsigned long image_width = 0;
     unsigned long image_height = 0;
-    readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
+    readfile("./Lenna.png", input_data);
     decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
     // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
     // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
@@ -471,7 +471,7 @@ void test2()
     std::vector<double> pixel_data_ycbcr2;
     matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
     YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
-    lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna999.png", output_data.data(), w, h);
+    lodepng_encode24_file("./Lenna999.png", output_data.data(), w, h);
 }
 
 void q_test()
@@ -483,7 +483,7 @@ void q_test()
         std::vector<double> pixel_data_ycbcr;
         unsigned long image_width = 0;
         unsigned long image_height = 0;
-        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
+        readfile("./Lenna.png", input_data);
         decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
         // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
         // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
@@ -532,7 +532,7 @@ void q_test()
         std::vector<double> pixel_data_ycbcr2;
         matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
         YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
-        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_q1.png", output_data.data(), w, h);
+        lodepng_encode24_file("./Lenna_q1.png", output_data.data(), w, h);
     }
     // {
     //     std::vector<unsigned char> input_data;
@@ -541,7 +541,7 @@ void q_test()
     //     std::vector<double> pixel_data_ycbcr;
     //     unsigned long image_width = 0;
     //     unsigned long image_height = 0;
-    //     readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_black.png", input_data);
+    //     readfile("./Lenna_black.png", input_data);
     //     decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
     //     // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
     //     // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
@@ -590,7 +590,7 @@ void q_test()
     //     std::vector<double> pixel_data_ycbcr2;
     //     matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
     //     YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
-    //     lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_black_q1.png", output_data.data(), w, h);
+    //     lodepng_encode24_file("./Lenna_black_q1.png", output_data.data(), w, h);
     // }
     // {
     //     std::vector<unsigned char> input_data;
@@ -599,7 +599,7 @@ void q_test()
     //     std::vector<double> pixel_data_ycbcr;
     //     unsigned long image_width = 0;
     //     unsigned long image_height = 0;
-    //     readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/test_image.png", input_data);
+    //     readfile("./test_image.png", input_data);
     //     decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
     //     // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
     //     // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
@@ -648,7 +648,7 @@ void q_test()
     //     std::vector<double> pixel_data_ycbcr2;
     //     matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
     //     YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
-    //     lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/test_image_q1.png", output_data.data(), w, h);
+    //     lodepng_encode24_file("./test_image_q1.png", output_data.data(), w, h);
     // }
     // {
     //     std::vector<unsigned char> input_data;
@@ -657,7 +657,7 @@ void q_test()
     //     std::vector<double> pixel_data_ycbcr;
     //     unsigned long image_width = 0;
     //     unsigned long image_height = 0;
-    //     readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/test_image_gray.png", input_data);
+    //     readfile("./test_image_gray.png", input_data);
     //     decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
     //     // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
     //     // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
@@ -706,7 +706,7 @@ void q_test()
     //     std::vector<double> pixel_data_ycbcr2;
     //     matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
     //     YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
-    //     lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/test_image_gray_q1.png", output_data.data(), w, h);
+    //     lodepng_encode24_file("./test_image_gray_q1.png", output_data.data(), w, h);
     // }
     // {
     //     std::vector<unsigned char> input_data;
@@ -715,7 +715,7 @@ void q_test()
     //     std::vector<double> pixel_data_ycbcr;
     //     unsigned long image_width = 0;
     //     unsigned long image_height = 0;
-    //     readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/test_image_black.png", input_data);
+    //     readfile("./test_image_black.png", input_data);
     //     decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
     //     // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
     //     // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
@@ -764,7 +764,7 @@ void q_test()
     //     std::vector<double> pixel_data_ycbcr2;
     //     matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
     //     YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
-    //     lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/test_image_black_q1.png", output_data.data(), w, h);
+    //     lodepng_encode24_file("./test_image_black_q1.png", output_data.data(), w, h);
     // }
     // {
     //     std::vector<unsigned char> input_data;
@@ -773,7 +773,7 @@ void q_test()
     //     std::vector<double> pixel_data_ycbcr;
     //     unsigned long image_width = 0;
     //     unsigned long image_height = 0;
-    //     readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
+    //     readfile("./Lenna.png", input_data);
     //     decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
     //     // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
     //     // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
@@ -822,7 +822,7 @@ void q_test()
     //     std::vector<double> pixel_data_ycbcr2;
     //     matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
     //     YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
-    //     lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_q2.png", output_data.data(), w, h);
+    //     lodepng_encode24_file("./Lenna_q2.png", output_data.data(), w, h);
     // }
     // {
     //     std::vector<unsigned char> input_data;
@@ -831,7 +831,7 @@ void q_test()
     //     std::vector<double> pixel_data_ycbcr;
     //     unsigned long image_width = 0;
     //     unsigned long image_height = 0;
-    //     readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
+    //     readfile("./Lenna.png", input_data);
     //     decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
     //     // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
     //     // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
@@ -880,7 +880,7 @@ void q_test()
     //     std::vector<double> pixel_data_ycbcr2;
     //     matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
     //     YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
-    //     lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_q3.png", output_data.data(), w, h);
+    //     lodepng_encode24_file("./Lenna_q3.png", output_data.data(), w, h);
     // }
     // {
     //     std::vector<unsigned char> input_data;
@@ -889,7 +889,7 @@ void q_test()
     //     std::vector<double> pixel_data_ycbcr;
     //     unsigned long image_width = 0;
     //     unsigned long image_height = 0;
-    //     readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
+    //     readfile("./Lenna.png", input_data);
     //     decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
     //     // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
     //     // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
@@ -938,7 +938,7 @@ void q_test()
     //     std::vector<double> pixel_data_ycbcr2;
     //     matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
     //     YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
-    //     lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_q4.png", output_data.data(), w, h);
+    //     lodepng_encode24_file("./Lenna_q4.png", output_data.data(), w, h);
     // }
     // {
     //     std::vector<unsigned char> input_data;
@@ -947,7 +947,7 @@ void q_test()
     //     std::vector<double> pixel_data_ycbcr;
     //     unsigned long image_width = 0;
     //     unsigned long image_height = 0;
-    //     readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
+    //     readfile("./Lenna.png", input_data);
     //     decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
     //     // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
     //     // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
@@ -996,7 +996,7 @@ void q_test()
     //     std::vector<double> pixel_data_ycbcr2;
     //     matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
     //     YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
-    //     lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_q5.png", output_data.data(), w, h);
+    //     lodepng_encode24_file("./Lenna_q5.png", output_data.data(), w, h);
     // }
     // {
     //     std::vector<unsigned char> input_data;
@@ -1005,7 +1005,7 @@ void q_test()
     //     std::vector<double> pixel_data_ycbcr;
     //     unsigned long image_width = 0;
     //     unsigned long image_height = 0;
-    //     readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
+    //     readfile("./Lenna.png", input_data);
     //     decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
     //     // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
     //     // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
@@ -1054,7 +1054,7 @@ void q_test()
     //     std::vector<double> pixel_data_ycbcr2;
     //     matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
     //     YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
-    //     lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_q6.png", output_data.data(), w, h);
+    //     lodepng_encode24_file("./Lenna_q6.png", output_data.data(), w, h);
     // }
     // /////////////////////
     // {
@@ -1064,7 +1064,7 @@ void q_test()
     //     std::vector<double> pixel_data_ycbcr;
     //     unsigned long image_width = 0;
     //     unsigned long image_height = 0;
-    //     readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_gray.png", input_data);
+    //     readfile("./Lenna_gray.png", input_data);
     //     decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
     //     // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
     //     // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
@@ -1113,7 +1113,7 @@ void q_test()
     //     std::vector<double> pixel_data_ycbcr2;
     //     matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
     //     YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
-    //     lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_gray_q1.png", output_data.data(), w, h);
+    //     lodepng_encode24_file("./Lenna_gray_q1.png", output_data.data(), w, h);
     // }
 }
 
@@ -1213,7 +1213,7 @@ void test_22()
         std::vector<double> pixel_data_ycbcr;
         unsigned long image_width = 0;
         unsigned long image_height = 0;
-        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
+        readfile("./Lenna.png", input_data);
         decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
         // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
         // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
@@ -1262,7 +1262,7 @@ void test_22()
         std::vector<double> pixel_data_ycbcr2;
         matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
         YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
-        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_222.png", output_data.data(), w, h);
+        lodepng_encode24_file("./Lenna_222.png", output_data.data(), w, h);
     }
 }
 
@@ -1275,7 +1275,7 @@ void test_11()
         std::vector<double> pixel_data_ycbcr;
         unsigned long image_width = 0;
         unsigned long image_height = 0;
-        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna.png", input_data);
+        readfile("./Lenna.png", input_data);
         decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
         // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
         // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
@@ -1324,7 +1324,7 @@ void test_11()
         std::vector<double> pixel_data_ycbcr2;
         matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
         YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
-        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_111.png", output_data.data(), w, h);
+        lodepng_encode24_file("./Lenna_111.png", output_data.data(), w, h);
     }
     {
         std::vector<unsigned char> input_data;
@@ -1333,7 +1333,7 @@ void test_11()
         std::vector<double> pixel_data_ycbcr;
         unsigned long image_width = 0;
         unsigned long image_height = 0;
-        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_gray.png", input_data);
+        readfile("./Lenna_gray.png", input_data);
         decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
         // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
         // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
@@ -1382,7 +1382,7 @@ void test_11()
         std::vector<double> pixel_data_ycbcr2;
         matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
         YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
-        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_gray_111.png", output_data.data(), w, h);
+        lodepng_encode24_file("./Lenna_gray_111.png", output_data.data(), w, h);
     }
     {
         std::vector<unsigned char> input_data;
@@ -1391,7 +1391,7 @@ void test_11()
         std::vector<double> pixel_data_ycbcr;
         unsigned long image_width = 0;
         unsigned long image_height = 0;
-        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_black.png", input_data);
+        readfile("./Lenna_black.png", input_data);
         decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
         // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
         // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
@@ -1440,7 +1440,7 @@ void test_11()
         std::vector<double> pixel_data_ycbcr2;
         matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
         YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
-        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/Lenna_black_111.png", output_data.data(), w, h);
+        lodepng_encode24_file("./Lenna_black_111.png", output_data.data(), w, h);
     }
     {
         std::vector<unsigned char> input_data;
@@ -1449,7 +1449,7 @@ void test_11()
         std::vector<double> pixel_data_ycbcr;
         unsigned long image_width = 0;
         unsigned long image_height = 0;
-        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/test_image_black.png", input_data);
+        readfile("./test_image_black.png", input_data);
         decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
         // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
         // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
@@ -1498,7 +1498,7 @@ void test_11()
         std::vector<double> pixel_data_ycbcr2;
         matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
         YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
-        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/test_image_black_111.png", output_data.data(), w, h);
+        lodepng_encode24_file("./test_image_black_111.png", output_data.data(), w, h);
     }
     {
         std::vector<unsigned char> input_data;
@@ -1507,7 +1507,7 @@ void test_11()
         std::vector<double> pixel_data_ycbcr;
         unsigned long image_width = 0;
         unsigned long image_height = 0;
-        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/test_image.png", input_data);
+        readfile("./test_image.png", input_data);
         decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
         // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
         // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
@@ -1556,7 +1556,7 @@ void test_11()
         std::vector<double> pixel_data_ycbcr2;
         matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
         YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
-        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/test_image_111.png", output_data.data(), w, h);
+        lodepng_encode24_file("./test_image_111.png", output_data.data(), w, h);
     }
     {
         std::vector<unsigned char> input_data;
@@ -1565,7 +1565,7 @@ void test_11()
         std::vector<double> pixel_data_ycbcr;
         unsigned long image_width = 0;
         unsigned long image_height = 0;
-        readfile("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/test_image_gray.png", input_data);
+        readfile("./test_image_gray.png", input_data);
         decodePNG(pixel_data, image_width, image_height, input_data.data(), input_data.size(), false);
         // перевели нашу пнг в массив, 1 элемент массива - 1 цветовой канал ргб, три канала подряд - 1 пиксель
         // там image_height строк, каждая длиной image_width, где каждый пиксель = 3 чара (на ргб)
@@ -1614,7 +1614,7 @@ void test_11()
         std::vector<double> pixel_data_ycbcr2;
         matrix2vector(w, h, pixel_data_ycbcr2, pixel_arr2);
         YCBRCR_to_RGB_vector(pixel_data_ycbcr2, output_data);
-        lodepng_encode24_file("/home/kalujny/work/leti_labs/2 KURS /2 SEM/AiSD/lab2/data/test_image_gray_111.png", output_data.data(), w, h);
+        lodepng_encode24_file("./test_image_gray_111.png", output_data.data(), w, h);
     }
 }
 
