@@ -2,7 +2,6 @@ package com.example.masya.sportstore.entity;
 
 import jakarta.persistence.*;
 
-
 @Entity
 @Table(name = "clothing")
 public class Clothing {
@@ -16,10 +15,13 @@ public class Clothing {
     @Column(name = "season")
     private Integer season;
 
+    @Column(name = "price")
+    private Integer price;
+
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
-    
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;

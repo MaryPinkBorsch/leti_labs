@@ -16,7 +16,7 @@ public class Brand {
     @Column(name = "since")
     private Integer since;
 
-    @Column(name = "stars")
+    @Column(name = "rating")
     private Integer rating;
 
     @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL)
