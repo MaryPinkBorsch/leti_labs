@@ -9,11 +9,8 @@ import java.util.Optional;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     // Поиск по названию
-    Optional<Category> findByName(String name);
-
-    // Поиск по названию (частичное совпадение)
-    List<Category> findByNameContainingIgnoreCase(String name);
+    Optional<Category> findByCategoryName(String categorName);
 
     // Проверка существования категории
-    boolean existsByName(String name);
+    boolean existsByCategoryName(String categorName);
 }

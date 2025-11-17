@@ -10,7 +10,7 @@ public class Clothing {
     private Long id;
 
     @Column(nullable = false)
-    private String model_name;
+    private String modelName;
 
     @Column(name = "season")
     private Integer season;

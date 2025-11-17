@@ -20,8 +20,13 @@ public class Order {
     @Column(name = "Order_date", nullable = false)
     private LocalDateTime OrderDate;
 
-    @OneToMany(mappedBy = "ordered_clothes", cascade = CascadeType.ALL)
-    private List<Clothing> ordered_clothes;
+    @ManyToMany
+    @JoinTable(
+        name = "order_clothing",
+        joinColumns = @JoinColumn(name = "order_id"),
+        inverseJoinColumns = @JoinColumn(name = "clothing_id")
+    )
+    private List<Clothing> orderedClothes;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;

@@ -11,16 +11,25 @@ import java.util.Optional;
 @Repository
 public interface ClothingRepository extends JpaRepository<Clothing, Long> {
     // Поиск по названию (частичное совпадение)
-    List<Clothing> findByModelNameContainingIgnoreCase(String model_name);
+    List<Clothing> findByModelNameContainingIgnoreCase(String modelName);
 
     // Поиск по BrandName
     List<Clothing> findByBrandName(String BrandName);
 
-    // Поиск по since
-    List<Clothing> findBySince(Integer since);
+    // All clothes whose brand has a given 'since' year
+    List<Clothing> findByBrandSince(Integer since);
 
-    // Поиск по rating
-    List<Clothing> findByRating(Integer rating);
+    // All clothes whose brand has a certain rating
+    List<Clothing> findByBrandRating(Integer rating);
+
+    // All clothes where brand.since >= some value
+    List<Clothing> findByBrandSinceGreaterThanEqual(Integer since);
+
+    // All clothes where brand.rating >= some value
+    List<Clothing> findByBrandRatingGreaterThanEqual(Integer rating);
+
+    // Combined filter: brand.since >= X AND brand.rating >= Y
+    List<Clothing> findByBrandSinceGreaterThanEqualAndBrandRatingGreaterThanEqual(Integer since, Integer rating);
 
     // Поиск по категории
     List<Clothing> findByCategoryId(Long categoryId);

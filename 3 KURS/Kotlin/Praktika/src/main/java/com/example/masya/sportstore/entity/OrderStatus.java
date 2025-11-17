@@ -1,6 +1,6 @@
 package com.example.masya.sportstore.entity;
 
-enum OrderStatus 
+public enum OrderStatus 
 {
     ACTIVE, PAID, FINISHED
 }

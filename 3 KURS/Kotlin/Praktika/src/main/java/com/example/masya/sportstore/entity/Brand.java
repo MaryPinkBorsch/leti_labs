@@ -11,7 +11,7 @@ public class Brand {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String brand_name;
+    private String name;
 
     @Column(name = "since")
     private Integer since;
