@@ -2,6 +2,7 @@ package com.example.masya.sportstore.service;
 
 import com.example.masya.sportstore.entity.Clothing;
 import java.util.List;
+import java.util.Map;
 
 public interface SearchService {
     List<Clothing> searchClothing(String query);

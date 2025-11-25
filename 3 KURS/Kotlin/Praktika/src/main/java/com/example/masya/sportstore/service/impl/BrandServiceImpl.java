@@ -1,14 +1,15 @@
 package com.example.masya.sportstore.service.impl;
 
-import com.example.masya.sportstore.entity.Brand;
-import com.example.masya.sportstore.repository.BrandRepository;
-import com.example.masya.sportstore.service.BrandService;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import com.example.masya.sportstore.entity.Brand;
+import com.example.masya.sportstore.repository.BrandRepository;
+import com.example.masya.sportstore.service.BrandService;
 
 @Service
 @Transactional

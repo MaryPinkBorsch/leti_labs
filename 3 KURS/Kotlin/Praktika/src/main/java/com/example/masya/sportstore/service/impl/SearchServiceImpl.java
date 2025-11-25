@@ -1,15 +1,15 @@
 package com.example.masya.sportstore.service.impl;
 
-import com.example.masya.sportstore.entity.Clothing;
-import com.example.masya.sportstore.repository.ClothingRepository;
-import com.example.masya.sportstore.service.SearchService;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import com.example.masya.sportstore.entity.Clothing;
+import com.example.masya.sportstore.repository.ClothingRepository;
+import com.example.masya.sportstore.service.SearchService;
 
 @Service
 @Transactional
@@ -28,22 +28,22 @@ public class SearchServiceImpl implements SearchService {
         if (query == null || query.trim().isEmpty()) {
             return clothingRepository.findAll();
         }
-        
+
         String searchTerm = "%" + query.toLowerCase() + "%";
         return clothingRepository.searchByModelNameOrBrandOrCategory(searchTerm);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Clothing> advancedSearch(String modelName, String brandName, String categoryName, 
-                                       Integer minPrice, Integer maxPrice, Integer season) {
+    public List<Clothing> advancedSearch(String modelName, String brandName, String categoryName,
+            Integer minPrice, Integer maxPrice, Integer season) {
         return clothingRepository.advancedSearch(
-            modelName != null ? "%" + modelName + "%" : null,
-            brandName,
-            categoryName,
-            minPrice,
-            maxPrice,
-            season
+                modelName != null ? "%" + modelName + "%" : null,
+                brandName,
+                categoryName,
+                minPrice,
+                maxPrice,
+                season
         );
     }
 
@@ -56,7 +56,7 @@ public class SearchServiceImpl implements SearchService {
         Integer minPrice = (Integer) filters.get("minPrice");
         Integer maxPrice = (Integer) filters.get("maxPrice");
         Integer season = (Integer) filters.get("season");
-        
+
         return advancedSearch(modelName, brandName, categoryName, minPrice, maxPrice, season);
     }
 
@@ -64,13 +64,13 @@ public class SearchServiceImpl implements SearchService {
     @Transactional(readOnly = true)
     public List<Clothing> findSimilarItems(Long clothingId, int limit) {
         Clothing targetClothing = clothingRepository.findById(clothingId)
-            .orElseThrow(() -> new RuntimeException("Clothing not found with id: " + clothingId));
-        
+                .orElseThrow(() -> new RuntimeException("Clothing not found with id: " + clothingId));
+
         return clothingRepository.findSimilarItems(
-            targetClothing.getCategory().getId(),
-            targetClothing.getBrand().getId(),
-            clothingId,
-            limit
+                targetClothing.getCategory().getId(),
+                targetClothing.getBrand().getId(),
+                clothingId,
+                limit
         );
     }
 
@@ -99,9 +99,15 @@ public class SearchServiceImpl implements SearchService {
     private Integer getCurrentSeason() {
         // Simple season calculation based on month
         int month = java.time.LocalDate.now().getMonthValue();
-        if (month >= 3 && month <= 5) return 1; // Spring
-        if (month >= 6 && month <= 8) return 2; // Summer
-        if (month >= 9 && month <= 11) return 3; // Autumn
-        return 4; // Winter
+        if (month >= 3 && month <= 5) {
+            return 1; // Spring
+
+                }if (month >= 6 && month <= 8) {
+            return 2; // Summer
+
+                }if (month >= 9 && month <= 11) {
+            return 3; // Autumn
+
+                }return 4; // Winter
     }
 }

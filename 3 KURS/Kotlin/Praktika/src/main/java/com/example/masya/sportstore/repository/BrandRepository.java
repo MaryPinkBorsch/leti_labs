@@ -1,12 +1,14 @@
 package com.example.masya.sportstore.repository;
 
-import com.example.masya.sportstore.entity.Brand;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import java.util.List;
-import java.util.Optional;
+
+import com.example.masya.sportstore.entity.Brand;
 
 @Repository
 public interface BrandRepository extends JpaRepository<Brand, Long> {
@@ -21,4 +23,18 @@ public interface BrandRepository extends JpaRepository<Brand, Long> {
     // Подсчет количества clothes brenda
     @Query("SELECT COUNT(b) FROM Clothing b WHERE b.brand.id = :brandId")
     Long countClothesByBrandId(@Param("brandId") Long brandId);
+
+    public List<Brand> findByRatingGreaterThanEqual(Integer minRating);
+
+    public List<Brand> findBySinceGreaterThanEqual(Integer year);
+
+    public List<Brand> findTopRatedBrands(int limit);
+
+    public boolean existsByName(String name);
+
+    public List<Brand> findBrandsWithClothingInCategory(String categoryName);
+
+    public Optional<Brand> findByName(String name);
+
+  
 }

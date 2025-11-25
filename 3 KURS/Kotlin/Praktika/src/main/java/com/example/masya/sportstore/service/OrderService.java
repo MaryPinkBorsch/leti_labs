@@ -1,12 +1,13 @@
 package com.example.masya.sportstore.service;
 
-import com.example.masya.sportstore.entity.Order;
-import com.example.masya.sportstore.entity.OrderStatus;
-import com.example.masya.sportstore.entity.User;
-import com.example.masya.sportstore.entity.Clothing;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import com.example.masya.sportstore.entity.Clothing;
+import com.example.masya.sportstore.entity.Order;
+import com.example.masya.sportstore.entity.OrderStatus;
+import com.example.masya.sportstore.entity.User;
 
 public interface OrderService {
     List<Order> findAll();

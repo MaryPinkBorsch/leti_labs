@@ -1,16 +1,17 @@
 package com.example.masya.sportstore.service.impl;
 
-import com.example.masya.sportstore.entity.Clothing;
-import com.example.masya.sportstore.repository.ClothingRepository;
-import com.example.masya.sportstore.service.InventoryService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.example.masya.sportstore.entity.Clothing;
+import com.example.masya.sportstore.repository.ClothingRepository;
+import com.example.masya.sportstore.service.InventoryService;
 
 @Service
 @Transactional
@@ -18,7 +19,7 @@ public class InventoryServiceImpl implements InventoryService {
 
     // In-memory inventory (in production, use database with inventory table)
     private final Map<Long, Integer> inventory = new ConcurrentHashMap<>();
-    
+
     private final ClothingRepository clothingRepository;
 
     @Autowired
@@ -80,10 +81,10 @@ public class InventoryServiceImpl implements InventoryService {
     @Transactional(readOnly = true)
     public List<Clothing> getLowStockItems(Integer threshold) {
         return inventory.entrySet().stream()
-            .filter(entry -> entry.getValue() <= threshold)
-            .map(entry -> clothingRepository.findById(entry.getKey()).orElse(null))
-            .filter(clothing -> clothing != null)
-            .toList();
+                .filter(entry -> entry.getValue() <= threshold)
+                .map(entry -> clothingRepository.findById(entry.getKey()).orElse(null))
+                .filter(clothing -> clothing != null)
+                .toList();
     }
 
     @Override
