@@ -64,15 +64,5 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.existsByCategoryName(categoryName);
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<Category> findCategoriesWithClothing() {
-        return categoryRepository.findCategoriesWithClothing();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<Category> findPopularCategories(int limit) {
-        return categoryRepository.findPopularCategories(limit);
-    }
+   
 }

@@ -1,18 +1,21 @@
 package com.example.masya.sportstore.service.impl;
 
-import com.example.masya.sportstore.entity.*;
-import com.example.masya.sportstore.repository.ClothingRepository;
-import com.example.masya.sportstore.repository.OrderRepository;
-import com.example.masya.sportstore.repository.UserRepository;
-import com.example.masya.sportstore.service.OrderService;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import com.example.masya.sportstore.entity.Clothing;
+import com.example.masya.sportstore.entity.Order;
+import com.example.masya.sportstore.entity.OrderStatus;
+import com.example.masya.sportstore.entity.User;
+import com.example.masya.sportstore.repository.ClothingRepository;
+import com.example.masya.sportstore.repository.OrderRepository;
+import com.example.masya.sportstore.repository.UserRepository;
+import com.example.masya.sportstore.service.OrderService;
 
 @Service
 @Transactional
@@ -83,11 +86,7 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findByStatus(status);
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<Order> findByOrderDateBetween(LocalDateTime start, LocalDateTime end) {
-        return orderRepository.findByOrderDateBetween(start, end);
-    }
+   
 
     @Override
     @Transactional(readOnly = true)
@@ -131,11 +130,7 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findByUserAndStatus(user, status);
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<Order> findOrdersContainingClothing(Clothing clothing) {
-        return orderRepository.findOrdersContainingClothing(clothing.getId());
-    }
+  
 
     @Override
     @Transactional(readOnly = true)
@@ -148,9 +143,5 @@ public class OrderServiceImpl implements OrderService {
                 .sum();
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<Order> findOrdersByClothingBrand(String brandName) {
-        return orderRepository.findOrdersByClothingBrand(brandName);
-    }
+    
 }

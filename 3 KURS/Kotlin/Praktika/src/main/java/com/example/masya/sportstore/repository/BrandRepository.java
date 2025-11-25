@@ -28,11 +28,10 @@ public interface BrandRepository extends JpaRepository<Brand, Long> {
 
     public List<Brand> findBySinceGreaterThanEqual(Integer year);
 
-    public List<Brand> findTopRatedBrands(int limit);
+    @Query("SELECT DISTINCT a FROM Brand a WHERE a.rating > :limit")
+    public List<Brand> findTopRatedBrands(@Param("limit") Integer limit);
 
     public boolean existsByName(String name);
-
-    public List<Brand> findBrandsWithClothingInCategory(String categoryName);
 
     public Optional<Brand> findByName(String name);
 

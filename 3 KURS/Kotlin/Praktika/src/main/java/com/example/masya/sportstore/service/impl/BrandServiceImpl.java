@@ -81,10 +81,4 @@ public class BrandServiceImpl implements BrandService {
     public boolean existsByName(String name) {
         return brandRepository.existsByName(name);
     }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<Brand> findBrandsWithClothingInCategory(String categoryName) {
-        return brandRepository.findBrandsWithClothingInCategory(categoryName);
-    }
 }

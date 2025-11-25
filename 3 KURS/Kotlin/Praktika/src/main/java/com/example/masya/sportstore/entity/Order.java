@@ -30,7 +30,7 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
     @Column(name = "Order_date", nullable = false)
-    private LocalDateTime OrderDate;
+    private LocalDateTime orderDate;
 
     @ManyToMany
     @JoinTable(
@@ -68,14 +68,6 @@ public class Order {
         this.user = user;
     }
 
-    public LocalDateTime getOrderDate() {
-        return OrderDate;
-    }
-
-    public void setOrderDate(LocalDateTime OrderDate) {
-        this.OrderDate = OrderDate;
-    }
-
     public List<Clothing> getOrderedClothes() {
         return orderedClothes;
     }
@@ -90,5 +82,13 @@ public class Order {
 
     public void setStatus(OrderStatus status) {
         this.status = status;
+    }
+
+    public LocalDateTime getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(LocalDateTime orderDate) {
+        this.orderDate = orderDate;
     }
 }

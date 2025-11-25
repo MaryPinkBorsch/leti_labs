@@ -1,8 +1,9 @@
 package com.example.masya.sportstore.service;
 
-import com.example.masya.sportstore.entity.Category;
 import java.util.List;
 import java.util.Optional;
+
+import com.example.masya.sportstore.entity.Category;
 
 public interface CategoryService {
     List<Category> findAll();
@@ -12,6 +13,4 @@ public interface CategoryService {
     Category update(Category category);
     void deleteById(Long id);
     boolean existsByCategoryName(String categoryName);
-    List<Category> findCategoriesWithClothing();
-    List<Category> findPopularCategories(int limit);
 }

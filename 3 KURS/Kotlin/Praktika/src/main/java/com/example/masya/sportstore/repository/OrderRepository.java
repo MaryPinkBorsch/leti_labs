@@ -23,13 +23,10 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     public List<Order> findByUser(User user);
 
-    public List<Order> findByOrderDateBetween(LocalDateTime start, LocalDateTime end);
 
     public List<Order> findByOrderDateAfter(LocalDateTime startDate);
 
     public List<Order> findByUserAndStatus(User user, OrderStatus status);
 
-    public List<Order> findOrdersContainingClothing(Long id);
 
-    public List<Order> findOrdersByClothingBrand(String brandName);
 }

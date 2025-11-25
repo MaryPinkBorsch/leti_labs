@@ -1,8 +1,9 @@
 package com.example.masya.sportstore.service;
 
-import com.example.masya.sportstore.entity.Brand;
 import java.util.List;
 import java.util.Optional;
+
+import com.example.masya.sportstore.entity.Brand;
 
 public interface BrandService {
     List<Brand> findAll();
@@ -15,5 +16,4 @@ public interface BrandService {
     List<Brand> findBrandsEstablishedAfter(Integer year);
     List<Brand> findTopRatedBrands(int limit);
     boolean existsByName(String name);
-    List<Brand> findBrandsWithClothingInCategory(String categoryName);
 }
