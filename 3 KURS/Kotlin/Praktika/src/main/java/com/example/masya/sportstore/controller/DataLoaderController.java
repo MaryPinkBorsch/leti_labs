@@ -1,16 +1,15 @@
 package com.example.masya.sportstore.controller;
 
-import com.example.masya.sportstore.dto.*;
 import com.example.masya.sportstore.entity.*;
 import com.example.masya.sportstore.service.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
-import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
 @RequestMapping("/api/test-data")
@@ -24,11 +23,11 @@ public class DataLoaderController {
     private final OrderService orderService;
 
     @Autowired
-    public DataLoaderController(BrandService brandService, 
-                              CategoryService categoryService,
-                              ClothingService clothingService,
-                              UserService userService,
-                              OrderService orderService) {
+    public DataLoaderController(BrandService brandService,
+            CategoryService categoryService,
+            ClothingService clothingService,
+            UserService userService,
+            OrderService orderService) {
         this.brandService = brandService;
         this.categoryService = categoryService;
         this.clothingService = clothingService;
@@ -50,7 +49,7 @@ public class DataLoaderController {
             Brand nike = new Brand("Nike", 1964, 5);
             Brand adidas = new Brand("Adidas", 1949, 5);
             Brand puma = new Brand("Puma", 1948, 4);
-            
+
             nike = brandService.save(nike);
             adidas = brandService.save(adidas);
             puma = brandService.save(puma);
@@ -59,7 +58,7 @@ public class DataLoaderController {
             Category runningShoes = new Category("Running Shoes");
             Category basketball = new Category("Basketball Apparel");
             Category football = new Category("Football Jerseys");
-            
+
             runningShoes = categoryService.save(runningShoes);
             basketball = categoryService.save(basketball);
             football = categoryService.save(football);
@@ -67,7 +66,7 @@ public class DataLoaderController {
             // Create users
             User user1 = new User("john@email.com", "password123", "John", "Doe");
             User user2 = new User("jane@email.com", "password123", "Jane", "Smith");
-            
+
             user1 = userService.save(user1);
             user2 = userService.save(user2);
 

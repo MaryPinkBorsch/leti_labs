@@ -24,6 +24,13 @@ public class Category {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Clothing> clothes;    
 
+    public Category(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public Category() {
+    }
+
     public Long getId() {
         return id;
     }
@@ -47,4 +54,5 @@ public class Category {
     public void setClothes(List<Clothing> clothes) {
         this.clothes = clothes;
     }
+    
 }

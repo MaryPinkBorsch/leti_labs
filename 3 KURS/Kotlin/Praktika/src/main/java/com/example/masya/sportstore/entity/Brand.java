@@ -31,6 +31,15 @@ public class Brand {
     @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL)
     private List<Clothing> clothes;
 
+    public Brand(String name, Integer since, Integer rating) {
+        this.name = name;
+        this.rating = rating;
+        this.since = since;
+    }
+
+    public Brand() {
+    }
+
     // Геттеры и сеттеры для всех полей
     public Long getId() {
         return id;
@@ -71,5 +80,7 @@ public class Brand {
     public void setClothes(List<Clothing> clothes) {
         this.clothes = clothes;
     }
+
+    
 
 }

@@ -1,21 +1,10 @@
 package com.example.masya.sportstore.dto;
 
-import java.util.List;
-
-public class BrandDto extends BaseDto {
+// For creating new brands (without ID)
+public class BrandCreateDto {
     private String name;
     private Integer since;
     private Integer rating;
-    private List<ClothingDto> clothes;
-
-    // Constructors
-    public BrandDto() {}
-
-    public BrandDto(String name, Integer since, Integer rating) {
-        this.name = name;
-        this.since = since;
-        this.rating = rating;
-    }
 
     // Getters and Setters
     public String getName() { return name; }
@@ -24,7 +13,4 @@ public class BrandDto extends BaseDto {
     public void setSince(Integer since) { this.since = since; }
     public Integer getRating() { return rating; }
     public void setRating(Integer rating) { this.rating = rating; }
-    public List<ClothingDto> getClothes() { return clothes; }
-    public void setClothes(List<ClothingDto> clothes) { this.clothes = clothes; }
 }
- 

@@ -44,6 +44,9 @@ public class Order {
     private OrderStatus status;
     // Конструкторы, геттеры, сеттеры
 
+    public Order() {
+    }
+
     public Long getId() {
         return id;
     }
@@ -91,4 +94,5 @@ public class Order {
     public void setOrderDate(LocalDateTime orderDate) {
         this.orderDate = orderDate;
     }
+    
 }

@@ -33,6 +33,9 @@ public class Clothing {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    public Clothing() {
+    }
+
     public Long getId() {
         return id;
     }

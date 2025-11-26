@@ -20,10 +20,3 @@ public class CategoryDto extends BaseDto {
     public void setClothes(List<ClothingDto> clothes) { this.clothes = clothes; }
 }
 
-class CategoryCreateDto {
-    private String categoryName;
-
-    // Getters and Setters
-    public String getCategoryName() { return categoryName; }
-    public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
-}
