@@ -1,15 +1,21 @@
 package com.example.masya.sportstore.controller;
 
-import com.example.masya.sportstore.entity.*;
-import com.example.masya.sportstore.service.*;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
+import com.example.masya.sportstore.entity.Brand;
+import com.example.masya.sportstore.entity.Category;
+import com.example.masya.sportstore.entity.Clothing;
+import com.example.masya.sportstore.entity.User;
+import com.example.masya.sportstore.service.BrandService;
+import com.example.masya.sportstore.service.CategoryService;
+import com.example.masya.sportstore.service.ClothingService;
+import com.example.masya.sportstore.service.OrderService;
+import com.example.masya.sportstore.service.UserService;
 
 @RestController
 @RequestMapping("/api/test-data")
