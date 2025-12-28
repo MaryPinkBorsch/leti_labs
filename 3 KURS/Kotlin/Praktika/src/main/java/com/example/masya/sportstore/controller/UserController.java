@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,6 +64,12 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<UserDto> registerUser(@RequestBody UserCreateDto userDto) {
         User user = mapper.toUser(userDto);
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        // ХЭШИРУЕМ пароль!
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        System.out.println("Register - encoded password: " + encodedPassword);
+
+        user.setPassword(encodedPassword); // Сохраняем ХЭШ
         User savedUser = userService.save(user);
         return ResponseEntity.ok(mapper.toUserDto(savedUser));
     }
@@ -72,7 +80,7 @@ public class UserController {
         if (!isValid) {
             return ResponseEntity.status(401).build();
         }
-        
+
         return userService.findByEmail(loginDto.getEmail())
                 .map(mapper::toUserDto)
                 .map(ResponseEntity::ok)
