@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 def f(x):
     return 2*(x)**2 -9*x -31
 
@@ -45,6 +46,56 @@ def bsearch(interval, tol):
    answer_ = [xmin, fmin, neval, coords]
    return answer_
 
+def three_point_search_slides(interval, history):
+    x = np.linspace(interval[0], interval[1], 1000)
+    y = f(x)
+
+    nslides = min(9, len(history))
+
+    for i in range(nslides):
+        h = history[i]
+
+        plt.figure(figsize=(8, 5))
+        plt.plot(x, y, label="f(x)")
+
+        plt.axvline(h["a"], color="black", linestyle="--")
+        plt.axvline(h["b"], color="black", linestyle="--")
+
+        plt.axvline(h["x1"], color="orange", linestyle=":")
+        plt.axvline(h["x2"], color="orange", linestyle=":")
+        plt.axvline(h["xm"], color="red")
+
+        plt.scatter(
+            [h["x1"], h["xm"], h["x2"]],
+            [h["f1"], h["fm"], h["f2"]],
+            color=["orange", "red", "orange"],
+            zorder=5
+        )
+
+        plt.title(f"Iteration {i+1}")
+        plt.xlabel("x")
+        plt.ylabel("f(x)")
+        plt.legend()
+        plt.grid(True)
+
+        plt.savefig(f"plot_iter_{i+1}.png")
+        plt.close()
+
+
+    h = history[-1]
+    plt.figure(figsize=(8, 5))
+    plt.plot(x, y, label="f(x)")
+    plt.axvline(h["xm"], color="blue", linewidth=2, label="xmin")
+    plt.scatter(h["xm"], h["fm"], color="blue", zorder=5)
+
+    plt.title("Final result")
+    plt.xlabel("x")
+    plt.ylabel("f(x)")
+    plt.legend()
+    plt.grid(True)
+
+    plt.savefig("plot_final.png")
+    plt.close()
 
 if __name__ == "__main__":
     res = bsearch([-2,10], 1e-4)
