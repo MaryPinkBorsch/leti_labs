@@ -148,11 +148,11 @@ class VectorTriangleRotator:
             [4, 1],
             [3, 3]
         ])
-        self.center = np.array([3, 2])
+        self.center = np.array([4, 4])
         self.angle = 45
         
         # Создаем папку для сохранения
-        self.output_dir = "vector_rotation_output"
+        self.output_dir = "vector_rotation_output_copy"
         if not os.path.exists(self.output_dir):
             os.makedirs(self.output_dir)
         
@@ -357,40 +357,42 @@ def generate_multiple_rotations():
 
 # Запуск основной программы
 if __name__ == "__main__":
-    print("=" * 60)
-    print("ПРОГРАММА ПОВОРОТА ГЕОМЕТРИЧЕСКИХ ФИГУР")
-    print("=" * 60)
-    print("\nВыберите режим работы:")
-    print("1. Сохранить один график с текущими параметрами")
-    print("2. Демонстрация разницы между направлениями поворота")
-    print("3. Сравнение по и против часовой стрелки")
-    print("4. Сгенерировать несколько изображений с разными углами")
+    # print("=" * 60)
+    # print("ПРОГРАММА ПОВОРОТА ГЕОМЕТРИЧЕСКИХ ФИГУР")
+    # print("=" * 60)
+    # print("\nВыберите режим работы:")
+    # print("1. Сохранить один график с текущими параметрами")
+    # print("2. Демонстрация разницы между направлениями поворота")
+    # print("3. Сравнение по и против часовой стрелки")
+    # print("4. Сгенерировать несколько изображений с разными углами")
     
-    choice = input("\nВведите номер режима (1-4): ").strip()
+    # choice = input("\nВведите номер режима (1-4): ").strip()
     
-    if choice == "1":
-        print("\nСохранение графика с текущими параметрами...")
-        print("Параметры: угол 45°, точка поворота (3, 2)")
-        app = TriangleRotator(save_to_file=True)
-        plt.close(app.fig)  # Закрываем фигуру после сохранения
+    # if choice == "1":
+    #     print("\nСохранение графика с текущими параметрами...")
+    #     print("Параметры: угол 45°, точка поворота (3, 2)")
+    #     app = TriangleRotator(save_to_file=True)
+    #     plt.close(app.fig)  # Закрываем фигуру после сохранения
         
-    elif choice == "2":
-        print("\nДемонстрация разницы между направлениями...")
-        demo = RotationDirectionDemo()
-        demo.demonstrate_directions()
+    # elif choice == "2":
+    #     print("\nДемонстрация разницы между направлениями...")
+    #     demo = RotationDirectionDemo()
+    #     demo.demonstrate_directions()
     
-    elif choice == "3":
-        print("\nСравнение направлений...")
-        vector_demo = VectorTriangleRotator()
-        vector_demo.demonstrate()
+    # elif choice == "3":
+    #     print("\nСравнение направлений...")
+    #     vector_demo = VectorTriangleRotator()
+    #     vector_demo.demonstrate()
         
-    elif choice == "4":
-        print("\nГенерация нескольких изображений...")
-        generate_multiple_rotations()
+    # elif choice == "4":
+    #     print("\nГенерация нескольких изображений...")
+    #     generate_multiple_rotations()
     
-    else:
-        print("\nНеверный выбор. Сохраняю график по умолчанию...")
-        app = TriangleRotator(save_to_file=True)
-        plt.close(app.fig)
+    # else:
+    #     print("\nНеверный выбор. Сохраняю график по умолчанию...")
+    #     app = TriangleRotator(save_to_file=True)
+    #     plt.close(app.fig)
+    print("\nГенерация нескольких изображений...")
+    generate_multiple_rotations()
     
     print("\nГотово! Все изображения сохранены в соответствующие папки.")
