@@ -1,10 +1,8 @@
 import tkinter as tk
 import math
-import sys
 
 # --------------------------------------------
 # 1. КЛАСС ТОЧКИ (3D)
-# Нужен, чтобы хранить координаты X, Y, Z
 # --------------------------------------------
 class Point3D:
     def __init__(self, x=0, y=0, z=0):
@@ -14,46 +12,75 @@ class Point3D:
 
 # --------------------------------------------
 # 2. КЛАСС ГРАНИ (ПОЛИГОНА)
-# Хранит индексы вершин (точек) и нормаль (направление)
 # --------------------------------------------
 class Face:
-    def __init__(self, vertices_indices):
-        # vertices_indices: список номеров вершин (например [0,1,2,3] для квадрата)
-        self.vertices_indices = vertices_indices
-        self.normal = Point3D()  # Вектор нормали (куда смотрит грань)
+    def __init__(self, vertices_indices, color='lightblue'):
+        self.vertices_indices = vertices_indices  # список номеров вершин
+        self.normal = Point3D()  # вектор нормали
+        self.color = color  # цвет грани для наглядности
 
 # --------------------------------------------
-# 3. МОДЕЛЬ КУБА (Выпуклое тело)
-# Создаем 8 точек и 6 граней
+# 3. МОДЕЛЬ ПИРАМИДЫ (Выпуклое тело)
 # --------------------------------------------
-def create_cube(size=100):
-    # Координаты вершин (от -size/2 до size/2, чтобы центр был в (0,0,0))
-    s = size / 2
+def create_pyramid(size=150, height=180):
+    """
+    Создает четырехугольную пирамиду
+    Основание: квадрат со стороной size
+    Вершина: находится по центру на высоте height
+    """
+    s = size / 2  # половина стороны основания
+    
+    # Вершины пирамиды
     vertices = [
-        Point3D(-s, -s, -s),  # 0
-        Point3D( s, -s, -s),  # 1
-        Point3D( s, -s,  s),  # 2
-        Point3D(-s, -s,  s),  # 3
-        Point3D(-s,  s, -s),  # 4
-        Point3D( s,  s, -s),  # 5
-        Point3D( s,  s,  s),  # 6
-        Point3D(-s,  s,  s)   # 7
+        Point3D(-s, 0, -s),  # 0 - передняя левая точка основания
+        Point3D( s, 0, -s),  # 1 - передняя правая точка основания
+        Point3D( s, 0,  s),  # 2 - задняя правая точка основания
+        Point3D(-s, 0,  s),  # 3 - задняя левая точка основания
+        Point3D( 0, height, 0)  # 4 - вершина пирамиды
     ]
     
-    # Описание граней (каждая грань — это 4 вершины, идущие по порядку)
+    # Грани пирамиды (4 треугольных боковых грани + 1 квадратное основание)
     faces = [
-        Face([0, 1, 2, 3]),  # Нижняя грань (Y = -s)
-        Face([4, 7, 6, 5]),  # Верхняя грань (Y =  s)
-        Face([0, 4, 5, 1]),  # Передняя? В зависимости от системы координат. Это левая/правая? Упростим: Задняя (Z = -s)
-        Face([2, 6, 7, 3]),  # Передняя (Z =  s)
-        Face([0, 3, 7, 4]),  # Левая (X = -s)
-        Face([1, 5, 6, 2])   # Правая (X =  s)
+        # Боковые грани (треугольники)
+        Face([0, 1, 4], color='hotpink'),   # передняя грань
+        Face([1, 2, 4], color='green'),     # правая грань
+        Face([2, 3, 4], color='orange'),    # задняя грань
+        Face([3, 0, 4], color='cyan'),      # левая грань
+        # Основание (квадрат) - порядок вершин по часовой стрелке (вид снизу)
+        Face([0, 3, 2, 1], color='magenta')  # исправленный порядок вершин для правильной нормали
     ]
+    
     return vertices, faces
 
 # --------------------------------------------
-# 4. ВЫЧИСЛЕНИЕ НОРМАЛЕЙ
-# Для каждой грани считаем перпендикулярный вектор (отличаем "наружу" от "внутри")
+# 4. МОДЕЛЬ ТЕТРАЭДРА (Треугольная пирамида)
+# --------------------------------------------
+def create_tetrahedron(size=150):
+    """
+    Создает тетраэдр (пирамиду с треугольным основанием)
+    """
+    # Вершины правильного тетраэдра
+    # Высота тетраэдра: sqrt(2/3) * сторона
+    h = size * 0.816  # приблизительно sqrt(2/3) * size
+    
+    vertices = [
+        Point3D(0, 0, size),           # 0 - задняя вершина
+        Point3D(size, 0, -size/2),     # 1 - правая
+        Point3D(-size, 0, -size/2),    # 2 - левая
+        Point3D(0, h, 0)               # 3 - верхняя
+    ]
+    
+    faces = [
+        Face([0, 1, 3], color='lightpink'),
+        Face([1, 2, 3], color='lightgreen'),
+        Face([2, 0, 3], color='lightblue'),
+        Face([0, 2, 1], color='magenta')  # основание - порядок вершин по часовой стрелке (вид снизу)
+    ]
+    
+    return vertices, faces
+
+# --------------------------------------------
+# 5. ВЫЧИСЛЕНИЕ НОРМАЛЕЙ
 # --------------------------------------------
 def compute_normals(vertices, faces):
     for face in faces:
@@ -66,12 +93,12 @@ def compute_normals(vertices, faces):
         u = Point3D(v2.x - v1.x, v2.y - v1.y, v2.z - v1.z)
         v = Point3D(v3.x - v1.x, v3.y - v1.y, v3.z - v1.z)
         
-        # Векторное произведение (получаем перпендикуляр)
+        # Векторное произведение
         nx = u.y * v.z - u.z * v.y
         ny = u.z * v.x - u.x * v.z
         nz = u.x * v.y - u.y * v.x
         
-        # Нормализуем (делаем длину = 1), чтобы удобно было сравнивать углы
+        # Нормализация
         length = math.sqrt(nx*nx + ny*ny + nz*nz)
         if length != 0:
             face.normal.x = nx / length
@@ -79,54 +106,97 @@ def compute_normals(vertices, faces):
             face.normal.z = nz / length
 
 # --------------------------------------------
-# 5. ПРОЕКЦИЯ 3D -> 2D (Перспектива)
-# Превращает 3D координаты в экранные (x, y)
+# 6. ПРОЕКЦИЯ 3D -> 2D
 # --------------------------------------------
 def project_3d_to_2d(point_3d, camera_distance, center_x, center_y):
-    # Простая перспектива: чем дальше Z, тем меньше масштаб
-    # Мы смотрим из точки (0,0, camera_distance) на начало координат
-    z_offset = 100  # Чтобы объект не пересекался с камерой
-    # Формула: экранное_и = центр + (x / (z + расстояние)) * масштаб
-    scale = 300
+    # Простая перспектива
+    scale = 400
+    z_offset = 200
+    
     if (point_3d.z + camera_distance) != 0:
         factor = scale / (point_3d.z + camera_distance + z_offset)
     else:
         factor = scale
     
     x_screen = center_x + point_3d.x * factor
-    y_screen = center_y - point_3d.y * factor  # Минус, т.к. Y в экране идет вниз
+    y_screen = center_y - point_3d.y * factor
+    
     return (x_screen, y_screen)
 
 # --------------------------------------------
-# 6. ОСНОВНОЙ КЛАСС ПРИЛОЖЕНИЯ (РИСОВАЛКА)
+# 7. ОСНОВНОЙ КЛАСС ПРИЛОЖЕНИЯ
 # --------------------------------------------
 class VisibilityApp:
-    def __init__(self, root):
+    def __init__(self, root, shape_type="pyramid"):
         self.root = root
-        self.root.title("Алгоритм удаления невидимых граней (Куб)")
+        self.root.title(f"Алгоритм выявления видимых граней - {shape_type}")
         
-        # Настройки холста для рисования
+        # Настройки холста
         self.canvas = tk.Canvas(root, width=800, height=600, bg='white')
         self.canvas.pack()
         
-        # Создаем куб
-        self.vertices, self.faces = create_cube(150)  # Размер 150
-        # Вычисляем нормали (направления граней)
+        # Создаем фигуру (по умолчанию пирамиду)
+        if shape_type == "tetrahedron":
+            self.vertices, self.faces = create_tetrahedron(140)
+        else:
+            self.vertices, self.faces = create_pyramid(140, 160)
+        
+        # Вычисляем нормали
         compute_normals(self.vertices, self.faces)
         
         # Параметры камеры и вращения
         self.camera_distance = 300
-        self.angle_x = 25   # Вращение по X (в градусах)
-        self.angle_y = 35   # Вращение по Y (в градусах)
+        self.angle_x = 25   # Вращение по X
+        self.angle_y = 35   # Вращение по Y
         
-        # Связываем кнопки мыши для вращения
+        # Для вращения мышью
+        self.last_x = 0
+        self.last_y = 0
+        
+        # Связываем события мыши
         self.canvas.bind("<Button-1>", self.start_rotate)
         self.canvas.bind("<B1-Motion>", self.do_rotate)
+        
+        # Добавляем кнопки переключения фигур
+        self.add_controls()
         
         # Запускаем отрисовку
         self.draw()
     
-    # ---- Вращение объекта (чтобы видеть, что алгоритм работает с разных сторон) ----
+    def add_controls(self):
+        """Добавляет кнопки для переключения между фигурами"""
+        control_frame = tk.Frame(self.root)
+        control_frame.pack()
+        
+        btn_pyramid = tk.Button(control_frame, text="Пирамида", 
+                                command=lambda: self.change_shape("pyramid"))
+        btn_pyramid.pack(side=tk.LEFT, padx=5, pady=5)
+        
+        btn_tetra = tk.Button(control_frame, text="Тетраэдр", 
+                             command=lambda: self.change_shape("tetrahedron"))
+        btn_tetra.pack(side=tk.LEFT, padx=5, pady=5)
+        
+        btn_reset = tk.Button(control_frame, text="Сбросить вращение", 
+                             command=self.reset_rotation)
+        btn_reset.pack(side=tk.LEFT, padx=5, pady=5)
+    
+    def change_shape(self, shape_type):
+        """Переключает между разными фигурами"""
+        if shape_type == "tetrahedron":
+            self.vertices, self.faces = create_tetrahedron(140)
+        else:
+            self.vertices, self.faces = create_pyramid(140, 160)
+        
+        compute_normals(self.vertices, self.faces)
+        self.root.title(f"Алгоритм выявления видимых граней - {shape_type}")
+        self.draw()
+    
+    def reset_rotation(self):
+        """Сбрасывает углы поворота"""
+        self.angle_x = 25
+        self.angle_y = 35
+        self.draw()
+    
     def start_rotate(self, event):
         self.last_x = event.x
         self.last_y = event.y
@@ -138,11 +208,10 @@ class VisibilityApp:
         self.angle_x += dy * 0.5
         self.last_x = event.x
         self.last_y = event.y
-        self.draw()  # Перерисовываем
+        self.draw()
     
-    # ---- Поворот точки в пространстве (математика вращения) ----
     def rotate_point(self, point):
-        # Преобразуем градусы в радианы
+        """Поворачивает точку в пространстве"""
         rad_x = math.radians(self.angle_x)
         rad_y = math.radians(self.angle_y)
         
@@ -164,84 +233,54 @@ class VisibilityApp:
         
         return Point3D(x2, y2, z2)
     
-    # ---- ГЛАВНЫЙ АЛГОРИТМ ВЫЯВЛЕНИЯ ВИДИМОСТИ ----
     def get_visible_faces(self):
+        """Алгоритм выявления видимых граней"""
         visible = []
-        # Направление взгляда: от камеры к объекту.
-        # Камера у нас находится в точке (0, 0, camera_distance) в мировых координатах.
-        # Объект вращается. Чтобы узнать, видна ли грань, нужно посчитать угол между
-        # нормалью грани (после вращения) и вектором взгляда.
-        
-        # Вектор взгляда в мировых координатах (камера смотрит на центр - начало координат)
-        # Направление: из центра к камере? Нет. Нужно от грани к камере.
-        # Упрощенное правило для выпуклых тел (Back-face culling):
-        # Если нормаль грани (направленная наружу) имеет положительную проекцию на направление взгляда (Z),
-        # то грань видна.
         
         for face in self.faces:
-            # Берем первую вершину грани, чтобы применить к ней вращение и получить "повернутую" нормаль?
-            # Нормаль хранится для исходного куба. При вращении куба нормаль тоже вращается.
-            # Возьмем любую точку грани и повернем её, но для нормали нужно повернуть вектор.
-            # Проще: повернуть вектор нормали на те же углы, что и куб.
-            
-            # Вращаем вектор нормали
+            # Поворачиваем нормаль грани
             norm = self.rotate_point(face.normal)
             
-            # Вектор от грани к камере (приблизительно). Камера в мировом пространстве (0,0, camera_distance)
-            # Объект вращается, но центр объекта всегда в (0,0,0) после вращения.
-            # Нам нужно направление от центра грани к камере. Упростим: считаем, что камера смотрит вдоль оси Z.
-            # Для простоты: грань видна, если нормаль направлена в сторону камеры, т.е. нормаль.z < 0? 
-            # Нужно аккуратно.
-            # Стандартный метод: Камера в (0,0, dist). Центр объекта (0,0,0). Вектор взгляда: от объекта к камере = (0,0, dist).
-            # Условие: если скалярное произведение (нормаль) * (вектор_взгляда) > 0, то грань смотрит на камеру.
-            
-            # Вектор взгляда (от грани к камере) упрощенно: (0, 0, 1) в локальных координатах, но после поворота нормали это не точно.
-            # Для корректности используем локальные координаты камеры после поворота? Сложно.
-            # В учебных целях сделаем проще: будем считать грань видимой, если её нормаль (после вращения) направлена к зрителю.
-            # Зритель смотрит из точки (0,0, +inf) вдоль оси Z. Значит, нам нужно norm.z > 0? 
-            # Давайте проверим: если куб повернут к нам передней гранью, у передней грани нормаль (0,0,1). 
-            # Если norm.z > 0, то рисуем. Это и есть условие видимости.
-            
-            # Это самый простой и рабочий способ для выпуклого тела при центральной проекции.
+            # Условие видимости: нормаль направлена к зрителю (положительная Z)
+            # Для пирамиды это работает отлично, так как все грани выпуклые
             if norm.z > 0:
                 visible.append(face)
+        
         return visible
     
-    # ---- ОТРИСОВКА (Рендеринг) ----
     def draw(self):
+        """Отрисовка сцены"""
         self.canvas.delete("all")
         
-        # 1. Поворачиваем все вершины куба
+        # Поворачиваем все вершины
         rotated_vertices = [self.rotate_point(v) for v in self.vertices]
         
-        # 2. Определяем, какие грани видимы (по нормалям)
+        # Определяем видимые грани
         visible_faces = self.get_visible_faces()
         
-        # 3. Рисуем видимые грани
         center_x = 400
         center_y = 300
         
+        # Сначала рисуем грани (с заливкой)
         for face in visible_faces:
-            # Получаем экранные координаты всех вершин грани
             points_2d = []
             for idx in face.vertices_indices:
                 v = rotated_vertices[idx]
                 x_screen, y_screen = project_3d_to_2d(v, self.camera_distance, center_x, center_y)
                 points_2d.append((x_screen, y_screen))
             
-            # Рисуем многоугольник (грань) с полупрозрачной заливкой
-            self.canvas.create_polygon(points_2d, outline='black', fill='pink', width=2)
+            # Рисуем грань с заливкой
+            self.canvas.create_polygon(points_2d, outline='black', fill=face.color, width=2)
         
-        # 4. Рисуем ребра (линии) поверх граней для наглядности
-        # Чтобы не рисовать линии невидимых граней, пройдемся по видимым граням
-        edges_drawn = set()  # Множество, чтобы не рисовать одно ребро дважды
+        # Затем рисуем ребра (чтобы они были поверх заливки)
+        edges_drawn = set()
         for face in visible_faces:
             indices = face.vertices_indices
             for i in range(len(indices)):
                 i1 = indices[i]
                 i2 = indices[(i+1) % len(indices)]
-                # Сортируем индексы, чтобы (1,2) и (2,1) считались одним ребром
                 edge = tuple(sorted((i1, i2)))
+                
                 if edge not in edges_drawn:
                     edges_drawn.add(edge)
                     p1 = rotated_vertices[i1]
@@ -250,13 +289,20 @@ class VisibilityApp:
                     p2_2d = project_3d_to_2d(p2, self.camera_distance, center_x, center_y)
                     self.canvas.create_line(p1_2d[0], p1_2d[1], p2_2d[0], p2_2d[1], fill='black', width=2)
         
-        # Добавляем подпись
-        self.canvas.create_text(400, 20, text="Видимые грани отображаются заливкой. Потяните мышкой для вращения.", fill="gray")
+        # Добавляем информацию
+        info_text = f"Видимых граней: {len(visible_faces)} из {len(self.faces)}"
+        self.canvas.create_text(400, 30, text=info_text, fill="hotpink", font=("Arial", 12, "bold"))
+        self.canvas.create_text(400, 550, text="Нажмите и тяните мышью для вращения", fill="hotpink", font=("Arial", 10))
 
 # --------------------------------------------
 # ЗАПУСК ПРОГРАММЫ
 # --------------------------------------------
 if __name__ == "__main__":
     root = tk.Tk()
-    app = VisibilityApp(root)
+    
+    # Можно выбрать любую фигуру при запуске:
+    # "pyramid" - четырехугольная пирамида
+    # "tetrahedron" - треугольная пирамида (тетраэдр)
+    app = VisibilityApp(root, shape_type="pyramid")
+    
     root.mainloop()
