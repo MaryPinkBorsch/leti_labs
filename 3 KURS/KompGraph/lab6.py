@@ -21,40 +21,7 @@ class Face:
         self.intensity = 1.0  # интенсивность освещения
 
 # --------------------------------------------
-# 3. МОДЕЛЬ ПИРАМИДЫ (Выпуклое тело)
-# --------------------------------------------
-def create_pyramid(size=150, height=180):
-    """
-    Создает четырехугольную пирамиду
-    Основание: квадрат со стороной size
-    Вершина: находится по центру на высоте height
-    """
-    s = size / 2  # половина стороны основания
-    
-    # Вершины пирамиды
-    vertices = [
-        Point3D(-s, 0, -s),  # 0 - передняя левая точка основания
-        Point3D( s, 0, -s),  # 1 - передняя правая точка основания
-        Point3D( s, 0,  s),  # 2 - задняя правая точка основания
-        Point3D(-s, 0,  s),  # 3 - задняя левая точка основания
-        Point3D( 0, height, 0)  # 4 - вершина пирамиды
-    ]
-    
-    # Грани пирамиды (4 треугольных боковых грани + 1 квадратное основание)
-    faces = [
-        # Боковые грани (треугольники)
-        Face([0, 1, 4], color='hotpink'),   # передняя грань
-        Face([1, 2, 4], color='green'),     # правая грань
-        Face([2, 3, 4], color='orange'),    # задняя грань
-        Face([3, 0, 4], color='cyan'),      # левая грань
-        # Основание (квадрат) - порядок вершин по часовой стрелке (вид снизу)
-        Face([0, 3, 2, 1], color='magenta')  # исправленный порядок вершин для правильной нормали
-    ]
-    
-    return vertices, faces
-
-# --------------------------------------------
-# 4. МОДЕЛЬ ТЕТРАЭДРА (Треугольная пирамида)
+# 3. МОДЕЛЬ ТЕТРАЭДРА (Треугольная пирамида)
 # --------------------------------------------
 def create_tetrahedron(size=150):
     """
@@ -81,7 +48,7 @@ def create_tetrahedron(size=150):
     return vertices, faces
 
 # --------------------------------------------
-# 5. ВЫЧИСЛЕНИЕ НОРМАЛЕЙ
+# 4. ВЫЧИСЛЕНИЕ НОРМАЛЕЙ
 # --------------------------------------------
 def compute_normals(vertices, faces):
     for face in faces:
@@ -107,7 +74,7 @@ def compute_normals(vertices, faces):
             face.normal.z = nz / length
 
 # --------------------------------------------
-# 6. ПРОЕКЦИЯ 3D -> 2D
+# 5. ПРОЕКЦИЯ 3D -> 2D
 # --------------------------------------------
 def project_3d_to_2d(point_3d, camera_distance, center_x, center_y):
     # Простая перспектива
@@ -125,7 +92,7 @@ def project_3d_to_2d(point_3d, camera_distance, center_x, center_y):
     return (x_screen, y_screen)
 
 # --------------------------------------------
-# 7. КЛАСС ДЛЯ УПРАВЛЕНИЯ ОСВЕЩЕНИЕМ
+# 6. КЛАСС ДЛЯ УПРАВЛЕНИЯ ОСВЕЩЕНИЕМ
 # --------------------------------------------
 class Light:
     def __init__(self, x=200, y=200, z=200):
@@ -161,22 +128,19 @@ class Light:
         return intensity
 
 # --------------------------------------------
-# 8. ОСНОВНОЙ КЛАСС ПРИЛОЖЕНИЯ
+# 7. ОСНОВНОЙ КЛАСС ПРИЛОЖЕНИЯ
 # --------------------------------------------
-class VisibilityApp:
-    def __init__(self, root, shape_type="pyramid"):
+class TetrahedronApp:
+    def __init__(self, root):
         self.root = root
-        self.root.title(f"3D Модель с освещением - {shape_type}")
+        self.root.title("Тетраэдр с освещением и тенями")
         
         # Настройки холста
         self.canvas = tk.Canvas(root, width=800, height=600, bg='black')
         self.canvas.pack()
         
-        # Создаем фигуру (по умолчанию пирамиду)
-        if shape_type == "tetrahedron":
-            self.vertices, self.faces = create_tetrahedron(140)
-        else:
-            self.vertices, self.faces = create_pyramid(140, 160)
+        # Создаем тетраэдр
+        self.vertices, self.faces = create_tetrahedron(140)
         
         # Вычисляем нормали
         compute_normals(self.vertices, self.faces)
@@ -214,15 +178,6 @@ class VisibilityApp:
         control_frame = tk.Frame(self.root, bg='gray')
         control_frame.pack(fill=tk.X)
         
-        # Кнопки выбора фигур
-        btn_pyramid = tk.Button(control_frame, text="Пирамида", 
-                                command=lambda: self.change_shape("pyramid"))
-        btn_pyramid.pack(side=tk.LEFT, padx=5, pady=5)
-        
-        btn_tetra = tk.Button(control_frame, text="Тетраэдр", 
-                             command=lambda: self.change_shape("tetrahedron"))
-        btn_tetra.pack(side=tk.LEFT, padx=5, pady=5)
-        
         btn_reset = tk.Button(control_frame, text="Сбросить вращение", 
                              command=self.reset_rotation)
         btn_reset.pack(side=tk.LEFT, padx=5, pady=5)
@@ -253,16 +208,6 @@ class VisibilityApp:
     def toggle_auto_rotate(self):
         """Включает/выключает автоматическое вращение"""
         self.auto_rotate = self.rotate_var.get()
-    
-    def change_shape(self, shape_type):
-        """Переключает между разными фигурами"""
-        if shape_type == "tetrahedron":
-            self.vertices, self.faces = create_tetrahedron(140)
-        else:
-            self.vertices, self.faces = create_pyramid(140, 160)
-        
-        compute_normals(self.vertices, self.faces)
-        self.root.title(f"3D Модель с освещением - {shape_type}")
     
     def reset_rotation(self):
         """Сбрасывает углы поворота"""
@@ -344,8 +289,6 @@ class VisibilityApp:
             # Условие видимости: нормаль направлена к зрителю (положительная Z)
             if norm.z > 0:
                 # Вычисляем интенсивность освещения для грани
-                # Для источника света нужно использовать оригинальные координаты (до вращения камеры)
-                # Но для простоты используем повернутые координаты
                 light_dir = Point3D(
                     self.light.position.x - center.x,
                     self.light.position.y - center.y,
@@ -374,14 +317,10 @@ class VisibilityApp:
         """Возвращает цвет с учетом интенсивности освещения"""
         # Преобразуем имя цвета в RGB
         colors = {
-            'hotpink': (255, 105, 180),
-            'green': (0, 255, 0),
-            'orange': (255, 165, 0),
-            'cyan': (0, 255, 255),
-            'magenta': (255, 0, 255),
             'lightpink': (255, 182, 193),
             'lightgreen': (144, 238, 144),
-            'lightblue': (173, 216, 230)
+            'lightblue': (173, 216, 230),
+            'magenta': (255, 0, 255)
         }
         
         rgb = colors.get(base_color, (200, 200, 200))
@@ -511,5 +450,5 @@ class VisibilityApp:
 # --------------------------------------------
 if __name__ == "__main__":
     root = tk.Tk()
-    app = VisibilityApp(root, shape_type="pyramid")
+    app = TetrahedronApp(root)
     root.mainloop()
