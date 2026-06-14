@@ -1,0 +1,10 @@
+- vector (access: O(1), insert: O(N), delete: O(N)) //вставка в конец имеет амортизированную сложность O(1)
+- queue (access: O(1), insert: O(1), delete: O(1))
+- unordered_map (access: O(1), insert: O(1), delete: O(1))
+- unordered_set (access: O(1), insert: O(1), delete: O(1))
+- map (access: O(log(N)), insert: O(log(N)), delete: O(log(N)))
+- set (access: O(log(N)), insert: O(log(N)), delete: O(log(N)))
+- list (access: O(N), insert: O(1), delete: O(1))
+- priority_queue (heap)  (access: O(1), insert: O(log(N)), delete: O(log(N)))
+- deque  (access: , insert: , delete: ) // ??? Nado proiti
+- stack  (access: O(1), insert: O(1), delete: O(1))
