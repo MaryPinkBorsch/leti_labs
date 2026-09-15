@@ -16,6 +16,7 @@ if __name__ == "__main__":
     plt.grid(True, alpha=0.3)
     plt.legend()
     plt.title("nonlinear_dataset_7")
+    plt.savefig('nonlinear_dataset_7.png', dpi=120)
     plt.show()
 
     import numpy as np
