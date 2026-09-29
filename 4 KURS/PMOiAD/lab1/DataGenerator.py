@@ -19,10 +19,7 @@ def norm_dataset(mu,sigma,N): # обозначение имя функции и 
         v1 = np.random.normal(mu1[i],sigma1[i],[N,1]) 
         class1 = np.hstack((class1,v1))
 
-    Y1 = np.empty((N, 1), dtype=bool) # пустой массив размерности Nx1 
-    Y1.fill(1) #заполнение пустого массива единицами
-    Y0 = np.empty((N, 1), dtype=bool) 
-    Y0.fill(0)
+    
 
     Y1 =np.ones((N, 1), dtype=bool) 
     Y0 = np.zeros((N, 1), dtype=bool)
@@ -90,9 +87,9 @@ def nonlinear_dataset_7(N=1000, seed=None):
     x0, y0 = 0.0, 3.0
 
     # сколько точек на горизонтальную и вертикальную полосу
-    n_v = N // 2
-    n_h = N - n_v
-
+    n_h = int(round(N*L/(L+S)))
+    n_v = N-n_h
+    
     # горизонтальная полоса: идёт вправо от вершины, y ≈ y0
     xh0 = rng.uniform(x0, x0 + L, n_h)
     yh0 = y0 + rng.normal(0.0, t, n_h)
@@ -110,8 +107,10 @@ def nonlinear_dataset_7(N=1000, seed=None):
     # вершина угла
     x1, y1 = 3.5, 2.0
 
-    n_h = N // 2
-    n_v = N - n_h
+    # сколько точек на горизонтальную и вертикальную полосу
+    n_h = int(round(N*L/(L+S)))
+    n_v = N-n_h
+
 
     # вертикальная полоса: идёт вверх от вершины, x ≈ x1
     xv1 = x1 + rng.normal(0.0, t, n_v)

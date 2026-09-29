@@ -5,19 +5,7 @@ import matplotlib.pyplot as plt
 from DataGenerator import nonlinear_dataset_7
 
 if __name__ == "__main__":
-    import matplotlib.pyplot as plt
 
-    X, Y, c0, c1 = nonlinear_dataset_7(N=1500, seed=42)
-
-    plt.figure(figsize=(6, 6))
-    plt.scatter(c0[:, 0], c0[:, 1], s=8, alpha=0.6, label="class0")
-    plt.scatter(c1[:, 0], c1[:, 1], s=8, alpha=0.6, label="class1")
-    plt.axis("equal")
-    plt.grid(True, alpha=0.3)
-    plt.legend()
-    plt.title("nonlinear_dataset_7")
-    plt.savefig('nonlinear_dataset_7.png', dpi=120)
-    plt.show()
 
     import numpy as np
     import matplotlib.pyplot as plt
