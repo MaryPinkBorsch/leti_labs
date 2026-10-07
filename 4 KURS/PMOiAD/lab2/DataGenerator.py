@@ -63,7 +63,7 @@ def nonlinear_dataset_7(N=1000, seed=None):
     ])
 
     # ---------- класс 1: нижний правый угол ----------
-    x1, y1 = 3.5, 2.0
+    x1, y1 = 2, 2.50
     n_h = int(round(N * L / (L + S)))
     n_v = N - n_h
 

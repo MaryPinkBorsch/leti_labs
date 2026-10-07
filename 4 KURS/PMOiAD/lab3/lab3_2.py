@@ -119,7 +119,7 @@ def plot_roc_compare(y_true, proba_tree, proba_forest, save_name="roc___compare.
     plt.legend(loc='lower right')
     plt.grid(alpha=0.3)
     plt.tight_layout()
-    #plt.savefig(save_name, dpi=120)
+    plt.savefig(save_name, dpi=120)
     plt.show()
 
     return auc_t, auc_f

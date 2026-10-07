@@ -66,7 +66,7 @@ def plot_proba_histograms(Pred_train_proba, Pred_test_proba,
                           title_suffix="",
                           save_prefix="logreg_proba"):
     """Две гистограммы (train и test) с распределением вероятностей."""
-    fig, axes = plt.subplots(1, 2, figsize=(14, 5), sharey=True)
+    fig, axes = plt.subplots(1, 2, figsize=(14, 5), sharey=False)
 
     # --- train ---
     axes[0].hist(Pred_train_proba[Y_train == 1, 1], bins='auto',
