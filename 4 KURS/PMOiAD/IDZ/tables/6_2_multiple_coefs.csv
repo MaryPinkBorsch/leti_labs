@@ -1,0 +1,9 @@
+﻿Признак,Коэффициент,p-value
+const,-19.1774,0.0
+baseline value,1.0625,0.0
+accelerations,1341.188,0.0
+fetal_movement,-5.9312,0.116874
+abnormal_short_term_variability,-0.1177,0.0
+histogram_min,0.102,0.0
+histogram_max,0.0412,0.002546
+histogram_variance,-0.1536,0.0

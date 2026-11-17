@@ -1,0 +1,6 @@
+﻿Признак,n,Shapiro W,Shapiro p,D'Agostino p,AD stat,AD crit(5%),Нормальность
+baseline value,2113,0.9944,0.0,0.008842,3.508,0.752,НЕТ
+abnormal_short_term_variability,2113,0.9676,0.0,0.0,23.3456,0.752,НЕТ
+histogram_width,2113,0.9621,0.0,0.0,23.6481,0.752,НЕТ
+histogram_variance,2113,0.6451,0.0,0.0,222.2177,0.752,НЕТ
+mean_value_of_long_term_variability,2113,0.9211,0.0,0.0,25.5367,0.752,НЕТ

@@ -1,0 +1,4 @@
+﻿Группа 1,Группа 2,U-стат,p-value,Значимо (Bonf)
+Normal,Pathological,148853.0,0.4651,НЕТ
+Normal,Suspect,102462.0,0.0,ДА
+Pathological,Suspect,10796.5,0.0,ДА

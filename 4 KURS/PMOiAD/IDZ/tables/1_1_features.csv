@@ -1,0 +1,23 @@
+﻿Признак,dtype,n_unique,min,max,n_missing
+baseline value,float64,48,106.0,160.0,0
+accelerations,float64,20,0.0,0.019,0
+fetal_movement,float64,102,0.0,0.481,0
+uterine_contractions,float64,16,0.0,0.015,0
+light_decelerations,float64,16,0.0,0.015,0
+severe_decelerations,float64,2,0.0,0.001,0
+prolongued_decelerations,float64,6,0.0,0.005,0
+abnormal_short_term_variability,float64,75,12.0,87.0,0
+mean_value_of_short_term_variability,float64,57,0.2,7.0,0
+percentage_of_time_with_abnormal_long_term_variability,float64,87,0.0,91.0,0
+mean_value_of_long_term_variability,float64,249,0.0,50.7,0
+histogram_width,float64,154,3.0,180.0,0
+histogram_min,float64,109,50.0,159.0,0
+histogram_max,float64,86,122.0,238.0,0
+histogram_number_of_peaks,float64,18,0.0,18.0,0
+histogram_number_of_zeroes,float64,9,0.0,10.0,0
+histogram_mode,float64,88,60.0,187.0,0
+histogram_mean,float64,103,73.0,182.0,0
+histogram_median,float64,95,77.0,186.0,0
+histogram_variance,float64,133,0.0,269.0,0
+histogram_tendency,float64,3,-1.0,1.0,0
+fetal_health,float64,3,1.0,3.0,0

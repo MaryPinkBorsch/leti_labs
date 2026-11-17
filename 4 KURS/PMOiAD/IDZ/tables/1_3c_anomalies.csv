@@ -1,0 +1,12 @@
+﻿Признак,Правило,Нарушений снизу,Нарушений сверху
+baseline value,ЧСС плода 50–250 уд/мин,0,0
+accelerations,число ускорений ≥ 0,0,0
+fetal_movement,число движений ≥ 0,0,0
+uterine_contractions,сокращения ≥ 0,0,0
+light_decelerations,замедления ≥ 0,0,0
+severe_decelerations,замедления ≥ 0,0,0
+prolongued_decelerations,замедления ≥ 0,0,0
+abnormal_short_term_variability,% времени 0–100,0,0
+percentage_of_time_with_abnormal_long_term_variability,% времени 0–100,0,0
+histogram_tendency,"тренд ∈ {-1, 0, 1}",0,0
+fetal_health,"класс ∈ {1, 2, 3}",0,0

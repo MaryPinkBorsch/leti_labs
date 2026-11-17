@@ -1,0 +1,26 @@
+﻿Признак,Распределение,Сдвиг,Параметры,KS D,KS p-value,LogLik,AIC
+abnormal_short_term_variability,weibull_min,0.0,"[np.float64(2.6044), np.float64(6.2885), np.float64(45.9204)]",0.0909,0.0,-8962.34,17930.69
+abnormal_short_term_variability,norm,0.0,"[np.float64(46.9938), np.float64(17.1737)]",0.0834,0.0,-9006.28,18016.56
+abnormal_short_term_variability,lognorm,0.0,"[np.float64(0.0), -518794.9711, np.float64(518841.9647)]",0.0834,0.0,-9006.28,18018.56
+abnormal_short_term_variability,gamma,0.0,"[np.float64(29571.7305), np.float64(-2906.3361), np.float64(0.0999)]",0.0838,0.0,-9006.33,18018.67
+abnormal_short_term_variability,expon,0.0,"[12.0, 34.9938]",0.1959,0.0,-9625.08,19254.16
+baseline value,weibull_min,0.0,"[np.float64(3.6328), np.float64(101.0712), np.float64(35.7485)]",0.0438,0.0006,-7825.11,15656.22
+baseline value,norm,0.0,"[np.float64(133.3048), np.float64(9.8351)]",0.0412,0.0015,-7828.45,15660.9
+baseline value,lognorm,0.0,"[np.float64(0.008), -1101.6114, np.float64(1234.877)]",0.0415,0.0014,-7828.37,15662.73
+baseline value,gamma,0.0,"[np.float64(9805.0063), np.float64(-840.5374), np.float64(0.0993)]",0.0414,0.0014,-7828.37,15662.73
+baseline value,expon,0.0,"[106.0, 27.3048]",0.3462,0.0,-9100.82,18205.64
+histogram_variance,weibull_min,0.0,"[np.float64(0.1996), np.float64(0.0), np.float64(18.8962)]",0.3386,0.0,-2288.69,4583.38
+histogram_variance,lognorm,0.0,"[np.float64(14.8151), np.float64(0.0), np.float64(0.0899)]",0.4766,0.0,-3604.14,7214.28
+histogram_variance,expon,0.0,"[0.0, 18.9072]",0.2159,0.0,-8324.26,16652.52
+histogram_variance,gamma,0.0,"[np.float64(0.1607), np.float64(0.0), np.float64(4.1612)]",0.7408,0.0,-9521.98,19049.95
+histogram_variance,norm,0.0,"[np.float64(18.9072), np.float64(29.0319)]",0.2574,0.0,-10115.64,20235.27
+histogram_width,weibull_min,0.0,"[np.float64(1.7949), np.float64(2.1645), np.float64(76.8161)]",0.0683,0.0,-10613.22,21232.45
+histogram_width,gamma,0.0,"[np.float64(2.9742), np.float64(-2.6002), np.float64(24.59)]",0.0843,0.0,-10658.96,21323.91
+histogram_width,lognorm,0.0,"[np.float64(0.3049), -60.2821, np.float64(124.9882)]",0.0758,0.0,-10690.3,21386.61
+histogram_width,norm,0.0,"[np.float64(70.5353), np.float64(38.9985)]",0.0882,0.0,-10739.24,21482.48
+histogram_width,expon,0.0,"[3.0, 67.5353]",0.1548,0.0,-11014.33,22032.66
+mean_value_of_long_term_variability,lognorm,0.0,"[np.float64(12.7898), np.float64(0.0), np.float64(0.2432)]",0.4585,0.0,-5395.79,10797.59
+mean_value_of_long_term_variability,gamma,0.0,"[np.float64(3.5684), np.float64(-2.4808), np.float64(2.9838)]",0.0514,0.0,-6440.54,12887.08
+mean_value_of_long_term_variability,expon,0.0,"[0.0, 8.1666]",0.1833,0.0,-6550.42,13104.84
+mean_value_of_long_term_variability,norm,0.0,"[np.float64(8.1666), np.float64(5.6316)]",0.0785,0.0,-6650.3,13304.61
+mean_value_of_long_term_variability,weibull_min,0.0,"[np.float64(1.5713), np.float64(0.785), np.float64(8.7004)]",0.09,0.0,-inf,inf

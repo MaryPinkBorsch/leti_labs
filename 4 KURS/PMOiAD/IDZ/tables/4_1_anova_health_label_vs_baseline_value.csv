@@ -1,0 +1,2 @@
+﻿Фактор,Показатель,Levene p,F (ANOVA),p (ANOVA),H (Kruskal),p (Kruskal),Eta^2 (эффект),Значимо
+health_label,baseline value,0.0002,137.834,0.0,249.3584,0.0,0.1156,ДА

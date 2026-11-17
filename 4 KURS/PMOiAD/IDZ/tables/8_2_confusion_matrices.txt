@@ -1,0 +1,11 @@
+Logistic Regression:
+[[283  47]
+ [ 11  82]]
+
+Random Forest:
+[[328   2]
+ [ 11  82]]
+
+MLP:
+[[322   8]
+ [ 19  74]]

@@ -1,0 +1,2 @@
+﻿Фактор,Показатель,Levene p,F (ANOVA),p (ANOVA),H (Kruskal),p (Kruskal),Eta^2 (эффект),Значимо
+variability_level,abnormal_short_term_variability,0.0,3440.9714,0.0,1582.5946,0.0,0.7653,ДА

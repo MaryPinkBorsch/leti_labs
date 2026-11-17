@@ -1,0 +1,16 @@
+﻿Признак,Значение,Частота (абс.),Частота (отн.),Накопленная отн.
+health_label,Normal,1646,0.779,0.779
+health_label,Suspect,292,0.1382,0.9172
+health_label,Pathological,175,0.0828,1.0
+baseline_group,normal,1395,0.6602,0.6602
+baseline_group,high,524,0.248,0.9082
+baseline_group,low,194,0.0918,1.0
+variability_level,medium,1293,0.6119,0.6119
+variability_level,low,576,0.2726,0.8845
+variability_level,high,244,0.1155,1.0
+tendency_cat,stable,1110,0.5253,0.5253
+tendency_cat,increasing,838,0.3966,0.9219
+tendency_cat,decreasing,165,0.0781,1.0
+peaks_group,medium,892,0.4221,0.4221
+peaks_group,few,787,0.3725,0.7946
+peaks_group,many,434,0.2054,1.0

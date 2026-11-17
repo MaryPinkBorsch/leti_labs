@@ -1,0 +1,23 @@
+﻿Признак,Q1,Q3,IQR,Нижняя граница,Верхняя граница,Выбросов,%
+histogram_number_of_zeroes,0.0,0.0,0.0,0.0,0.0,502,23.76
+fetal_health,1.0,1.0,0.0,1.0,1.0,467,22.1
+fetal_movement,0.0,0.003,0.003,-0.005,0.008,305,14.43
+percentage_of_time_with_abnormal_long_term_variability,0.0,11.0,11.0,-16.5,27.5,305,14.43
+histogram_variance,2.0,24.0,22.0,-31.0,57.0,184,8.71
+prolongued_decelerations,0.0,0.0,0.0,0.0,0.0,178,8.42
+light_decelerations,0.0,0.003,0.003,-0.005,0.008,150,7.1
+histogram_mode,129.0,148.0,19.0,100.5,176.5,73,3.45
+mean_value_of_long_term_variability,4.6,10.8,6.2,-4.7,20.1,71,3.36
+mean_value_of_short_term_variability,0.7,1.7,1.0,-0.8,3.2,70,3.31
+histogram_mean,125.0,145.0,20.0,95.0,175.0,45,2.13
+histogram_median,129.0,148.0,19.0,100.5,176.5,28,1.33
+histogram_max,152.0,174.0,22.0,119.0,207.0,24,1.14
+histogram_number_of_peaks,2.0,6.0,4.0,-4.0,12.0,19,0.9
+accelerations,0.0,0.006,0.006,-0.009,0.015,14,0.66
+severe_decelerations,0.0,0.0,0.0,0.0,0.0,7,0.33
+uterine_contractions,0.002,0.007,0.005,-0.006,0.014,1,0.05
+baseline value,126.0,140.0,14.0,105.0,161.0,0,0.0
+histogram_min,67.0,120.0,53.0,-12.5,199.5,0,0.0
+histogram_width,37.0,100.0,63.0,-57.5,194.5,0,0.0
+abnormal_short_term_variability,32.0,61.0,29.0,-11.5,104.5,0,0.0
+histogram_tendency,0.0,1.0,1.0,-1.5,2.5,0,0.0

@@ -1,0 +1,3 @@
+﻿Модель,Цель,Предикторы,Коэф. a (intercept),Коэф. b (наклон),R² (train),R² (test),MAE (test),MSE (test),RMSE (test)
+Простая,histogram_mean,baseline value,-17.736,1.1432,0.5298,0.4882,7.2019,126.22,11.2348
+Множественная,histogram_mean,"baseline value, accelerations, fetal_movement, abnormal_short_term_variability, histogram_min, histogram_max, histogram_variance",,,0.7832,0.7713,4.9164,56.4054,7.5104

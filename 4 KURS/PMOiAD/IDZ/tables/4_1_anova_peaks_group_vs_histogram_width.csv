@@ -1,0 +1,2 @@
+﻿Фактор,Показатель,Levene p,F (ANOVA),p (ANOVA),H (Kruskal),p (Kruskal),Eta^2 (эффект),Значимо
+peaks_group,histogram_width,0.0,1160.7158,0.0,1126.8181,0.0,0.5239,ДА

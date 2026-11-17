@@ -1,0 +1,4 @@
+﻿Модель,Accuracy,Precision,Recall,F1-score,ROC-AUC
+Logistic Regression,0.8629,0.6357,0.8817,0.7387,0.9569
+Random Forest,0.9693,0.9762,0.8817,0.9266,0.993
+MLP,0.9362,0.9024,0.7957,0.8457,0.9841

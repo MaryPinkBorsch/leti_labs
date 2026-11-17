@@ -1,0 +1,191 @@
+﻿,Признак 1,Признак 2,r (Пирсон),p (Пирсон),rho (Спирмен),p (Спирмен),Сила (по Спирмену),Направление,Значимо
+185,histogram_mode,histogram_median,0.9332,0.00e+00,0.9609,0.00e+00,очень высокая,прямая,ДА
+187,histogram_mean,histogram_median,0.9481,0.00e+00,0.9575,0.00e+00,очень высокая,прямая,ДА
+184,histogram_mode,histogram_mean,0.8931,0.00e+00,0.9079,0.00e+00,очень высокая,прямая,ДА
+154,histogram_width,histogram_min,-0.8991,0.00e+00,-0.9051,0.00e+00,очень высокая,обратная,ДА
+17,baseline value,histogram_median,0.7885,0.00e+00,0.8398,0.00e+00,высокая,прямая,ДА
+161,histogram_width,histogram_variance,0.6162,3.38e-221,0.8311,0.00e+00,высокая,прямая,ДА
+15,baseline value,histogram_mode,0.7081,2.49e-321,0.8174,0.00e+00,высокая,прямая,ДА
+16,baseline value,histogram_mean,0.7222,0.00e+00,0.787,0.00e+00,высокая,прямая,ДА
+134,mean_value_of_short_term_variability,histogram_variance,0.5559,1.16e-171,0.7792,0.00e+00,высокая,прямая,ДА
+156,histogram_width,histogram_number_of_peaks,0.7469,0.00e+00,0.775,0.00e+00,высокая,прямая,ДА
+168,histogram_min,histogram_variance,-0.5469,3.86e-165,-0.754,0.00e+00,высокая,обратная,ДА
+126,mean_value_of_short_term_variability,histogram_width,0.6628,1.63e-267,0.7174,0.00e+00,высокая,прямая,ДА
+84,light_decelerations,histogram_variance,0.5634,2.98e-177,0.7128,0.00e+00,высокая,прямая,ДА
+163,histogram_min,histogram_number_of_peaks,-0.6704,6.67e-276,-0.6998,1.01e-310,заметная,обратная,ДА
+127,mean_value_of_short_term_variability,histogram_min,-0.6256,6.65e-230,-0.6995,2.36e-310,заметная,обратная,ДА
+124,mean_value_of_short_term_variability,percentage_of_time_with_abnormal_long_term_variability,-0.4692,3.90e-116,-0.6833,1.12e-290,заметная,обратная,ДА
+155,histogram_width,histogram_max,0.6926,7.16e-302,0.652,4.60e-256,заметная,прямая,ДА
+144,percentage_of_time_with_abnormal_long_term_variability,histogram_variance,-0.2817,7.64e-40,-0.6493,2.70e-253,заметная,обратная,ДА
+179,histogram_number_of_peaks,histogram_variance,0.4541,5.59e-108,0.6473,3.30e-251,заметная,прямая,ДА
+73,light_decelerations,mean_value_of_short_term_variability,0.5623,1.98e-176,0.6185,2.73e-223,заметная,прямая,ДА
+77,light_decelerations,histogram_min,-0.5556,1.95e-171,-0.6048,5.34e-211,заметная,обратная,ДА
+76,light_decelerations,histogram_width,0.5206,4.41e-147,0.584,1.93e-193,заметная,прямая,ДА
+129,mean_value_of_short_term_variability,histogram_number_of_peaks,0.5029,7.14e-136,0.5552,3.76e-171,заметная,прямая,ДА
+136,percentage_of_time_with_abnormal_long_term_variability,histogram_width,-0.455,1.74e-108,-0.5294,6.10e-153,заметная,обратная,ДА
+174,histogram_max,histogram_variance,0.4385,5.05e-100,0.5268,3.38e-151,заметная,прямая,ДА
+112,abnormal_short_term_variability,mean_value_of_short_term_variability,-0.429,2.43e-95,-0.5179,2.45e-145,заметная,обратная,ДА
+169,histogram_max,histogram_number_of_peaks,0.5191,3.81e-146,0.5039,1.79e-136,заметная,прямая,ДА
+26,accelerations,percentage_of_time_with_abnormal_long_term_variability,-0.3735,6.19e-71,-0.4909,1.43e-128,умеренная,обратная,ДА
+79,light_decelerations,histogram_number_of_peaks,0.3971,9.53e-81,0.4819,2.77e-123,умеренная,прямая,ДА
+82,light_decelerations,histogram_mean,-0.5286,1.94e-152,-0.472,1.08e-117,умеренная,обратная,ДА
+166,histogram_min,histogram_mean,0.4861,9.37e-126,0.4708,4.81e-117,умеренная,прямая,ДА
+137,percentage_of_time_with_abnormal_long_term_variability,histogram_min,0.4271,1.93e-94,0.4697,2.07e-116,умеренная,прямая,ДА
+30,accelerations,histogram_max,0.3927,7.50e-79,0.4686,8.19e-116,умеренная,прямая,ДА
+132,mean_value_of_short_term_variability,histogram_mean,-0.4447,3.86e-103,-0.4587,1.89e-110,умеренная,обратная,ДА
+113,abnormal_short_term_variability,percentage_of_time_with_abnormal_long_term_variability,0.4567,2.22e-109,0.4218,6.54e-92,умеренная,прямая,ДА
+173,histogram_max,histogram_median,0.291,1.58e-42,0.4106,9.30e-87,умеренная,прямая,ДА
+171,histogram_max,histogram_mode,0.234,1.11e-27,0.4096,2.90e-86,умеренная,прямая,ДА
+109,prolongued_decelerations,histogram_mean,-0.4896,8.90e-128,-0.4057,1.53e-84,умеренная,обратная,ДА
+36,accelerations,histogram_variance,0.1244,9.54e-09,0.3887,3.60e-77,умеренная,прямая,ДА
+167,histogram_min,histogram_median,0.3998,6.53e-82,0.3855,7.73e-76,умеренная,прямая,ДА
+74,light_decelerations,percentage_of_time_with_abnormal_long_term_variability,-0.2715,4.92e-37,-0.3855,7.67e-76,умеренная,обратная,ДА
+111,prolongued_decelerations,histogram_variance,0.503,6.86e-136,0.3804,9.79e-74,умеренная,прямая,ДА
+128,mean_value_of_short_term_variability,histogram_max,0.4101,1.61e-86,0.3744,2.77e-71,умеренная,прямая,ДА
+7,baseline value,mean_value_of_short_term_variability,-0.2783,6.71e-39,-0.3654,9.57e-68,умеренная,обратная,ДА
+139,percentage_of_time_with_abnormal_long_term_variability,histogram_number_of_peaks,-0.2799,2.52e-39,-0.3613,3.51e-66,умеренная,обратная,ДА
+110,prolongued_decelerations,histogram_median,-0.4458,1.00e-103,-0.3597,1.53e-65,умеренная,обратная,ДА
+133,mean_value_of_short_term_variability,histogram_median,-0.3352,1.22e-56,-0.3573,1.21e-64,умеренная,обратная,ДА
+11,baseline value,histogram_min,0.3601,1.01e-65,0.356,3.54e-64,умеренная,прямая,ДА
+28,accelerations,histogram_width,0.2984,1.07e-44,0.3519,1.22e-62,умеренная,прямая,ДА
+24,accelerations,abnormal_short_term_variability,-0.2805,1.68e-39,-0.3457,2.30e-60,умеренная,обратная,ДА
+165,histogram_min,histogram_mode,0.3526,6.53e-63,0.3446,5.46e-60,умеренная,прямая,ДА
+123,abnormal_short_term_variability,histogram_variance,-0.1471,1.09e-11,-0.3443,7.32e-60,умеренная,обратная,ДА
+172,histogram_max,histogram_mean,0.1895,1.54e-18,0.3404,1.80e-58,умеренная,прямая,ДА
+8,baseline value,percentage_of_time_with_abnormal_long_term_variability,0.2839,1.81e-40,0.3396,3.50e-58,умеренная,прямая,ДА
+114,abnormal_short_term_variability,mean_value_of_long_term_variability,-0.3141,1.38e-49,-0.3363,4.97e-57,умеренная,обратная,ДА
+157,histogram_width,histogram_number_of_zeroes,0.317,1.58e-50,0.3314,2.50e-55,умеренная,прямая,ДА
+83,light_decelerations,histogram_median,-0.3899,1.14e-77,-0.3314,2.36e-55,умеренная,обратная,ДА
+164,histogram_min,histogram_number_of_zeroes,-0.3075,1.70e-47,-0.3282,3.07e-54,умеренная,обратная,ДА
+25,accelerations,mean_value_of_short_term_variability,0.2068,7.79e-22,0.3271,7.24e-54,умеренная,прямая,ДА
+58,uterine_contractions,mean_value_of_short_term_variability,0.289,6.25e-42,0.3268,8.97e-54,умеренная,прямая,ДА
+188,histogram_mean,histogram_variance,-0.4002,4.35e-82,-0.3262,1.43e-53,умеренная,обратная,ДА
+71,light_decelerations,prolongued_decelerations,0.2249,1.24e-25,0.3261,1.56e-53,умеренная,прямая,ДА
+12,baseline value,histogram_max,0.2734,1.54e-37,0.324,7.95e-53,умеренная,прямая,ДА
+138,percentage_of_time_with_abnormal_long_term_variability,histogram_max,-0.2855,6.50e-41,-0.3213,5.98e-52,умеренная,обратная,ДА
+6,baseline value,abnormal_short_term_variability,0.3035,2.87e-46,0.3148,7.96e-50,умеренная,прямая,ДА
+108,prolongued_decelerations,histogram_mode,-0.4373,1.94e-99,-0.3125,4.25e-49,умеренная,обратная,ДА
+37,fetal_movement,uterine_contractions,-0.0699,1.31e-03,-0.3122,5.45e-49,умеренная,обратная,ДА
+131,mean_value_of_short_term_variability,histogram_mode,-0.3067,2.97e-47,-0.3119,6.75e-49,умеренная,обратная,ДА
+104,prolongued_decelerations,histogram_min,-0.2775,1.14e-38,-0.3114,9.77e-49,умеренная,обратная,ДА
+100,prolongued_decelerations,mean_value_of_short_term_variability,0.2669,8.78e-36,0.3009,1.81e-45,умеренная,прямая,ДА
+183,histogram_number_of_zeroes,histogram_variance,0.1955,1.21e-19,0.3007,2.12e-45,умеренная,прямая,ДА
+54,uterine_contractions,light_decelerations,0.2823,5.13e-40,0.2997,4.26e-45,слабая,прямая,ДА
+162,histogram_min,histogram_max,-0.3069,2.50e-47,-0.297,2.74e-44,слабая,обратная,ДА
+130,mean_value_of_short_term_variability,histogram_number_of_zeroes,0.2657,1.82e-35,0.2962,4.74e-44,слабая,прямая,ДА
+175,histogram_number_of_peaks,histogram_number_of_zeroes,0.288,1.18e-41,0.2924,6.46e-43,слабая,прямая,ДА
+142,percentage_of_time_with_abnormal_long_term_variability,histogram_mean,0.2211,8.28e-25,0.2913,1.30e-42,слабая,прямая,ДА
+103,prolongued_decelerations,histogram_width,0.2653,2.29e-35,0.2874,1.82e-41,слабая,прямая,ДА
+59,uterine_contractions,percentage_of_time_with_abnormal_long_term_variability,-0.3061,4.65e-47,-0.2813,9.85e-40,слабая,обратная,ДА
+115,abnormal_short_term_variability,histogram_width,-0.2631,8.81e-35,-0.2811,1.17e-39,слабая,обратная,ДА
+80,light_decelerations,histogram_number_of_zeroes,0.2339,1.17e-27,0.2746,7.27e-38,слабая,прямая,ДА
+69,uterine_contractions,histogram_variance,0.236,3.86e-28,0.2735,1.42e-37,слабая,прямая,ДА
+116,abnormal_short_term_variability,histogram_min,0.2782,7.13e-39,0.2717,4.55e-37,слабая,прямая,ДА
+41,fetal_movement,abnormal_short_term_variability,-0.1049,1.36e-06,0.258,1.76e-33,слабая,прямая,ДА
+81,light_decelerations,histogram_mode,-0.3484,2.41e-61,-0.2535,2.39e-32,слабая,обратная,ДА
+75,light_decelerations,mean_value_of_long_term_variability,-0.2414,2.15e-29,-0.2485,4.17e-31,слабая,обратная,ДА
+143,percentage_of_time_with_abnormal_long_term_variability,histogram_median,0.185,1.00e-17,0.2447,3.55e-30,слабая,прямая,ДА
+106,prolongued_decelerations,histogram_number_of_peaks,0.2226,3.90e-25,0.241,2.64e-29,слабая,прямая,ДА
+18,baseline value,histogram_variance,-0.1345,5.46e-10,-0.2392,7.22e-29,слабая,обратная,ДА
+102,prolongued_decelerations,mean_value_of_long_term_variability,-0.2261,6.84e-26,-0.2374,1.84e-28,слабая,обратная,ДА
+31,accelerations,histogram_number_of_peaks,0.1892,1.76e-18,0.2358,4.36e-28,слабая,прямая,ДА
+159,histogram_width,histogram_mean,-0.2812,1.06e-39,-0.2338,1.25e-27,слабая,обратная,ДА
+78,light_decelerations,histogram_max,0.2163,8.57e-24,0.2306,6.76e-27,слабая,прямая,ДА
+141,percentage_of_time_with_abnormal_long_term_variability,histogram_mode,0.1639,3.46e-14,0.2218,5.96e-25,слабая,прямая,ДА
+57,uterine_contractions,abnormal_short_term_variability,-0.2349,7.15e-28,-0.2192,2.11e-24,слабая,обратная,ДА
+101,prolongued_decelerations,percentage_of_time_with_abnormal_long_term_variability,-0.1375,2.21e-10,-0.2187,2.66e-24,слабая,обратная,ДА
+189,histogram_median,histogram_variance,-0.295,1.11e-43,-0.217,6.21e-24,слабая,обратная,ДА
+34,accelerations,histogram_mean,0.2703,1.09e-36,0.21,1.77e-22,слабая,прямая,ДА
+35,accelerations,histogram_median,0.2725,2.70e-37,0.2089,2.88e-22,слабая,прямая,ДА
+177,histogram_number_of_peaks,histogram_mean,-0.2173,5.28e-24,-0.1918,5.90e-19,слабая,обратная,ДА
+48,fetal_movement,histogram_number_of_peaks,0.1646,2.62e-14,0.1912,7.74e-19,слабая,прямая,ДА
+45,fetal_movement,histogram_width,0.1628,5.09e-14,0.1883,2.53e-18,слабая,прямая,ДА
+33,accelerations,histogram_mode,0.2431,8.53e-30,0.1864,5.75e-18,слабая,прямая,ДА
+46,fetal_movement,histogram_min,-0.1543,9.95e-13,-0.1787,1.27e-16,слабая,обратная,ДА
+3,baseline value,light_decelerations,-0.1598,1.46e-13,-0.1754,4.56e-16,слабая,обратная,ДА
+119,abnormal_short_term_variability,histogram_number_of_zeroes,-0.1501,4.09e-12,-0.1752,4.91e-16,слабая,обратная,ДА
+67,uterine_contractions,histogram_mean,-0.1897,1.44e-18,-0.1737,8.87e-16,слабая,обратная,ДА
+118,abnormal_short_term_variability,histogram_number_of_peaks,-0.1698,3.86e-15,-0.1683,6.86e-15,слабая,обратная,ДА
+29,accelerations,histogram_min,-0.1553,7.06e-13,-0.168,7.75e-15,слабая,обратная,ДА
+170,histogram_max,histogram_number_of_zeroes,0.1825,2.75e-17,0.1666,1.29e-14,слабая,прямая,ДА
+140,percentage_of_time_with_abnormal_long_term_variability,histogram_number_of_zeroes,-0.1213,2.20e-08,-0.1645,2.74e-14,слабая,обратная,ДА
+122,abnormal_short_term_variability,histogram_median,0.1174,6.16e-08,0.1608,1.04e-13,слабая,прямая,ДА
+72,light_decelerations,abnormal_short_term_variability,-0.1199,3.23e-08,-0.1542,1.01e-12,слабая,обратная,ДА
+10,baseline value,histogram_width,-0.1471,1.07e-11,-0.1541,1.05e-12,слабая,обратная,ДА
+186,histogram_mode,histogram_variance,-0.3137,1.84e-49,-0.1532,1.46e-12,слабая,обратная,ДА
+5,baseline value,prolongued_decelerations,-0.105,1.32e-06,-0.1416,6.15e-11,слабая,обратная,ДА
+68,uterine_contractions,histogram_median,-0.143,4.02e-11,-0.1382,1.78e-10,слабая,обратная,ДА
+61,uterine_contractions,histogram_width,0.1415,6.44e-11,0.1375,2.19e-10,слабая,прямая,ДА
+2,baseline value,uterine_contractions,-0.1496,4.81e-12,-0.1371,2.46e-10,слабая,обратная,ДА
+160,histogram_width,histogram_median,-0.1691,5.13e-15,-0.135,4.63e-10,слабая,обратная,ДА
+121,abnormal_short_term_variability,histogram_mean,0.072,9.24e-04,0.1338,6.67e-10,слабая,прямая,ДА
+117,abnormal_short_term_variability,histogram_max,-0.1134,1.71e-07,-0.1282,3.32e-09,слабая,обратная,ДА
+56,uterine_contractions,prolongued_decelerations,0.0755,5.11e-04,0.1245,9.40e-09,слабая,прямая,ДА
+40,fetal_movement,prolongued_decelerations,0.2658,1.68e-35,0.1235,1.23e-08,слабая,прямая,ДА
+120,abnormal_short_term_variability,histogram_mode,0.0557,1.05e-02,0.1226,1.58e-08,слабая,прямая,ДА
+13,baseline value,histogram_number_of_peaks,-0.1132,1.80e-07,-0.1204,2.83e-08,слабая,обратная,ДА
+47,fetal_movement,histogram_max,0.0997,4.39e-06,0.1186,4.60e-08,слабая,прямая,ДА
+23,accelerations,prolongued_decelerations,-0.1287,2.91e-09,-0.1177,5.81e-08,слабая,обратная,ДА
+181,histogram_number_of_zeroes,histogram_mean,-0.0843,1.04e-04,-0.1166,7.63e-08,слабая,обратная,ДА
+20,accelerations,uterine_contractions,0.0862,7.30e-05,0.1164,8.16e-08,слабая,прямая,ДА
+64,uterine_contractions,histogram_number_of_peaks,0.0801,2.29e-04,0.1155,1.02e-07,слабая,прямая,ДА
+53,fetal_movement,histogram_variance,0.1791,1.08e-16,0.1155,1.02e-07,слабая,прямая,ДА
+0,baseline value,accelerations,-0.0819,1.64e-04,-0.1151,1.12e-07,слабая,обратная,ДА
+44,fetal_movement,mean_value_of_long_term_variability,0.0117,5.89e-01,-0.1143,1.38e-07,слабая,обратная,ДА
+63,uterine_contractions,histogram_max,0.1174,6.24e-08,0.1064,9.48e-07,слабая,прямая,ДА
+178,histogram_number_of_peaks,histogram_median,-0.1228,1.48e-08,-0.1056,1.15e-06,слабая,обратная,ДА
+62,uterine_contractions,histogram_min,-0.1154,1.03e-07,-0.1055,1.17e-06,слабая,обратная,ДА
+105,prolongued_decelerations,histogram_max,0.1195,3.60e-08,0.1046,1.46e-06,слабая,прямая,ДА
+158,histogram_width,histogram_mode,-0.1596,1.60e-13,-0.1028,2.19e-06,слабая,обратная,ДА
+27,accelerations,mean_value_of_long_term_variability,-0.1414,6.61e-11,-0.1018,2.74e-06,слабая,обратная,ДА
+95,severe_decelerations,histogram_mode,-0.2156,1.23e-23,-0.0978,6.67e-06,слабая,обратная,ДА
+49,fetal_movement,histogram_number_of_zeroes,-0.0181,4.05e-01,-0.094,1.52e-05,слабая,обратная,ДА
+153,mean_value_of_long_term_variability,histogram_variance,-0.1626,5.39e-14,-0.0931,1.81e-05,слабая,обратная,ДА
+98,severe_decelerations,histogram_variance,0.1364,3.10e-10,0.0919,2.32e-05,слабая,прямая,ДА
+66,uterine_contractions,histogram_mode,-0.1074,7.57e-07,-0.0918,2.36e-05,слабая,обратная,ДА
+96,severe_decelerations,histogram_mean,-0.159,2.00e-13,-0.0916,2.49e-05,слабая,обратная,ДА
+97,severe_decelerations,histogram_median,-0.1608,1.04e-13,-0.0873,5.88e-05,слабая,обратная,ДА
+51,fetal_movement,histogram_mean,-0.0899,3.47e-05,-0.0811,1.89e-04,слабая,обратная,ДА
+151,mean_value_of_long_term_variability,histogram_mean,0.1403,9.20e-11,0.0804,2.17e-04,слабая,прямая,ДА
+107,prolongued_decelerations,histogram_number_of_zeroes,0.0557,1.04e-02,0.0795,2.53e-04,слабая,прямая,ДА
+146,mean_value_of_long_term_variability,histogram_min,-0.1443,2.67e-11,-0.0785,3.06e-04,слабая,обратная,ДА
+43,fetal_movement,percentage_of_time_with_abnormal_long_term_variability,-0.0749,5.69e-04,-0.0783,3.16e-04,слабая,обратная,ДА
+149,mean_value_of_long_term_variability,histogram_number_of_zeroes,0.1259,6.29e-09,0.0749,5.65e-04,слабая,прямая,ДА
+182,histogram_number_of_zeroes,histogram_median,-0.053,1.48e-02,-0.0747,5.90e-04,слабая,обратная,ДА
+91,severe_decelerations,histogram_min,-0.0722,9.02e-04,-0.0746,5.97e-04,слабая,обратная,ДА
+42,fetal_movement,mean_value_of_short_term_variability,0.1215,2.09e-08,0.0738,6.89e-04,слабая,прямая,ДА
+180,histogram_number_of_zeroes,histogram_mode,-0.0582,7.47e-03,-0.0732,7.53e-04,слабая,обратная,ДА
+176,histogram_number_of_peaks,histogram_mode,-0.1002,3.95e-06,-0.0716,9.97e-04,слабая,обратная,ДА
+14,baseline value,histogram_number_of_zeroes,-0.0048,8.25e-01,-0.0655,2.58e-03,слабая,обратная,ДА
+70,light_decelerations,severe_decelerations,0.1075,7.34e-07,0.0624,4.14e-03,слабая,прямая,ДА
+94,severe_decelerations,histogram_number_of_zeroes,0.0433,4.65e-02,0.0622,4.22e-03,слабая,прямая,ДА
+60,uterine_contractions,mean_value_of_long_term_variability,-0.0615,4.69e-03,-0.062,4.37e-03,слабая,обратная,ДА
+4,baseline value,severe_decelerations,-0.0537,1.35e-02,-0.0598,5.92e-03,слабая,обратная,ДА
+65,uterine_contractions,histogram_number_of_zeroes,0.055,1.15e-02,0.0569,8.94e-03,слабая,прямая,ДА
+87,severe_decelerations,mean_value_of_short_term_variability,0.034,1.18e-01,0.0525,1.59e-02,слабая,прямая,ДА
+19,accelerations,fetal_movement,0.0481,2.70e-02,0.0523,1.62e-02,слабая,прямая,ДА
+9,baseline value,mean_value_of_long_term_variability,-0.0289,1.84e-01,-0.0517,1.74e-02,слабая,обратная,ДА
+22,accelerations,severe_decelerations,-0.0432,4.69e-02,-0.051,1.91e-02,слабая,обратная,ДА
+90,severe_decelerations,histogram_width,0.0448,3.94e-02,0.0509,1.94e-02,слабая,прямая,ДА
+145,mean_value_of_long_term_variability,histogram_width,0.1122,2.31e-07,0.0479,2.77e-02,слабая,прямая,ДА
+88,severe_decelerations,percentage_of_time_with_abnormal_long_term_variability,-0.0308,1.57e-01,-0.0464,3.30e-02,слабая,обратная,ДА
+52,fetal_movement,histogram_median,-0.0727,8.28e-04,-0.0421,5.29e-02,слабая,обратная,НЕТ
+135,percentage_of_time_with_abnormal_long_term_variability,mean_value_of_long_term_variability,-0.1706,2.91e-15,-0.042,5.33e-02,слабая,обратная,НЕТ
+147,mean_value_of_long_term_variability,histogram_max,0.0063,7.73e-01,-0.0419,5.41e-02,слабая,обратная,НЕТ
+86,severe_decelerations,abnormal_short_term_variability,0.0341,1.17e-01,0.0414,5.73e-02,слабая,прямая,НЕТ
+85,severe_decelerations,prolongued_decelerations,0.0123,5.72e-01,0.0387,7.50e-02,слабая,прямая,НЕТ
+89,severe_decelerations,mean_value_of_long_term_variability,-0.0375,8.45e-02,-0.0378,8.21e-02,слабая,обратная,НЕТ
+50,fetal_movement,histogram_mode,-0.0615,4.69e-03,-0.036,9.79e-02,слабая,обратная,НЕТ
+38,fetal_movement,light_decelerations,0.0488,2.49e-02,0.0347,1.11e-01,слабая,прямая,НЕТ
+99,prolongued_decelerations,abnormal_short_term_variability,0.0464,3.31e-02,0.0304,1.62e-01,слабая,прямая,НЕТ
+1,baseline value,fetal_movement,-0.0339,1.19e-01,-0.0237,2.75e-01,слабая,обратная,НЕТ
+92,severe_decelerations,histogram_max,-0.0214,3.25e-01,-0.022,3.12e-01,слабая,обратная,НЕТ
+125,mean_value_of_short_term_variability,mean_value_of_long_term_variability,0.074,6.65e-04,-0.0219,3.15e-01,слабая,обратная,НЕТ
+93,severe_decelerations,histogram_number_of_peaks,0.0069,7.52e-01,0.0159,4.64e-01,слабая,прямая,НЕТ
+21,accelerations,light_decelerations,-0.1106,3.46e-07,-0.0144,5.07e-01,слабая,обратная,НЕТ
+152,mean_value_of_long_term_variability,histogram_median,0.066,2.40e-03,0.0143,5.10e-01,слабая,прямая,НЕТ
+150,mean_value_of_long_term_variability,histogram_mode,0.0747,5.85e-04,0.0056,7.98e-01,слабая,прямая,НЕТ
+55,uterine_contractions,severe_decelerations,0.0064,7.68e-01,0.0055,8.00e-01,слабая,прямая,НЕТ
+39,fetal_movement,severe_decelerations,-0.011,6.13e-01,0.0014,9.47e-01,слабая,прямая,НЕТ
+148,mean_value_of_long_term_variability,histogram_number_of_peaks,0.0577,8.01e-03,-0.0012,9.55e-01,слабая,обратная,НЕТ
+32,accelerations,histogram_number_of_zeroes,-0.0074,7.35e-01,-0.0003,9.88e-01,слабая,обратная,НЕТ
